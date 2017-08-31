@@ -10944,6 +10944,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by giscafer on 2017/4/18.
  * Echarts ng 指令封装
  *
+ * base on https://github.com/xieziyu/ngx-echarts/
+ *
  */
 
 

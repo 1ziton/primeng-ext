@@ -53,16 +53,17 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/growl/growl.ts":
+/***/ "./src/app/components/inplace/inplace.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* unused harmony export Growl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrowlModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* unused harmony export InplaceDisplay */
+/* unused harmony export InplaceContent */
+/* unused harmony export Inplace */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InplaceModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -72,197 +73,103 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 
 
 
-
-var Growl = (function () {
-    function Growl(el, domHandler, differs, messageService) {
-        var _this = this;
-        this.el = el;
-        this.domHandler = domHandler;
-        this.differs = differs;
-        this.messageService = messageService;
-        this.life = 3000;
-        this.immutable = true;
-        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.zIndex = __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.differ = differs.find([]).create(null);
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
-            });
-        }
+var InplaceDisplay = (function () {
+    function InplaceDisplay() {
     }
-    Growl.prototype.ngAfterViewInit = function () {
-        this.container = this.containerViewChild.nativeElement;
-        if (!this.sticky) {
-            this.initTimeout();
+    return InplaceDisplay;
+}());
+InplaceDisplay = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-inplaceDisplay',
+        template: '<ng-content></ng-content>'
+    })
+], InplaceDisplay);
+
+var InplaceContent = (function () {
+    function InplaceContent() {
+    }
+    return InplaceContent;
+}());
+InplaceContent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-inplaceContent',
+        template: '<ng-content></ng-content>'
+    })
+], InplaceContent);
+
+var Inplace = (function () {
+    function Inplace() {
+        this.onActivate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onDeactivate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+    }
+    Inplace.prototype.activate = function (event) {
+        if (!this.disabled) {
+            this.active = true;
+            this.onActivate.emit(event);
         }
     };
-    Object.defineProperty(Growl.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        set: function (val) {
-            this._value = val;
-            if (this.container && this.immutable) {
-                this.handleValueChange();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Growl.prototype.ngDoCheck = function () {
-        if (!this.immutable && this.container) {
-            var changes = this.differ.diff(this.value);
-            if (changes) {
-                this.handleValueChange();
-            }
+    Inplace.prototype.deactivate = function (event) {
+        if (!this.disabled) {
+            this.active = false;
+            this.hover = false;
+            this.onDeactivate.emit(event);
         }
     };
-    Growl.prototype.handleValueChange = function () {
-        if (this.preventRerender) {
-            this.preventRerender = false;
-            return;
-        }
-        this.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.domHandler.fadeIn(this.container, 250);
-        if (!this.sticky) {
-            this.initTimeout();
-        }
-    };
-    Growl.prototype.initTimeout = function () {
-        var _this = this;
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(function () {
-            _this.removeAll();
-        }, this.life);
-    };
-    Growl.prototype.remove = function (index, msgel) {
-        var _this = this;
-        this.closeIconClick = true;
-        this.domHandler.fadeOut(msgel, 250);
-        setTimeout(function () {
-            _this.preventRerender = true;
-            _this.onClose.emit({ message: _this.value[index] });
-            if (_this.immutable) {
-                _this._value = _this.value.filter(function (val, i) { return i != index; });
-                _this.valueChange.emit(_this._value);
-            }
-            else {
-                _this._value.splice(index, 1);
-            }
-        }, 250);
-    };
-    Growl.prototype.removeAll = function () {
-        var _this = this;
-        if (this.value && this.value.length) {
-            this.domHandler.fadeOut(this.container, 250);
-            setTimeout(function () {
-                _this.value.forEach(function (msg, index) { return _this.onClose.emit({ message: _this.value[index] }); });
-                if (_this.immutable) {
-                    _this.value = [];
-                    _this.valueChange.emit(_this.value);
-                }
-                else {
-                    _this.value.splice(0, _this.value.length);
-                }
-            }, 250);
-        }
-    };
-    Growl.prototype.onMessageClick = function (i) {
-        if (this.closeIconClick)
-            this.closeIconClick = false;
-        else
-            this.onClick.emit({ message: this.value[i] });
-    };
-    Growl.prototype.ngOnDestroy = function () {
-        if (!this.sticky) {
-            clearTimeout(this.timeout);
-        }
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return Growl;
+    return Inplace;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Growl.prototype, "sticky", void 0);
+], Inplace.prototype, "active", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Growl.prototype, "life", void 0);
+    __metadata("design:type", Boolean)
+], Inplace.prototype, "closable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Inplace.prototype, "disabled", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], Growl.prototype, "style", void 0);
+], Inplace.prototype, "style", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Growl.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Growl.prototype, "immutable", void 0);
+], Inplace.prototype, "styleClass", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Growl.prototype, "onClick", void 0);
+], Inplace.prototype, "onActivate", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Growl.prototype, "onClose", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], Growl.prototype, "valueChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], Growl.prototype, "containerViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Growl.prototype, "value", null);
-Growl = __decorate([
+], Inplace.prototype, "onDeactivate", void 0);
+Inplace = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-growl',
-        template: "\n        <div #container [ngClass]=\"'ui-growl ui-widget'\" [style.zIndex]=\"zIndex\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div #msgel *ngFor=\"let msg of value;let i = index\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn',\n                    'ui-growl-message-error':msg.severity == 'error','ui-growl-message-success':msg.severity == 'success'}\" (click)=\"onMessageClick(i)\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(i,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-exclamation-circle':msg.severity == 'warn',\n                                'fa-close':msg.severity == 'error','fa-check':msg.severity == 'success'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p [innerHTML]=\"msg.detail\"></p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Optional */])()),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */]) === "function" && _h || Object])
-], Growl);
-
-var GrowlModule = (function () {
-    function GrowlModule() {
-    }
-    return GrowlModule;
-}());
-GrowlModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Growl],
-        declarations: [Growl]
+        selector: 'p-inplace',
+        template: "\n        <div [ngClass]=\"'ui-inplace ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inplace-display\" (click)=\"activate($event)\"\n                [ngClass]=\"{'ui-state-disabled':disabled}\" *ngIf=\"!active\">\n                <ng-content select=\"[pInplaceDisplay]\"></ng-content>\n            </div>\n            <div class=\"ui-inplace-content\" *ngIf=\"active\">\n                <ng-content select=\"[pInplaceContent]\"></ng-content>\n                <button type=\"button\" icon=\"fa-close\" pButton (click)=\"deactivate($event)\" *ngIf=\"closable\"></button>\n            </div>\n        </div>\n    "
     })
-], GrowlModule);
+], Inplace);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
-//# sourceMappingURL=growl.js.map
+var InplaceModule = (function () {
+    function InplaceModule() {
+    }
+    return InplaceModule;
+}());
+InplaceModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__button_button__["a" /* ButtonModule */]],
+        exports: [Inplace, InplaceDisplay, InplaceContent, __WEBPACK_IMPORTED_MODULE_2__button_button__["a" /* ButtonModule */]],
+        declarations: [Inplace, InplaceDisplay, InplaceContent]
+    })
+], InplaceModule);
+
+var _a, _b;
+//# sourceMappingURL=inplace.js.map
 
 /***/ }),
 
@@ -617,14 +524,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tabview/tabviewdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/inplace/inplacedemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tabviewdemo__ = __webpack_require__("./src/app/showcase/components/tabview/tabviewdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabViewDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inplacedemo__ = __webpack_require__("./src/app/showcase/components/inplace/inplacedemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InplaceDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -634,48 +541,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var TabViewDemoRoutingModule = (function () {
-    function TabViewDemoRoutingModule() {
+var InplaceDemoRoutingModule = (function () {
+    function InplaceDemoRoutingModule() {
     }
-    return TabViewDemoRoutingModule;
+    return InplaceDemoRoutingModule;
 }());
-TabViewDemoRoutingModule = __decorate([
+InplaceDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__tabviewdemo__["a" /* TabViewDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inplacedemo__["a" /* InplaceDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], TabViewDemoRoutingModule);
+], InplaceDemoRoutingModule);
 
-//# sourceMappingURL=tabviewdemo-routing.module.js.map
+//# sourceMappingURL=inplacedemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tabview/tabviewdemo.html":
+/***/ "./src/app/showcase/components/inplace/inplacedemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">TabView</span>\r\n        <span>TabView is a container component to group content with tabs.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n\r\n    <h3 class=\"first\">Default</h3>\r\n    <p-tabView>\r\n        <p-tabPanel header=\"Godfather I\" leftIcon=\"fa-calendar\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather II\" rightIcon=\"fa-print\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather III\" leftIcon=\"fa-bell-o\" rightIcon=\"fa-bookmark-o\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n\r\n    <h3>Closable</h3>\r\n    <p-tabView id=\"closableTabView\">\r\n        <p-tabPanel header=\"Godfather I\" [selected]=\"true\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather II\" [closable]=\"true\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather III\" [closable]=\"true\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n\r\n    <h3>Event</h3>\r\n    <p-tabView (onChange)=\"onTabChange($event)\">\r\n        <p-tabPanel header=\"Godfather I\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather II\" [selected]=\"true\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather III\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather IV\" [disabled]=\"true\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n\r\n    <h3>Orientation</h3>\r\n    <p-tabView orientation=\"left\">\r\n        <p-tabPanel header=\"Godfather I\" [selected]=\"true\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-tabPanel>\r\n         <p-tabPanel header=\"Godfather II\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Godfather III\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header =\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;TabViewModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Tabview element consists of one or more p-tabPanel elements. Header of the tab is defined using header attribute.</p>\r\n                    \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabView&gt;\r\n    &lt;p-tabPanel header=\"Header 1\"&gt;\r\n       Content 1\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Selection</h3>\r\n            <p>First tab is selected by default, to customize this enable selected property on another panel.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabView&gt;\r\n    &lt;p-tabPanel header=\"Header 1\"&gt;\r\n       Content 1\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 2\" [selected]=\"true\"&gt;\r\n        Content 2\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Closable</h3>\r\n            <p>When closable attribute is enabled, an icon is displayed to close the tab. onClose event is fired when a tab is closed.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabPanel header=\"Header Text\" [closable]=\"true\"&gt;\r\n    Content 1\r\n&lt;/p-tabPanel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>If you'd like to control whether a tab can be closed, enable controlClose property which gives you the control\r\n            to decide at onClose event. In this case, the event gets a 3rd parameter called close callback and invoking this function\r\n            actually closes the tab.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabView [controlClose]=\"true\" (onClose)=\"handleClose($event)\"&gt;\r\n&lt;p-tabPanel header=\"Header Text\" [closable]=\"true\"&gt;\r\n    Content 1\r\n&lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nhandleClose(e) &#123;\r\n   if(condition)\r\n       e.close();\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Disabled</h3>\r\n            <p>A tab can be disabled to prevent the content to be displayed by setting the disabled property on a panel.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabPanel header=\"Header Text\" [disabled]=\"true\"&gt;\r\n    Content 1\r\n&lt;/p-tabPanel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Icons</h3>\r\n            <p>Icons can be placed at left and right of a header using leftIcon and rightIcon properties of tabPanel.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabPanel header=\"Header Text\" leftIcon=\"fa-bell-o\" rightIcon=\"fa-bookmark-o\"&gt;;\r\n    Content\r\n&lt;/p-tabPanel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Orientation</h3>\r\n            <p>TabView has four different orientations; \"top\", \"bottom\", \"left\" and \"right\". Top is the default one\r\n            and this can be changed using orientation attribute.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabView orientation=\"left\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Programmatic Control</h3>\r\n            <p>Tabs can be controlled programmatically using activeIndex property that defines the index of the active tab.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;button type=\"button\" pButton icon=\"fa fa-chevron-up\" (click)=\"openPrev()\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton icon=\"fa fa-chevron-down\" (click)=\"openNext()\"&gt;&lt;/button&gt;\r\n\r\n&lt;p-tabView [activeIndex]=\"index\"&gt;\r\n    &lt;p-tabPanel header=\"Header 1\"&gt;\r\n        Content 1\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class TabViewDemo &#123;\r\n\r\n    index: number = 0;\r\n\r\n    openNext() &#123;\r\n        this.index = (this.index === 2) ? 0 : this.index + 1;\r\n    &#125;\r\n\r\n    openPrev() &#123;\r\n        this.index = (this.index === 0) ? 2 : this.index - 1;\r\n    &#125;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Lazy Loading</h3>\r\n            <p>Lazy loading helps initial load performance by only initializing the active tab, inactive tabs are not initialized until they get selected. A lazy\r\n            loaded tabpanel contents are cached by default so that upon reselection, they are not created again. You may use cache property on TabPanel to\r\n            configure this behavior. A TabPanel is specified as lazy when there is a ngTemplate with pTemplate=\"content\" in it.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabView&gt;\r\n    &lt;p-tabPanel header=\"Header 1\"&gt;\r\n        Content 1\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 2\"&gt;\r\n        &lt;ng-template pTemplate=\"content\"&gt;\r\n            Complex Content to Lazy Load\r\n        &lt;/ng-template&gt;\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Header 3\"&gt;\r\n        &lt;ng-template pTemplate=\"content\"&gt;\r\n            Complex Content to Lazy Load\r\n        &lt;/ng-template&gt;\r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Attributes for TabView</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>orientation</td>\r\n                            <td>string</td>\r\n                            <td>top</td>\r\n                            <td>Orientation of tab headers.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>activeIndex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the active tab to change selected tab programmatically.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Attributes for TabPanel</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>header</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Orientation of tab headers.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>selected</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines if tab is active.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When true, tab cannot be activated.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>closable</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines if tab can be removed.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>headerStyle</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the tab header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>headerStyleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the tab header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>controlClose</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether tab close is controlled at onClose event or not.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>cache</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether a lazy loaded panel should avoid getting loaded again on reselection.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>\r\n                                event.originalEvent: Click event <br>\r\n                                event.index: Index of the selected tab\r\n                            </td>\r\n                            <td>Callback to invoke on tab change.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onClose</td>\r\n                            <td>\r\n                                event.originalEvent: Click event <br>\r\n                                event.index: Index of the closed tab <br >\r\n                                event.close: Callback to actually close the tab, only available if controlClose is enabled.\r\n                            </td>\r\n                            <td>Callback to invoke on tab close.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-tabView (onChange)=\"handleChange($event)\"&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nhandleChange(e) &#123;\r\n    var index = e.index;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-tabview</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tabview-nav</td>\r\n                            <td>Container of headers.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tabview-selected</td>\r\n                            <td>Selected tab header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tabview-panels</td>\r\n                            <td>Container panels.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tabview-panel</td>\r\n                            <td>Content of a tab.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n            \r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/tabview\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;h3 class=\"first\"&gt;Default&lt;/h3&gt;\r\n&lt;p-tabView&gt;\r\n    &lt;p-tabPanel header=\"Godfather I\" leftIcon=\"fa-calendar\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather II\" leftIcon=\"fa-print\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather III\" leftIcon=\"fa-bell-o\" rightIcon=\"fa-bookmark-o\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n\r\n&lt;h3&gt;Closable&lt;/h3&gt;\r\n&lt;p-tabView&gt;\r\n    &lt;p-tabPanel header=\"Godfather I\" [selected]=\"true\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather II\" [closable]=\"true\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather III\" [closable]=\"true\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n\r\n&lt;h3&gt;Event&lt;/h3&gt;\r\n&lt;p-tabView (onChange)=\"onTabChange($event)\"&gt;\r\n    &lt;p-tabPanel header=\"Godfather I\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather II\" [selected]=\"true\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather III\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather IV\" [disabled]=\"true\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n\r\n&lt;h3&gt;Orientation&lt;/h3&gt;\r\n&lt;p-tabView orientation=\"left\"&gt;\r\n    &lt;p-tabPanel header=\"Godfather I\" [selected]=\"true\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-tabPanel&gt;\r\n     &lt;p-tabPanel header=\"Godfather II\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-tabPanel&gt;\r\n    &lt;p-tabPanel header=\"Godfather III\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-tabPanel&gt;\r\n&lt;/p-tabView&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class TabViewDemo &#123;\r\n\r\n    msgs: Message[];\r\n    \r\n    onTabChange(event) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Tab Expanded', detail: 'Index: ' + event.index&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Inplace</span>\r\n        <span>Inplace provides an easy to do editing and display at the same time where clicking the output displays the actual content.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-inplace closable=\"closable\" [style]=\"{'min-height':'30px'}\">\r\n        <span pInplaceDisplay>\r\n            Click to Edit\r\n        </span>\r\n        <span pInplaceContent>\r\n            <input type=\"text\" value=\"PrimeNG\" pInputText>\r\n        </span>\r\n    </p-inplace>\r\n    \r\n    <h3>Image</h3>\r\n    <p-inplace>\r\n        <span pInplaceDisplay>\r\n            <span class=\"fa fa-picture-o\"></span><span style=\"margin-left:8px\">View Picture</span>\r\n        </span>\r\n        <span pInplaceContent>\r\n            <img src=\"assets/showcase/images/demo/galleria/galleria5.jpg\" alt=\"Nature\">\r\n        </span>\r\n    </p-inplace>\r\n    \r\n    <h3>Data</h3>\r\n    <p-inplace>\r\n        <span pInplaceDisplay>\r\n            <span class=\"fa fa-table\"></span><span style=\"margin-left:8px\">View Data</span>\r\n        </span>\r\n        <span pInplaceContent>\r\n            <p-dataTable [value]=\"cars\">\r\n                <p-column field=\"vin\" header=\"Vin\"></p-column>\r\n                <p-column field=\"year\" header=\"Year\"></p-column>\r\n                <p-column field=\"brand\" header=\"Brand\"></p-column>\r\n                <p-column field=\"color\" header=\"Color\"></p-column>\r\n            </p-dataTable>\r\n        </span>\r\n    </p-inplace>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;InplaceModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Inplace requires two child components having <i>pInplaceDisplay</i> and <i>pInplaceOutput</i> attributes respectively to define.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inplace&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        Click to Edit\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;input type=\"text\" value=\"PrimeNG\" pInputText&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>active</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether the content is displayed or not.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>closable</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Displays a button to switch back to display mode.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onActivate</td>\r\n                            <td>event.originalEvent: Click event</td>\r\n                            <td>Activates the content.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDeactivate</td>\r\n                            <td>event.originalEvent: Click event</td>\r\n                            <td>Deactivates the content.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-inplace</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inplace-display</td>\r\n                            <td>Display container</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inplace-content</td>\r\n                            <td>Content container</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inplace\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;p-inplace closable=\"closable\"&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        Click to Edit\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;input type=\"text\" value=\"PrimeNG\" pInputText&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n\r\n&lt;h3&gt;Image&lt;/h3&gt;\r\n&lt;p-inplace&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        &lt;span class=\"fa fa-picture-o\"&gt;&lt;/span&gt;&lt;span style=\"margin-left:8px\"&gt;View Picture&lt;/span&gt;\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;img src=\"assets/showcase/images/demo/galleria/galleria5.jpg\" alt=\"Nature\"&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n\r\n&lt;h3&gt;Data&lt;/h3&gt;\r\n&lt;p-inplace&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        &lt;span class=\"fa fa-table\"&gt;&lt;/span&gt;&lt;span style=\"margin-left:8px\"&gt;View Data&lt;/span&gt;\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;p-dataTable [value]=\"cars\"&gt;\r\n            &lt;p-column field=\"vin\" header=\"Vin\"&gt;&lt;/p-column&gt;\r\n            &lt;p-column field=\"year\" header=\"Year\"&gt;&lt;/p-column&gt;\r\n            &lt;p-column field=\"brand\" header=\"Brand\"&gt;&lt;/p-column&gt;\r\n            &lt;p-column field=\"color\" header=\"Color\"&gt;&lt;/p-column&gt;\r\n        &lt;/p-dataTable&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tabview/tabviewdemo.module.ts":
+/***/ "./src/app/showcase/components/inplace/inplacedemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tabviewdemo__ = __webpack_require__("./src/app/showcase/components/tabview/tabviewdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tabviewdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/tabview/tabviewdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabViewDemoModule", function() { return TabViewDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inplacedemo__ = __webpack_require__("./src/app/showcase/components/inplace/inplacedemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inplacedemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inplace/inplacedemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_inplace_inplace__ = __webpack_require__("./src/app/components/inplace/inplace.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_datatable_datatable__ = __webpack_require__("./src/app/components/datatable/datatable.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InplaceDemoModule", function() { return InplaceDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -689,59 +598,71 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var TabViewDemoModule = (function () {
-    function TabViewDemoModule() {
+
+
+var InplaceDemoModule = (function () {
+    function InplaceDemoModule() {
     }
-    return TabViewDemoModule;
+    return InplaceDemoModule;
 }());
-TabViewDemoModule = __decorate([
+InplaceDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__tabviewdemo_routing_module__["a" /* TabViewDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_growl_growl__["a" /* GrowlModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__inplacedemo_routing_module__["a" /* InplaceDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_inplace_inplace__["a" /* InplaceModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_datatable_datatable__["a" /* DataTableModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__tabviewdemo__["a" /* TabViewDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__inplacedemo__["a" /* InplaceDemo */]
         ]
     })
-], TabViewDemoModule);
+], InplaceDemoModule);
 
-//# sourceMappingURL=tabviewdemo.module.js.map
+//# sourceMappingURL=inplacedemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tabview/tabviewdemo.ts":
+/***/ "./src/app/showcase/components/inplace/inplacedemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabViewDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_carservice__ = __webpack_require__("./src/app/showcase/service/carservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InplaceDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var TabViewDemo = (function () {
-    function TabViewDemo() {
+
+var InplaceDemo = (function () {
+    function InplaceDemo(carService) {
+        this.carService = carService;
     }
-    TabViewDemo.prototype.onTabChange = function (event) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Tab Expanded', detail: 'Index: ' + event.index });
+    InplaceDemo.prototype.ngOnInit = function () {
+        var _this = this;
+        this.carService.getCarsSmall().then(function (cars) { return _this.cars = cars; });
     };
-    return TabViewDemo;
+    return InplaceDemo;
 }());
-TabViewDemo = __decorate([
+InplaceDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/tabview/tabviewdemo.html")
-    })
-], TabViewDemo);
+        template: __webpack_require__("./src/app/showcase/components/inplace/inplacedemo.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */]) === "function" && _a || Object])
+], InplaceDemo);
 
-//# sourceMappingURL=tabviewdemo.js.map
+var _a;
+//# sourceMappingURL=inplacedemo.js.map
 
 /***/ })
 

@@ -53,14 +53,14 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/menumodel/menumodeldemo-routing.module.ts":
+/***/ "./src/app/showcase/components/setup/setup-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__ = __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MenuModelDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_component__ = __webpack_require__("./src/app/showcase/components/setup/setup.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SetupRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -70,46 +70,74 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var MenuModelDemoRoutingModule = (function () {
-    function MenuModelDemoRoutingModule() {
+var SetupRoutingModule = (function () {
+    function SetupRoutingModule() {
     }
-    return MenuModelDemoRoutingModule;
+    return SetupRoutingModule;
 }());
-MenuModelDemoRoutingModule = __decorate([
+SetupRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__["a" /* MenuModelDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__setup_component__["a" /* SetupComponent */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], MenuModelDemoRoutingModule);
+], SetupRoutingModule);
 
-//# sourceMappingURL=menumodeldemo-routing.module.js.map
+//# sourceMappingURL=setup-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/menumodel/menumodeldemo.html":
+/***/ "./src/app/showcase/components/setup/setup.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">MenuModel API</span>\r\n        <span>PrimeNG menus components share a common api to specify the menuitems and submenus.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <h3 class=\"first\">MenuItem</h3>\r\n    <p>Core of the api is MenuItem class that defines various options such as the label, icon and children of an item in a menu. Example below\r\n    is a sample configuration with Menu component.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-menu [model]=\"items\"&gt;&lt;/p-menu&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MenuModule,MenuItem&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n            label: 'File',\r\n            items: [\r\n                &#123;label: 'New', icon: 'fa-plus'&#125;,\r\n                &#123;label: 'Open', icon: 'fa-download'&#125;\r\n            ]\r\n        &#125;,\r\n        &#123;\r\n            label: 'Edit',\r\n            items: [\r\n                &#123;label: 'Undo', icon: 'fa-refresh'&#125;,\r\n                &#123;label: 'Redo', icon: 'fa-repeat'&#125;\r\n            ]\r\n        &#125;];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n    <p>MenuItem provides the following properties. Note that not all of them may be utilized by the menu component.</p>\r\n    <div class=\"doc-tablewrapper\">\r\n        <table class=\"doc-table\">\r\n            <thead>\r\n                <tr>\r\n                    <th>Name</th>\r\n                    <th>Type</th>\r\n                    <th>Default</th>\r\n                    <th>Description</th>\r\n                </tr>\r\n            </thead>\r\n            <tbody>\r\n                <tr>\r\n                    <td>label</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Text of the item.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>icon</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Icon of the item.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>command</td>\r\n                    <td>function</td>\r\n                    <td>null</td>\r\n                    <td>Callback to execute when item is clicked.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>url</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>External link to navigate when item is clicked.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>routerLink</td>\r\n                    <td>array</td>\r\n                    <td>null</td>\r\n                    <td>RouterLink definition for internal navigation.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>routerLinkActiveOptions</td>\r\n                    <td>object</td>\r\n                    <td>null</td>\r\n                    <td>Configuration for active router link.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>items</td>\r\n                    <td>array</td>\r\n                    <td>null</td>\r\n                    <td>An array of children menuitems.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>expanded</td>\r\n                    <td>boolean</td>\r\n                    <td>false</td>\r\n                    <td>Visibility of submenu.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>disabled</td>\r\n                    <td>boolean</td>\r\n                    <td>false</td>\r\n                    <td>When set as true, disables the menuitem.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>visible</td>\r\n                    <td>boolean</td>\r\n                    <td>true</td>\r\n                    <td>Whether the dom element of menuitem is created or not.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>target</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Specifies where to open the linked document.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>separator</td>\r\n                    <td>boolean</td>\r\n                    <td>false</td>\r\n                    <td>Defines the item as a separator.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>style</td>\r\n                    <td>object</td>\r\n                    <td>null</td>\r\n                    <td>Inline style of the menuitem.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>styleClass</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Style class of the menuitem.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>badge</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Value of the badge.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>badgeStyleClass</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Style class of the badge.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>title</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Tooltip text of the item.</td>\r\n                </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n    \r\n    <h4>Command</h4>\r\n    <p>The function to invoke when an item is clicked is defined using the command property.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n            label: 'File',\r\n            items: [\r\n                &#123;label: 'New', icon: 'fa-plus', command: (event) => &#123;\r\n                    //event.originalEvent: Browser event\r\n                    //event.item: menuitem metadata\r\n                }}\r\n            ]\r\n        &#125;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n    <h4>Navigation</h4>\r\n    <p>Navigation is specified using url property for external links and with routerLink for internal ones. If a menuitem has an active route, <i>ui-state-active</i> style class is added as an indicator. Active route link can be\r\n    configured with routerLinkActiveOptions property of MenuItem API.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n            label: 'File',\r\n            items: [\r\n                &#123;label: 'New', icon: 'fa-plus', url: 'http://www.primefaces.org/primeng'&#125;,\r\n                &#123;label: 'Open', icon: 'fa-download', routerLink: ['/pagename']&#125;\r\n            ]\r\n        &#125;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Get Started</span>\r\n        <span>PrimeNG is a rich set of open source native Angular UI components.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <h3 style=\"margin-top:0px\">Download</h3>\r\n    <p>PrimeNG is available at npm, if you have an existing application run the following command to download it to your project.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\nnpm install primeng --save\r\n</code>\r\n</pre>\r\n\r\n    <h3>Load Configuration</h3>\r\n    <p>PrimeNG is distributed in commonjs format, a module manager of your choice is required and this guide provides samples for SystemJS, WebPack and Angular CLI.</p>\r\n\r\n    <h3>Import</h3>\r\n    <p>UI components are configured as modules, once PrimeNG is downloaded and configured, modules and apis can be imported from 'primeng/primeng' shorthand in your application code.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;AccordionModule&#125; from 'primeng/primeng';     //accordion and accordion tab\r\nimport &#123;MenuItem&#125; from 'primeng/primeng';            //api\r\n</code>\r\n</pre>\r\n\r\n    <p>Importing from primeng/primeng will load all other components as well, to only import a specific component pattern would result in a smaller bundle size.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\n//import &#123;ComponentModule&#125; from 'primeng/components/componentname/componentname';\r\n//import &#123;InterfaceName&#125; from 'primeng/common/api';\r\n\r\nimport &#123;AccordionModule&#125; from 'primeng/components/accordion/accordion';\r\nimport &#123;MenuItem&#125; from 'primeng/components/common/api';\r\n</code>\r\n</pre>\r\n\r\n    <h3>Dependencies</h3>\r\n    <p>Majority of PrimeNG components (95%) are native and there are some exceptions having 3rd party dependencies. In addition, components require font-awesome for icons.</p>\r\n\r\n    <p>The css dependencies are as follows, note that font-awesome should be loaded before PrimeNG css and theme can be changed with your choice.</p>\r\n<pre>\r\n<code class=\"language-html\" pCode ngNonBindable>\r\n&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"YOUR_PATH/font-awesome.min.css\" /&gt;\r\n&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/node_modules/primeng/resources/themes/omega/theme.css\" /&gt;\r\n&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/node_modules/primeng/resources/primeng.min.css\" /&gt;\r\n</code>\r\n</pre>\r\n\r\n    <p>Here is the list of components with 3rd party dependencies.</p>\r\n    \r\n    <div class=\"doc-tablewrapper\">\r\n        <table class=\"doc-table\">\r\n            <thead>\r\n                <tr>\r\n                    <th>Component</th>\r\n                    <th>Dependency</th>\r\n                </tr>\r\n            </thead>\r\n            <tbody>\r\n                <tr>\r\n                    <td>Schedule</td>\r\n                    <td>FullCalendar and Moment.js</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>Editor</td>\r\n                    <td>Quill Editor</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>GMap</td>\r\n                    <td>Google Maps</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>Charts</td>\r\n                    <td>Charts.js 2.1.x</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>Captcha</td>\r\n                    <td>Google Recaptcha</td>\r\n                </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n    \r\n    <h3>Animations with Angular 4+</h3>\r\n    <p>Various components utilize angular animations to improve the user experience, starting with Angular 4 animations have their own module so you need\r\n    to import <i>BrowserAnimationsModule</i> to your application. If you prefer not to use <i>NoopAnimationsModule</i> instead.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\nnpm install @angular/animations --save\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;BrowserModule&#125; from '@angular/platform-browser';\r\nimport &#123;BrowserAnimationsModule&#125; from '@angular/platform-browser/animations';\r\n\r\n@NgModule(&#123;\r\n    imports: [\r\n        BrowserModule,\r\n        BrowserAnimationsModule,\r\n        //...\r\n    ],\r\n    //...\r\n&#125;)\r\nexport class YourAppModule &#123; &#125;\r\n</code>\r\n</pre>\r\n        \r\n    <h3>Angular CLI Integration</h3>\r\n    <p>Angular CLI is the official CLI tool for Angular. We strongly suggest using Angular CLI when starting an Angular project.</p>\r\n\r\n    <h4>Dependencies</h4>\r\n    <p>Add PrimeNG and FontAwesome as a dependency</p>\r\n<pre>\r\n<code class=\"language-js\" pCode ngNonBindable>\r\n\"dependencies\": &#123;\r\n  //...\r\n  \"primeng\": \"^4.1.0\",\r\n  \"font-awesome\": \"^4.7.0\"\r\n&#125;,\r\n</code>\r\n</pre>\r\n    \r\n    <h4>Styles Configuration</h4>\r\n    <p>Configure required styles at the styles section, example below uses the Omega theme.</p>\r\n<pre>\r\n<code class=\"language-js\" pCode ngNonBindable>\r\n\"styles\": [\r\n  \"../node_modules/font-awesome/css/font-awesome.min.css\",\r\n  \"../node_modules/primeng/resources/primeng.min.css\",\r\n  \"../node_modules/primeng/resources/themes/omega/theme.css\",\r\n  //...\r\n],\r\n</code>\r\n</pre>\r\n\r\n    <p>That is all, you may now import PrimeNG components, for a working example visit the <a href=\"https://github.com/primefaces/primeng-quickstart-cli\">PrimeNG CLI QuickStart</a> sample at GitHub.</p>\r\n        \r\n    <h3>Angular Seed Integration</h3>\r\n    <p>Angular2 Seed is an alternative modular starter project, there is an <a href=\"https://github.com/mgechev/angular2-seed/wiki/Add-PrimeNG\">official entry</a> at the project wiki\r\n        describing how to use PrimeNG with seed.</p>\r\n        \r\n    <h3>QuickStart with System.js</h3>\r\n    <p><a href=\"https://angular.io/docs/ts/latest/quickstart.html\">The official quickstart example</a> of Angular uses System.JS and we\r\n    have extended it to add PrimeNG. Visit the <a href=\"https://github.com/primefaces/primeng-quickstart\">PrimeNG-Quickstart</a> at GitHub for an example.</p>\r\n    \r\n    <h3>QuickStart with Webpack</h3>\r\n    <p>There is also a webpack version of the <a href=\"https://angular.io/docs/ts/latest/guide/webpack.html\">The official quickstart example</a> of Angular and we\r\n    have extended it to add PrimeNG. Visit the <a href=\"https://github.com/primefaces/primeng-quickstart-webpack\">PrimeNG-Quickstart-Webpack</a> at GitHub for an example.</p>\r\n        \r\n    <h4>External Articles</h4>\r\n    <ul>\r\n        <li><a href=\"https://yakovfain.com/2016/10/06/primeng-ui-components-for-angular-2/\">PrimeNG - UI Components for Angular 2</a> - Yakov Fain's Blog</li>\r\n        <li><a href=\"https://yakovfain.com/2016/10/28/adding-primeng-ui-components-to-angular-cli-project/\">Adding PrimeNG UI components to Angular CLI projects</a> - Yakov Fain's Blog</li>\r\n        <li><a href=\"https://www.google.com.tr/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=davinci%20primeng\">PRIMENG - WEB COMPONENT FRAMEWORK BASED ON ANGULARJS 2</a> - DaVinci IT Blog</li>\r\n        <li><a href=\"http://blogs.bytecode.com.au/glen/2016/10/27/primeng-with-angular-cli.html\">PrimeNG with CLI</a> - Glen Smith</li>\r\n        <li><a href=\"http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/3304/Hello-World-Angular-2-Data-Sample-Using-JavaScriptServices-Net-Core-and-PrimeNg.aspx\">Hello World Angular 2+ Data Sample Using JavaScriptServices .Net Core and PrimeNg</a></li>\r\n        <li><a href=\"http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/3298/An-Angular-2-Tree-With-CRUD-Functionality.aspx\">An Angular 2 Tree With CRUD Functionality</a></li>\r\n    </ul>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/menumodel/menumodeldemo.module.ts":
+/***/ "./src/app/showcase/components/setup/setup.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SetupComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var SetupComponent = (function () {
+    function SetupComponent() {
+    }
+    return SetupComponent;
+}());
+SetupComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        template: __webpack_require__("./src/app/showcase/components/setup/setup.component.html")
+    })
+], SetupComponent);
+
+//# sourceMappingURL=setup.component.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/setup/setup.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__ = __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menumodeldemo_routing_module__ = __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_component__ = __webpack_require__("./src/app/showcase/components/setup/setup.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__setup_routing_module__ = __webpack_require__("./src/app/showcase/components/setup/setup-routing.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuModelDemoModule", function() { return MenuModelDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetupModule", function() { return SetupModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -121,53 +149,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var MenuModelDemoModule = (function () {
-    function MenuModelDemoModule() {
+var SetupModule = (function () {
+    function SetupModule() {
     }
-    return MenuModelDemoModule;
+    return SetupModule;
 }());
-MenuModelDemoModule = __decorate([
+SetupModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__menumodeldemo_routing_module__["a" /* MenuModelDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */],
+            __WEBPACK_IMPORTED_MODULE_3__setup_routing_module__["a" /* SetupRoutingModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__["a" /* MenuModelDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__setup_component__["a" /* SetupComponent */]
         ]
     })
-], MenuModelDemoModule);
+], SetupModule);
 
-//# sourceMappingURL=menumodeldemo.module.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/components/menumodel/menumodeldemo.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MenuModelDemo; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var MenuModelDemo = (function () {
-    function MenuModelDemo() {
-    }
-    return MenuModelDemo;
-}());
-MenuModelDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo.html")
-    })
-], MenuModelDemo);
-
-//# sourceMappingURL=menumodeldemo.js.map
+//# sourceMappingURL=setup.module.js.map
 
 /***/ })
 

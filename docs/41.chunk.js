@@ -1,16 +1,14 @@
 webpackJsonp([41],{
 
-/***/ "./src/app/components/accordion/accordion.ts":
+/***/ "./src/app/components/blockui/blockui.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
-/* unused harmony export Accordion */
-/* unused harmony export AccordionTab */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AccordionModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export BlockUI */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,195 +21,89 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var Accordion = (function () {
-    function Accordion(el) {
+var BlockUI = (function () {
+    function BlockUI(el, domHandler) {
         this.el = el;
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onOpen = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.tabs = [];
+        this.domHandler = domHandler;
     }
-    Accordion.prototype.addTab = function (tab) {
-        this.tabs.push(tab);
-    };
-    Accordion.prototype.getBlockableElement = function () {
-        return this.el.nativeElement.children[0];
-    };
-    Object.defineProperty(Accordion.prototype, "activeIndex", {
+    Object.defineProperty(BlockUI.prototype, "blocked", {
         get: function () {
-            return this._activeIndex;
+            return this._blocked;
         },
         set: function (val) {
-            this._activeIndex = val;
-            if (this.tabs && this.tabs.length && this._activeIndex != null) {
-                for (var i = 0; i < this.tabs.length; i++) {
-                    var selected = this.multiple ? this._activeIndex.includes(i) : (i === this._activeIndex);
-                    var changed = selected !== this.tabs[i].selected;
-                    if (changed) {
-                        this.tabs[i].animating = true;
-                    }
-                    this.tabs[i].selected = selected;
-                    this.tabs[i].selectedChange.emit(selected);
-                }
+            this._blocked = val;
+            if (this.mask.nativeElement) {
+                if (this._blocked)
+                    this.block();
+                else
+                    this.unblock();
             }
         },
         enumerable: true,
         configurable: true
     });
-    return Accordion;
+    BlockUI.prototype.ngAfterViewInit = function () {
+        if (this.target && !this.target.getBlockableElement) {
+            throw 'Target of BlockUI must implement BlockableUI interface';
+        }
+    };
+    BlockUI.prototype.block = function () {
+        if (this.target) {
+            this.target.getBlockableElement().appendChild(this.mask.nativeElement);
+            var style = this.target.style || {};
+            style.position = 'relative';
+            this.target.style = style;
+        }
+        else {
+            document.body.appendChild(this.mask.nativeElement);
+        }
+        this.mask.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex);
+    };
+    BlockUI.prototype.unblock = function () {
+        this.el.nativeElement.appendChild(this.mask.nativeElement);
+    };
+    BlockUI.prototype.ngOnDestroy = function () {
+        this.unblock();
+    };
+    return BlockUI;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Accordion.prototype, "multiple", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Accordion.prototype, "onClose", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Accordion.prototype, "onOpen", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], Accordion.prototype, "style", void 0);
+], BlockUI.prototype, "target", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('mask'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object)
+], BlockUI.prototype, "mask", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Accordion.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Accordion.prototype, "lazy", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], Accordion.prototype, "activeIndex", null);
-Accordion = __decorate([
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], BlockUI.prototype, "blocked", null);
+BlockUI = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-accordion',
-        template: "\n        <div [ngClass]=\"'ui-accordion ui-widget ui-helper-reset'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    ",
+        selector: 'p-blockUI',
+        template: "\n        <div #mask class=\"ui-blockui ui-widget-overlay\" [ngClass]=\"{'ui-blockui-document':!target}\" [ngStyle]=\"{display: blocked ? 'block' : 'none'}\">\n            <ng-content></ng-content>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object])
-], Accordion);
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _c || Object])
+], BlockUI);
 
-var AccordionTab = (function () {
-    function AccordionTab(accordion) {
-        this.accordion = accordion;
-        this.selectedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.accordion.addTab(this);
+var BlockUIModule = (function () {
+    function BlockUIModule() {
     }
-    AccordionTab.prototype.toggle = function (event) {
-        if (this.disabled || this.animating) {
-            return false;
-        }
-        this.animating = true;
-        var index = this.findTabIndex();
-        if (this.selected) {
-            this.selected = false;
-            this.accordion.onClose.emit({ originalEvent: event, index: index });
-        }
-        else {
-            if (!this.accordion.multiple) {
-                for (var i = 0; i < this.accordion.tabs.length; i++) {
-                    this.accordion.tabs[i].selected = false;
-                    this.accordion.tabs[i].selectedChange.emit(false);
-                }
-            }
-            this.selected = true;
-            this.accordion.onOpen.emit({ originalEvent: event, index: index });
-        }
-        this.selectedChange.emit(this.selected);
-        event.preventDefault();
-    };
-    AccordionTab.prototype.findTabIndex = function () {
-        var index = -1;
-        for (var i = 0; i < this.accordion.tabs.length; i++) {
-            if (this.accordion.tabs[i] == this) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    };
-    Object.defineProperty(AccordionTab.prototype, "lazy", {
-        get: function () {
-            return this.accordion.lazy;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AccordionTab.prototype, "hasHeaderFacet", {
-        get: function () {
-            return this.headerFacet && this.headerFacet.length > 0;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    AccordionTab.prototype.onToggleDone = function (event) {
-        this.animating = false;
-    };
-    AccordionTab.prototype.ngOnDestroy = function () {
-        this.accordion.tabs.splice(this.findTabIndex(), 1);
-    };
-    return AccordionTab;
+    return BlockUIModule;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], AccordionTab.prototype, "header", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], AccordionTab.prototype, "selected", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], AccordionTab.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
-], AccordionTab.prototype, "selectedChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */]),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
-], AccordionTab.prototype, "headerFacet", void 0);
-AccordionTab = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-accordionTab',
-        template: "\n        <div class=\"ui-accordion-header ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-active': selected,'ui-state-disabled':disabled}\"\n            (click)=\"toggle($event)\">\n            <span class=\"fa fa-fw\" [ngClass]=\"{'fa-caret-down': selected, 'fa-caret-right': !selected}\"></span>\n            <a href=\"#\" *ngIf=\"!hasHeaderFacet\" role=\"tab\" [attr.aria-expanded]=\"selected\" [attr.aria-selected]=\"selected\">{{header}}</a>\n            <a href=\"#\" *ngIf=\"hasHeaderFacet\" role=\"tab\" [attr.aria-expanded]=\"selected\" [attr.aria-selected]=\"selected\">\n                <ng-content select=\"p-header\"></ng-content>\n            </a>\n        </div>\n        <div class=\"ui-accordion-content-wrapper\" [@tabContent]=\"selected ? 'visible' : 'hidden'\" (@tabContent.done)=\"onToggleDone($event)\"\n            [ngClass]=\"{'ui-accordion-content-wrapper-overflown': !selected||animating}\" role=\"tabpanel\" [attr.aria-hidden]=\"!selected\">\n            <div class=\"ui-accordion-content ui-widget-content\" *ngIf=\"lazy ? selected : true\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
-        animations: [
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["a" /* trigger */])('tabContent', [
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    height: '0'
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    height: '*'
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('visible <=> hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
-            ])
-        ]
-    }),
-    __metadata("design:paramtypes", [Accordion])
-], AccordionTab);
-
-var AccordionModule = (function () {
-    function AccordionModule() {
-    }
-    return AccordionModule;
-}());
-AccordionModule = __decorate([
+BlockUIModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */]],
-        exports: [Accordion, AccordionTab],
-        declarations: [Accordion, AccordionTab]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [BlockUI],
+        declarations: [BlockUI]
     })
-], AccordionModule);
+], BlockUIModule);
 
-var _a, _b, _c, _d, _e;
-//# sourceMappingURL=accordion.js.map
+var _a, _b, _c;
+//# sourceMappingURL=blockui.js.map
 
 /***/ }),
 
@@ -268,16 +160,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/growl/growl.ts":
+/***/ "./src/app/components/panel/panel.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* unused harmony export Growl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrowlModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
+/* unused harmony export Panel */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PanelModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -287,197 +179,129 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 
 
 
 
-var Growl = (function () {
-    function Growl(el, domHandler, differs, messageService) {
-        var _this = this;
+var Panel = (function () {
+    function Panel(el) {
         this.el = el;
-        this.domHandler = domHandler;
-        this.differs = differs;
-        this.messageService = messageService;
-        this.life = 3000;
-        this.immutable = true;
-        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.zIndex = __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.differ = differs.find([]).create(null);
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
-            });
-        }
+        this.collapsed = false;
+        this.expandIcon = 'fa-plus';
+        this.collapseIcon = 'fa-minus';
+        this.collapsedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onBeforeToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onAfterToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
     }
-    Growl.prototype.ngAfterViewInit = function () {
-        this.container = this.containerViewChild.nativeElement;
-        if (!this.sticky) {
-            this.initTimeout();
+    Panel.prototype.toggle = function (event) {
+        if (this.animating) {
+            return false;
         }
-    };
-    Object.defineProperty(Growl.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        set: function (val) {
-            this._value = val;
-            if (this.container && this.immutable) {
-                this.handleValueChange();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Growl.prototype.ngDoCheck = function () {
-        if (!this.immutable && this.container) {
-            var changes = this.differ.diff(this.value);
-            if (changes) {
-                this.handleValueChange();
-            }
+        this.animating = true;
+        this.onBeforeToggle.emit({ originalEvent: event, collapsed: this.collapsed });
+        if (this.toggleable) {
+            if (this.collapsed)
+                this.expand(event);
+            else
+                this.collapse(event);
         }
+        event.preventDefault();
     };
-    Growl.prototype.handleValueChange = function () {
-        if (this.preventRerender) {
-            this.preventRerender = false;
-            return;
-        }
-        this.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.domHandler.fadeIn(this.container, 250);
-        if (!this.sticky) {
-            this.initTimeout();
-        }
+    Panel.prototype.expand = function (event) {
+        this.collapsed = false;
+        this.collapsedChange.emit(this.collapsed);
     };
-    Growl.prototype.initTimeout = function () {
-        var _this = this;
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(function () {
-            _this.removeAll();
-        }, this.life);
+    Panel.prototype.collapse = function (event) {
+        this.collapsed = true;
+        this.collapsedChange.emit(this.collapsed);
     };
-    Growl.prototype.remove = function (index, msgel) {
-        var _this = this;
-        this.closeIconClick = true;
-        this.domHandler.fadeOut(msgel, 250);
-        setTimeout(function () {
-            _this.preventRerender = true;
-            _this.onClose.emit({ message: _this.value[index] });
-            if (_this.immutable) {
-                _this._value = _this.value.filter(function (val, i) { return i != index; });
-                _this.valueChange.emit(_this._value);
-            }
-            else {
-                _this._value.splice(index, 1);
-            }
-        }, 250);
+    Panel.prototype.getBlockableElement = function () {
+        return this.el.nativeElement.children[0];
     };
-    Growl.prototype.removeAll = function () {
-        var _this = this;
-        if (this.value && this.value.length) {
-            this.domHandler.fadeOut(this.container, 250);
-            setTimeout(function () {
-                _this.value.forEach(function (msg, index) { return _this.onClose.emit({ message: _this.value[index] }); });
-                if (_this.immutable) {
-                    _this.value = [];
-                    _this.valueChange.emit(_this.value);
-                }
-                else {
-                    _this.value.splice(0, _this.value.length);
-                }
-            }, 250);
-        }
+    Panel.prototype.onToggleDone = function (event) {
+        this.animating = false;
+        this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
     };
-    Growl.prototype.onMessageClick = function (i) {
-        if (this.closeIconClick)
-            this.closeIconClick = false;
-        else
-            this.onClick.emit({ message: this.value[i] });
-    };
-    Growl.prototype.ngOnDestroy = function () {
-        if (!this.sticky) {
-            clearTimeout(this.timeout);
-        }
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return Growl;
+    return Panel;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Growl.prototype, "sticky", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Growl.prototype, "life", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Growl.prototype, "style", void 0);
+], Panel.prototype, "toggleable", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Growl.prototype, "styleClass", void 0);
+], Panel.prototype, "header", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Growl.prototype, "immutable", void 0);
+], Panel.prototype, "collapsed", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Panel.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "expandIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "collapseIcon", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Growl.prototype, "onClick", void 0);
+], Panel.prototype, "collapsedChange", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Growl.prototype, "onClose", void 0);
+], Panel.prototype, "onBeforeToggle", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], Growl.prototype, "valueChange", void 0);
+], Panel.prototype, "onAfterToggle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], Growl.prototype, "containerViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Growl.prototype, "value", null);
-Growl = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["c" /* Footer */]),
+    __metadata("design:type", Object)
+], Panel.prototype, "footerFacet", void 0);
+Panel = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-growl',
-        template: "\n        <div #container [ngClass]=\"'ui-growl ui-widget'\" [style.zIndex]=\"zIndex\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div #msgel *ngFor=\"let msg of value;let i = index\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn',\n                    'ui-growl-message-error':msg.severity == 'error','ui-growl-message-success':msg.severity == 'success'}\" (click)=\"onMessageClick(i)\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(i,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-exclamation-circle':msg.severity == 'warn',\n                                'fa-close':msg.severity == 'error','fa-check':msg.severity == 'success'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p [innerHTML]=\"msg.detail\"></p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-panel',
+        template: "\n        <div [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"toggle($event)\">\n                    <span [class]=\"collapsed ? 'fa fa-fw ' + expandIcon : 'fa fa-fw ' + collapseIcon\"></span>\n                </a>\n            </div>\n            <div class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? 'hidden' : 'visible'\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
+        animations: [
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["a" /* trigger */])('panelContent', [
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["c" /* style */])({
+                    height: '0'
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["c" /* style */])({
+                    height: '*'
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["d" /* transition */])('visible <=> hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["e" /* animate */])('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+            ])
+        ]
     }),
-    __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Optional */])()),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */]) === "function" && _h || Object])
-], Growl);
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object])
+], Panel);
 
-var GrowlModule = (function () {
-    function GrowlModule() {
+var PanelModule = (function () {
+    function PanelModule() {
     }
-    return GrowlModule;
+    return PanelModule;
 }());
-GrowlModule = __decorate([
+PanelModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Growl],
-        declarations: [Growl]
+        exports: [Panel, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [Panel]
     })
-], GrowlModule);
+], PanelModule);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
-//# sourceMappingURL=growl.js.map
+var _a, _b, _c, _d;
+//# sourceMappingURL=panel.js.map
 
 /***/ }),
 
@@ -832,14 +656,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/accordion/accordiondemo-routing.module.ts":
+/***/ "./src/app/showcase/components/blockui/blockuidemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__accordiondemo__ = __webpack_require__("./src/app/showcase/components/accordion/accordiondemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AccordionDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__blockuidemo__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -849,50 +673,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AccordionDemoRoutingModule = (function () {
-    function AccordionDemoRoutingModule() {
+var BlockUIDemoRoutingModule = (function () {
+    function BlockUIDemoRoutingModule() {
     }
-    return AccordionDemoRoutingModule;
+    return BlockUIDemoRoutingModule;
 }());
-AccordionDemoRoutingModule = __decorate([
+BlockUIDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__accordiondemo__["a" /* AccordionDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__blockuidemo__["a" /* BlockUIDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], AccordionDemoRoutingModule);
+], BlockUIDemoRoutingModule);
 
-//# sourceMappingURL=accordiondemo-routing.module.js.map
+//# sourceMappingURL=blockuidemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/accordion/accordiondemo.html":
+/***/ "./src/app/showcase/components/blockui/blockuidemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Accordion</span>\r\n        <span>Accordion groups a collection of contents in tabs.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n    \r\n    <h3 class=\"first\">Default</h3>\r\n    <p-accordion>\r\n        <p-accordionTab header=\"Godfather I\" [selected]=\"true\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather II\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather III\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-accordionTab>\r\n    </p-accordion>\r\n\r\n    <h3>Multiple</h3>\r\n    <p-accordion [multiple]=\"true\">\r\n        <p-accordionTab header=\"Godfather I\">\r\n            The story begins  as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather II\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n       </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather III\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-accordionTab>\r\n    </p-accordion>\r\n    \r\n    <h3>Tab Change Event</h3>\r\n    <p-accordion (onClose)=\"onTabClose($event)\" (onOpen)=\"onTabOpen($event)\">\r\n        <p-accordionTab header=\"Godfather I\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather II\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather III\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather IV\" [disabled]=\"true\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-accordionTab>\r\n    </p-accordion>\r\n    \r\n    <h3>Programmatic Change</h3>\r\n    <div style=\"margin-bottom: 1em\">\r\n        <button type=\"button\" pButton icon=\"fa fa-chevron-up\" (click)=\"openPrev()\"></button>\r\n        <button type=\"button\" pButton icon=\"fa fa-chevron-down\" (click)=\"openNext()\"></button>\r\n    </div>\r\n        \r\n    <p-accordion [activeIndex]=\"index\">\r\n        <p-accordionTab header=\"Godfather I\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather II\">\r\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather III\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-accordionTab>\r\n        <p-accordionTab header=\"Godfather IV\">\r\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n        </p-accordionTab>\r\n    </p-accordion>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header =\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;AccordionModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Accordion element consists of one or more p-accordionTab elements. Title of the tab is defined using header attribute.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-accordion&gt;\r\n    &lt;p-accordionTab header=\"Header 1\"&gt;\r\n       Content 1\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Selected</h3>\r\n            <p>Visibility of the content is specified with the selected property that supports one or two-way binding.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-accordion&gt;\r\n    &lt;p-accordionTab header=\"Header 1\" [selected]=\"true\"&gt;\r\n       Content 1\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n</code>\r\n</pre>\r\n\r\n        <h3>Multiple</h3>\r\n        <p>By default only one tab at a time can be active, enabling multiple property changes this behavior to allow multiple\r\n            tabs be active at the same time.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-accordion [multiple]=\"true\"&gt;\r\n    &lt;p-accordionTab header=\"Header 1\"&gt;\r\n        Content 1\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n</code>\r\n</pre>\r\n\r\n        <h3>Disabled</h3>\r\n        <p>A tab can be disabled by setting the disabled property to true.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-accordion&gt;\r\n    &lt;p-accordionTab header=\"Header 1\" [disabled]=\"true\"&gt;\r\n       Content 1\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Content at Headers</h3>\r\n            <p>Custom content can be placed at an accordion header with header element.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SharedModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-accordionTab&gt;\r\n    &lt;p-header&gt;\r\n        Header Content\r\n    &lt;/p-header&gt;\r\n    Body Content\r\n&lt;/p-accordionTab&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Programmatic Control</h3>\r\n            <p>Tabs can be controlled programmatically using activeIndex property, in single mode it should be a number and in multiple mode an array of numbers\r\n            that define the indexes of active tabs.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;button type=\"button\" pButton icon=\"fa fa-chevron-up\" (click)=\"openPrev()\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton icon=\"fa fa-chevron-down\" (click)=\"openNext()\"&gt;&lt;/button&gt;\r\n        \r\n&lt;p-accordion [activeIndex]=\"index\"&gt;\r\n    &lt;p-accordionTab header=\"Header 1\"&gt;\r\n       Content 1\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 2\"&gt;\r\n        Content 2\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Header 3\"&gt;\r\n        Content 3    \r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class AccordionDemo &#123;\r\n    \r\n    index: number = 0;\r\n\r\n    openNext() &#123;\r\n        this.index = (this.index === 2) ? 0 : this.index + 1;\r\n    &#125;\r\n    \r\n    openPrev() &#123;\r\n        this.index = (this.index === 0) ? 2 : this.index - 1;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties for Accordion</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>multiple</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When enabled, multiple tabs can be activated at the same time.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>false</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>lazy</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines whether the elements of an inactive panel are created on load or on demand when the panel gets selected.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>activeIndex</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Index of the active tab or an array of indexes to change selected tab programmatically.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Properties for AccordionTab</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>header</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Title of the tab.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>selected</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines if the tab is active.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines whether the tab can be selected.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onClose</td>\r\n                            <td>\r\n                                event.originalEvent: Click object<br>\r\n                                event.index: Index of the tab\r\n                            </td>\r\n                            <td>Callback to invoke when an active tab is collapsed by clicking on the header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onOpen</td>\r\n                            <td>\r\n                                event.originalEvent: Click object<br>\r\n                                event.index: Index of the tab\r\n                            </td>\r\n                            <td>Callback to invoke when a tab gets expanded.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-accordion (onOpen)=\"onTabOpen($event)\"&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nonTabOpen(e) &#123;\r\n    var index = e.index;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-accordion</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-accordion-header</td>\r\n                            <td>Header of a tab.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-accordion-content</td>\r\n                            <td>Content of a tab.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/accordion\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;h3 class=\"first\"&gt;Default&lt;/h3&gt;\r\n&lt;p-accordion&gt;\r\n    &lt;p-accordionTab header=\"Godfather I\" [selected]=\"true\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather II\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather III\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n\r\n&lt;h3&gt;Multiple&lt;/h3&gt;\r\n&lt;p-accordion [multiple]=\"true\"&gt;\r\n    &lt;p-accordionTab header=\"Godfather I\"&gt;\r\n        The story begins  as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather II\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n   &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather III\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n\r\n&lt;h3&gt;Tab Change Event&lt;/h3&gt;\r\n&lt;p-accordion (onClose)=\"onTabClose($event)\" (onOpen)=\"onTabOpen($event)\"&gt;\r\n    &lt;p-accordionTab header=\"Godfather I\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather II\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather III\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather IV\" [disabled]=\"true\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n\r\n&lt;h3&gt;Programmatic Change&lt;/h3&gt;\r\n&lt;div style=\"margin-bottom: 1em\"&gt;\r\n    &lt;button type=\"button\" pButton icon=\"fa fa-chevron-up\" (click)=\"openPrev()\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton icon=\"fa fa-chevron-down\" (click)=\"openNext()\"&gt;&lt;/button&gt;\r\n&lt;/div&gt;\r\n    \r\n&lt;p-accordion [activeIndex]=\"index\"&gt;\r\n    &lt;p-accordionTab header=\"Godfather I\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather II\"&gt;\r\n        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather III\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-accordionTab&gt;\r\n    &lt;p-accordionTab header=\"Godfather IV\"&gt;\r\n        After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\r\n    &lt;/p-accordionTab&gt;\r\n&lt;/p-accordion&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;Message&#125; from '/components/common/api';\r\n\r\n@Component(&#123;\r\n    templateUrl: './accordiondemo.html'\r\n&#125;)\r\nexport class AccordionDemo &#123;\r\n\r\n    msgs: Message[];\r\n    \r\n    index: number = 0;\r\n\r\n    onTabClose(event) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Tab Closed', detail: 'Index: ' + event.index&#125;);\r\n    &#125;\r\n    \r\n    onTabOpen(event) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Tab Expanded', detail: 'Index: ' + event.index&#125;);\r\n    &#125;\r\n    \r\n    openNext() &#123;\r\n        this.index = (this.index === 3) ? 0 : this.index + 1;\r\n    &#125;\r\n    \r\n    openPrev() &#123;\r\n        this.index = (this.index === 0) ? 3 : this.index - 1;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">BlockUI</span>\r\n        <span>BlockUI can either block other components or the whole page.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Document</h3>\r\n    <p-blockUI [blocked]=\"blockedDocument\"></p-blockUI>\r\n    \r\n    <button type=\"button\" pButton label=\"Block\" (click)=\"blockDocument()\"></button>\r\n    \r\n    <h3>Panel</h3>\r\n    <button type=\"button\" pButton label=\"Block\" (click)=\"blockedPanel=true\"></button>\r\n    <button type=\"button\" pButton label=\"Unblock\" (click)=\"blockedPanel=false\"></button>\r\n    \r\n    <p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\">\r\n        <i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"></i>\r\n    </p-blockUI>\r\n    <p-panel #pnl header=\"Godfather I\" [style]=\"{'margin-top':'20px'}\">\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    </p-panel>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;BlockUIModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>BlockUI is controlled using the blocked property and component to block is defined as target. If target is not provided, document\r\n            itself is selected as the block target.</p>\r\n            \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BlockUIDemo &#123;\r\n\r\n    blocked: boolean;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [blocked]=\"blocked\"&gt;&lt;/p-blockUI&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>To block a certain component, define a local ng-template variable and bind it to the target option. The target component must implement the \r\n            BlockableUI interface, otherwise an exception is thrown.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [blocked]=\"blockedDocument\" [target]=\"pnl\"&gt;&lt;/p-blockUI&gt;\r\n\r\n&lt;p-panel #pnl header=\"Panel Header\"&gt;\r\n    Content of Panel\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Content</h3>\r\n            <p>Blocker mask is customized by simply adding the content inside the component<p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\"&gt;\r\n    &lt;i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"&gt;&lt;/i&gt;\r\n&lt;/p-blockUI&gt;\r\n\r\n&lt;p-panel #pnl header=\"Panel Header\"&gt;\r\n    Content of Panel\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>blocked</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Controls the blocked state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>target</td>\r\n                            <td>any</td>\r\n                            <td>document</td>\r\n                            <td>Name of the local ng-template variable referring to another component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-blockui</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/blockui\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BlockUIDemo &#123;\r\n\r\n    blockedPanel: boolean = false;\r\n    \r\n    blockedDocument: boolean = false;\r\n        \r\n    blockDocument() &#123;\r\n        this.blockedDocument = true;\r\n        setTimeout(() => &#123;\r\n            this.blockedDocument = false;\r\n        &#125;, 3000);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Document&lt;/h3&gt;\r\n&lt;p-blockUI [blocked]=\"blockedDocument\"&gt;&lt;/p-blockUI&gt;\r\n\r\n&lt;button type=\"button\" pButton label=\"Block\" (click)=\"blockDocument()\"&gt;&lt;/button&gt;\r\n\r\n&lt;h3&gt;Panel&lt;/h3&gt;\r\n&lt;button type=\"button\" pButton label=\"Block\" (click)=\"blockedPanel=true\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton label=\"Unblock\" (click)=\"blockedPanel=false\"&gt;&lt;/button&gt;\r\n\r\n&lt;p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\"&gt;\r\n    &lt;i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"&gt;&lt;/i&gt;\r\n&lt;/p-blockUI&gt;\r\n&lt;p-panel #pnl header=\"Godfather I\" [style]=\"&#123;'margin-top':'20px'&#125;\"&gt;\r\n    The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n    His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n    Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n    kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/accordion/accordiondemo.module.ts":
+/***/ "./src/app/showcase/components/blockui/blockuidemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__accordiondemo__ = __webpack_require__("./src/app/showcase/components/accordion/accordiondemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__accordiondemo_routing_module__ = __webpack_require__("./src/app/showcase/components/accordion/accordiondemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_accordion_accordion__ = __webpack_require__("./src/app/components/accordion/accordion.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__blockuidemo__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__blockuidemo_routing_module__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_blockui_blockui__ = __webpack_require__("./src/app/components/blockui/blockui.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__ = __webpack_require__("./src/app/components/panel/panel.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AccordionDemoModule", function() { return AccordionDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlockUIDemoModule", function() { return BlockUIDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -908,38 +732,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AccordionDemoModule = (function () {
-    function AccordionDemoModule() {
+var BlockUIDemoModule = (function () {
+    function BlockUIDemoModule() {
     }
-    return AccordionDemoModule;
+    return BlockUIDemoModule;
 }());
-AccordionDemoModule = __decorate([
+BlockUIDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__accordiondemo_routing_module__["a" /* AccordionDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_accordion_accordion__["a" /* AccordionModule */],
+            __WEBPACK_IMPORTED_MODULE_3__blockuidemo_routing_module__["a" /* BlockUIDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_blockui_blockui__["a" /* BlockUIModule */],
             __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_growl_growl__["a" /* GrowlModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__["a" /* PanelModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__accordiondemo__["a" /* AccordionDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__blockuidemo__["a" /* BlockUIDemo */]
         ]
     })
-], AccordionDemoModule);
+], BlockUIDemoModule);
 
-//# sourceMappingURL=accordiondemo.module.js.map
+//# sourceMappingURL=blockuidemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/accordion/accordiondemo.ts":
+/***/ "./src/app/showcase/components/blockui/blockuidemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AccordionDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -947,33 +771,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var AccordionDemo = (function () {
-    function AccordionDemo() {
-        this.index = 0;
+var BlockUIDemo = (function () {
+    function BlockUIDemo() {
+        this.blockedPanel = false;
+        this.blockedDocument = false;
     }
-    AccordionDemo.prototype.onTabClose = function (event) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Tab Closed', detail: 'Index: ' + event.index });
+    BlockUIDemo.prototype.blockDocument = function () {
+        var _this = this;
+        this.blockedDocument = true;
+        setTimeout(function () {
+            _this.blockedDocument = false;
+        }, 3000);
     };
-    AccordionDemo.prototype.onTabOpen = function (event) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Tab Expanded', detail: 'Index: ' + event.index });
-    };
-    AccordionDemo.prototype.openNext = function () {
-        this.index = (this.index === 3) ? 0 : this.index + 1;
-    };
-    AccordionDemo.prototype.openPrev = function () {
-        this.index = (this.index === 0) ? 3 : this.index - 1;
-    };
-    return AccordionDemo;
+    return BlockUIDemo;
 }());
-AccordionDemo = __decorate([
+BlockUIDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/accordion/accordiondemo.html")
+        template: __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.html")
     })
-], AccordionDemo);
+], BlockUIDemo);
 
-//# sourceMappingURL=accordiondemo.js.map
+//# sourceMappingURL=blockuidemo.js.map
 
 /***/ })
 

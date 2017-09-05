@@ -53,15 +53,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/password/password.ts":
+/***/ "./src/app/components/radiobutton/radiobutton.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* unused harmony export Password */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PasswordModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export RADIO_VALUE_ACCESSOR */
+/* unused harmony export RadioButton */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioButtonModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -74,187 +75,123 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var Password = (function () {
-    function Password(el, domHandler) {
-        this.el = el;
-        this.domHandler = domHandler;
-        this.promptLabel = 'Please enter a password';
-        this.weakLabel = 'Weak';
-        this.mediumLabel = 'Medium';
-        this.strongLabel = 'Strong';
-        this.feedback = true;
+var RADIO_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return RadioButton; }),
+    multi: true
+};
+var RadioButton = (function () {
+    function RadioButton(cd) {
+        this.cd = cd;
+        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
     }
-    Password.prototype.ngAfterViewInit = function () {
-        this.panel = document.createElement('div');
-        this.panel.className = 'ui-password-panel ui-widget ui-state-highlight ui-corner-all ui-helper-hidden ui-password-panel-overlay';
-        this.meter = document.createElement('div');
-        this.meter.className = 'ui-password-meter';
-        this.info = document.createElement('div');
-        this.info.className = 'ui-password-info';
-        this.info.textContent = this.promptLabel;
-        if (this.feedback) {
-            this.panel.appendChild(this.meter);
-            this.panel.appendChild(this.info);
-            document.body.appendChild(this.panel);
+    RadioButton.prototype.handleClick = function () {
+        if (!this.disabled) {
+            this.onClick.emit(null);
+            this.select();
         }
     };
-    Password.prototype.ngDoCheck = function () {
-        this.updateFilledState();
-    };
-    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    Password.prototype.onInput = function (e) {
-        this.updateFilledState();
-    };
-    Password.prototype.updateFilledState = function () {
-        this.filled = this.el.nativeElement.value && this.el.nativeElement.value.length;
-    };
-    Password.prototype.onFocus = function (e) {
-        this.panel.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex);
-        this.domHandler.removeClass(this.panel, 'ui-helper-hidden');
-        this.domHandler.absolutePosition(this.panel, this.el.nativeElement);
-        this.domHandler.fadeIn(this.panel, 250);
-    };
-    Password.prototype.onBlur = function (e) {
-        this.domHandler.addClass(this.panel, 'ui-helper-hidden');
-    };
-    Password.prototype.onKeyup = function (e) {
-        var value = e.target.value, label = null, meterPos = null;
-        if (value.length === 0) {
-            label = this.promptLabel;
-            meterPos = '0px 0px';
+    RadioButton.prototype.select = function () {
+        if (!this.disabled) {
+            this.inputViewChild.nativeElement.checked = true;
+            this.checked = true;
+            this.onModelChange(this.value);
         }
-        else {
-            var score = this.testStrength(value);
-            if (score < 30) {
-                label = this.weakLabel;
-                meterPos = '0px -10px';
-            }
-            else if (score >= 30 && score < 80) {
-                label = this.mediumLabel;
-                meterPos = '0px -20px';
-            }
-            else if (score >= 80) {
-                label = this.strongLabel;
-                meterPos = '0px -30px';
-            }
+    };
+    RadioButton.prototype.writeValue = function (value) {
+        this.checked = (value == this.value);
+        if (this.inputViewChild.nativeElement) {
+            this.inputViewChild.nativeElement.checked = this.checked;
         }
-        this.meter.style.backgroundPosition = meterPos;
-        this.info.textContent = label;
+        this.cd.markForCheck();
     };
-    Password.prototype.testStrength = function (str) {
-        var grade = 0;
-        var val;
-        val = str.match('[0-9]');
-        grade += this.normalize(val ? val.length : 1 / 4, 1) * 25;
-        val = str.match('[a-zA-Z]');
-        grade += this.normalize(val ? val.length : 1 / 2, 3) * 10;
-        val = str.match('[!@#$%^&*?_~.,;=]');
-        grade += this.normalize(val ? val.length : 1 / 6, 1) * 35;
-        val = str.match('[A-Z]');
-        grade += this.normalize(val ? val.length : 1 / 6, 1) * 30;
-        grade *= str.length / 8;
-        return grade > 100 ? 100 : grade;
+    RadioButton.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
     };
-    Password.prototype.normalize = function (x, y) {
-        var diff = x - y;
-        if (diff <= 0)
-            return x / y;
-        else
-            return 1 + 0.5 * (x / (x + y / 4));
+    RadioButton.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
     };
-    Object.defineProperty(Password.prototype, "disabled", {
-        get: function () {
-            return this.el.nativeElement.disabled;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Password.prototype.ngOnDestroy = function () {
-        if (!this.feedback)
-            return;
-        this.panel.removeChild(this.meter);
-        this.panel.removeChild(this.info);
-        document.body.removeChild(this.panel);
-        this.panel = null;
-        this.meter = null;
-        this.info = null;
+    RadioButton.prototype.setDisabledState = function (val) {
+        this.disabled = val;
     };
-    return Password;
+    RadioButton.prototype.onFocus = function (event) {
+        this.focused = true;
+    };
+    RadioButton.prototype.onBlur = function (event) {
+        this.focused = false;
+        this.onModelTouched();
+    };
+    RadioButton.prototype.onChange = function (event) {
+        this.select();
+    };
+    return RadioButton;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Password.prototype, "promptLabel", void 0);
+    __metadata("design:type", Object)
+], RadioButton.prototype, "value", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Password.prototype, "weakLabel", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Password.prototype, "mediumLabel", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Password.prototype, "strongLabel", void 0);
+], RadioButton.prototype, "name", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Password.prototype, "feedback", void 0);
+], RadioButton.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('input', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Password.prototype, "onInput", null);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], RadioButton.prototype, "label", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('focus', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Password.prototype, "onFocus", null);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], RadioButton.prototype, "tabindex", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('blur', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Password.prototype, "onBlur", null);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], RadioButton.prototype, "inputId", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('keyup', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Password.prototype, "onKeyup", null);
-Password = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
-        selector: '[pPassword]',
-        host: {
-            '[class.ui-inputtext]': 'true',
-            '[class.ui-corner-all]': 'true',
-            '[class.ui-state-default]': 'true',
-            '[class.ui-widget]': 'true',
-            '[class.ui-state-filled]': 'filled'
-        },
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], RadioButton.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], RadioButton.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], RadioButton.prototype, "onClick", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('rb'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object)
+], RadioButton.prototype, "inputViewChild", void 0);
+RadioButton = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-radioButton',
+        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div (click)=\"handleClick()\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-radiobutton-label\" (click)=\"select()\" \n            [ngClass]=\"{'ui-label-active':rb.checked,'ui-label-disabled':disabled,'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
+        providers: [RADIO_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object])
-], Password);
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _c || Object])
+], RadioButton);
 
-var PasswordModule = (function () {
-    function PasswordModule() {
+var RadioButtonModule = (function () {
+    function RadioButtonModule() {
     }
-    return PasswordModule;
+    return RadioButtonModule;
 }());
-PasswordModule = __decorate([
+RadioButtonModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Password],
-        declarations: [Password]
+        exports: [RadioButton],
+        declarations: [RadioButton]
     })
-], PasswordModule);
+], RadioButtonModule);
 
-var _a, _b;
-//# sourceMappingURL=password.js.map
+var _a, _b, _c;
+//# sourceMappingURL=radiobutton.js.map
 
 /***/ }),
 
@@ -609,14 +546,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/password/passworddemo-routing.module.ts":
+/***/ "./src/app/showcase/components/radiobutton/radiobuttondemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__passworddemo__ = __webpack_require__("./src/app/showcase/components/password/passworddemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PasswordDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__radiobuttondemo__ = __webpack_require__("./src/app/showcase/components/radiobutton/radiobuttondemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioButtonDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -626,48 +563,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var PasswordDemoRoutingModule = (function () {
-    function PasswordDemoRoutingModule() {
+var RadioButtonDemoRoutingModule = (function () {
+    function RadioButtonDemoRoutingModule() {
     }
-    return PasswordDemoRoutingModule;
+    return RadioButtonDemoRoutingModule;
 }());
-PasswordDemoRoutingModule = __decorate([
+RadioButtonDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__passworddemo__["a" /* PasswordDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__radiobuttondemo__["a" /* RadioButtonDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], PasswordDemoRoutingModule);
+], RadioButtonDemoRoutingModule);
 
-//# sourceMappingURL=passworddemo-routing.module.js.map
+//# sourceMappingURL=radiobuttondemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/password/passworddemo.html":
+/***/ "./src/app/showcase/components/radiobutton/radiobuttondemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Password</span>\r\n        <span>Password displays strength indicator for password fields.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Password</h3>\r\n    <input pPassword type=\"password\"/>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;PasswordModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Password is applied to an input field with pPassword directive.</p>\r\n                    \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"password\" pPassword /&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Binding</h3>\r\n            <p>A model can be bound using standard ngModel directive.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"password\" pPassword [(ngModel)]=\"property\"/&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>promptLabel</td>\r\n                            <td>string</td>\r\n                            <td>Please enter a password</td>\r\n                            <td>Text to prompt password entry.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>weakLabel</td>\r\n                            <td>string</td>\r\n                            <td>Weak</td>\r\n                            <td>Text for a weak password.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>mediumLabel</td>\r\n                            <td>string</td>\r\n                            <td>Medium</td>\r\n                            <td>Text for a medium password.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>strongLabel</td>\r\n                            <td>string</td>\r\n                            <td>Strong</td>\r\n                            <td>Text for a strong password.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>feedback</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether to show the strength indicator or not.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-password-panel</td>\r\n                            <td>Container of password panel</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-password-meter</td>\r\n                            <td>Meter element of password strength</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-password-info</td>\r\n                            <td>Text to display strength</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/password\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Password&lt;/h3&gt;\r\n&lt;input pPassword type=\"password\"/&gt;\r\n</code>\r\n</pre>\r\n\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">RadioButton</span>\r\n        <span>RadioButton is an extension to standard radio button element with skinning capabilities.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\">\r\n        <div class=\"ui-g-12\"><p-radioButton name=\"group1\" value=\"Option 1\" label=\"Option 1\" [(ngModel)]=\"val1\" inputId=\"opt1\"></p-radioButton></div>\r\n        <div class=\"ui-g-12\"><p-radioButton name=\"group1\" value=\"Option 2\" label=\"Option 2\" [(ngModel)]=\"val1\" inputId=\"opt2\"></p-radioButton></div>\r\n        <div class=\"ui-g-12\"><p-radioButton name=\"group1\" value=\"Option 3\" label=\"Option 3\" [(ngModel)]=\"val1\" inputId=\"opt3\"></p-radioButton></div>\r\n    </div>\r\n    Selected Value = {{val1||'none'}}\r\n\r\n    <h3>Preselection</h3>\r\n    <div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\">\r\n        <div class=\"ui-g-12\"><p-radioButton name=\"group2\" value=\"Option 1\" label=\"Option 1\" [(ngModel)]=\"val2\" inputId=\"preopt1\"></p-radioButton></div>\r\n        <div class=\"ui-g-12\"><p-radioButton name=\"group2\" value=\"Option 2\" label=\"Option 2\" [(ngModel)]=\"val2\" inputId=\"preopt2\"></p-radioButton></div>\r\n        <div class=\"ui-g-12\"><p-radioButton name=\"group2\" value=\"Option 3\" label=\"Option 3\" [(ngModel)]=\"val2\" inputId=\"preopt3\"></p-radioButton></div>\r\n    </div>\r\n    Selected Value = {{val2||'none'}}\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;RadioButtonModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using the standard ngModel directive.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-radioButton name=\"groupname\" value=\"val1\" [(ngModel)]=\"selectedValue\"&gt;&lt;/p-radioButton&gt;\r\n&lt;p-radioButton name=\"groupname\" value=\"val2\" [(ngModel)]=\"selectedValue\"&gt;&lt;/p-radioButton&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    selectedValue: string;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>As model is two-way binding enabled, giving a default value to the model is enough to display a radio button as checked by default.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    selectedValue: string = 'val1';\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>RadioButton can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-radioButton name=\"groupname\" value=\"ps4\" formControlName=\"console\"&gt;&lt;/p-radioButton&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h4>Label</h4>\r\n            <p>The label attribute provides a label text for the radio button. This label is also clickable and selects value.</p>\r\n            <pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-radioButton name=\"groupname\" value=\"val1\" label=\"Option 2\" [(ngModel)]=\"selectedValue\"&gt;&lt;/p-radioButton&gt;\r\n</code>\r\n            </pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>name</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Name of the radiobutton group.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Value of the radiobutton.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>label</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Label of the radiobutton.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>object</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onClick</td>\r\n                            <td>-</td>\r\n                            <td>Callback to invoke on radio button click.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-radiobutton</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-radiobutton-box</td>\r\n                            <td>Container of icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-radiobutton-icon</td>\r\n                            <td>Icon element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chkbox-label</td>\r\n                            <td>Label element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-label-active</td>\r\n                            <td>Label element of a checked state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-label-focus</td>\r\n                            <td>Label element of a focused state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-label-disabled</td>\r\n                            <td>Label element of a disabled state.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n            \r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/radiobutton\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\"&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-radioButton name=\"group1\" value=\"Option 1\" label=\"Option 1\" [(ngModel)]=\"val1\" inputId=\"opt1\"&gt;&lt;/p-radioButton&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-radioButton name=\"group1\" value=\"Option 2\" label=\"Option 2\" [(ngModel)]=\"val1\" inputId=\"opt2\"&gt;&lt;/p-radioButton&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-radioButton name=\"group1\" value=\"Option 3\" label=\"Option 3\" [(ngModel)]=\"val1\" inputId=\"opt3\"&gt;&lt;/p-radioButton&gt;&lt;/div&gt;\r\n&lt;/div&gt;\r\nSelected Value = {{val1||'none'}}\r\n\r\n&lt;h3&gt;Preselection&lt;/h3&gt;\r\n&lt;div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\"&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-radioButton name=\"group2\" value=\"Option 1\" label=\"Option 1\" [(ngModel)]=\"val2\" inputId=\"preopt1\"&gt;&lt;/p-radioButton&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-radioButton name=\"group2\" value=\"Option 2\" label=\"Option 2\" [(ngModel)]=\"val2\" inputId=\"preopt2\"&gt;&lt;/p-radioButton&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-radioButton name=\"group2\" value=\"Option 3\" label=\"Option 3\" [(ngModel)]=\"val2\" inputId=\"preopt3\"&gt;&lt;/p-radioButton&gt;&lt;/div&gt;\r\n&lt;/div&gt;\r\nSelected Value = {{val2||'none'}}\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class RadioButtonDemo &#123;\r\n\r\n    val1: string;\r\n\r\n    val2: string = 'Option 2';\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/password/passworddemo.module.ts":
+/***/ "./src/app/showcase/components/radiobutton/radiobuttondemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__passworddemo__ = __webpack_require__("./src/app/showcase/components/password/passworddemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__passworddemo_routing_module__ = __webpack_require__("./src/app/showcase/components/password/passworddemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_password_password__ = __webpack_require__("./src/app/components/password/password.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PasswordDemoModule", function() { return PasswordDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__radiobuttondemo__ = __webpack_require__("./src/app/showcase/components/radiobutton/radiobuttondemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__radiobuttondemo_routing_module__ = __webpack_require__("./src/app/showcase/components/radiobutton/radiobuttondemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_radiobutton_radiobutton__ = __webpack_require__("./src/app/components/radiobutton/radiobutton.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RadioButtonDemoModule", function() { return RadioButtonDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -681,36 +619,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var PasswordDemoModule = (function () {
-    function PasswordDemoModule() {
+
+var RadioButtonDemoModule = (function () {
+    function RadioButtonDemoModule() {
     }
-    return PasswordDemoModule;
+    return RadioButtonDemoModule;
 }());
-PasswordDemoModule = __decorate([
+RadioButtonDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__passworddemo_routing_module__["a" /* PasswordDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_password_password__["a" /* PasswordModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4__radiobuttondemo_routing_module__["a" /* RadioButtonDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_radiobutton_radiobutton__["a" /* RadioButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__passworddemo__["a" /* PasswordDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__radiobuttondemo__["a" /* RadioButtonDemo */]
         ]
     })
-], PasswordDemoModule);
+], RadioButtonDemoModule);
 
-//# sourceMappingURL=passworddemo.module.js.map
+//# sourceMappingURL=radiobuttondemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/password/passworddemo.ts":
+/***/ "./src/app/showcase/components/radiobutton/radiobuttondemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PasswordDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioButtonDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -718,18 +658,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var PasswordDemo = (function () {
-    function PasswordDemo() {
+var RadioButtonDemo = (function () {
+    function RadioButtonDemo() {
+        this.val2 = 'Option 2';
     }
-    return PasswordDemo;
+    return RadioButtonDemo;
 }());
-PasswordDemo = __decorate([
+RadioButtonDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/password/passworddemo.html")
+        template: __webpack_require__("./src/app/showcase/components/radiobutton/radiobuttondemo.html"),
+        styles: ["\n        .ui-grid label {\n            display: inline-block;\n            margin: 3px 0px 0px 4px;\n        }\n    "]
     })
-], PasswordDemo);
+], RadioButtonDemo);
 
-//# sourceMappingURL=passworddemo.js.map
+//# sourceMappingURL=radiobuttondemo.js.map
 
 /***/ })
 

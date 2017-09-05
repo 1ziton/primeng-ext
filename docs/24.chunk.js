@@ -266,18 +266,15 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/components/splitbutton/splitbutton.ts":
+/***/ "./src/app/components/steps/steps.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* unused harmony export SplitButton */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SplitButtonModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+/* unused harmony export Steps */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StepsModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -290,198 +287,77 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-
-
-var SplitButton = (function () {
-    function SplitButton(el, domHandler, renderer, router, cd) {
-        this.el = el;
-        this.domHandler = domHandler;
-        this.renderer = renderer;
-        this.router = router;
-        this.cd = cd;
-        this.iconPos = 'left';
-        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onDropdownClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.menuVisible = false;
+var Steps = (function () {
+    function Steps() {
+        this.activeIndex = 0;
+        this.readonly = true;
+        this.activeIndexChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
     }
-    SplitButton.prototype.ngAfterViewInit = function () {
-        if (this.appendTo) {
-            if (this.appendTo === 'body')
-                document.body.appendChild(this.overlayViewChild.nativeElement);
-            else
-                this.domHandler.appendChild(this.overlayViewChild.nativeElement, this.appendTo);
-        }
-    };
-    SplitButton.prototype.ngAfterViewChecked = function () {
-        if (this.shown) {
-            this.onShow();
-            this.shown = false;
-        }
-    };
-    SplitButton.prototype.onDefaultButtonClick = function (event) {
-        this.onClick.emit(event);
-    };
-    SplitButton.prototype.itemClick = function (event, item) {
-        if (item.disabled) {
+    Steps.prototype.itemClick = function (event, item, i) {
+        if (this.readonly || item.disabled) {
             event.preventDefault();
             return;
         }
+        this.activeIndexChange.emit(i);
         if (!item.url) {
             event.preventDefault();
         }
         if (item.command) {
             item.command({
                 originalEvent: event,
-                item: item
-            });
-        }
-        this.menuVisible = false;
-    };
-    SplitButton.prototype.show = function () {
-        this.shown = true;
-        this.menuVisible = !this.menuVisible;
-        this.alignPanel();
-        this.overlayViewChild.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */].zindex);
-    };
-    SplitButton.prototype.onShow = function () {
-        this.alignPanel();
-        this.bindDocumentClickListener();
-    };
-    SplitButton.prototype.onDropdownButtonClick = function (event) {
-        this.onDropdownClick.emit(event);
-        this.dropdownClick = true;
-        this.show();
-    };
-    SplitButton.prototype.alignPanel = function () {
-        if (this.appendTo)
-            this.domHandler.absolutePosition(this.overlayViewChild.nativeElement, this.buttonViewChild.nativeElement);
-        else
-            this.domHandler.relativePosition(this.overlayViewChild.nativeElement, this.buttonViewChild.nativeElement);
-    };
-    SplitButton.prototype.bindDocumentClickListener = function () {
-        var _this = this;
-        if (!this.documentClickListener) {
-            this.documentClickListener = this.renderer.listen('document', 'click', function () {
-                if (_this.dropdownClick) {
-                    _this.dropdownClick = false;
-                }
-                else {
-                    _this.menuVisible = false;
-                    _this.unbindDocumentClickListener();
-                    _this.cd.markForCheck();
-                }
+                item: item,
+                index: i
             });
         }
     };
-    SplitButton.prototype.unbindDocumentClickListener = function () {
-        if (this.documentClickListener) {
-            this.documentClickListener();
-            this.documentClickListener = null;
-        }
-    };
-    SplitButton.prototype.ngOnDestroy = function () {
-        this.unbindDocumentClickListener();
-    };
-    return SplitButton;
+    return Steps;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], SplitButton.prototype, "model", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], SplitButton.prototype, "icon", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], SplitButton.prototype, "iconPos", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], SplitButton.prototype, "label", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], SplitButton.prototype, "onClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], SplitButton.prototype, "onDropdownClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], SplitButton.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], SplitButton.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], SplitButton.prototype, "menuStyle", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], SplitButton.prototype, "menuStyleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], SplitButton.prototype, "disabled", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Number)
-], SplitButton.prototype, "tabindex", void 0);
+], Steps.prototype, "activeIndex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array)
+], Steps.prototype, "model", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Steps.prototype, "readonly", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], SplitButton.prototype, "appendTo", void 0);
+], Steps.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('defaultbtn'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
-], SplitButton.prototype, "buttonViewChild", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Steps.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('overlay'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], SplitButton.prototype, "overlayViewChild", void 0);
-SplitButton = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], Steps.prototype, "activeIndexChange", void 0);
+Steps = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-splitButton',
-        template: "\n        <div #container [ngClass]=\"{'ui-splitbutton ui-buttonset ui-widget':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <button #defaultbtn type=\"button\" pButton [icon]=\"icon\" [iconPos]=\"iconPos\" [label]=\"label\" cornerStyleClass=\"ui-corner-left\" (click)=\"onDefaultButtonClick($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </button><button type=\"button\" pButton class=\"ui-splitbutton-menubutton\" icon=\"fa-caret-down\" cornerStyleClass=\"ui-corner-right\" (click)=\"onDropdownButtonClick($event)\" [disabled]=\"disabled\"></button>\n            <div #overlay [ngClass]=\"'ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow'\" [style.display]=\"menuVisible ? 'block' : 'none'\"\n                    [ngStyle]=\"menuStyle\" [class]=\"menuStyleClass\" [@overlayState]=\"menuVisible ? 'visible' : 'hidden'\">\n                <ul class=\"ui-menu-list ui-helper-reset\">\n                    <li class=\"ui-menuitem ui-widget ui-corner-all\" role=\"menuitem\" *ngFor=\"let item of model\">\n                        <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\"\n                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                            <span [ngClass]=\"'ui-menuitem-icon fa fa-fw'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                        <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\"\n                            class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                            <span [ngClass]=\"'ui-menuitem-icon fa fa-fw'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
-        animations: [
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["a" /* trigger */])('overlayState', [
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    opacity: 0
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    opacity: 1
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('visible => hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms ease-in')),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('hidden => visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms ease-out'))
-            ])
-        ],
-        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_5__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_router__["b" /* Router */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _j || Object])
-], SplitButton);
-
-var SplitButtonModule = (function () {
-    function SplitButtonModule() {
-    }
-    return SplitButtonModule;
-}());
-SplitButtonModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_4__button_button__["a" /* ButtonModule */], __WEBPACK_IMPORTED_MODULE_5__angular_router__["a" /* RouterModule */]],
-        exports: [SplitButton, __WEBPACK_IMPORTED_MODULE_4__button_button__["a" /* ButtonModule */], __WEBPACK_IMPORTED_MODULE_5__angular_router__["a" /* RouterModule */]],
-        declarations: [SplitButton]
+        selector: 'p-steps',
+        template: "\n        <div [ngClass]=\"{'ui-steps ui-widget ui-helper-clearfix':true,'ui-steps-readonly':readonly}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul role=\"tablist\">\n                <li *ngFor=\"let item of model; let i = index\" class=\"ui-steps-item\" #menuitem\n                    [ngClass]=\"{'ui-state-highlight':(i === activeIndex),'ui-state-default':(i !== activeIndex),\n                        'ui-state-disabled':item.disabled||(i !== activeIndex && readonly)}\">\n                    <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, item, i)\" [attr.target]=\"item.target\">\n                        <span class=\"ui-steps-number\">{{i + 1}}</span>\n                        <span class=\"ui-steps-title\">{{item.label}}</span>\n                    </a>\n                    <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [routerLinkActive]=\"'ui-state-active'\" [routerLinkActiveOptions]=\"item.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, item, i)\" [attr.target]=\"item.target\">\n                        <span class=\"ui-steps-number\">{{i + 1}}</span>\n                        <span class=\"ui-steps-title\">{{item.label}}</span>\n                    </a>\n                </li>\n            </ul>\n        </div>\n    "
     })
-], SplitButtonModule);
+], Steps);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-//# sourceMappingURL=splitbutton.js.map
+var StepsModule = (function () {
+    function StepsModule() {
+    }
+    return StepsModule;
+}());
+StepsModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* RouterModule */]],
+        exports: [Steps, __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* RouterModule */]],
+        declarations: [Steps]
+    })
+], StepsModule);
+
+var _a;
+//# sourceMappingURL=steps.js.map
 
 /***/ }),
 
@@ -836,14 +712,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/splitbutton/splitbuttondemo-routing.module.ts":
+/***/ "./src/app/showcase/components/steps/stepsdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__splitbuttondemo__ = __webpack_require__("./src/app/showcase/components/splitbutton/splitbuttondemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SplitButtonDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stepsdemo__ = __webpack_require__("./src/app/showcase/components/steps/stepsdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StepsDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -853,49 +729,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SplitButtonDemoRoutingModule = (function () {
-    function SplitButtonDemoRoutingModule() {
+var StepsDemoRoutingModule = (function () {
+    function StepsDemoRoutingModule() {
     }
-    return SplitButtonDemoRoutingModule;
+    return StepsDemoRoutingModule;
 }());
-SplitButtonDemoRoutingModule = __decorate([
+StepsDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__splitbuttondemo__["a" /* SplitButtonDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__stepsdemo__["a" /* StepsDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], SplitButtonDemoRoutingModule);
+], StepsDemoRoutingModule);
 
-//# sourceMappingURL=splitbuttondemo-routing.module.js.map
+//# sourceMappingURL=stepsdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/splitbutton/splitbuttondemo.html":
+/***/ "./src/app/showcase/components/steps/stepsdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">SplitButton</span>\r\n        <span>SplitButton groups a set of commands in an overlay with a default command.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n    \r\n    <p-splitButton label=\"Save\" icon=\"fa-check\" (onClick)=\"save()\" [model]=\"items\"></p-splitButton>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n                    <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SplitButtonModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>SplitButton has a default command button and a collection of menuitems to be displayed in an overlay.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-splitButton label=\"Save\" icon=\"fa-check\" (onClick)=\"save()\" [model]=\"items\"&gt;&lt;/p-splitButton&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>MenuModel API</h3>\r\n            <p>SplitButton uses the common menumodel api to define its items, visit <a [routerLink]=\"['/menumodel']\">MenuModel API</a> for details.</p>\r\n    \r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>label</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Text of the button.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>icon</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Name of the icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>iconPos</td>\r\n                            <td>string</td>\r\n                            <td>left</td>\r\n                            <td>Position of the icon, valid values are \"left\" and \"right\".</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>menuStyle</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the overlay menu.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>menuStyleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the overlay menu.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>appendTo</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Target element to attach the overlay, valid values are \"body\" or a local ng-template variable of another element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the component should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onClick</td>\r\n                            <td>event: browser event<br></td>\r\n                            <td>Callback to invoke when default command button is clicked.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDropdownClick</td>\r\n                            <td>event: browser event<br></td>\r\n                            <td>Callback to invoke when dropdown button is clicked.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n          <h3>Severity</h3>\r\n          <p>Different color options are available to define severity levels.</p>\r\n\r\n          <ul>\r\n            <li>.ui-button-secondary</li>\r\n            <li>.ui-button-success</li>\r\n            <li>.ui-button-info</li>\r\n            <li>.ui-button-warning</li>\r\n            <li>.ui-button-danger</li>\r\n          </ul>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-splitButton label=\"Save\" icon=\"fa-check\" [model]=\"items\" styleClass=\"ui-button-warning\"&gt;&lt;/p-splitButton&gt;\r\n</code>\r\n</pre>\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>. SplitButton uses\r\n            button and menu components internally, refer to their documentation for the detailed style list.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-splitbutton</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-splitbutton-button</td>\r\n                            <td>Dropdown button.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-menu</td>\r\n                            <td>Overlay menu.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/splitbutton\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;p-splitButton label=\"Save\" icon=\"fa-check\" (onClick)=\"save()\" [model]=\"items\"&gt;&lt;/p-splitButton&gt;\r\n</code>\r\n</pre>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class SplitButtonDemo implements OnInit &#123;\r\n\r\n    msgs: Message[] = [];\r\n    \r\n    items: MenuItem[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.items = [\r\n            &#123;label: 'Update', icon: 'fa-refresh', command: () => &#123;\r\n                this.update();\r\n            &#125;&#125;,\r\n            &#123;label: 'Delete', icon: 'fa-close', command: () => &#123;\r\n                this.delete();\r\n            &#125;&#125;,\r\n            &#123;label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io'&#125;,\r\n            &#123;label: 'Theming', icon: 'fa-paint-brush', routerLink: ['/theming']&#125;\r\n        ];\r\n    &#125;\r\n\r\n    save() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Success', detail:'Data Saved'&#125;);\r\n    &#125;\r\n    \r\n    update() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Success', detail:'Data Updated'&#125;);\r\n    &#125;\r\n    \r\n    delete() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Success', detail:'Data Deleted'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </ p-tabPanel>\r\n     </p-tabView >\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Steps</span>\r\n        <span>Steps components is an indicator for the steps in a workflow. Layout of steps component is optimized for responsive design.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n    \r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-steps [model]=\"items\"></p-steps>\r\n    \r\n    <h3>Clickable</h3>\r\n    <p-steps [model]=\"items\" [(activeIndex)]=\"activeIndex\" [readonly]=\"false\"></p-steps>\r\n    \r\n    <h3>Custom Style</h3>\r\n    <p-steps [model]=\"items\" styleClass=\"steps-custom\"></p-steps>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;StepsModule,MenuItem&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>MenuModel API</h3>\r\n            <p>Steps uses the common menumodel api to define its items, visit <a [routerLink]=\"['/menumodel']\">MenuModel API</a> for details.</p>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Steps requires a collection of menuitems as its model.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-steps [model]=\"items\"&gt;&lt;/p-steps&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [\r\n            &#123;label: 'Step 1'&#125;,\r\n            &#123;label: 'Step 2'&#125;,\r\n            &#123;label: 'Step 3'&#125;\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Readonly</h3>\r\n            <p>Items are readonly by default, if you'd like to make them interactive then disable readonly.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-steps [model]=\"items\" [readonly]=\"false\"&gt;&lt;/p-steps&gt;\r\n</code>\r\n</pre>\r\n       \r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>model</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of menuitems.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>activeIndex</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Index of the active item.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>readonly</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether the items are clickable or not.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>activeIndexChange</td>\r\n                            <td>index: Index of the active step item</td>\r\n                            <td>Callback to invoke when the new step is selected.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-steps</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-steps-item</td>\r\n                            <td>Menuitem element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-steps-number</td>\r\n                            <td>Number of menuitem.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-steps-title</td>\r\n                            <td>Label of menuitem.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/steps\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;p-steps [model]=\"items\"&gt;&lt;/p-steps&gt;\r\n\r\n&lt;h3&gt;Clickable&lt;/h3&gt;\r\n&lt;p-steps [model]=\"items\" [(activeIndex)]=\"activeIndex\" [readonly]=\"false\"&gt;&lt;/p-steps&gt;\r\n\r\n&lt;h3&gt;Custom Style&lt;/h3&gt;\r\n&lt;p-steps [model]=\"items\" styleClass=\"steps-custom\"&gt;&lt;/p-steps&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\n@Component(&#123;\r\n    templateUrl: 'showcase/demo/steps/stepsdemo.html',\r\n    styles: [`\r\n        .ui-steps .ui-steps-item &#123;\r\n            width: 25%;\r\n        &#125;\r\n        \r\n        .ui-steps.steps-custom &#123;\r\n            margin-bottom: 30px;\r\n        &#125;\r\n         \r\n        .ui-steps.steps-custom .ui-steps-item .ui-menuitem-link &#123;\r\n            height: 10px;\r\n            padding: 0 1em;\r\n        &#125;\r\n         \r\n        .ui-steps.steps-custom .ui-steps-item .ui-steps-number &#123;\r\n            background-color: #0081c2;\r\n            color: #FFFFFF;\r\n            display: inline-block;\r\n            width: 36px;\r\n            border-radius: 50%;\r\n            margin-top: -14px;\r\n            margin-bottom: 10px;\r\n        &#125;\r\n        \r\n        .ui-steps.steps-custom .ui-steps-item .ui-steps-title &#123;\r\n            color: #555555;\r\n        &#125;\r\n    `],\r\n    encapsulation: ViewEncapsulation.None\r\n&#125;)\r\nexport class StepsDemo implements OnInit &#123;\r\n\r\n    items: MenuItem[];\r\n    \r\n    msgs: Message[] = [];\r\n    \r\n    activeIndex: number = 1;\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n                label: 'Personal',\r\n                command: (event: any) => &#123;\r\n                    this.activeIndex = 0;\r\n                    this.msgs.length = 0;\r\n                    this.msgs.push(&#123;severity:'info', summary:'First Step', detail: event.item.label&#125;);\r\n                &#125;\r\n            &#125;,\r\n            &#123;\r\n                label: 'Seat',\r\n                command: (event: any) => &#123;\r\n                    this.activeIndex = 1;\r\n                    this.msgs.length = 0;\r\n                    this.msgs.push(&#123;severity:'info', summary:'Seat Selection', detail: event.item.label&#125;);\r\n                &#125;\r\n            &#125;,\r\n            &#123;\r\n                label: 'Payment',\r\n                command: (event: any) => &#123;\r\n                    this.activeIndex = 2;\r\n                    this.msgs.length = 0;\r\n                    this.msgs.push(&#123;severity:'info', summary:'Pay with CC', detail: event.item.label&#125;);\r\n                &#125;\r\n            &#125;,\r\n            &#123;\r\n                label: 'Confirmation',\r\n                command: (event: any) => &#123;\r\n                    this.activeIndex = 3;\r\n                    this.msgs.length = 0;\r\n                    this.msgs.push(&#123;severity:'info', summary:'Last Step', detail: event.item.label&#125;);\r\n                &#125;\r\n            &#125;\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/splitbutton/splitbuttondemo.module.ts":
+/***/ "./src/app/showcase/components/steps/stepsdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__splitbuttondemo__ = __webpack_require__("./src/app/showcase/components/splitbutton/splitbuttondemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__splitbuttondemo_routing_module__ = __webpack_require__("./src/app/showcase/components/splitbutton/splitbuttondemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_splitbutton_splitbutton__ = __webpack_require__("./src/app/components/splitbutton/splitbutton.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__stepsdemo__ = __webpack_require__("./src/app/showcase/components/steps/stepsdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__stepsdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/steps/stepsdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_steps_steps__ = __webpack_require__("./src/app/components/steps/steps.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SplitButtonDemoModule", function() { return SplitButtonDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StepsDemoModule", function() { return StepsDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -910,37 +786,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SplitButtonDemoModule = (function () {
-    function SplitButtonDemoModule() {
+var StepsDemoModule = (function () {
+    function StepsDemoModule() {
     }
-    return SplitButtonDemoModule;
+    return StepsDemoModule;
 }());
-SplitButtonDemoModule = __decorate([
+StepsDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__splitbuttondemo_routing_module__["a" /* SplitButtonDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_splitbutton_splitbutton__["a" /* SplitButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_3__stepsdemo_routing_module__["a" /* StepsDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_steps_steps__["a" /* StepsModule */],
             __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__["a" /* GrowlModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__splitbuttondemo__["a" /* SplitButtonDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__stepsdemo__["a" /* StepsDemo */]
         ]
     })
-], SplitButtonDemoModule);
+], StepsDemoModule);
 
-//# sourceMappingURL=splitbuttondemo.module.js.map
+//# sourceMappingURL=stepsdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/splitbutton/splitbuttondemo.ts":
+/***/ "./src/app/showcase/components/steps/stepsdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SplitButtonDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StepsDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -948,44 +824,58 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var SplitButtonDemo = (function () {
-    function SplitButtonDemo() {
+var StepsDemo = (function () {
+    function StepsDemo() {
         this.msgs = [];
+        this.activeIndex = 1;
     }
-    SplitButtonDemo.prototype.ngOnInit = function () {
+    StepsDemo.prototype.ngOnInit = function () {
         var _this = this;
-        this.items = [
-            { label: 'Update', icon: 'fa-refresh', command: function () {
-                    _this.update();
-                } },
-            { label: 'Delete', icon: 'fa-close', command: function () {
-                    _this.delete();
-                } },
-            { label: 'Angular.io', icon: 'fa-link', url: 'http://angular.io' },
-            { label: 'Theming', icon: 'fa-paint-brush', routerLink: ['/theming'] }
+        this.items = [{
+                label: 'Personal',
+                command: function (event) {
+                    _this.activeIndex = 0;
+                    _this.msgs.length = 0;
+                    _this.msgs.push({ severity: 'info', summary: 'First Step', detail: event.item.label });
+                }
+            },
+            {
+                label: 'Seat',
+                command: function (event) {
+                    _this.activeIndex = 1;
+                    _this.msgs.length = 0;
+                    _this.msgs.push({ severity: 'info', summary: 'Seat Selection', detail: event.item.label });
+                }
+            },
+            {
+                label: 'Payment',
+                command: function (event) {
+                    _this.activeIndex = 2;
+                    _this.msgs.length = 0;
+                    _this.msgs.push({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
+                }
+            },
+            {
+                label: 'Confirmation',
+                command: function (event) {
+                    _this.activeIndex = 3;
+                    _this.msgs.length = 0;
+                    _this.msgs.push({ severity: 'info', summary: 'Last Step', detail: event.item.label });
+                }
+            }
         ];
     };
-    SplitButtonDemo.prototype.save = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'Data Saved' });
-    };
-    SplitButtonDemo.prototype.update = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'Data Updated' });
-    };
-    SplitButtonDemo.prototype.delete = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'Data Deleted' });
-    };
-    return SplitButtonDemo;
+    return StepsDemo;
 }());
-SplitButtonDemo = __decorate([
+StepsDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/splitbutton/splitbuttondemo.html")
+        template: __webpack_require__("./src/app/showcase/components/steps/stepsdemo.html"),
+        styles: ["\n        .ui-steps .ui-steps-item {\n            width: 25%;\n        }\n        \n        .ui-steps.steps-custom {\n            margin-bottom: 30px;\n        }\n         \n        .ui-steps.steps-custom .ui-steps-item .ui-menuitem-link {\n            height: 10px;\n            padding: 0 1em;\n            overflow: visible;\n        }\n         \n        .ui-steps.steps-custom .ui-steps-item .ui-steps-number {\n            background-color: #0081c2;\n            color: #FFFFFF;\n            display: inline-block;\n            width: 36px;\n            border-radius: 50%;\n            margin-top: -14px;\n            margin-bottom: 10px;\n        }\n        \n        .ui-steps.steps-custom .ui-steps-item .ui-steps-title {\n            color: #555555;\n        }\n    "],
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* ViewEncapsulation */].None
     })
-], SplitButtonDemo);
+], StepsDemo);
 
-//# sourceMappingURL=splitbuttondemo.js.map
+//# sourceMappingURL=stepsdemo.js.map
 
 /***/ })
 

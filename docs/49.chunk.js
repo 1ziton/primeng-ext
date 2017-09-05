@@ -404,16 +404,15 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/components/togglebutton/togglebutton.ts":
+/***/ "./src/app/components/tooltip/tooltip.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export TOGGLEBUTTON_VALUE_ACCESSOR */
-/* unused harmony export ToggleButton */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToggleButtonModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export Tooltip */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -426,153 +425,360 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var TOGGLEBUTTON_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return ToggleButton; }),
-    multi: true
-};
-var ToggleButton = (function () {
-    function ToggleButton() {
-        this.onLabel = 'Yes';
-        this.offLabel = 'No';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.checked = false;
-        this.focus = false;
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
+var Tooltip = (function () {
+    function Tooltip(el, domHandler, renderer) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+        this.tooltipPosition = 'right';
+        this.tooltipEvent = 'hover';
+        this.appendTo = 'body';
+        this.tooltipZIndex = 'auto';
+        this.escape = true;
     }
-    ToggleButton.prototype.ngAfterViewInit = function () {
-        this.checkbox = this.checkboxViewChild.nativeElement;
-    };
-    ToggleButton.prototype.getIconClass = function () {
-        var baseClass = 'ui-button-icon-left fa fa-fw';
-        return baseClass + ' ' + (this.checked ? this.onIcon : this.offIcon);
-    };
-    ToggleButton.prototype.toggle = function (event) {
-        if (!this.disabled) {
-            this.checked = !this.checked;
-            this.onModelChange(this.checked);
-            this.onModelTouched();
-            this.onChange.emit({
-                originalEvent: event,
-                checked: this.checked
-            });
-            this.checkbox.focus();
+    Tooltip.prototype.onMouseEnter = function (e) {
+        if (this.tooltipEvent === 'hover') {
+            if (this.hideTimeout) {
+                clearTimeout(this.hideTimeout);
+                this.destroy();
+            }
+            this.activate();
         }
     };
-    ToggleButton.prototype.onFocus = function () {
-        this.focus = true;
+    Tooltip.prototype.onMouseLeave = function (e) {
+        if (this.tooltipEvent === 'hover') {
+            this.deactivate();
+        }
     };
-    ToggleButton.prototype.onBlur = function () {
-        this.focus = false;
-        this.onModelTouched();
+    Tooltip.prototype.onFocus = function (e) {
+        if (this.tooltipEvent === 'focus') {
+            this.activate();
+        }
     };
-    ToggleButton.prototype.writeValue = function (value) {
-        this.checked = value;
+    Tooltip.prototype.onBlur = function (e) {
+        if (this.tooltipEvent === 'focus') {
+            this.deactivate();
+        }
     };
-    ToggleButton.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
+    Tooltip.prototype.activate = function () {
+        var _this = this;
+        this.active = true;
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+        }
+        if (this.showDelay)
+            this.showTimeout = setTimeout(function () { _this.show(); }, this.showDelay);
+        else
+            this.show();
     };
-    ToggleButton.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
+    Tooltip.prototype.deactivate = function () {
+        var _this = this;
+        this.active = false;
+        if (this.showTimeout) {
+            clearTimeout(this.showTimeout);
+        }
+        if (this.hideDelay)
+            this.hideTimeout = setTimeout(function () { _this.hide(); }, this.hideDelay);
+        else
+            this.hide();
     };
-    ToggleButton.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    Object.defineProperty(ToggleButton.prototype, "hasOnLabel", {
+    Object.defineProperty(Tooltip.prototype, "text", {
         get: function () {
-            return this.onLabel && this.onLabel.length > 0;
+            return this._text;
+        },
+        set: function (text) {
+            this._text = text;
+            if (this.active) {
+                if (this._text) {
+                    if (this.container && this.container.offsetParent)
+                        this.updateText();
+                    else
+                        this.show();
+                }
+                else {
+                    this.hide();
+                }
+            }
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ToggleButton.prototype, "hasOffLabel", {
-        get: function () {
-            return this.onLabel && this.onLabel.length > 0;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ToggleButton;
+    Tooltip.prototype.create = function () {
+        this.container = document.createElement('div');
+        var tooltipArrow = document.createElement('div');
+        tooltipArrow.className = 'ui-tooltip-arrow';
+        this.container.appendChild(tooltipArrow);
+        this.tooltipText = document.createElement('div');
+        this.tooltipText.className = 'ui-tooltip-text ui-shadow ui-corner-all';
+        this.updateText();
+        if (this.positionStyle) {
+            this.container.style.position = this.positionStyle;
+        }
+        this.container.appendChild(this.tooltipText);
+        if (this.appendTo === 'body')
+            document.body.appendChild(this.container);
+        else if (this.appendTo === 'target')
+            this.domHandler.appendChild(this.container, this.el.nativeElement);
+        else
+            this.domHandler.appendChild(this.container, this.appendTo);
+        this.container.style.display = 'inline-block';
+    };
+    Tooltip.prototype.show = function () {
+        if (!this.text || this.disabled) {
+            return;
+        }
+        this.create();
+        this.align();
+        if (this.tooltipStyleClass) {
+            this.container.className = this.container.className + ' ' + this.tooltipStyleClass;
+        }
+        this.domHandler.fadeIn(this.container, 250);
+        if (this.tooltipZIndex === 'auto')
+            this.container.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
+        else
+            this.container.style.zIndex = this.tooltipZIndex;
+        this.bindDocumentResizeListener();
+    };
+    Tooltip.prototype.hide = function () {
+        this.destroy();
+    };
+    Tooltip.prototype.updateText = function () {
+        if (this.escape) {
+            this.tooltipText.innerHTML = '';
+            this.tooltipText.appendChild(document.createTextNode(this._text));
+        }
+        else {
+            this.tooltipText.innerHTML = this._text;
+        }
+    };
+    Tooltip.prototype.align = function () {
+        var position = this.tooltipPosition;
+        switch (position) {
+            case 'top':
+                this.alignTop();
+                if (this.isOutOfBounds()) {
+                    this.alignBottom();
+                }
+                break;
+            case 'bottom':
+                this.alignBottom();
+                if (this.isOutOfBounds()) {
+                    this.alignTop();
+                }
+                break;
+            case 'left':
+                this.alignLeft();
+                if (this.isOutOfBounds()) {
+                    this.alignRight();
+                    if (this.isOutOfBounds()) {
+                        this.alignTop();
+                        if (this.isOutOfBounds()) {
+                            this.alignBottom();
+                        }
+                    }
+                }
+                break;
+            case 'right':
+                this.alignRight();
+                if (this.isOutOfBounds()) {
+                    this.alignLeft();
+                    if (this.isOutOfBounds()) {
+                        this.alignTop();
+                        if (this.isOutOfBounds()) {
+                            this.alignBottom();
+                        }
+                    }
+                }
+                break;
+        }
+    };
+    Tooltip.prototype.getHostOffset = function () {
+        var offset = this.el.nativeElement.getBoundingClientRect();
+        var targetLeft = offset.left + this.domHandler.getWindowScrollLeft();
+        var targetTop = offset.top + this.domHandler.getWindowScrollTop();
+        return { left: targetLeft, top: targetTop };
+    };
+    Tooltip.prototype.alignRight = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-right';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left + this.domHandler.getOuterWidth(this.el.nativeElement);
+        var top = hostOffset.top + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.alignLeft = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-left';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left - this.domHandler.getOuterWidth(this.container);
+        var top = hostOffset.top + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.alignTop = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-top';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
+        var top = hostOffset.top - this.domHandler.getOuterHeight(this.container);
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.alignBottom = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-bottom';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
+        var top = hostOffset.top + this.domHandler.getOuterHeight(this.el.nativeElement);
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.preAlign = function () {
+        this.container.style.left = -999 + 'px';
+        this.container.style.top = -999 + 'px';
+    };
+    Tooltip.prototype.isOutOfBounds = function () {
+        var offset = this.container.getBoundingClientRect();
+        var targetTop = offset.top;
+        var targetLeft = offset.left;
+        var width = this.domHandler.getOuterWidth(this.container);
+        var height = this.domHandler.getOuterHeight(this.container);
+        var viewport = this.domHandler.getViewport();
+        return (targetLeft + width > viewport.width) || (targetLeft < 0) || (targetTop < 0) || (targetTop + height > viewport.height);
+    };
+    Tooltip.prototype.bindDocumentResizeListener = function () {
+        var _this = this;
+        this.documentResizeListener = this.renderer.listen('window', 'resize', function (event) {
+            _this.hide();
+        });
+    };
+    Tooltip.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            this.documentResizeListener();
+            this.documentResizeListener = null;
+        }
+    };
+    Tooltip.prototype.destroy = function () {
+        this.unbindDocumentResizeListener();
+        if (this.container && this.container.parentElement) {
+            if (this.appendTo === 'body')
+                document.body.removeChild(this.container);
+            else if (this.appendTo === 'target')
+                this.el.nativeElement.removeChild(this.container);
+            else
+                this.domHandler.removeChild(this.container, this.appendTo);
+        }
+        this.container = null;
+    };
+    Tooltip.prototype.ngOnDestroy = function () {
+        this.destroy();
+    };
+    return Tooltip;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], ToggleButton.prototype, "onLabel", void 0);
+], Tooltip.prototype, "tooltipPosition", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], ToggleButton.prototype, "offLabel", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ToggleButton.prototype, "onIcon", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ToggleButton.prototype, "offIcon", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], ToggleButton.prototype, "disabled", void 0);
+], Tooltip.prototype, "tooltipEvent", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], ToggleButton.prototype, "style", void 0);
+], Tooltip.prototype, "appendTo", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], ToggleButton.prototype, "styleClass", void 0);
+], Tooltip.prototype, "positionStyle", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], ToggleButton.prototype, "inputId", void 0);
+], Tooltip.prototype, "tooltipStyleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Tooltip.prototype, "tooltipZIndex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("tooltipDisabled"),
+    __metadata("design:type", Boolean)
+], Tooltip.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Tooltip.prototype, "escape", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Number)
-], ToggleButton.prototype, "tabindex", void 0);
+], Tooltip.prototype, "showDelay", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], ToggleButton.prototype, "onChange", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Tooltip.prototype, "hideDelay", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('checkbox'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object)
-], ToggleButton.prototype, "checkboxViewChild", void 0);
-ToggleButton = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-toggleButton',
-        template: "\n        <div [ngClass]=\"{'ui-button ui-togglebutton ui-widget ui-state-default ui-corner-all': true, 'ui-button-text-only': (!onIcon&&!offIcon), \n                'ui-button-text-icon-left': (onIcon&&offIcon&&hasOnLabel&&hasOffLabel), 'ui-button-icon-only': (onIcon&&offIcon&&!hasOnLabel&&!hasOffLabel),\n                'ui-state-active': checked,'ui-state-focus':focus,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\" \n                (click)=\"toggle($event)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #checkbox type=\"checkbox\" [attr.id]=\"inputId\" [checked]=\"checked\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <span *ngIf=\"onIcon||offIcon\" [class]=\"getIconClass()\"></span>\n            <span class=\"ui-button-text ui-unselectable-text\">{{checked ? hasOnLabel ? onLabel : 'ui-btn' : hasOffLabel ? offLabel : 'ui-btn'}}</span>\n        </div>\n    ",
-        providers: [TOGGLEBUTTON_VALUE_ACCESSOR]
-    })
-], ToggleButton);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseenter', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onMouseEnter", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseleave', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onMouseLeave", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('focus', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onFocus", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('blur', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onBlur", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])('pTooltip'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], Tooltip.prototype, "text", null);
+Tooltip = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+        selector: '[pTooltip]',
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _c || Object])
+], Tooltip);
 
-var ToggleButtonModule = (function () {
-    function ToggleButtonModule() {
+var TooltipModule = (function () {
+    function TooltipModule() {
     }
-    return ToggleButtonModule;
+    return TooltipModule;
 }());
-ToggleButtonModule = __decorate([
+TooltipModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [ToggleButton],
-        declarations: [ToggleButton]
+        exports: [Tooltip],
+        declarations: [Tooltip]
     })
-], ToggleButtonModule);
+], TooltipModule);
 
-var _a, _b;
-//# sourceMappingURL=togglebutton.js.map
+var _a, _b, _c;
+//# sourceMappingURL=tooltip.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/togglebutton/togglebuttondemo-routing.module.ts":
+/***/ "./src/app/showcase/components/tooltip/tooltipdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__togglebuttondemo__ = __webpack_require__("./src/app/showcase/components/togglebutton/togglebuttondemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToggleButtonDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__ = __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -582,49 +788,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ToggleButtonDemoRoutingModule = (function () {
-    function ToggleButtonDemoRoutingModule() {
+var TooltipDemoRoutingModule = (function () {
+    function TooltipDemoRoutingModule() {
     }
-    return ToggleButtonDemoRoutingModule;
+    return TooltipDemoRoutingModule;
 }());
-ToggleButtonDemoRoutingModule = __decorate([
+TooltipDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__togglebuttondemo__["a" /* ToggleButtonDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__["a" /* TooltipDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], ToggleButtonDemoRoutingModule);
+], TooltipDemoRoutingModule);
 
-//# sourceMappingURL=togglebuttondemo-routing.module.js.map
+//# sourceMappingURL=tooltipdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/togglebutton/togglebuttondemo.html":
+/***/ "./src/app/showcase/components/tooltip/tooltipdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Togglebutton</span>\r\n        <span>ToggleButton is used to select a boolean value using a button.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic - ({{checked1}})</h3>\r\n    <p-toggleButton [(ngModel)]=\"checked1\" [style]=\"{'width':'150px'}\"></p-toggleButton>\r\n\r\n    <h3>Customized - ({{checked2}})</h3>\r\n    <p-toggleButton [(ngModel)]=\"checked2\" onLabel=\"I confirm\" offLabel=\"I reject\" onIcon=\"fa-check-square\" offIcon=\"fa-square\" [style]=\"{'width':'150px'}\"></p-toggleButton>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;ToggleButtonModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way binding to a boolean property is defined using the standard ngModel directive.</p>\r\n                    \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-toggleButton [(ngModel)]=\"checked\"&gt;&lt;/p-toggleButton&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    checked: boolean;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>As model is two-way binding enabled, setting the bound value as true displays the state as checked.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n   checked: boolean = true;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>ToggleButton can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-toggleButton formControlName=\"agreed\"&gt;&lt;/p-toggleButton&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Customization</h3>\r\n            <p>Icons and Labels can be customized using onLabel, offLabel, onIcon and OffIcon attributes.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-toggleButton onLabel=\"I confirm\" offLabel=\"I reject\" \r\n        onIcon=\"fa-check-square\" offIcon=\"fa-square\" [(ngModel)]=\"val\"&gt;&lt;/p-toggleButton&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                         <tr>\r\n                            <td>onLabel</td>\r\n                            <td>string</td>\r\n                            <td>Yes</td>\r\n                            <td>Label for the on state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>offLabel</td>\r\n                            <td>string</td>\r\n                            <td>No</td>\r\n                            <td>Label for the off state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onIcon</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Icon for the on state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>offIcon</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Icon for the off state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                          <td>tabindex</td>\r\n                          <td>number</td>\r\n                          <td>null</td>\r\n                          <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>event.originalEvent: browser event <br>\r\n                                evebt.checked: boolean value to represent checked state.</td>\r\n                            <td>Callback to invoke on state change.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-toggleButton (onChange)=\"handleChange($event)\" [(ngModel)]=\"val\"&gt;\r\n</code>\r\n</pre>\r\n <pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n    \r\n    handleChange(e) &#123;\r\n        var isChecked = e.checked;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-togglebutton</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-button-icon-left</td>\r\n                            <td>Icon element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-button-text</td>\r\n                            <td>Label element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/togglebutton\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic - ({{checked1}})&lt;/h3&gt;\r\n&lt;p-toggleButton [(ngModel)]=\"checked1\" [style]=\"&#123;'width':'150px'&#125;\"&gt;&lt;/p-toggleButton&gt;\r\n\r\n&lt;h3&gt;Customized - ({{checked2}})&lt;/h3&gt;\r\n&lt;p-toggleButton [(ngModel)]=\"checked2\" onLabel=\"I confirm\" offLabel=\"I reject\" onIcon=\"fa-check-square\" offIcon=\"fa-square\" [style]=\"&#123;'width':'150px'&#125;\"&gt;&lt;/p-toggleButton&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ToggleButtonDemo &#123;\r\n    \r\n    checked1: boolean = false;\r\n\r\n    checked2: boolean = true;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Tooltip</span>\r\n        <span>Tooltip provides advisory information for a component.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Positions</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\">                \r\n        </div>\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"top\" placeholder=\"Top\">\r\n        </div>\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"bottom\" placeholder=\"Bottom\">\r\n        </div>\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"left\" placeholder=\"Left\">\r\n        </div>\r\n    </div>\r\n    \r\n    <h3>Focus and Blur</h3>\r\n    <input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\" tooltipEvent=\"focus\" style=\"margin-left:.5em\">\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n                    <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;TooltipModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Tooltip is applied to an element with pTooltip directive where the value of the directive defines the text to display.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Position</h3>\r\n            <p>There are four choices to position the tooltip, default value is \"right\" and alternatives are \"top\", \"bottom\", \"left\". Position is \r\n            specified using tooltipPosition attribute.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\" tooltipPosition=\"top\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Events</h3>\r\n            <p>Tooltip gets displayed on hover event of its target by default, other option is the focus event to display and blur to hide.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\" tooltipPosition=\"top\" tooltipEvent=\"focus\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Delay</h3>\r\n            <p>Tooltip is displayed or hidden instantly by default however you may add delays using showDelay and hideDelay properties which accept a number value in terms of milliseconds.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\" tooltipPosition=\"top\" tooltipEvent=\"focus\" showDelay=\"1000\" hideDelay=\"500\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Scrolling Containers</h3>\r\n            <p>When placed inside a scrolling container like an overflown div, tooltip must be appended to another element that has\r\n                relative positioning instead of document body which is the default.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;div #container style=\"display:inline-block;position:relative\"&gt;\r\n    &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\" [appendTo]=\"container\"&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>pTooltip</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Text of the tooltip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipPosition</td>\r\n                            <td>string</td>\r\n                            <td>right</td>\r\n                            <td>Position of the tooltip, valid values are right, left, top and bottom.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipEvent</td>\r\n                            <td>string</td>\r\n                            <td>hover</td>\r\n                            <td>Event to show the tooltip, valid values are hover and focus.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>positionStyle</td>\r\n                            <td>string</td>\r\n                            <td>absolute</td>\r\n                            <td>Type of CSS position.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipDisabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the component should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>appendTo</td>\r\n                            <td>string</td>\r\n                            <td>any</td>\r\n                            <td>Target element to attach the overlay, valid values are \"body\", \"target\" or a local ng-template variable of another element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>hideDelay</td>\r\n                            <td>null</td>\r\n                            <td>number</td>\r\n                            <td>Delay to hide the tooltip in milliseconds.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>showDelay</td>\r\n                            <td>null</td>\r\n                            <td>number</td>\r\n                            <td>Delay to show the tooltip in milliseconds.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipStyleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the tooltip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>escape</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>By default the tooltip contents are rendered as text. Set to false to support html tags in the content</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipZIndex</td>\r\n                            <td>string</td>\r\n                            <td>auto</td>\r\n                            <td>Whether the z-index should be managed automatically to always go on top or have a fixed value.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-tooltip</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tooltip-arrow</td>\r\n                            <td>Arrow of the tooltip</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tooltip-text</td>\r\n                            <td>Text of the tooltip</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/tooltip\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Positions&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\"&gt;                \r\n    &lt;/div&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"top\" placeholder=\"Top\"&gt;\r\n    &lt;/div&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"bottom\" placeholder=\"Bottom\"&gt;\r\n    &lt;/div&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"left\" placeholder=\"Left\"&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Focus and Blur&lt;/h3&gt;\r\n&lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\" tooltipEvent=\"focus\" style=\"margin-left:.5em\"&gt;\r\n</code>\r\n</pre>\r\n\r\n        </p-tabPanel>\r\n     </p-tabView >\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/togglebutton/togglebuttondemo.module.ts":
+/***/ "./src/app/showcase/components/tooltip/tooltipdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__togglebuttondemo__ = __webpack_require__("./src/app/showcase/components/togglebutton/togglebuttondemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__togglebuttondemo_routing_module__ = __webpack_require__("./src/app/showcase/components/togglebutton/togglebuttondemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_togglebutton_togglebutton__ = __webpack_require__("./src/app/components/togglebutton/togglebutton.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__ = __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tooltipdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_tooltip_tooltip__ = __webpack_require__("./src/app/components/tooltip/tooltip.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ToggleButtonDemoModule", function() { return ToggleButtonDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TooltipDemoModule", function() { return TooltipDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -639,37 +845,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ToggleButtonDemoModule = (function () {
-    function ToggleButtonDemoModule() {
+var TooltipDemoModule = (function () {
+    function TooltipDemoModule() {
     }
-    return ToggleButtonDemoModule;
+    return TooltipDemoModule;
 }());
-ToggleButtonDemoModule = __decorate([
+TooltipDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__togglebuttondemo_routing_module__["a" /* ToggleButtonDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_togglebutton_togglebutton__["a" /* ToggleButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_3__tooltipdemo_routing_module__["a" /* TooltipDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_tooltip_tooltip__["a" /* TooltipModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__togglebuttondemo__["a" /* ToggleButtonDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__["a" /* TooltipDemo */]
         ]
     })
-], ToggleButtonDemoModule);
+], TooltipDemoModule);
 
-//# sourceMappingURL=togglebuttondemo.module.js.map
+//# sourceMappingURL=tooltipdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/togglebutton/togglebuttondemo.ts":
+/***/ "./src/app/showcase/components/tooltip/tooltipdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToggleButtonDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -677,20 +883,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var ToggleButtonDemo = (function () {
-    function ToggleButtonDemo() {
-        this.checked1 = false;
-        this.checked2 = true;
+var TooltipDemo = (function () {
+    function TooltipDemo() {
     }
-    return ToggleButtonDemo;
+    return TooltipDemo;
 }());
-ToggleButtonDemo = __decorate([
+TooltipDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/togglebutton/togglebuttondemo.html")
+        template: __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo.html")
     })
-], ToggleButtonDemo);
+], TooltipDemo);
 
-//# sourceMappingURL=togglebuttondemo.js.map
+//# sourceMappingURL=tooltipdemo.js.map
 
 /***/ })
 

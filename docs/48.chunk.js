@@ -404,15 +404,16 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/components/tooltip/tooltip.ts":
+/***/ "./src/app/components/tristatecheckbox/tristatecheckbox.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* unused harmony export Tooltip */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export TRISTATECHECKBOX_VALUE_ACCESSOR */
+/* unused harmony export TriStateCheckbox */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TriStateCheckboxModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -425,360 +426,134 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var Tooltip = (function () {
-    function Tooltip(el, domHandler, renderer) {
-        this.el = el;
-        this.domHandler = domHandler;
-        this.renderer = renderer;
-        this.tooltipPosition = 'right';
-        this.tooltipEvent = 'hover';
-        this.appendTo = 'body';
-        this.tooltipZIndex = 'auto';
-        this.escape = true;
+var TRISTATECHECKBOX_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return TriStateCheckbox; }),
+    multi: true
+};
+var TriStateCheckbox = (function () {
+    function TriStateCheckbox(cd) {
+        this.cd = cd;
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
     }
-    Tooltip.prototype.onMouseEnter = function (e) {
-        if (this.tooltipEvent === 'hover') {
-            if (this.hideTimeout) {
-                clearTimeout(this.hideTimeout);
-                this.destroy();
-            }
-            this.activate();
+    TriStateCheckbox.prototype.onClick = function (event, input) {
+        if (!this.disabled) {
+            this.toggle(event);
+            this.focus = true;
+            input.focus();
         }
     };
-    Tooltip.prototype.onMouseLeave = function (e) {
-        if (this.tooltipEvent === 'hover') {
-            this.deactivate();
+    TriStateCheckbox.prototype.onKeydown = function (event) {
+        if (event.keyCode == 32) {
+            event.preventDefault();
         }
     };
-    Tooltip.prototype.onFocus = function (e) {
-        if (this.tooltipEvent === 'focus') {
-            this.activate();
+    TriStateCheckbox.prototype.onKeyup = function (event) {
+        if (event.keyCode == 32) {
+            this.toggle(event);
+            event.preventDefault();
         }
     };
-    Tooltip.prototype.onBlur = function (e) {
-        if (this.tooltipEvent === 'focus') {
-            this.deactivate();
-        }
-    };
-    Tooltip.prototype.activate = function () {
-        var _this = this;
-        this.active = true;
-        if (this.hideTimeout) {
-            clearTimeout(this.hideTimeout);
-        }
-        if (this.showDelay)
-            this.showTimeout = setTimeout(function () { _this.show(); }, this.showDelay);
-        else
-            this.show();
-    };
-    Tooltip.prototype.deactivate = function () {
-        var _this = this;
-        this.active = false;
-        if (this.showTimeout) {
-            clearTimeout(this.showTimeout);
-        }
-        if (this.hideDelay)
-            this.hideTimeout = setTimeout(function () { _this.hide(); }, this.hideDelay);
-        else
-            this.hide();
-    };
-    Object.defineProperty(Tooltip.prototype, "text", {
-        get: function () {
-            return this._text;
-        },
-        set: function (text) {
-            this._text = text;
-            if (this.active) {
-                if (this._text) {
-                    if (this.container && this.container.offsetParent)
-                        this.updateText();
-                    else
-                        this.show();
-                }
-                else {
-                    this.hide();
-                }
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Tooltip.prototype.create = function () {
-        this.container = document.createElement('div');
-        var tooltipArrow = document.createElement('div');
-        tooltipArrow.className = 'ui-tooltip-arrow';
-        this.container.appendChild(tooltipArrow);
-        this.tooltipText = document.createElement('div');
-        this.tooltipText.className = 'ui-tooltip-text ui-shadow ui-corner-all';
-        this.updateText();
-        if (this.positionStyle) {
-            this.container.style.position = this.positionStyle;
-        }
-        this.container.appendChild(this.tooltipText);
-        if (this.appendTo === 'body')
-            document.body.appendChild(this.container);
-        else if (this.appendTo === 'target')
-            this.domHandler.appendChild(this.container, this.el.nativeElement);
-        else
-            this.domHandler.appendChild(this.container, this.appendTo);
-        this.container.style.display = 'inline-block';
-    };
-    Tooltip.prototype.show = function () {
-        if (!this.text || this.disabled) {
-            return;
-        }
-        this.create();
-        this.align();
-        if (this.tooltipStyleClass) {
-            this.container.className = this.container.className + ' ' + this.tooltipStyleClass;
-        }
-        this.domHandler.fadeIn(this.container, 250);
-        if (this.tooltipZIndex === 'auto')
-            this.container.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        else
-            this.container.style.zIndex = this.tooltipZIndex;
-        this.bindDocumentResizeListener();
-    };
-    Tooltip.prototype.hide = function () {
-        this.destroy();
-    };
-    Tooltip.prototype.updateText = function () {
-        if (this.escape) {
-            this.tooltipText.innerHTML = '';
-            this.tooltipText.appendChild(document.createTextNode(this._text));
-        }
-        else {
-            this.tooltipText.innerHTML = this._text;
-        }
-    };
-    Tooltip.prototype.align = function () {
-        var position = this.tooltipPosition;
-        switch (position) {
-            case 'top':
-                this.alignTop();
-                if (this.isOutOfBounds()) {
-                    this.alignBottom();
-                }
-                break;
-            case 'bottom':
-                this.alignBottom();
-                if (this.isOutOfBounds()) {
-                    this.alignTop();
-                }
-                break;
-            case 'left':
-                this.alignLeft();
-                if (this.isOutOfBounds()) {
-                    this.alignRight();
-                    if (this.isOutOfBounds()) {
-                        this.alignTop();
-                        if (this.isOutOfBounds()) {
-                            this.alignBottom();
-                        }
-                    }
-                }
-                break;
-            case 'right':
-                this.alignRight();
-                if (this.isOutOfBounds()) {
-                    this.alignLeft();
-                    if (this.isOutOfBounds()) {
-                        this.alignTop();
-                        if (this.isOutOfBounds()) {
-                            this.alignBottom();
-                        }
-                    }
-                }
-                break;
-        }
-    };
-    Tooltip.prototype.getHostOffset = function () {
-        var offset = this.el.nativeElement.getBoundingClientRect();
-        var targetLeft = offset.left + this.domHandler.getWindowScrollLeft();
-        var targetTop = offset.top + this.domHandler.getWindowScrollTop();
-        return { left: targetLeft, top: targetTop };
-    };
-    Tooltip.prototype.alignRight = function () {
-        this.preAlign();
-        this.container.className = 'ui-tooltip ui-widget ui-tooltip-right';
-        var hostOffset = this.getHostOffset();
-        var left = hostOffset.left + this.domHandler.getOuterWidth(this.el.nativeElement);
-        var top = hostOffset.top + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
-        this.container.style.left = left + 'px';
-        this.container.style.top = top + 'px';
-    };
-    Tooltip.prototype.alignLeft = function () {
-        this.preAlign();
-        this.container.className = 'ui-tooltip ui-widget ui-tooltip-left';
-        var hostOffset = this.getHostOffset();
-        var left = hostOffset.left - this.domHandler.getOuterWidth(this.container);
-        var top = hostOffset.top + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
-        this.container.style.left = left + 'px';
-        this.container.style.top = top + 'px';
-    };
-    Tooltip.prototype.alignTop = function () {
-        this.preAlign();
-        this.container.className = 'ui-tooltip ui-widget ui-tooltip-top';
-        var hostOffset = this.getHostOffset();
-        var left = hostOffset.left + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
-        var top = hostOffset.top - this.domHandler.getOuterHeight(this.container);
-        this.container.style.left = left + 'px';
-        this.container.style.top = top + 'px';
-    };
-    Tooltip.prototype.alignBottom = function () {
-        this.preAlign();
-        this.container.className = 'ui-tooltip ui-widget ui-tooltip-bottom';
-        var hostOffset = this.getHostOffset();
-        var left = hostOffset.left + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
-        var top = hostOffset.top + this.domHandler.getOuterHeight(this.el.nativeElement);
-        this.container.style.left = left + 'px';
-        this.container.style.top = top + 'px';
-    };
-    Tooltip.prototype.preAlign = function () {
-        this.container.style.left = -999 + 'px';
-        this.container.style.top = -999 + 'px';
-    };
-    Tooltip.prototype.isOutOfBounds = function () {
-        var offset = this.container.getBoundingClientRect();
-        var targetTop = offset.top;
-        var targetLeft = offset.left;
-        var width = this.domHandler.getOuterWidth(this.container);
-        var height = this.domHandler.getOuterHeight(this.container);
-        var viewport = this.domHandler.getViewport();
-        return (targetLeft + width > viewport.width) || (targetLeft < 0) || (targetTop < 0) || (targetTop + height > viewport.height);
-    };
-    Tooltip.prototype.bindDocumentResizeListener = function () {
-        var _this = this;
-        this.documentResizeListener = this.renderer.listen('window', 'resize', function (event) {
-            _this.hide();
+    TriStateCheckbox.prototype.toggle = function (event) {
+        if (this.value == null || this.value == undefined)
+            this.value = true;
+        else if (this.value == true)
+            this.value = false;
+        else if (this.value == false)
+            this.value = null;
+        this.onModelChange(this.value);
+        this.onChange.emit({
+            originalEvent: event,
+            value: this.value
         });
     };
-    Tooltip.prototype.unbindDocumentResizeListener = function () {
-        if (this.documentResizeListener) {
-            this.documentResizeListener();
-            this.documentResizeListener = null;
-        }
+    TriStateCheckbox.prototype.onFocus = function () {
+        this.focus = true;
     };
-    Tooltip.prototype.destroy = function () {
-        this.unbindDocumentResizeListener();
-        if (this.container && this.container.parentElement) {
-            if (this.appendTo === 'body')
-                document.body.removeChild(this.container);
-            else if (this.appendTo === 'target')
-                this.el.nativeElement.removeChild(this.container);
-            else
-                this.domHandler.removeChild(this.container, this.appendTo);
-        }
-        this.container = null;
+    TriStateCheckbox.prototype.onBlur = function () {
+        this.focus = false;
+        this.onModelTouched();
     };
-    Tooltip.prototype.ngOnDestroy = function () {
-        this.destroy();
+    TriStateCheckbox.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
     };
-    return Tooltip;
+    TriStateCheckbox.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    TriStateCheckbox.prototype.writeValue = function (value) {
+        this.value = value;
+        this.cd.markForCheck();
+    };
+    TriStateCheckbox.prototype.setDisabledState = function (disabled) {
+        this.disabled = disabled;
+    };
+    return TriStateCheckbox;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Tooltip.prototype, "tooltipPosition", void 0);
+    __metadata("design:type", Boolean)
+], TriStateCheckbox.prototype, "disabled", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Tooltip.prototype, "tooltipEvent", void 0);
+], TriStateCheckbox.prototype, "name", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], TriStateCheckbox.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TriStateCheckbox.prototype, "inputId", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], Tooltip.prototype, "appendTo", void 0);
+], TriStateCheckbox.prototype, "style", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Tooltip.prototype, "positionStyle", void 0);
+], TriStateCheckbox.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Tooltip.prototype, "tooltipStyleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Tooltip.prototype, "tooltipZIndex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("tooltipDisabled"),
-    __metadata("design:type", Boolean)
-], Tooltip.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Tooltip.prototype, "escape", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Tooltip.prototype, "showDelay", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Tooltip.prototype, "hideDelay", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseenter', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Tooltip.prototype, "onMouseEnter", null);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseleave', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Tooltip.prototype, "onMouseLeave", null);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('focus', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Tooltip.prototype, "onFocus", null);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('blur', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], Tooltip.prototype, "onBlur", null);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])('pTooltip'),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], Tooltip.prototype, "text", null);
-Tooltip = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
-        selector: '[pTooltip]',
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], TriStateCheckbox.prototype, "onChange", void 0);
+TriStateCheckbox = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-triStateCheckbox',
+        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-chkbox ui-tristatechkbox ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #input type=\"text\" [attr.id]=\"inputId\" [name]=\"name\" [attr.tabindex]=\"tabindex\" readonly [disabled]=\"disabled\" (keyup)=\"onKeyup($event)\" (keydown)=\"onKeydown($event)\" (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,input)\"\n                [ngClass]=\"{'ui-state-active':value!=null,'ui-state-disabled':disabled,'ui-state-focus':focus}\">\n                <span class=\"ui-chkbox-icon fa ui-clickable\" [ngClass]=\"{'fa-check':value==true,'fa-close':value==false}\"></span>\n            </div>\n        </div>\n    ",
+        providers: [TRISTATECHECKBOX_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _c || Object])
-], Tooltip);
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _b || Object])
+], TriStateCheckbox);
 
-var TooltipModule = (function () {
-    function TooltipModule() {
+var TriStateCheckboxModule = (function () {
+    function TriStateCheckboxModule() {
     }
-    return TooltipModule;
+    return TriStateCheckboxModule;
 }());
-TooltipModule = __decorate([
+TriStateCheckboxModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Tooltip],
-        declarations: [Tooltip]
+        exports: [TriStateCheckbox],
+        declarations: [TriStateCheckbox]
     })
-], TooltipModule);
+], TriStateCheckboxModule);
 
-var _a, _b, _c;
-//# sourceMappingURL=tooltip.js.map
+var _a, _b;
+//# sourceMappingURL=tristatecheckbox.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tooltip/tooltipdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__ = __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tristatecheckboxdemo__ = __webpack_require__("./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TriStateCheckboxDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -788,49 +563,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var TooltipDemoRoutingModule = (function () {
-    function TooltipDemoRoutingModule() {
+var TriStateCheckboxDemoRoutingModule = (function () {
+    function TriStateCheckboxDemoRoutingModule() {
     }
-    return TooltipDemoRoutingModule;
+    return TriStateCheckboxDemoRoutingModule;
 }());
-TooltipDemoRoutingModule = __decorate([
+TriStateCheckboxDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__["a" /* TooltipDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__tristatecheckboxdemo__["a" /* TriStateCheckboxDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], TooltipDemoRoutingModule);
+], TriStateCheckboxDemoRoutingModule);
 
-//# sourceMappingURL=tooltipdemo-routing.module.js.map
+//# sourceMappingURL=tristatecheckboxdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tooltip/tooltipdemo.html":
+/***/ "./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Tooltip</span>\r\n        <span>Tooltip provides advisory information for a component.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Positions</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\">                \r\n        </div>\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"top\" placeholder=\"Top\">\r\n        </div>\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"bottom\" placeholder=\"Bottom\">\r\n        </div>\r\n        <div class=\"ui-g-12 ui-md-3\">\r\n            <input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"left\" placeholder=\"Left\">\r\n        </div>\r\n    </div>\r\n    \r\n    <h3>Focus and Blur</h3>\r\n    <input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\" tooltipEvent=\"focus\" style=\"margin-left:.5em\">\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n                    <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;TooltipModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Tooltip is applied to an element with pTooltip directive where the value of the directive defines the text to display.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Position</h3>\r\n            <p>There are four choices to position the tooltip, default value is \"right\" and alternatives are \"top\", \"bottom\", \"left\". Position is \r\n            specified using tooltipPosition attribute.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\" tooltipPosition=\"top\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Events</h3>\r\n            <p>Tooltip gets displayed on hover event of its target by default, other option is the focus event to display and blur to hide.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\" tooltipPosition=\"top\" tooltipEvent=\"focus\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Delay</h3>\r\n            <p>Tooltip is displayed or hidden instantly by default however you may add delays using showDelay and hideDelay properties which accept a number value in terms of milliseconds.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pTooltip=\"Enter your username\" tooltipPosition=\"top\" tooltipEvent=\"focus\" showDelay=\"1000\" hideDelay=\"500\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Scrolling Containers</h3>\r\n            <p>When placed inside a scrolling container like an overflown div, tooltip must be appended to another element that has\r\n                relative positioning instead of document body which is the default.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;div #container style=\"display:inline-block;position:relative\"&gt;\r\n    &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\" [appendTo]=\"container\"&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>pTooltip</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Text of the tooltip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipPosition</td>\r\n                            <td>string</td>\r\n                            <td>right</td>\r\n                            <td>Position of the tooltip, valid values are right, left, top and bottom.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipEvent</td>\r\n                            <td>string</td>\r\n                            <td>hover</td>\r\n                            <td>Event to show the tooltip, valid values are hover and focus.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>positionStyle</td>\r\n                            <td>string</td>\r\n                            <td>absolute</td>\r\n                            <td>Type of CSS position.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipDisabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the component should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>appendTo</td>\r\n                            <td>string</td>\r\n                            <td>any</td>\r\n                            <td>Target element to attach the overlay, valid values are \"body\", \"target\" or a local ng-template variable of another element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>hideDelay</td>\r\n                            <td>null</td>\r\n                            <td>number</td>\r\n                            <td>Delay to hide the tooltip in milliseconds.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>showDelay</td>\r\n                            <td>null</td>\r\n                            <td>number</td>\r\n                            <td>Delay to show the tooltip in milliseconds.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipStyleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the tooltip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>escape</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>By default the tooltip contents are rendered as text. Set to false to support html tags in the content</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tooltipZIndex</td>\r\n                            <td>string</td>\r\n                            <td>auto</td>\r\n                            <td>Whether the z-index should be managed automatically to always go on top or have a fixed value.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-tooltip</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tooltip-arrow</td>\r\n                            <td>Arrow of the tooltip</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tooltip-text</td>\r\n                            <td>Text of the tooltip</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/tooltip\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Positions&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\"&gt;                \r\n    &lt;/div&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"top\" placeholder=\"Top\"&gt;\r\n    &lt;/div&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"bottom\" placeholder=\"Bottom\"&gt;\r\n    &lt;/div&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-3\"&gt;\r\n        &lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" tooltipPosition=\"left\" placeholder=\"Left\"&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Focus and Blur&lt;/h3&gt;\r\n&lt;input type=\"text\" pInputText pTooltip=\"Enter your username\" placeholder=\"Right\" tooltipEvent=\"focus\" style=\"margin-left:.5em\"&gt;\r\n</code>\r\n</pre>\r\n\r\n        </p-tabPanel>\r\n     </p-tabView >\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">TriStateCheckbox</span>\r\n        <span>TriStateCheckbox is used to select either \"true\", \"false\" or \"null\" as the value.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Value: {{value}}</h3>\r\n    <p-triStateCheckbox [(ngModel)]=\"value\"></p-triStateCheckbox>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;TriStateCheckboxModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>TriStateCheckbox is defined using p-triStateCheckbox element and requires a value binding via ngModel.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-triStateCheckbox [(ngModel)]=\"value\"&gt;&lt;/p-triStateCheckbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    value: any;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Model Driven Forms</h3>\r\n            <p>TriStateCheckbox can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-triStateCheckbox formControlName=\"property\"&gt;&lt;/p-triStateCheckbox&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>name</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Name of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>object</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>event.originalEvent: Original browser event <br />\r\n                                event.value: Current value.</td>\r\n                            <td>Callback to invoke on value change.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-chkbox</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-tristatechkbox</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chkbox-box</td>\r\n                            <td>Container of icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chkbox-icon</td>\r\n                            <td>Icon element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/tristatecheckbox\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\">Value: {{value}}&lt;/h3&gt;\r\n&lt;p-triStateCheckbox [(ngModel)]=\"value\"&gt;&lt;/p-triStateCheckbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class TriStateCheckboxDemo &#123;\r\n\r\n    value: any;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tooltip/tooltipdemo.module.ts":
+/***/ "./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__ = __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tooltipdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_tooltip_tooltip__ = __webpack_require__("./src/app/components/tooltip/tooltip.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tristatecheckboxdemo__ = __webpack_require__("./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tristatecheckboxdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tristatecheckbox_tristatecheckbox__ = __webpack_require__("./src/app/components/tristatecheckbox/tristatecheckbox.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TooltipDemoModule", function() { return TooltipDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TriStateCheckboxDemoModule", function() { return TriStateCheckboxDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -845,37 +620,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var TooltipDemoModule = (function () {
-    function TooltipDemoModule() {
+var TriStateCheckboxDemoModule = (function () {
+    function TriStateCheckboxDemoModule() {
     }
-    return TooltipDemoModule;
+    return TriStateCheckboxDemoModule;
 }());
-TooltipDemoModule = __decorate([
+TriStateCheckboxDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__tooltipdemo_routing_module__["a" /* TooltipDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_tooltip_tooltip__["a" /* TooltipModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4__tristatecheckboxdemo_routing_module__["a" /* TriStateCheckboxDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_tristatecheckbox_tristatecheckbox__["a" /* TriStateCheckboxModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__tooltipdemo__["a" /* TooltipDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__tristatecheckboxdemo__["a" /* TriStateCheckboxDemo */]
         ]
     })
-], TooltipDemoModule);
+], TriStateCheckboxDemoModule);
 
-//# sourceMappingURL=tooltipdemo.module.js.map
+//# sourceMappingURL=tristatecheckboxdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/tooltip/tooltipdemo.ts":
+/***/ "./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TriStateCheckboxDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -883,18 +658,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var TooltipDemo = (function () {
-    function TooltipDemo() {
+var TriStateCheckboxDemo = (function () {
+    function TriStateCheckboxDemo() {
     }
-    return TooltipDemo;
+    return TriStateCheckboxDemo;
 }());
-TooltipDemo = __decorate([
+TriStateCheckboxDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/tooltip/tooltipdemo.html")
+        template: __webpack_require__("./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.html"),
     })
-], TooltipDemo);
+], TriStateCheckboxDemo);
 
-//# sourceMappingURL=tooltipdemo.js.map
+//# sourceMappingURL=tristatecheckboxdemo.js.map
 
 /***/ })
 

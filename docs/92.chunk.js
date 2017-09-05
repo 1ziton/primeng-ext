@@ -1,13 +1,13 @@
 webpackJsonp([92],{
 
-/***/ "./src/app/showcase/components/support/support-routing.module.ts":
+/***/ "./src/app/showcase/components/theming/theming-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__support_component__ = __webpack_require__("./src/app/showcase/components/support/support.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SupportRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__theming_component__ = __webpack_require__("./src/app/showcase/components/theming/theming.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ThemingRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,41 +17,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SupportRoutingModule = (function () {
-    function SupportRoutingModule() {
+var ThemingRoutingModule = (function () {
+    function ThemingRoutingModule() {
     }
-    return SupportRoutingModule;
+    return ThemingRoutingModule;
 }());
-SupportRoutingModule = __decorate([
+ThemingRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__support_component__["a" /* SupportComponent */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__theming_component__["a" /* ThemingComponent */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], SupportRoutingModule);
+], ThemingRoutingModule);
 
-//# sourceMappingURL=support-routing.module.js.map
+//# sourceMappingURL=theming-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/support/support.component.html":
+/***/ "./src/app/showcase/components/theming/theming.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Support</span>\r\n        <span>Professional support for the open source innovation</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section support\">\r\n    <div class=\"support-image\">\r\n        <div class=\"ui-g\">\r\n            <div class=\"ui-g-12 ui-md-6\">\r\n                <h3>PrimeNG PRO Support</h3>\r\n                <p>With PrimeNG PRO, it's easy to support, tune and add features to PrimeNG as if it were an in-house framework.</p>\r\n                <a class=\"home-button\" href=\"mailto:primeng@primetek.com.tr\">GET A QUOTE</a>\r\n            </div>\r\n            <div class=\"ui-g-12 ui-md-6\">\r\n                <img alt=\"PRO\" src=\"assets/showcase/images/home/icon-pro.svg\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <p>PrimeNG PRO is a term based commercial support service. With the exclusive services of Pro account, \r\n                    you no longer need to post your questions in the community forum and your issues to community issue tracker.</p>\r\n                    \r\n    <h4>Standard PRO Services</h4>\r\n    <ul>\r\n        <li>Access to pro.primefaces.org</li>\r\n        <li>Response within 1 business day.</li>\r\n        <li>Defect patches.</li>\r\n        <li>Private branch management in case you need.</li>\r\n        <li>Customized builds.</li>\r\n        <li>Unlimited number of cases.</li>\r\n        <li>Remote desktop connection.</li>\r\n        <li>Conference calls for discussions.</li>\r\n        <li>High priority to your issues.</li>\r\n        <li>Notifications about security updates.</li>\r\n    </ul>\r\n                \r\n    <h4>New Features (Optional)</h4>\t\t\t\r\n                \r\n    <p>New feature and enhancement requests are not available in core services and provided via an hour based model instead.  When you have a feature request we provide an estimate, if you confirm we deliver your request within an estimated timeframe and deduct the amount of work from your hours. These requests can be;</p>\r\n\r\n    <ul>\r\n        <li>New components.</li>\r\n        <li>New functionality to existing components.</li>\r\n        <li>Changing the way a certain functionality is implemented.</li>\r\n        <li>Accessibility improvements.</li>\r\n        <li>Proof of Concept implementations of a use case.</li>\r\n        <li>Code reviews to offer best practices.</li>\r\n    </ul>\r\n    \r\n    <p>You can purchase additional hours along with the subscription and also anytime during your subscription period. If your subscription term ends with unused hours, they will be added to your new subscription term in case you extend.</p>    \r\n\r\n    <h3 style=\"margin-top:0px\">Community Support</h3>\r\n    <p><a href=\"https://forum.primefaces.org/viewforum.php?f=35&sid=45e34922772fa61d6741489375083cde\">Forum</a> is where the community users gather to seek support, post topics and discuss the technology. PrimeTek does not\r\n    guarantee response at forum although it is monitored and maintained by our staff. If you need to secure our response within 4 business hours, you may consider PrimeNG PRO support.</p>\r\n\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Theming</span>\r\n        <span>Create your own PrimeNG experience</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <h3 style=\"margin-top:0px\">Structural CSS</h3>\r\n    <p>These style classes define the skeleton of the components and include css properties such as margin, padding, display type, dimensions and positioning.\r\n    Refer to documentation of each component for the list of structural classes per component.</p>\r\n\r\n    <h3>Skinning CSS</h3>\r\n    <p>Skinning defines the look and feel properties like colors, border colors, background images.</p>\r\n\r\n    <div class=\"doc-tablewrapper\">\r\n        <table class=\"doc-table\">\r\n            <thead>\r\n                <tr>\r\n                    <th>Style Class</th>\r\n                    <th>Applies</th>\r\n                </tr>\r\n            </thead>\r\n            <tbody>\r\n                <tr>\r\n                    <td>ui-widget</td>\r\n                    <td>All PrimeNG components</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-widget-header</td>\r\n                    <td>Header section of a component</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-widget-content</td>\r\n                    <td>Content section of a component</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-default</td>\r\n                    <td>Default state of a clickable element</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-hover</td>\r\n                    <td>Hover state of a clickable element like mouse over</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-active</td>\r\n                    <td>Active state of a clickable element like mouse press</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-highlight</td>\r\n                    <td>Highlighed elements</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-disabled</td>\r\n                    <td>Disabled elements</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>fa</td>\r\n                    <td>Icon elements based on font awesome</td>\r\n                </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n\r\n    <p>These classes are not aware of structural css like margins and paddings, mostly they only define colors. This clean separation brings great flexibility in theming because you don’t need to know each and every skinning selectors of components to change their style.</p>\r\n\r\n    <p>For example Panel component’s header section has the \"ui-panel-titlebar\" structural class, to change the color of a panel header you don’t need to about this class as \"ui-widget-header\" defines colors for panel header.</p>\r\n\r\n    <h3>Free Themes</h3>\r\n    <p>16 free themes are available for PrimeNG, these include the themeroller themes, twitter bootstrap theme and our custom themes. ThemeSwitcher on the top right section\r\n        of the page dynamically changes the theme at demo pages. Themes are distributed along with PrimeNG itself. In addition, <a href=\"https://jqueryui.com/themeroller/\">online ThemeRoller</a> designer allows you to create a PrimeNG theme.</p>\r\n\r\n    <p>Font-size of free themes use em to define the font size of the widgets using .ui-widget class. This is 1em by default and it is suggested to define a base font-size at the body element of your application to adjust the size of\r\n    components.</p>\r\n\r\n    <h3>Premium Layouts and Themes</h3>\r\n    <p>PrimeNG also supports sass based, fully customizable and easy to use <a href=\"http://www.primefaces.org/themes\">premium themes and layouts</a> such as <b>Ultima</b>\r\n        as Angular CLI projects.</p>\r\n\r\n    <a href=\"http://www.primefaces.org/layouts/ultima\">\r\n        <img alt=\"Ultima\" src=\"http://www.primefaces.org/images/market/ultima/ultima_layout_biggest.png\" style=\"width:100%\"/> \r\n    </a>\r\n\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/support/support.component.ts":
+/***/ "./src/app/showcase/components/theming/theming.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SupportComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ThemingComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -59,31 +59,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var SupportComponent = (function () {
-    function SupportComponent() {
+var ThemingComponent = (function () {
+    function ThemingComponent() {
     }
-    return SupportComponent;
+    return ThemingComponent;
 }());
-SupportComponent = __decorate([
+ThemingComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/support/support.component.html")
+        template: __webpack_require__("./src/app/showcase/components/theming/theming.component.html")
     })
-], SupportComponent);
+], ThemingComponent);
 
-//# sourceMappingURL=support.component.js.map
+//# sourceMappingURL=theming.component.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/support/support.module.ts":
+/***/ "./src/app/showcase/components/theming/theming.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__support_component__ = __webpack_require__("./src/app/showcase/components/support/support.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__support_routing_module__ = __webpack_require__("./src/app/showcase/components/support/support-routing.module.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SupportModule", function() { return SupportModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__theming_component__ = __webpack_require__("./src/app/showcase/components/theming/theming.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__theming_routing_module__ = __webpack_require__("./src/app/showcase/components/theming/theming-routing.module.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ThemingModule", function() { return ThemingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -94,24 +94,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SupportModule = (function () {
-    function SupportModule() {
+var ThemingModule = (function () {
+    function ThemingModule() {
     }
-    return SupportModule;
+    return ThemingModule;
 }());
-SupportModule = __decorate([
+ThemingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__support_routing_module__["a" /* SupportRoutingModule */]
+            __WEBPACK_IMPORTED_MODULE_3__theming_routing_module__["a" /* ThemingRoutingModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__support_component__["a" /* SupportComponent */]
+            __WEBPACK_IMPORTED_MODULE_2__theming_component__["a" /* ThemingComponent */]
         ]
     })
-], SupportModule);
+], ThemingModule);
 
-//# sourceMappingURL=support.module.js.map
+//# sourceMappingURL=theming.module.js.map
 
 /***/ })
 

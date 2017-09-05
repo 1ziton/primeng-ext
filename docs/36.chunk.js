@@ -1,175 +1,5 @@
 webpackJsonp([36],{
 
-/***/ "./src/app/components/checkbox/checkbox.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export CHECKBOX_VALUE_ACCESSOR */
-/* unused harmony export Checkbox */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var CHECKBOX_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Checkbox; }),
-    multi: true
-};
-var Checkbox = (function () {
-    function Checkbox(cd) {
-        this.cd = cd;
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
-        this.focused = false;
-        this.checked = false;
-    }
-    Checkbox.prototype.onClick = function (event, checkbox, focus) {
-        event.preventDefault();
-        if (this.disabled) {
-            return;
-        }
-        this.checked = !this.checked;
-        this.updateModel();
-        if (focus) {
-            checkbox.focus();
-        }
-    };
-    Checkbox.prototype.updateModel = function () {
-        if (!this.binary) {
-            if (this.checked)
-                this.addValue();
-            else
-                this.removeValue();
-            this.onModelChange(this.model);
-        }
-        else {
-            this.onModelChange(this.checked);
-        }
-        this.onChange.emit(this.checked);
-    };
-    Checkbox.prototype.handleChange = function (event) {
-        this.checked = event.target.checked;
-        this.updateModel();
-    };
-    Checkbox.prototype.isChecked = function () {
-        if (this.binary)
-            return this.model;
-        else
-            return this.model && this.model.indexOf(this.value) > -1;
-    };
-    Checkbox.prototype.removeValue = function () {
-        var _this = this;
-        this.model = this.model.filter(function (val) { return val !== _this.value; });
-    };
-    Checkbox.prototype.addValue = function () {
-        if (this.model)
-            this.model = this.model.concat([this.value]);
-        else
-            this.model = [this.value];
-    };
-    Checkbox.prototype.onFocus = function (event) {
-        this.focused = true;
-    };
-    Checkbox.prototype.onBlur = function (event) {
-        this.focused = false;
-        this.onModelTouched();
-    };
-    Checkbox.prototype.writeValue = function (model) {
-        this.model = model;
-        this.checked = this.isChecked();
-        this.cd.markForCheck();
-    };
-    Checkbox.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
-    };
-    Checkbox.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
-    };
-    Checkbox.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    return Checkbox;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Checkbox.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "name", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Checkbox.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "binary", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "label", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Checkbox.prototype, "tabindex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "inputId", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Checkbox.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Checkbox.prototype, "onChange", void 0);
-Checkbox = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-checkbox',
-        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-chkbox ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" [attr.id]=\"inputId\" [name]=\"name\" [value]=\"value\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (change)=\"handleChange($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        [ngClass]=\"{'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-chkbox-label\" (click)=\"onClick($event,cb,true)\" \n                [ngClass]=\"{'ui-label-active':checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n                *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
-        providers: [CHECKBOX_VALUE_ACCESSOR]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _b || Object])
-], Checkbox);
-
-var CheckboxModule = (function () {
-    function CheckboxModule() {
-    }
-    return CheckboxModule;
-}());
-CheckboxModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Checkbox],
-        declarations: [Checkbox]
-    })
-], CheckboxModule);
-
-var _a, _b;
-//# sourceMappingURL=checkbox.js.map
-
-/***/ }),
-
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -223,16 +53,26 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/radiobutton/radiobutton.ts":
+/***/ "./src/app/components/common/menuitem.ts":
+/***/ (function(module, exports) {
+
+//# sourceMappingURL=menuitem.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/contextmenu/contextmenu.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export RADIO_VALUE_ACCESSOR */
-/* unused harmony export RadioButton */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioButtonModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_menuitem__ = __webpack_require__("./src/app/components/common/menuitem.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_menuitem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__common_menuitem__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+/* unused harmony export ContextMenuSub */
+/* unused harmony export ContextMenu */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContextMenuModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -242,126 +82,247 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
-
-
-var RADIO_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return RadioButton; }),
-    multi: true
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 };
-var RadioButton = (function () {
-    function RadioButton(cd) {
-        this.cd = cd;
-        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
+
+
+
+
+
+var ContextMenuSub = (function () {
+    function ContextMenuSub(domHandler, contextMenu) {
+        this.domHandler = domHandler;
+        this.contextMenu = contextMenu;
     }
-    RadioButton.prototype.handleClick = function () {
-        if (!this.disabled) {
-            this.onClick.emit(null);
-            this.select();
+    ContextMenuSub.prototype.onItemMouseEnter = function (event, item, menuitem) {
+        if (menuitem.disabled) {
+            return;
+        }
+        this.activeItem = item;
+        var nextElement = item.children[0].nextElementSibling;
+        if (nextElement) {
+            var sublist = nextElement.children[0];
+            sublist.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
+            this.position(sublist, item);
         }
     };
-    RadioButton.prototype.select = function () {
-        if (!this.disabled) {
-            this.inputViewChild.nativeElement.checked = true;
-            this.checked = true;
-            this.onModelChange(this.value);
+    ContextMenuSub.prototype.onItemMouseLeave = function (event, link) {
+        this.activeItem = null;
+    };
+    ContextMenuSub.prototype.itemClick = function (event, item) {
+        if (item.disabled) {
+            event.preventDefault();
+            return;
+        }
+        if (!item.url) {
+            event.preventDefault();
+        }
+        if (item.command) {
+            item.command({
+                originalEvent: event,
+                item: item
+            });
         }
     };
-    RadioButton.prototype.writeValue = function (value) {
-        this.checked = (value == this.value);
-        if (this.inputViewChild.nativeElement) {
-            this.inputViewChild.nativeElement.checked = this.checked;
+    ContextMenuSub.prototype.listClick = function (event) {
+        this.activeItem = null;
+    };
+    ContextMenuSub.prototype.position = function (sublist, item) {
+        this.containerLeft = this.domHandler.getOffset(item.parentElement);
+        var viewport = this.domHandler.getViewport();
+        var sublistWidth = sublist.offsetParent ? sublist.offsetWidth : this.domHandler.getHiddenElementOuterWidth(sublist);
+        var itemOuterWidth = this.domHandler.getOuterWidth(item.children[0]);
+        sublist.style.top = '0px';
+        if ((parseInt(this.containerLeft.left) + itemOuterWidth + sublistWidth) > (viewport.width - this.calculateScrollbarWidth())) {
+            sublist.style.left = -sublistWidth + 'px';
         }
-        this.cd.markForCheck();
+        else {
+            sublist.style.left = itemOuterWidth + 'px';
+        }
     };
-    RadioButton.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
+    ContextMenuSub.prototype.calculateScrollbarWidth = function () {
+        var scrollDiv = document.createElement("div");
+        scrollDiv.className = "ui-scrollbar-measure";
+        document.body.appendChild(scrollDiv);
+        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+        document.body.removeChild(scrollDiv);
+        return scrollbarWidth;
     };
-    RadioButton.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
-    };
-    RadioButton.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    RadioButton.prototype.onFocus = function (event) {
-        this.focused = true;
-    };
-    RadioButton.prototype.onBlur = function (event) {
-        this.focused = false;
-        this.onModelTouched();
-    };
-    RadioButton.prototype.onChange = function (event) {
-        this.select();
-    };
-    return RadioButton;
+    return ContextMenuSub;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], RadioButton.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], RadioButton.prototype, "name", void 0);
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__common_menuitem__["MenuItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_menuitem__["MenuItem"]) === "function" && _a || Object)
+], ContextMenuSub.prototype, "item", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], RadioButton.prototype, "disabled", void 0);
+], ContextMenuSub.prototype, "root", void 0);
+ContextMenuSub = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-contextMenuSub',
+        template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <ng-template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li *ngIf=\"child.separator\" class=\"ui-menu-separator ui-widget-content\">\n                <li *ngIf=\"!child.separator\" #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event,item,child)\" (mouseleave)=\"onItemMouseLeave($event,item)\" [style.display]=\"child.visible === false ? 'none' : 'block'\">\n                    <a *ngIf=\"!child.routerLink\" [href]=\"child.url||'#'\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" (click)=\"itemClick($event, child)\"\n                        [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <a *ngIf=\"child.routerLink\" [routerLink]=\"child.routerLink\" [routerLinkActive]=\"'ui-state-active'\" \n                        [routerLinkActiveOptions]=\"child.routerLinkActiveOptions||{exact:false}\" [attr.target]=\"child.target\" [attr.title]=\"child.title\"\n                        (click)=\"itemClick($event, child)\" [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" \n                        [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </ng-template>\n        </ul>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return ContextMenu; }))),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, ContextMenu])
+], ContextMenuSub);
+
+var ContextMenu = (function () {
+    function ContextMenu(el, domHandler, renderer) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+    }
+    ContextMenu.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.container = this.containerViewChild.nativeElement;
+        if (this.global) {
+            this.rightClickListener = this.renderer.listen('document', 'contextmenu', function (event) {
+                _this.show(event);
+                event.preventDefault();
+            });
+        }
+        else if (this.target) {
+            this.rightClickListener = this.renderer.listen(this.target, 'contextmenu', function (event) {
+                _this.show(event);
+                event.preventDefault();
+                event.stopPropagation();
+            });
+        }
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.container);
+            else
+                this.domHandler.appendChild(this.container, this.appendTo);
+        }
+    };
+    ContextMenu.prototype.show = function (event) {
+        this.position(event);
+        this.visible = true;
+        this.domHandler.fadeIn(this.container, 250);
+        this.bindDocumentClickListener();
+        if (event) {
+            event.preventDefault();
+        }
+    };
+    ContextMenu.prototype.hide = function () {
+        this.visible = false;
+        this.unbindDocumentClickListener();
+    };
+    ContextMenu.prototype.toggle = function (event) {
+        if (this.visible)
+            this.hide();
+        else
+            this.show(event);
+    };
+    ContextMenu.prototype.position = function (event) {
+        if (event) {
+            var left = event.pageX + 1;
+            var top = event.pageY + 1;
+            var width = this.container.offsetParent ? this.container.offsetWidth : this.domHandler.getHiddenElementOuterWidth(this.container);
+            var height = this.container.offsetParent ? this.container.offsetHeight : this.domHandler.getHiddenElementOuterHeight(this.container);
+            var viewport = this.domHandler.getViewport();
+            //flip
+            if (left + width - document.body.scrollLeft > viewport.width) {
+                left -= width;
+            }
+            //flip
+            if (top + height - document.body.scrollTop > viewport.height) {
+                top -= height;
+            }
+            //fit
+            if (left < document.body.scrollLeft) {
+                left = document.body.scrollLeft;
+            }
+            //fit
+            if (top < document.body.scrollTop) {
+                top = document.body.scrollTop;
+            }
+            this.container.style.left = left + 'px';
+            this.container.style.top = top + 'px';
+        }
+    };
+    ContextMenu.prototype.bindDocumentClickListener = function () {
+        var _this = this;
+        if (!this.documentClickListener) {
+            this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
+                if (_this.visible && event.button !== 2) {
+                    _this.hide();
+                }
+            });
+        }
+    };
+    ContextMenu.prototype.unbindDocumentClickListener = function () {
+        if (this.documentClickListener) {
+            this.documentClickListener();
+            this.documentClickListener = null;
+        }
+    };
+    ContextMenu.prototype.ngOnDestroy = function () {
+        this.unbindDocumentClickListener();
+        if (this.rightClickListener) {
+            this.rightClickListener();
+        }
+        if (this.appendTo) {
+            this.el.nativeElement.appendChild(this.container);
+        }
+    };
+    return ContextMenu;
+}());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], RadioButton.prototype, "label", void 0);
+    __metadata("design:type", Array)
+], ContextMenu.prototype, "model", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], RadioButton.prototype, "tabindex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], RadioButton.prototype, "inputId", void 0);
+    __metadata("design:type", Boolean)
+], ContextMenu.prototype, "global", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], RadioButton.prototype, "style", void 0);
+], ContextMenu.prototype, "target", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], ContextMenu.prototype, "style", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], RadioButton.prototype, "styleClass", void 0);
+], ContextMenu.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], RadioButton.prototype, "onClick", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], ContextMenu.prototype, "appendTo", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('rb'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object)
-], RadioButton.prototype, "inputViewChild", void 0);
-RadioButton = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
+], ContextMenu.prototype, "containerViewChild", void 0);
+ContextMenu = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-radioButton',
-        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div (click)=\"handleClick()\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-radiobutton-label\" (click)=\"select()\" \n            [ngClass]=\"{'ui-label-active':rb.checked,'ui-label-disabled':disabled,'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
-        providers: [RADIO_VALUE_ACCESSOR]
+        selector: 'p-contextMenu',
+        template: "\n        <div #container [ngClass]=\"'ui-contextmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-dynamic ui-shadow'\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" [style.display]=\"visible ? 'block' : 'none'\">\n            <p-contextMenuSub [item]=\"model\" root=\"root\"></p-contextMenuSub>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _c || Object])
-], RadioButton);
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _f || Object])
+], ContextMenu);
 
-var RadioButtonModule = (function () {
-    function RadioButtonModule() {
+var ContextMenuModule = (function () {
+    function ContextMenuModule() {
     }
-    return RadioButtonModule;
+    return ContextMenuModule;
 }());
-RadioButtonModule = __decorate([
+ContextMenuModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [RadioButton],
-        declarations: [RadioButton]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */]],
+        exports: [ContextMenu, __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */]],
+        declarations: [ContextMenu, ContextMenuSub]
     })
-], RadioButtonModule);
+], ContextMenuModule);
 
-var _a, _b, _c;
-//# sourceMappingURL=radiobutton.js.map
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=contextmenu.js.map
 
 /***/ }),
 
@@ -716,14 +677,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/contextmenu/contextmenudemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputgroupdemo__ = __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputGroupDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contextmenudemo__ = __webpack_require__("./src/app/showcase/components/contextmenu/contextmenudemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContextMenuDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -733,52 +694,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var InputGroupDemoRoutingModule = (function () {
-    function InputGroupDemoRoutingModule() {
+var ContextMenuDemoRoutingModule = (function () {
+    function ContextMenuDemoRoutingModule() {
     }
-    return InputGroupDemoRoutingModule;
+    return ContextMenuDemoRoutingModule;
 }());
-InputGroupDemoRoutingModule = __decorate([
+ContextMenuDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inputgroupdemo__["a" /* InputGroupDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__contextmenudemo__["a" /* ContextMenuDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], InputGroupDemoRoutingModule);
+], ContextMenuDemoRoutingModule);
 
-//# sourceMappingURL=inputgroupdemo-routing.module.js.map
+//# sourceMappingURL=contextmenudemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo.html":
+/***/ "./src/app/showcase/components/contextmenu/contextmenudemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">InputGroup</span>\r\n        <span>Text, icon, buttons and other content can be grouped next to an input by wrapping the addons and input inside\r\n            .ui-inputgroup element. Multiple addons can be used within the same group as well.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Addons</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><i class=\"fa fa-user\"></i></span>\r\n                <input type=\"text\" pInputText placeholder=\"Username\">         \r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\">$</span>\r\n                <input type=\"text\" pInputText placeholder=\"Price\">   \r\n                <span class=\"ui-inputgroup-addon\">.00</span>      \r\n            </div>\r\n        </div>\r\n                \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\">www</span>\r\n                <input type=\"text\" pInputText placeholder=\"Website\">      \r\n            </div>\r\n        </div>\r\n    </div>\r\n        \r\n    <h3>Multiple Addons</h3>\r\n    <div class=\"ui-g\">\r\n        <div class=\"ui-g-12\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><i class=\"fa fa-credit-card\"></i></span>  \r\n                <span class=\"ui-inputgroup-addon\"><i class=\"fa fa-cc-visa\"></i></span>   \r\n                <input type=\"text\" pInputText placeholder=\"Price\"> \r\n                <span class=\"ui-inputgroup-addon\">$</span>  \r\n                <span class=\"ui-inputgroup-addon\">.00</span>      \r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <h3>Button Addons</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <button pButton type=\"button\" label=\"Search\"></button>\r\n                <input type=\"text\" pInputText placeholder=\"Keyword\">         \r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <input type=\"text\" pInputText placeholder=\"Keyword\">   \r\n                <button pButton type=\"button\" icon=\"fa-search\" class=\"ui-button-secondary\"></button>      \r\n            </div>\r\n        </div>\r\n                \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <button pButton type=\"button\" icon=\"fa-check\" class=\"ui-button-success\"></button>    \r\n                <input type=\"text\" pInputText placeholder=\"Vote\">   \r\n                <button pButton type=\"button\" icon=\"fa-close\" class=\"ui-button-danger\"></button>      \r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <h3>Checkbox and RadioButton</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><p-checkbox></p-checkbox></span>\r\n                <input type=\"text\" pInputText placeholder=\"Username\">         \r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <input type=\"text\" pInputText placeholder=\"Price\">   \r\n                <span class=\"ui-inputgroup-addon\"><p-radioButton></p-radioButton></span>      \r\n            </div>\r\n        </div>\r\n                \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><p-checkbox></p-checkbox></span>\r\n                <input type=\"text\" pInputText placeholder=\"Website\">      \r\n                <span class=\"ui-inputgroup-addon\"><p-radioButton></p-radioButton></span> \r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"inputgroupdemo.html\">\r\n<a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inputgroup\" class=\"btn-viewsource\" target=\"_blank\">\r\n    <i class=\"fa fa-github\"></i>\r\n    <span>View on GitHub</span>\r\n</a>\r\n\r\n    <pre>\r\n    <code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Addons&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-user\"&gt;&lt;/i&gt;&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Username\"&gt;         \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;$&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt;   \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;.00&lt;/span&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n            \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;www&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Website\"&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n    \r\n&lt;h3&gt;Multiple Addons&lt;/h3&gt;\r\n&lt;div class=\"ui-g\"&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-credit-card\"&gt;&lt;/i&gt;&lt;/span&gt;  \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-cc-visa\"&gt;&lt;/i&gt;&lt;/span&gt;   \r\n            &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt; \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;$&lt;/span&gt;  \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;.00&lt;/span&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Button Addons&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;button pButton type=\"button\" label=\"Search\"&gt;&lt;/button&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Keyword\"&gt;         \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Keyword\"&gt;   \r\n            &lt;button pButton type=\"button\" icon=\"fa-search\" class=\"ui-button-secondary\"&gt;&lt;/button&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n            \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;button pButton type=\"button\" icon=\"fa-check\" class=\"ui-button-success\"&gt;&lt;/button&gt;    \r\n            &lt;input type=\"text\" pInputText placeholder=\"Vote\"&gt;   \r\n            &lt;button pButton type=\"button\" icon=\"fa-close\" class=\"ui-button-danger\"&gt;&lt;/button&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Checkbox and RadioButton&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-checkbox&gt;&lt;/p-checkbox&gt;&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Username\"&gt;         \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt;   \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-radioButton&gt;&lt;/p-radioButton&gt;&lt;/span&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n            \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-checkbox&gt;&lt;/p-checkbox&gt;&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Website\"&gt;      \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-radioButton&gt;&lt;/p-radioButton&gt;&lt;/span&gt; \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"inputgroupdemo.ts\">\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class InputGroupDemo &#123;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">ContextMenu</span>\r\n        <span>ContextMenu displays an overlay menu on right click of its target. This page has two menus, one for the document and one for the image. Note that \r\n        components like DataTable has special integration with ContextMenu. Refer to documentation of the individual documentation of the components having a special integration.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">    \r\n    <p-contextMenu [global]=\"true\" [model]=\"items1\"></p-contextMenu>\r\n    \r\n    <p-contextMenu [target]=\"img\" [model]=\"items2\" ></p-contextMenu>\r\n    \r\n    <img #img src=\"assets/showcase/images/primeng-text.svg\" alt=\"Logo\">\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;ContextMenuModule,MenuItem&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>MenuModel API</h3>\r\n            <p>ContextMenu uses the common menumodel api to define its items, visit <a [routerLink]=\"['/menumodel']\">MenuModel API</a> for details.</p>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>ContextMenu requires nested menuitems as its model and in its simplest form ContextMenu is attached to the document with global setting. .</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-contextMenu [global]=\"true\" [model]=\"items\"&gt;&lt;/p-contextMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Target</h3>\r\n            <p>ContextMenu can be attached to a particular element whose local template variable name is defined using the target property.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-contextMenu [target]=\"img\" [model]=\"items2\" &gt;&lt;/p-contextMenu&gt;\r\n\r\n&lt;img #img src=\"assets/showcase/images/primeng.svg\" alt=\"Logo\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Exclusive Integrations</h3>\r\n            <p>Some components like DataTable require special attention so they provide a different method to attach a context menu. Refer to \r\n            individual documentation of components with special integration like DataTable.</p>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ContextMenuDemo &#123;\r\n\r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [\r\n            &#123;\r\n                label: 'File',\r\n                items: [&#123;\r\n                        label: 'New', \r\n                        icon: 'fa-plus',\r\n                        items: [\r\n                            &#123;label: 'Project'&#125;,\r\n                            &#123;label: 'Other'&#125;,\r\n                        ]\r\n                    &#125;,\r\n                    &#123;label: 'Open'&#125;,\r\n                    &#123;label: 'Quit'&#125;\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Edit',\r\n                icon: 'fa-edit',\r\n                items: [\r\n                    &#123;label: 'Undo', icon: 'fa-mail-forward'&#125;,\r\n                    &#123;label: 'Redo', icon: 'fa-mail-reply'&#125;\r\n                ]\r\n            &#125;\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>model</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of menuitems.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>global</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Attaches the menu to document instead of a particular item.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>target</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Local template variable name of the element to attach the context menu.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>appendTo</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Target element to attach the overlay, valid values are \"body\" or a local ng-template variable of another element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Methods</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>toggle</td>\r\n                            <td>event (optional): mouse event</td>\r\n                            <td>Toggles the visibility of the popup menu.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>show</td>\r\n                            <td>event: browser event</td>\r\n                            <td>Displays the popup menu.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>hide</td>\r\n                            <td>-</td>\r\n                            <td>Hides the popup menu.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Element</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                    <tr>\r\n                        <td>ui-contextmenu</td>\r\n                        <td>Container element.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-menu-list</td>\r\n                        <td>List element.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-menuitem</td>\r\n                        <td>Menuitem element.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-menuitem-text</td>\r\n                        <td>Label of a menuitem.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-menuitem-icon</td>\r\n                        <td>Icon of a menuitem.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-submenu-icon</td>\r\n                        <td>Arrow icon of a submenu.</td>\r\n                    </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/contextmenu\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-contextMenu [global]=\"true\" [model]=\"items1\"&gt;&lt;/p-contextMenu&gt;\r\n\r\n&lt;p-contextMenu [target]=\"img\" [model]=\"items2\" &gt;&lt;/p-contextMenu&gt;\r\n\r\n&lt;img #img src=\"assets/showcase/images/primeng-text.svg\" alt=\"Logo\"&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ContextMenuDemo &#123;\r\n\r\n    items: MenuItem[];\r\n    \r\n    items2: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [\r\n            &#123;\r\n                label: 'File',\r\n                icon: 'fa-file-o',\r\n                items: [&#123;\r\n                        label: 'New', \r\n                        icon: 'fa-plus',\r\n                        items: [\r\n                            &#123;label: 'Project'&#125;,\r\n                            &#123;label: 'Other'&#125;,\r\n                        ]\r\n                    &#125;,\r\n                    &#123;label: 'Open'&#125;,\r\n                    &#123;separator:true&#125;,\r\n                    &#123;label: 'Quit'&#125;\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Edit',\r\n                icon: 'fa-edit',\r\n                items: [\r\n                    &#123;label: 'Undo', icon: 'fa-mail-forward'&#125;,\r\n                    &#123;label: 'Redo', icon: 'fa-mail-reply'&#125;\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Help',\r\n                icon: 'fa-question',\r\n                items: [\r\n                    &#123;\r\n                        label: 'Contents'\r\n                    &#125;,\r\n                    &#123;\r\n                        label: 'Search', \r\n                        icon: 'fa-search', \r\n                        items: [\r\n                            &#123;\r\n                                label: 'Text', \r\n                                items: [\r\n                                    &#123;\r\n                                        label: 'Workspace'\r\n                                    &#125;\r\n                                ]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'File'\r\n                            &#125;\r\n                    ]&#125;\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Actions',\r\n                icon: 'fa-gear',\r\n                items: [\r\n                    &#123;\r\n                        label: 'Edit',\r\n                        icon: 'fa-refresh',\r\n                        items: [\r\n                            &#123;label: 'Save', icon: 'fa-save'&#125;,\r\n                            &#123;label: 'Update', icon: 'fa-save'&#125;,\r\n                        ]\r\n                    &#125;,\r\n                    &#123;\r\n                        label: 'Other',\r\n                        icon: 'fa-phone',\r\n                        items: [\r\n                            &#123;label: 'Delete', icon: 'fa-minus'&#125;\r\n                        ]\r\n                    &#125;\r\n                ]\r\n            &#125;,\r\n            &#123;separator:true&#125;,\r\n            &#123;\r\n                label: 'Quit', icon: 'fa-minus'\r\n            &#125;\r\n        ];\r\n        \r\n        this.items2 = [\r\n            &#123;\r\n                label: 'Next',\r\n                icon: 'fa-chevron-right'\r\n            &#125;,\r\n            &#123;\r\n                label: 'Prev',\r\n                icon: 'fa-chevron-left'\r\n            &#125;\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo.module.ts":
+/***/ "./src/app/showcase/components/contextmenu/contextmenudemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputgroupdemo__ = __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputgroupdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_checkbox_checkbox__ = __webpack_require__("./src/app/components/checkbox/checkbox.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_radiobutton_radiobutton__ = __webpack_require__("./src/app/components/radiobutton/radiobutton.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputGroupDemoModule", function() { return InputGroupDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contextmenudemo__ = __webpack_require__("./src/app/showcase/components/contextmenu/contextmenudemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__contextmenudemo_routing_module__ = __webpack_require__("./src/app/showcase/components/contextmenu/contextmenudemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_contextmenu_contextmenu__ = __webpack_require__("./src/app/components/contextmenu/contextmenu.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContextMenuDemoModule", function() { return ContextMenuDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -792,44 +749,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-
-
-
-var InputGroupDemoModule = (function () {
-    function InputGroupDemoModule() {
+var ContextMenuDemoModule = (function () {
+    function ContextMenuDemoModule() {
     }
-    return InputGroupDemoModule;
+    return ContextMenuDemoModule;
 }());
-InputGroupDemoModule = __decorate([
+ContextMenuDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_4__inputgroupdemo_routing_module__["a" /* InputGroupDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_button_button__["a" /* ButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_checkbox_checkbox__["a" /* CheckboxModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_radiobutton_radiobutton__["a" /* RadioButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_9__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_10__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__contextmenudemo_routing_module__["a" /* ContextMenuDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_contextmenu_contextmenu__["a" /* ContextMenuModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__inputgroupdemo__["a" /* InputGroupDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__contextmenudemo__["a" /* ContextMenuDemo */]
         ]
     })
-], InputGroupDemoModule);
+], ContextMenuDemoModule);
 
-//# sourceMappingURL=inputgroupdemo.module.js.map
+//# sourceMappingURL=contextmenudemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo.ts":
+/***/ "./src/app/showcase/components/contextmenu/contextmenudemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputGroupDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContextMenuDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -837,18 +786,107 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var InputGroupDemo = (function () {
-    function InputGroupDemo() {
+var ContextMenuDemo = (function () {
+    function ContextMenuDemo() {
     }
-    return InputGroupDemo;
+    ContextMenuDemo.prototype.ngOnInit = function () {
+        this.items1 = [
+            {
+                label: 'File',
+                icon: 'fa-file-o',
+                items: [{
+                        label: 'New',
+                        icon: 'fa-plus',
+                        items: [
+                            { label: 'Project' },
+                            { label: 'Other' },
+                        ]
+                    },
+                    { label: 'Open' },
+                    { separator: true },
+                    { label: 'Quit' }
+                ]
+            },
+            {
+                label: 'Edit',
+                icon: 'fa-edit',
+                items: [
+                    { label: 'Undo', icon: 'fa-mail-forward' },
+                    { label: 'Redo', icon: 'fa-mail-reply' }
+                ]
+            },
+            {
+                label: 'Help',
+                icon: 'fa-question',
+                items: [
+                    {
+                        label: 'Contents'
+                    },
+                    {
+                        label: 'Search',
+                        icon: 'fa-search',
+                        items: [
+                            {
+                                label: 'Text',
+                                items: [
+                                    {
+                                        label: 'Workspace'
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'File'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                label: 'Actions',
+                icon: 'fa-gear',
+                items: [
+                    {
+                        label: 'Edit',
+                        icon: 'fa-refresh',
+                        items: [
+                            { label: 'Save', icon: 'fa-save' },
+                            { label: 'Update', icon: 'fa-save' },
+                        ]
+                    },
+                    {
+                        label: 'Other',
+                        icon: 'fa-phone',
+                        items: [
+                            { label: 'Delete', icon: 'fa-minus' }
+                        ]
+                    }
+                ]
+            },
+            { separator: true },
+            {
+                label: 'Quit', icon: 'fa-minus'
+            }
+        ];
+        this.items2 = [
+            {
+                label: 'Next',
+                icon: 'fa-chevron-right'
+            },
+            {
+                label: 'Prev',
+                icon: 'fa-chevron-left'
+            }
+        ];
+    };
+    return ContextMenuDemo;
 }());
-InputGroupDemo = __decorate([
+ContextMenuDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo.html")
+        template: __webpack_require__("./src/app/showcase/components/contextmenu/contextmenudemo.html")
     })
-], InputGroupDemo);
+], ContextMenuDemo);
 
-//# sourceMappingURL=inputgroupdemo.js.map
+//# sourceMappingURL=contextmenudemo.js.map
 
 /***/ })
 

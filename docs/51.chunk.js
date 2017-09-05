@@ -53,17 +53,18 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/slider/slider.ts":
+/***/ "./src/app/components/spinner/spinner.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export SLIDER_VALUE_ACCESSOR */
-/* unused harmony export Slider */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SliderModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export SPINNER_VALUE_ACCESSOR */
+/* unused harmony export Spinner */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -77,327 +78,301 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var SLIDER_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Slider; }),
+
+var SPINNER_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Spinner; }),
     multi: true
 };
-var Slider = (function () {
-    function Slider(el, domHandler, renderer) {
+var Spinner = (function () {
+    function Spinner(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
-        this.renderer = renderer;
-        this.min = 0;
-        this.max = 100;
-        this.orientation = 'horizontal';
         this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onSlideEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.handleValues = [];
+        this.onFocus = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onBlur = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.step = 1;
+        this.decimalSeparator = '.';
+        this.thousandSeparator = ',';
+        this.formatInput = true;
+        this.type = 'text';
+        this.valueAsString = '';
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
+        this.keyPattern = /[0-9\+\-]/;
     }
-    Slider.prototype.onMouseDown = function (event, index) {
-        if (this.disabled) {
-            return;
+    Spinner.prototype.ngOnInit = function () {
+        if (Math.floor(this.step) === 0) {
+            this.precision = this.step.toString().split(/[,]|[.]/)[1].length;
         }
-        this.dragging = true;
-        this.updateDomData();
-        this.sliderHandleClick = true;
-        this.handleIndex = index;
-        event.preventDefault();
     };
-    Slider.prototype.onTouchStart = function (event, index) {
-        var touchobj = event.changedTouches[0];
-        this.startHandleValue = (this.range) ? this.handleValues[index] : this.handleValue;
-        this.dragging = true;
-        this.handleIndex = index;
-        if (this.orientation === 'horizontal') {
-            this.startx = parseInt(touchobj.clientX, 10);
-            this.barWidth = this.el.nativeElement.children[0].offsetWidth;
-        }
-        else {
-            this.starty = parseInt(touchobj.clientY, 10);
-            this.barHeight = this.el.nativeElement.children[0].offsetHeight;
-        }
-        event.preventDefault();
-    };
-    Slider.prototype.onTouchMove = function (event, index) {
-        var touchobj = event.changedTouches[0], handleValue = 0;
-        if (this.orientation === 'horizontal') {
-            handleValue = Math.floor(((parseInt(touchobj.clientX, 10) - this.startx) * 100) / (this.barWidth)) + this.startHandleValue;
-        }
-        else {
-            handleValue = Math.floor(((this.starty - parseInt(touchobj.clientY, 10)) * 100) / (this.barHeight)) + this.startHandleValue;
-        }
-        this.setValueFromHandle(event, handleValue);
-        event.preventDefault();
-    };
-    Slider.prototype.onBarClick = function (event) {
-        if (this.disabled) {
-            return;
-        }
-        if (!this.sliderHandleClick) {
-            this.updateDomData();
-            this.handleChange(event);
-        }
-        this.sliderHandleClick = false;
-    };
-    Slider.prototype.ngAfterViewInit = function () {
+    Spinner.prototype.repeat = function (event, interval, dir) {
         var _this = this;
-        if (this.disabled) {
-            return;
+        var i = interval || 500;
+        this.clearTimer();
+        this.timer = setTimeout(function () {
+            _this.repeat(event, 40, dir);
+        }, i);
+        this.spin(event, dir);
+    };
+    Spinner.prototype.spin = function (event, dir) {
+        var step = this.step * dir;
+        var currentValue = this.value || 0;
+        var newValue = null;
+        if (this.precision)
+            this.value = parseFloat(this.toFixed(currentValue + step, this.precision));
+        else
+            this.value = currentValue + step;
+        if (this.maxlength !== undefined && this.value.toString().length > this.maxlength) {
+            this.value = currentValue;
         }
-        this.dragListener = this.renderer.listen('document', 'mousemove', function (event) {
-            if (_this.dragging) {
-                _this.handleChange(event);
-            }
-        });
-        this.mouseupListener = this.renderer.listen('document', 'mouseup', function (event) {
-            if (_this.dragging) {
-                _this.dragging = false;
-                if (_this.range) {
-                    _this.onSlideEnd.emit({ originalEvent: event, values: _this.values });
-                }
-                else {
-                    _this.onSlideEnd.emit({ originalEvent: event, value: _this.value });
-                }
-            }
-        });
+        if (this.min !== undefined && this.value < this.min) {
+            this.value = this.min;
+        }
+        if (this.max !== undefined && this.value > this.max) {
+            this.value = this.max;
+        }
+        this.formatValue();
+        this.onModelChange(this.value);
+        this.onChange.emit(event);
     };
-    Slider.prototype.handleChange = function (event) {
-        var handleValue = this.calculateHandleValue(event);
-        this.setValueFromHandle(event, handleValue);
+    Spinner.prototype.toFixed = function (value, precision) {
+        var power = Math.pow(10, precision || 0);
+        return String(Math.round(value * power) / power);
     };
-    Slider.prototype.setValueFromHandle = function (event, handleValue) {
-        var newValue = this.getValueFromHandle(handleValue);
-        if (this.range) {
-            if (this.step) {
-                this.handleStepChange(newValue, this.values[this.handleIndex]);
-            }
-            else {
-                this.handleValues[this.handleIndex] = handleValue;
-                this.updateValue(newValue, event);
-            }
+    Spinner.prototype.onUpButtonMousedown = function (event, input) {
+        if (!this.disabled) {
+            input.focus();
+            this.repeat(event, null, 1);
+            this.updateFilledState();
+        }
+    };
+    Spinner.prototype.onUpButtonMouseup = function (event) {
+        if (!this.disabled) {
+            this.clearTimer();
+        }
+    };
+    Spinner.prototype.onUpButtonMouseleave = function (event) {
+        if (!this.disabled) {
+            this.clearTimer();
+        }
+    };
+    Spinner.prototype.onDownButtonMousedown = function (event, input) {
+        if (!this.disabled) {
+            input.focus();
+            this.repeat(event, null, -1);
+            this.updateFilledState();
+        }
+    };
+    Spinner.prototype.onDownButtonMouseup = function (event) {
+        if (!this.disabled) {
+            this.clearTimer();
+        }
+    };
+    Spinner.prototype.onDownButtonMouseleave = function (event) {
+        if (!this.disabled) {
+            this.clearTimer();
+        }
+    };
+    Spinner.prototype.onInputKeydown = function (event) {
+        if (event.which == 38) {
+            this.spin(event, 1);
+            event.preventDefault();
+        }
+        else if (event.which == 40) {
+            this.spin(event, -1);
+            event.preventDefault();
+        }
+    };
+    Spinner.prototype.onInputKeyPress = function (event) {
+        var inputChar = String.fromCharCode(event.charCode);
+        if (!this.keyPattern.test(inputChar) && inputChar != this.decimalSeparator && event.keyCode != 9 && event.keyCode != 8 && event.keyCode != 37 && event.keyCode != 39 && event.keyCode != 46) {
+            event.preventDefault();
+        }
+    };
+    Spinner.prototype.onInput = function (event, inputValue) {
+        this.value = this.parseValue(inputValue);
+        this.formatValue();
+        this.onModelChange(this.value);
+        this.updateFilledState();
+    };
+    Spinner.prototype.onInputBlur = function (event) {
+        this.focus = false;
+        this.onModelTouched();
+        this.onBlur.emit(event);
+    };
+    Spinner.prototype.onInputFocus = function (event) {
+        this.focus = true;
+        this.onFocus.emit(event);
+    };
+    Spinner.prototype.parseValue = function (val) {
+        var value;
+        if (this.formatInput) {
+            val = val.split(this.thousandSeparator).join('');
+        }
+        if (val.trim() === '') {
+            value = null;
         }
         else {
-            if (this.step) {
-                this.handleStepChange(newValue, this.value);
+            if (this.precision) {
+                value = parseFloat(val.replace(',', '.'));
             }
             else {
-                this.handleValue = handleValue;
-                this.updateValue(newValue, event);
+                value = parseInt(val);
+            }
+            if (!isNaN(value)) {
+                if (this.max !== undefined && value > this.max) {
+                    value = this.max;
+                }
+                if (this.min !== undefined && value < this.min) {
+                    value = this.min;
+                }
+            }
+            else {
+                value = null;
             }
         }
+        return value;
     };
-    Slider.prototype.handleStepChange = function (newValue, oldValue) {
-        var diff = (newValue - oldValue);
-        if (diff < 0 && (-1 * diff) >= this.step / 2) {
-            newValue = oldValue - this.step;
-            this.updateValue(newValue);
-            this.updateHandleValue();
+    Spinner.prototype.formatValue = function () {
+        if (this.value !== null && this.value !== undefined) {
+            var textValue = String(this.value).replace('.', this.decimalSeparator);
+            if (this.formatInput) {
+                textValue = textValue.replace(/\B(?=(\d{3})+(?!\d))/g, this.thousandSeparator);
+            }
+            this.valueAsString = textValue;
         }
-        else if (diff > 0 && diff >= this.step / 2) {
-            newValue = oldValue + this.step;
-            this.updateValue(newValue);
-            this.updateHandleValue();
+        else {
+            this.valueAsString = '';
         }
     };
-    Slider.prototype.writeValue = function (value) {
-        if (this.range)
-            this.values = value || [0, 0];
-        else
-            this.value = value || 0;
-        this.updateHandleValue();
+    Spinner.prototype.handleChange = function (event) {
+        this.onChange.emit(event);
     };
-    Slider.prototype.registerOnChange = function (fn) {
+    Spinner.prototype.clearTimer = function () {
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
+    };
+    Spinner.prototype.writeValue = function (value) {
+        this.value = value;
+        this.formatValue();
+        this.updateFilledState();
+    };
+    Spinner.prototype.registerOnChange = function (fn) {
         this.onModelChange = fn;
     };
-    Slider.prototype.registerOnTouched = function (fn) {
+    Spinner.prototype.registerOnTouched = function (fn) {
         this.onModelTouched = fn;
     };
-    Slider.prototype.setDisabledState = function (val) {
+    Spinner.prototype.setDisabledState = function (val) {
         this.disabled = val;
     };
-    Object.defineProperty(Slider.prototype, "rangeStartLeft", {
-        get: function () {
-            return this.isVertical() ? 'auto' : this.handleValues[0] + '%';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Slider.prototype, "rangeStartBottom", {
-        get: function () {
-            return this.isVertical() ? this.handleValues[0] + '%' : 'auto';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Slider.prototype, "rangeEndLeft", {
-        get: function () {
-            return this.isVertical() ? 'auto' : this.handleValues[1] + '%';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Slider.prototype, "rangeEndBottom", {
-        get: function () {
-            return this.isVertical() ? this.handleValues[1] + '%' : 'auto';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Slider.prototype.isVertical = function () {
-        return this.orientation === 'vertical';
+    Spinner.prototype.updateFilledState = function () {
+        this.filled = (this.value !== undefined && this.value != null);
     };
-    Slider.prototype.updateDomData = function () {
-        var rect = this.el.nativeElement.children[0].getBoundingClientRect();
-        this.initX = rect.left + this.domHandler.getWindowScrollLeft();
-        this.initY = rect.top + this.domHandler.getWindowScrollTop();
-        this.barWidth = this.el.nativeElement.children[0].offsetWidth;
-        this.barHeight = this.el.nativeElement.children[0].offsetHeight;
-    };
-    Slider.prototype.calculateHandleValue = function (event) {
-        if (this.orientation === 'horizontal')
-            return Math.floor(((event.pageX - this.initX) * 100) / (this.barWidth));
-        else
-            return Math.floor((((this.initY + this.barHeight) - event.pageY) * 100) / (this.barHeight));
-    };
-    Slider.prototype.updateHandleValue = function () {
-        if (this.range) {
-            this.handleValues[0] = (this.values[0] < this.min ? 0 : this.values[0] - this.min) * 100 / (this.max - this.min);
-            this.handleValues[1] = (this.values[1] > this.max ? 100 : this.values[1] - this.min) * 100 / (this.max - this.min);
-        }
-        else {
-            if (this.value < this.min)
-                this.handleValue = 0;
-            else if (this.value > this.max)
-                this.handleValue = 100;
-            else
-                this.handleValue = (this.value - this.min) * 100 / (this.max - this.min);
-        }
-    };
-    Slider.prototype.updateValue = function (val, event) {
-        if (this.range) {
-            var value = val;
-            if (this.handleIndex == 0) {
-                if (value < this.min) {
-                    value = this.min;
-                    this.handleValues[0] = 0;
-                }
-                else if (value > this.values[1]) {
-                    value = this.values[1];
-                    this.handleValues[0] = this.handleValues[1];
-                }
-            }
-            else {
-                if (value > this.max) {
-                    value = this.max;
-                    this.handleValues[1] = 100;
-                }
-                else if (value < this.values[0]) {
-                    value = this.values[0];
-                    this.handleValues[1] = this.handleValues[0];
-                }
-            }
-            this.values[this.handleIndex] = Math.floor(value);
-            this.onModelChange(this.values);
-            this.onChange.emit({ event: event, values: this.values });
-        }
-        else {
-            if (val < this.min) {
-                val = this.min;
-                this.handleValue = 0;
-            }
-            else if (val > this.max) {
-                val = this.max;
-                this.handleValue = 100;
-            }
-            this.value = Math.floor(val);
-            this.onModelChange(this.value);
-            this.onChange.emit({ event: event, value: this.value });
-        }
-    };
-    Slider.prototype.getValueFromHandle = function (handleValue) {
-        return (this.max - this.min) * (handleValue / 100) + this.min;
-    };
-    Slider.prototype.ngOnDestroy = function () {
-        if (this.dragListener) {
-            this.dragListener();
-        }
-        if (this.mouseupListener) {
-            this.mouseupListener();
-        }
-    };
-    return Slider;
+    return Spinner;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Slider.prototype, "animate", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Slider.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Slider.prototype, "min", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Slider.prototype, "max", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Slider.prototype, "orientation", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Slider.prototype, "step", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Slider.prototype, "range", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Slider.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Slider.prototype, "styleClass", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Slider.prototype, "onChange", void 0);
+], Spinner.prototype, "onChange", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Slider.prototype, "onSlideEnd", void 0);
-Slider = __decorate([
+], Spinner.prototype, "onFocus", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
+], Spinner.prototype, "onBlur", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Spinner.prototype, "step", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Spinner.prototype, "min", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Spinner.prototype, "max", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Spinner.prototype, "maxlength", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Spinner.prototype, "size", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Spinner.prototype, "placeholder", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Spinner.prototype, "inputId", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Spinner.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Spinner.prototype, "readonly", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Spinner.prototype, "decimalSeparator", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Spinner.prototype, "thousandSeparator", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Spinner.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Spinner.prototype, "formatInput", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Spinner.prototype, "type", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Spinner.prototype, "required", void 0);
+Spinner = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-slider',
-        template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"{'ui-slider ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled,\n            'ui-slider-horizontal':orientation == 'horizontal','ui-slider-vertical':orientation == 'vertical','ui-slider-animate':animate}\"\n            (click)=\"onBarClick($event)\">\n            <span *ngIf=\"range && orientation == 'horizontal'\" class=\"ui-slider-range ui-widget-header ui-corner-all\" [ngStyle]=\"{'left':handleValues[0] + '%',width: (handleValues[1] - handleValues[0] + '%')}\"></span>\n            <span *ngIf=\"range && orientation == 'vertical'\" class=\"ui-slider-range ui-widget-header ui-corner-all\" [ngStyle]=\"{'bottom':handleValues[0] + '%',height: (handleValues[1] - handleValues[0] + '%')}\"></span>\n            <span *ngIf=\"!range && orientation=='vertical'\" class=\"ui-slider-range ui-slider-range-min ui-widget-header ui-corner-all\" [ngStyle]=\"{'height': handleValue + '%'}\"></span>\n            <span *ngIf=\"!range\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" (mousedown)=\"onMouseDown($event)\" (touchstart)=\"onTouchStart($event)\" (touchmove)=\"onTouchMove($event)\" (touchend)=\"dragging=false\"\n                [style.transition]=\"dragging ? 'none': null\" [ngStyle]=\"{'left': orientation == 'horizontal' ? handleValue + '%' : null,'bottom': orientation == 'vertical' ? handleValue + '%' : null}\"></span>\n            <span *ngIf=\"range\" (mousedown)=\"onMouseDown($event,0)\" (touchstart)=\"onTouchStart($event,0)\" (touchmove)=\"onTouchMove($event,0)\" (touchend)=\"dragging=false\" [style.transition]=\"dragging ? 'none': null\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" \n                [ngStyle]=\"{'left': rangeStartLeft, 'bottom': rangeStartBottom}\" [ngClass]=\"{'ui-slider-handle-active':handleIndex==0}\"></span>\n            <span *ngIf=\"range\" (mousedown)=\"onMouseDown($event,1)\" (touchstart)=\"onTouchStart($event,1)\" (touchmove)=\"onTouchMove($event,1)\" (touchend)=\"dragging=false\" [style.transition]=\"dragging ? 'none': null\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" \n                [ngStyle]=\"{'left': rangeEndLeft, 'bottom': rangeEndBottom}\" [ngClass]=\"{'ui-slider-handle-active':handleIndex==1}\"></span>\n        </div>\n    ",
-        providers: [SLIDER_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-spinner',
+        template: "\n        <span class=\"ui-spinner ui-widget ui-corner-all\">\n            <input #in [attr.type]=\"type\" [attr.id]=\"inputId\" class=\"ui-spinner-input\" [value]=\"valueAsString\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"\n            [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [attr.placeholder]=\"placeholder\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n            (keydown)=\"onInputKeydown($event)\" (keyup)=\"onInput($event,in.value)\" (keypress)=\"onInputKeyPress($event)\" (blur)=\"onInputBlur($event)\" (change)=\"handleChange($event)\" (focus)=\"onInputFocus($event)\">\n            <button type=\"button\" [ngClass]=\"{'ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\"\n                (mouseleave)=\"onUpButtonMouseleave($event)\" (mousedown)=\"onUpButtonMousedown($event,in)\" (mouseup)=\"onUpButtonMouseup($event)\">\n                <span class=\"fa fa-caret-up ui-clickable\"></span>\n            </button>\n            <button type=\"button\" [ngClass]=\"{'ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\"\n                (mouseleave)=\"onDownButtonMouseleave($event)\" (mousedown)=\"onDownButtonMousedown($event,in)\" (mouseup)=\"onDownButtonMouseup($event)\">\n                <span class=\"fa fa-caret-down ui-clickable\"></span>\n            </button>\n        </span>\n    ",
+        host: {
+            '[class.ui-inputwrapper-filled]': 'filled',
+            '[class.ui-inputwrapper-focus]': 'focus'
+        },
+        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */], SPINNER_VALUE_ACCESSOR],
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _e || Object])
-], Slider);
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object])
+], Spinner);
 
-var SliderModule = (function () {
-    function SliderModule() {
+var SpinnerModule = (function () {
+    function SpinnerModule() {
     }
-    return SliderModule;
+    return SpinnerModule;
 }());
-SliderModule = __decorate([
+SpinnerModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Slider],
-        declarations: [Slider]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__inputtext_inputtext__["a" /* InputTextModule */]],
+        exports: [Spinner],
+        declarations: [Spinner]
     })
-], SliderModule);
+], SpinnerModule);
 
 var _a, _b, _c, _d, _e;
-//# sourceMappingURL=slider.js.map
+//# sourceMappingURL=spinner.js.map
 
 /***/ }),
 
@@ -752,14 +727,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/spinner/spinnerdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sliderdemo__ = __webpack_require__("./src/app/showcase/components/slider/sliderdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SliderDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__spinnerdemo__ = __webpack_require__("./src/app/showcase/components/spinner/spinnerdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -769,36 +744,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SliderDemoRoutingModule = (function () {
-    function SliderDemoRoutingModule() {
+var SpinnerDemoRoutingModule = (function () {
+    function SpinnerDemoRoutingModule() {
     }
-    return SliderDemoRoutingModule;
+    return SpinnerDemoRoutingModule;
 }());
-SliderDemoRoutingModule = __decorate([
+SpinnerDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__sliderdemo__["a" /* SliderDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__spinnerdemo__["a" /* SpinnerDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], SliderDemoRoutingModule);
+], SpinnerDemoRoutingModule);
 
-//# sourceMappingURL=sliderdemo-routing.module.js.map
+//# sourceMappingURL=spinnerdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo.html":
+/***/ "./src/app/showcase/components/spinner/spinnerdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Slider</span>\r\n        <span>Slider is a component to provide input using dragging of a handle.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic: {{val1}}</h3>\r\n    <p-slider [(ngModel)]=\"val1\" [style]=\"{'width':'200px'}\"></p-slider>\r\n\r\n    <h3>Input: {{val2}}</h3>\r\n    <input type=\"text\" pInputText [(ngModel)]=\"val2\" style=\"width:190px\" readonly/>\r\n    <p-slider [(ngModel)]=\"val2\" [style]=\"{'width':'200px'}\"></p-slider>\r\n\r\n    <h3>Animate: {{val3}}</h3>\r\n    <p-slider [(ngModel)]=\"val3\" [style]=\"{'width':'200px'}\" [animate]=\"true\"></p-slider>\r\n\r\n    <h3>Step: {{val4}}</h3>\r\n    <p-slider [(ngModel)]=\"val4\" [style]=\"{'width':'200px'}\" [step]=\"20\"></p-slider>\r\n\r\n    <h3>Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h3>\r\n    <p-slider [(ngModel)]=\"rangeValues\" [style]=\"{'width':'200px'}\" [range]=\"true\"></p-slider>\r\n\r\n    <h3>Vertical: {{val5}}</h3>\r\n    <p-slider [(ngModel)]=\"val5\" [style]=\"{'height':'200px'}\" orientation=\"vertical\"></p-slider>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SliderModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way binding is defined using the standard ngModel directive.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    val: number;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Slider can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider formControlName=\"age\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Min-Max</h3>\r\n            <p>Boundaries are specified with min and max attributes.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" [min]=\"0\" [max]=\"100\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Step</h3>\r\n            <p>Step factor is 1 by default and can be customized with step option.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" [step]=\"10\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Range</h3>\r\n            <p>Range slider provides two handles to define two values. In this case, value binding should refer to an array.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"rangeValues\" [range]=\"true\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    rangeValues: number[];\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Orientation</h3>\r\n            <p>Sliders supports two orientations, horizontal is the default and other alternative is vertical.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" orientation=\"vertical\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>animate</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When enabled, displays an animation on click of the slider bar.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>min</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Mininum boundary value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>max</td>\r\n                            <td>number</td>\r\n                            <td>100</td>\r\n                            <td>Maximum boundary value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>orientation</td>\r\n                            <td>string</td>\r\n                            <td>horizontal</td>\r\n                            <td>Orientation of the slider, valid values are horizontal and vertical.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>step</td>\r\n                            <td>number</td>\r\n                            <td>1</td>\r\n                            <td>Step factor to increment/decrement the value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>range</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When speficed, allows two boundary values to be picked.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>\r\n                                event.originalEvent: Slide event <br />\r\n                                event.value: New value <br />\r\n                                event.values: Values in range mode <br />\r\n                            </td>\r\n                            <td>Callback to invoke on value change via slide.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onSlideEnd</td>\r\n                            <td>\r\n                                event.originalEvent: Mouseup event<br />\r\n                                event.value: New value \r\n                            </td>\r\n                            <td>Callback to invoke when slide stops.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" (onChange)=\"handleChange($event)\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nhandleChange(e) &#123;\r\n    //e.value is the new value\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-slider</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-slider-handle</td>\r\n                            <td>Handle element</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/slider\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic: {{val1}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val1\" [style]=\"&#123;'width':'200px'&#125;\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Input: {{val2}}&lt;/h3&gt;\r\n&lt;input type=\"text\" pInputText [(ngModel)]=\"val2\" style=\"width:190px\"/&gt;\r\n&lt;p-slider [(ngModel)]=\"val2\" [style]=\"&#123;'width':'200px'&#125;\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Animate: {{val3}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val3\" [style]=\"&#123;'width':'200px'&#125;\" [animate]=\"true\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Step: {{val4}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val4\" [style]=\"&#123;'width':'200px'&#125;\" [step]=\"20\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"rangeValues\" [style]=\"&#123;'width':'200px'&#125;\" [range]=\"true\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Vertical: {{val5}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val5\" [style]=\"&#123;'height':'200px'&#125;\" orientation=\"vertical\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class SliderDemo &#123;\r\n\r\n    val1: number;\r\n\r\n    val2: number = 50;\r\n\r\n    val3: number;\r\n\r\n    val4: number;\r\n\r\n    val5: number;\r\n\r\n    rangeValues: number[] = [20,80];\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Spinner</span>\r\n        <span>Spinner is an input component to provide a numerical input.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-spinner size=\"30\" [(ngModel)]=\"val1\"></p-spinner>\r\n\r\n    <h3>Min/Max</h3>\r\n    <p-spinner size=\"30\" [(ngModel)]=\"val2\" [min]=\"0\" [max]=\"100\"></p-spinner>\r\n\r\n    <h3>Step</h3>\r\n    <p-spinner size=\"30\" [(ngModel)]=\"val3\" [step]=\"0.25\"></p-spinner>\r\n    \r\n    <h3>Disabled</h3>\r\n    <p-spinner size=\"30\" [(ngModel)]=\"val4\" [disabled]=\"true\"></p-spinner>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SpinnerModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using standard ngModel directive.</p>     \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val\"&gt;&lt;/p-spinner&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Spinner can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-spinner formControlName=\"age\"&gt;&lt;/p-spinner&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Min-Max</h3>\r\n            <p>Boundaries are specified with min and max attributes.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val\" [min]=\"0\" [max]=\"100\"&gt;&lt;/p-spinner&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Step</h3>\r\n            <p>Step factor is 1 by default and can be customized with step option.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val\" [step]=\"0.25\"&gt;&lt;/p-spinner&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>step</td>\r\n                            <td>number</td>\r\n                            <td>1</td>\r\n                            <td>Step factor to increment/decrement the value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>min</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Mininum boundary value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>max</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Maximum boundary value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>placeholder</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Hint text for the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>readonly</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be read-only.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>maxlength</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Maximum number of character allows in the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>size</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Size of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>decimalSeparator</td>\r\n                            <td>string</td>\r\n                            <td>.</td>\r\n                            <td>Separator character for decimals.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>thousandSeparator</td>\r\n                            <td>string</td>\r\n                            <td>,</td>\r\n                            <td>Separator character for thousands.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>formatInput</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>When present, formats the user input.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>type</td>\r\n                            <td>string</td>\r\n                            <td>text</td>\r\n                            <td>Type of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>required</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that an input field must be filled out before submitting the form.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onBlur</td>\r\n                            <td>event: Blur event</td>\r\n                            <td>Callback to invoke when input loses focus.</td>\r\n                        </tr>       \r\n                        <tr>\r\n                            <td>onFocus</td>\r\n                            <td>event: Browser event</td>\r\n                            <td>Callback to invoke when input gets focus.</td>\r\n                        </tr>                 \r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>event: Change event</td>\r\n                            <td>Callback to invoke on value change.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-spinner</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-spinner-up</td>\r\n                            <td>Up element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-spinner-down</td>\r\n                            <td>Down button</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/spinner\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val1\"&gt;&lt;/p-spinner&gt;\r\n\r\n&lt;h3&gt;Min/Max&lt;/h3&gt;\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val2\" [min]=\"0\" [max]=\"100\"&gt;&lt;/p-spinner&gt;\r\n\r\n&lt;h3&gt;Step&lt;/h3&gt;\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val3\" [step]=\"0.25\"&gt;&lt;/p-spinner&gt;\r\n\r\n&lt;h3&gt;Disabled&lt;/h3&gt;\r\n&lt;p-spinner size=\"30\" [(ngModel)]=\"val4\" [disabled]=\"true\"&gt;&lt;/p-spinner&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class SpinnerDemo &#123;\r\n\r\n    val1: number;\r\n\r\n    val2: number;\r\n\r\n    val3: number;\r\n\r\n    val4: number = 100;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo.module.ts":
+/***/ "./src/app/showcase/components/spinner/spinnerdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -806,13 +781,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sliderdemo__ = __webpack_require__("./src/app/showcase/components/slider/sliderdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sliderdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/slider/sliderdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_slider_slider__ = __webpack_require__("./src/app/components/slider/slider.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SliderDemoModule", function() { return SliderDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__spinnerdemo__ = __webpack_require__("./src/app/showcase/components/spinner/spinnerdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__spinnerdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/spinner/spinnerdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_spinner_spinner__ = __webpack_require__("./src/app/components/spinner/spinner.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpinnerDemoModule", function() { return SpinnerDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -822,44 +796,43 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+;
 
 
 
 
 
-
-var SliderDemoModule = (function () {
-    function SliderDemoModule() {
+var SpinnerDemoModule = (function () {
+    function SpinnerDemoModule() {
     }
-    return SliderDemoModule;
+    return SpinnerDemoModule;
 }());
-SliderDemoModule = __decorate([
+SpinnerDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__sliderdemo_routing_module__["a" /* SliderDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_slider_slider__["a" /* SliderModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_inputtext_inputtext__["a" /* InputTextModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_4__spinnerdemo_routing_module__["a" /* SpinnerDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_spinner_spinner__["a" /* SpinnerModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__sliderdemo__["a" /* SliderDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__spinnerdemo__["a" /* SpinnerDemo */]
         ]
     })
-], SliderDemoModule);
+], SpinnerDemoModule);
 
-//# sourceMappingURL=sliderdemo.module.js.map
+//# sourceMappingURL=spinnerdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo.ts":
+/***/ "./src/app/showcase/components/spinner/spinnerdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SliderDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -867,20 +840,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var SliderDemo = (function () {
-    function SliderDemo() {
-        this.val2 = 50;
-        this.rangeValues = [20, 80];
+var SpinnerDemo = (function () {
+    function SpinnerDemo() {
+        this.val4 = 100;
     }
-    return SliderDemo;
+    return SpinnerDemo;
 }());
-SliderDemo = __decorate([
+SpinnerDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/slider/sliderdemo.html")
+        template: __webpack_require__("./src/app/showcase/components/spinner/spinnerdemo.html")
     })
-], SliderDemo);
+], SpinnerDemo);
 
-//# sourceMappingURL=sliderdemo.js.map
+//# sourceMappingURL=spinnerdemo.js.map
 
 /***/ })
 

@@ -404,14 +404,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/messages/messagesdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/multiselect/multiselectdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__messagesdemo__ = __webpack_require__("./src/app/showcase/components/messages/messagesdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__multiselectdemo__ = __webpack_require__("./src/app/showcase/components/multiselect/multiselectdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MultiSelectDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -421,49 +421,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var MessagesDemoRoutingModule = (function () {
-    function MessagesDemoRoutingModule() {
+var MultiSelectDemoRoutingModule = (function () {
+    function MultiSelectDemoRoutingModule() {
     }
-    return MessagesDemoRoutingModule;
+    return MultiSelectDemoRoutingModule;
 }());
-MessagesDemoRoutingModule = __decorate([
+MultiSelectDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__messagesdemo__["a" /* MessagesDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__multiselectdemo__["a" /* MultiSelectDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], MessagesDemoRoutingModule);
+], MultiSelectDemoRoutingModule);
 
-//# sourceMappingURL=messagesdemo-routing.module.js.map
+//# sourceMappingURL=multiselectdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/messages/messagesdemo.html":
+/***/ "./src/app/showcase/components/multiselect/multiselectdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Messages</span>\r\n        <span>Messages is used to display messages inline.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-messages [(value)]=\"msgs\"></p-messages>\r\n\r\n    <h3 class=\"first\">Basic</h3>\r\n    <div>\r\n        <button type=\"button\" pButton (click)=\"showSuccess()\" label=\"Success\" class=\"ui-button-success\"></button>\r\n        <button type=\"button\" pButton (click)=\"showInfo()\" label=\"Info\" class=\"ui-button-info\"></button>\r\n        <button type=\"button\" pButton (click)=\"showWarn()\" label=\"Warn\" class=\"ui-button-warning\"></button>\r\n        <button type=\"button\" pButton (click)=\"showError()\" label=\"Error\" class=\"ui-button-danger\"></button>\r\n        <button type=\"button\" pButton (click)=\"showMultiple()\" label=\"Multiple\"></button>\r\n        <button type=\"button\" pButton (click)=\"clear()\" icon=\"fa-close\" style=\"float:right\" label=\"Clear\"></button>\r\n    </div>\r\n    \r\n    <h3>Message Service</h3>\r\n    <button type=\"button\" pButton (click)=\"showViaService()\" label=\"Use Service\"></button>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MessagesModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>A single message is specified by Message interface in PrimeNG that defines the id, severity, summary and detail as the properties.\r\n                Messages to display can either be defined using the value property which should an array of Message instances or using \r\n                a MessageService are defined using the value property which should an array of Message instances.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Message Array</h3>\r\n            <p>A binding to the value property is required to provide messages to the component.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n\r\n&lt;button type=\"button\" (click)=\"show()\"&gt;Show&lt;/button&gt;\r\n&lt;button type=\"button\" (click)=\"clear()\"&gt;Hide&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nshow() &#123;\r\n    this.msgs.push(&#123;severity:'info', summary:'Info Message', detail:'PrimeNG rocks'&#125;);\r\n&#125;\r\n\r\nhide() &#123;\r\n    this.msgs = [];\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Message Service</h3>\r\n            <p>MessageService alternative does not require a value binding to an array.\r\n            In order to use this service, import the class and define it as a provider in a component higher up in the component tree such as application instance itself \r\n            so that descandant components can have it injected.</p>\r\n            \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MessageService&#125; from 'primeng/components/common/messageservice';\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;Message&#125; from 'primeng/components/common/api';\r\nimport &#123;MessageService&#125; from 'primeng/components/common/messageservice';\r\n\r\n@Component(&#123;\r\n    templateUrl: './messagesdemo.html'\r\n    &#125;)\r\n    export class MessageServiceDemo &#123;\r\n\r\n        constructor(private messageService: MessageService) &#123;&#125;\r\n\r\n        addSingle() &#123;\r\n            this.messageService.add(&#123;severity:'success', summary:'Service Message', detail:'Via MessageService'&#125;);\r\n        &#125;\r\n\r\n        addMultiple() &#123;\r\n            this.messageService.addAdd([&#123;severity:'success', summary:'Service Message', detail:'Via MessageService'&#125;,\r\n                            &#123;severity:'info', summary:'Info Message', detail:'Via MessageService'&#125;]);\r\n        &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Closable</h3>\r\n            <p>Messages are closable by default resulting in a close icon being displayed on top right corner.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>In order to disable closable messages, set closable to false. Note that in this case two-way binding is not necessary as the component\r\n            does not need to update its value.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [value]=\"msgs\" [closable]=\"false\"&gt;&lt;/p-messages&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Severities</h3>\r\n            <p>Here are the possible values for the severity of a message.</p>\r\n            <ul>\r\n                <li>success</li>\r\n                <li>info</li>\r\n                <li>warn</li>\r\n                <li>error</li>\r\n            </ul>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of messages to display.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>closable</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Defines if message box can be closed by the click icon.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-messages</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-info</td>\r\n                            <td>Container element when displaying info messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-warn</td>\r\n                            <td>Container element when displaying warning messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-error</td>\r\n                            <td>Container element when displaying error messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-success</td>\r\n                            <td>Container element when displaying success messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-close</td>\r\n                            <td>Close icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-icon</td>\r\n                            <td>Severity icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-summary</td>\r\n                            <td>Summary of a message.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-detail</td>\r\n                            <td>Detail of a message.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/messages\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;div&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showSuccess()\" label=\"Success\" class=\"ui-button-success\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showInfo()\" label=\"Info\" class=\"ui-button-info\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showWarn()\" label=\"Warn\" class=\"ui-button-warning\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showError()\" label=\"Error\" class=\"ui-button-danger\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showMultiple()\" label=\"Multiple\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"clear()\" icon=\"fa-close\" style=\"float:right\" label=\"Clear\"&gt;&lt;/button&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Message Service&lt;/h3&gt;\r\n&lt;button type=\"button\" pButton (click)=\"showViaService()\" label=\"Use Service\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;SelectItem&#125; from 'primeng/components/common/api';\r\nimport &#123;Message&#125; from 'primeng/components/common/api';\r\nimport &#123;MessageService&#125; from 'primeng/components/common/messageservice';\r\n\r\n@Component(&#123;\r\n    templateUrl: './messagesdemo.html',\r\n    providers: [MessageService]\r\n&#125;)\r\nexport class GrowlDemo &#123;\r\n\r\n    msgs: Message[] = [];\r\n    \r\n    constructor(private messageService: MessageService) &#123;&#125;\r\n\r\n    showSuccess() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'success', summary:'Success Message', detail:'Order submitted'&#125;);\r\n    &#125;\r\n\r\n    showInfo() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Info Message', detail:'PrimeNG rocks'&#125;);\r\n    &#125;\r\n\r\n    showWarn() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'&#125;);\r\n    &#125;\r\n\r\n    showError() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'error', summary:'Error Message', detail:'Validation failed'&#125;);\r\n    &#125;\r\n\r\n    showMultiple() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Message 1', detail:'PrimeNG rocks'&#125;);\r\n        this.msgs.push(&#123;severity:'info', summary:'Message 2', detail:'PrimeUI rocks'&#125;);\r\n        this.msgs.push(&#123;severity:'info', summary:'Message 3', detail:'PrimeFaces rocks'&#125;);\r\n    &#125;\r\n    \r\n    showViaService() &#123;\r\n        this.messageService.add(&#123;severity:'success', summary:'Service Message', detail:'Via MessageService'&#125;);\r\n    &#125;\r\n\r\n    clear() &#123;\r\n        this.msgs = [];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">MultiSelect</span>\r\n        <span>MultiSelect is used to select multiple items from a collection.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-multiSelect [options]=\"cars\" [(ngModel)]=\"selectedCars1\"></p-multiSelect>\r\n    <p>Selected Cars: {{selectedCars1}}</p>\r\n    \r\n    <h3>Template</h3>\r\n    <p-multiSelect [options]=\"cars\" [(ngModel)]=\"selectedCars2\" [panelStyle]=\"{minWidth:'12em'}\">\r\n        <ng-template let-car pTemplate=\"item\">\r\n            <img src=\"assets/showcase/images/demo/car/{{car.label}}.png\" style=\"width:24px;display:inline-block;vertical-align:middle\"/>\r\n            <div style=\"font-size:14px;float:right;margin-top:4px\">{{car.label}}</div>\r\n        </ng-template>\r\n    </p-multiSelect>\r\n    <p>Selected Cars: {{selectedCars2}}</p>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MultiSelectModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using ngModel and multiselect requires a collection of options \r\n                where each option should follow the SelectItem interface that defines label-value properties.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-multiSelect [options]=\"cities\" [(ngModel)]=\"selectedCities\"&gt;&lt;/p-multiSelect&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectItem&#125; from 'primeng/primeng';\r\n\r\nexport class MyModel &#123;\r\n\r\n    cities: SelectItem[];\r\n\r\n    selectedCities: string[];\r\n\r\n    constructor() &#123;\r\n        this.cities = [];\r\n        this.cities.push(&#123;label:'New York', value:'New York'&#125;);\r\n        this.cities.push(&#123;label:'Rome', value:'Rome'&#125;);\r\n        this.cities.push(&#123;label:'London', value:'London'&#125;);\r\n        this.cities.push(&#123;label:'Istanbul', value:'Istanbul'&#125;);\r\n        this.cities.push(&#123;label:'Paris', value:'Paris'&#125;);\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>MultiSelect can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-multiSelect [options]=\"cities\" formControlName=\"selectedCities\"&gt;&lt;/p-multiSelect&gt;\r\n</code>\r\n</pre>\r\n        \r\n            <h3>Templating</h3>\r\n            <p>Label of a selectitem is displayed by default next to the checkbox in the overlay panel and it is possible to customize\r\n            the content using templating. The ngTemplate receives the selectitem as the implicit variable along with the index of the option.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-multiSelect [options]=\"cars\" [(ngModel)]=\"selectedCars2\" [panelStyle]=\"&#123;minWidth:'12em'}\"&gt;\r\n    &lt;ng-template let-car let-i=\"index\" pTemplate=\"item\"&gt;\r\n        {{i}}\r\n        &lt;img src=\"assets/showcase/images/demo/car/&#123;&#123;car.label&#125;&#125;.png\" style=\"width:24px;display:inline-block;vertical-align:middle\"/&gt;\r\n        &lt;div style=\"font-size:14px;float:right;margin-top:4px\"&gt;&#123;&#123;car.label&#125;&#125;&lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-multiSelect&gt;\r\n&lt;p&gt;Selected Cars: &#123;&#123;selectedCars2&#125;&#125;&lt;/p&gt;\r\n</code>\r\n</pre>\r\n        \r\n        \r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>options</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of selectitems to display as the available options.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>filter</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>When specified, displays an input field to filter the items on keyup.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>defaultLabel</td>\r\n                            <td>string</td>\r\n                            <td>Choose</td>\r\n                            <td>Label to display when there are no selections.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>appendTo</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Target element to attach the overlay, valid values are \"body\" or a local ng-template variable of another element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>object</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>panelStyle</td>\r\n                            <td>object</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the overlay panel.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the overlay panel.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>scrollHeight</td>\r\n                            <td>string</td>\r\n                            <td>200px</td>\r\n                            <td>Height of the viewport in pixels, a scrollbar is defined if height of list exceeds this value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>overlayVisible</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Specifies the visibility of the options panel.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>dataKey</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>A property to uniquely identify a value in options.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>displaySelectedLabel</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether to show labels of selected item labels or use default label.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>maxSelectedLabels</td>\r\n                            <td>number</td>\r\n                            <td>3</td>\r\n                            <td>Decides how many selected item labels to show at most.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>selectedItemsLabel</td>\r\n                            <td>string</td>\r\n                            <td>&#123;0&#125; items selected</td>\r\n                            <td>Label to display after exceeding max selected labels.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>event.originalEvent: browser event<br />\r\n                                event.value: Current selected values\r\n                            </td>\r\n                            <td>Callback to invoke when value changes.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onBlur</td>\r\n                            <td>event.originalEvent: browser event</td>\r\n                            <td>Callback to invoke when multiselect loses focus.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-multiselect</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-label-container</td>\r\n                            <td>Container of the label to display selected items.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-label-container</td>\r\n                            <td>Label to display selected items.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-trigger</td>\r\n                            <td>Dropdown button.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-filter-container</td>\r\n                            <td>Container of filter input.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-panel</td>\r\n                            <td>Overlay panel for items.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-items</td>\r\n                            <td>List container of items.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-multiselect-item</td>\r\n                            <td>An item in the list.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/multiselect\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;p-multiSelect [options]=\"cars\" [(ngModel)]=\"selectedCars1\"&gt;&lt;/p-multiSelect&gt;\r\n&lt;p&gt;Selected Cars: &#123;&#123;selectedCars1&#125;&#125;&lt;/p&gt;\r\n\r\n&lt;h3&gt;Template&lt;/h3&gt;\r\n&lt;p-multiSelect [options]=\"cars\" [(ngModel)]=\"selectedCars2\" [panelStyle]=\"&#123;minWidth:'12em'}\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;img src=\"assets/showcase/images/demo/car/&#123;&#123;car.label&#125;&#125;.png\" style=\"width:24px;display:inline-block;vertical-align:middle\"/&gt;\r\n        &lt;div style=\"font-size:14px;float:right;margin-top:4px\"&gt;&#123;&#123;car.label&#125;&#125;&lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-multiSelect&gt;\r\n&lt;p&gt;Selected Cars: &#123;&#123;selectedCars2&#125;&#125;&lt;/p&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MultiSelectDemo &#123;\r\n\r\n    cars: SelectItem[];\r\n\r\n    selectedCars1: string[] = [];\r\n    \r\n    selectedCars2: string[] = [];\r\n\r\n    constructor() &#123;\r\n        this.cars = [];\r\n        this.cars.push(&#123;label: 'Audi', value: 'Audi'&#125;);\r\n        this.cars.push(&#123;label: 'BMW', value: 'BMW'&#125;);\r\n        this.cars.push(&#123;label: 'Fiat', value: 'Fiat'&#125;);\r\n        this.cars.push(&#123;label: 'Ford', value: 'Ford'&#125;);\r\n        this.cars.push(&#123;label: 'Honda', value: 'Honda'&#125;);\r\n        this.cars.push(&#123;label: 'Jaguar', value: 'Jaguar'&#125;);\r\n        this.cars.push(&#123;label: 'Mercedes', value: 'Mercedes'&#125;);\r\n        this.cars.push(&#123;label: 'Renault', value: 'Renault'&#125;);\r\n        this.cars.push(&#123;label: 'VW', value: 'VW'&#125;);\r\n        this.cars.push(&#123;label: 'Volvo', value: 'Volvo'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/messages/messagesdemo.module.ts":
+/***/ "./src/app/showcase/components/multiselect/multiselectdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__messagesdemo__ = __webpack_require__("./src/app/showcase/components/messages/messagesdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__messagesdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/messages/messagesdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_messages_messages__ = __webpack_require__("./src/app/components/messages/messages.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__multiselectdemo__ = __webpack_require__("./src/app/showcase/components/multiselect/multiselectdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__multiselectdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/multiselect/multiselectdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_multiselect_multiselect__ = __webpack_require__("./src/app/components/multiselect/multiselect.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MessagesDemoModule", function() { return MessagesDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MultiSelectDemoModule", function() { return MultiSelectDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -478,38 +478,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var MessagesDemoModule = (function () {
-    function MessagesDemoModule() {
+var MultiSelectDemoModule = (function () {
+    function MultiSelectDemoModule() {
     }
-    return MessagesDemoModule;
+    return MultiSelectDemoModule;
 }());
-MessagesDemoModule = __decorate([
+MultiSelectDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__messagesdemo_routing_module__["a" /* MessagesDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_messages_messages__["a" /* MessagesModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4__multiselectdemo_routing_module__["a" /* MultiSelectDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_multiselect_multiselect__["a" /* MultiSelectModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__messagesdemo__["a" /* MessagesDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__multiselectdemo__["a" /* MultiSelectDemo */]
         ]
     })
-], MessagesDemoModule);
+], MultiSelectDemoModule);
 
-//# sourceMappingURL=messagesdemo.module.js.map
+//# sourceMappingURL=multiselectdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/messages/messagesdemo.ts":
+/***/ "./src/app/showcase/components/multiselect/multiselectdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MultiSelectDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -520,52 +519,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-var MessagesDemo = (function () {
-    function MessagesDemo(messageService) {
-        this.messageService = messageService;
-        this.msgs = [];
+var MultiSelectDemo = (function () {
+    function MultiSelectDemo() {
+        this.selectedCars = [];
+        this.selectedCars2 = [];
+        this.cars = [];
+        this.cars.push({ label: 'Audi', value: 'Audi' });
+        this.cars.push({ label: 'BMW', value: 'BMW' });
+        this.cars.push({ label: 'Fiat', value: 'Fiat' });
+        this.cars.push({ label: 'Ford', value: 'Ford' });
+        this.cars.push({ label: 'Honda', value: 'Honda' });
+        this.cars.push({ label: 'Jaguar', value: 'Jaguar' });
+        this.cars.push({ label: 'Mercedes', value: 'Mercedes' });
+        this.cars.push({ label: 'Renault', value: 'Renault' });
+        this.cars.push({ label: 'VW', value: 'VW' });
+        this.cars.push({ label: 'Volvo', value: 'Volvo' });
     }
-    MessagesDemo.prototype.showSuccess = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
-    };
-    MessagesDemo.prototype.showInfo = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks' });
-    };
-    MessagesDemo.prototype.showWarn = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes' });
-    };
-    MessagesDemo.prototype.showError = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
-    };
-    MessagesDemo.prototype.showMultiple = function () {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Message 1', detail: 'PrimeNG rocks' });
-        this.msgs.push({ severity: 'info', summary: 'Message 2', detail: 'PrimeUI rocks' });
-        this.msgs.push({ severity: 'info', summary: 'Message 3', detail: 'PrimeFaces rocks' });
-    };
-    MessagesDemo.prototype.showViaService = function () {
-        this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
-    };
-    MessagesDemo.prototype.clear = function () {
-        this.msgs = [];
-    };
-    return MessagesDemo;
+    return MultiSelectDemo;
 }());
-MessagesDemo = __decorate([
+MultiSelectDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/messages/messagesdemo.html"),
-        providers: [__WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__["a" /* MessageService */]]
+        template: __webpack_require__("./src/app/showcase/components/multiselect/multiselectdemo.html")
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__["a" /* MessageService */]) === "function" && _a || Object])
-], MessagesDemo);
+    __metadata("design:paramtypes", [])
+], MultiSelectDemo);
 
-var _a;
-//# sourceMappingURL=messagesdemo.js.map
+//# sourceMappingURL=multiselectdemo.js.map
 
 /***/ })
 

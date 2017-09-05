@@ -404,14 +404,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputtext/inputtextdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/messages/messagesdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputtextdemo__ = __webpack_require__("./src/app/showcase/components/inputtext/inputtextdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputTextDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__messagesdemo__ = __webpack_require__("./src/app/showcase/components/messages/messagesdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -421,50 +421,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var InputTextDemoRoutingModule = (function () {
-    function InputTextDemoRoutingModule() {
+var MessagesDemoRoutingModule = (function () {
+    function MessagesDemoRoutingModule() {
     }
-    return InputTextDemoRoutingModule;
+    return MessagesDemoRoutingModule;
 }());
-InputTextDemoRoutingModule = __decorate([
+MessagesDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inputtextdemo__["a" /* InputTextDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__messagesdemo__["a" /* MessagesDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], InputTextDemoRoutingModule);
+], MessagesDemoRoutingModule);
 
-//# sourceMappingURL=inputtextdemo-routing.module.js.map
+//# sourceMappingURL=messagesdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputtext/inputtextdemo.html":
+/***/ "./src/app/showcase/components/messages/messagesdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Inputtext</span>\r\n        <span>InputText is an extension to standard input element with theming.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <input id=\"input\" type=\"text\" size=\"30\" pInputText [(ngModel)]=\"text\"> \r\n    <span id=\"text\">{{text}}</span>\r\n    \r\n    <h3>Float Label</h3>\r\n    <span class=\"ui-float-label\">\r\n        <input id=\"float-input\" type=\"text\" size=\"30\" pInputText> \r\n        <label for=\"float-input\">Username</label>\r\n    </span>\r\n\r\n    <h3>Disabled</h3>\r\n    <input id=\"disabled-input\" type=\"text\" size=\"30\" pInputText [disabled]=\"disabled\" />\r\n\r\n    <button id=\"disabled-btn\" type=\"button\" (click)=\"toggleDisabled()\" pButton label=\"Toggle\"></button>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;InputTextModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>InputText is applied to an input field with pInputText directive.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pInputText /&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Binding</h3>\r\n            <p>A model can be bound using standard ngModel directive.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;input type=\"text\" pInputText [(ngModel)]=\"property\"/&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Addons</h3>\r\n            <p>Text, icon, buttons and other content can be grouped next to an input by wrapping the addons and input inside\r\n                .ui-inputgroup element. Multiple addons can be used within the same group as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;div class=\"ui-inputgroup\"&gt;\r\n    &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-user\"&gt;&lt;/i&gt;&lt;/span&gt;\r\n    &lt;input type=\"text\" pInputText placeholder=\"Username\"&gt;         \r\n&lt;/div&gt;\r\n\r\n&lt;div class=\"ui-inputgroup\"&gt;\r\n    &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-credit-card\"&gt;&lt;/i&gt;&lt;/span&gt;  \r\n    &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-cc-visa\"&gt;&lt;/i&gt;&lt;/span&gt;   \r\n    &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt; \r\n    &lt;span class=\"ui-inputgroup-addon\"&gt;$&lt;/span&gt;  \r\n    &lt;span class=\"ui-inputgroup-addon\"&gt;.00&lt;/span&gt;      \r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Float Label</h3>\r\n            <p>A floating label is implemented by wrapping the input and the label inside a container with .ui-float-label class.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;span class=\"ui-float-label\"&gt;\r\n    &lt;input id=\"float-input\" type=\"text\" size=\"30\" pInputText&gt; \r\n    &lt;label for=\"float-input\"&gt;Username&lt;/label&gt;\r\n&lt;/span&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-inputtext</td>\r\n                            <td>Input element</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inputtext\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;input id=\"input\" type=\"text\" size=\"30\" pInputText [(ngModel)]=\"text\"&gt; \r\n&lt;span id=\"text\"&gt;&#123;text&#125;&#125;&lt;/span&gt;\r\n\r\n&lt;h3&gt;Float Label&lt;/h3&gt;\r\n&lt;span class=\"ui-float-label\"&gt;\r\n    &lt;input id=\"float-input\" type=\"text\" size=\"30\" pInputText&gt; \r\n    &lt;label for=\"float-input\"&gt;Username&lt;/label&gt;\r\n&lt;/span&gt;\r\n\r\n&lt;h3&gt;Disabled&lt;/h3&gt;\r\n&lt;input id=\"disabled-input\" type=\"text\" size=\"30\" pInputText [disabled]=\"disabled\" /&gt;\r\n\r\n&lt;button id=\"disabled-btn\" type=\"button\" (click)=\"toggleDisabled()\" pButton label=\"Toggle\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class InputTextDemo &#123;\r\n\r\n    text: string;\r\n\r\n    disabled: boolean = true;\r\n\r\n    toggleDisabled() &#123;\r\n        this.disabled = !this.disabled;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Messages</span>\r\n        <span>Messages is used to display messages inline.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-messages [(value)]=\"msgs\"></p-messages>\r\n\r\n    <h3 class=\"first\">Basic</h3>\r\n    <div>\r\n        <button type=\"button\" pButton (click)=\"showSuccess()\" label=\"Success\" class=\"ui-button-success\"></button>\r\n        <button type=\"button\" pButton (click)=\"showInfo()\" label=\"Info\" class=\"ui-button-info\"></button>\r\n        <button type=\"button\" pButton (click)=\"showWarn()\" label=\"Warn\" class=\"ui-button-warning\"></button>\r\n        <button type=\"button\" pButton (click)=\"showError()\" label=\"Error\" class=\"ui-button-danger\"></button>\r\n        <button type=\"button\" pButton (click)=\"showMultiple()\" label=\"Multiple\"></button>\r\n        <button type=\"button\" pButton (click)=\"clear()\" icon=\"fa-close\" style=\"float:right\" label=\"Clear\"></button>\r\n    </div>\r\n    \r\n    <h3>Message Service</h3>\r\n    <button type=\"button\" pButton (click)=\"showViaService()\" label=\"Use Service\"></button>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MessagesModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>A single message is specified by Message interface in PrimeNG that defines the id, severity, summary and detail as the properties.\r\n                Messages to display can either be defined using the value property which should an array of Message instances or using \r\n                a MessageService are defined using the value property which should an array of Message instances.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Message Array</h3>\r\n            <p>A binding to the value property is required to provide messages to the component.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n\r\n&lt;button type=\"button\" (click)=\"show()\"&gt;Show&lt;/button&gt;\r\n&lt;button type=\"button\" (click)=\"clear()\"&gt;Hide&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nshow() &#123;\r\n    this.msgs.push(&#123;severity:'info', summary:'Info Message', detail:'PrimeNG rocks'&#125;);\r\n&#125;\r\n\r\nhide() &#123;\r\n    this.msgs = [];\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Message Service</h3>\r\n            <p>MessageService alternative does not require a value binding to an array.\r\n            In order to use this service, import the class and define it as a provider in a component higher up in the component tree such as application instance itself \r\n            so that descandant components can have it injected.</p>\r\n            \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MessageService&#125; from 'primeng/components/common/messageservice';\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;Message&#125; from 'primeng/components/common/api';\r\nimport &#123;MessageService&#125; from 'primeng/components/common/messageservice';\r\n\r\n@Component(&#123;\r\n    templateUrl: './messagesdemo.html'\r\n    &#125;)\r\n    export class MessageServiceDemo &#123;\r\n\r\n        constructor(private messageService: MessageService) &#123;&#125;\r\n\r\n        addSingle() &#123;\r\n            this.messageService.add(&#123;severity:'success', summary:'Service Message', detail:'Via MessageService'&#125;);\r\n        &#125;\r\n\r\n        addMultiple() &#123;\r\n            this.messageService.addAdd([&#123;severity:'success', summary:'Service Message', detail:'Via MessageService'&#125;,\r\n                            &#123;severity:'info', summary:'Info Message', detail:'Via MessageService'&#125;]);\r\n        &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Closable</h3>\r\n            <p>Messages are closable by default resulting in a close icon being displayed on top right corner.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>In order to disable closable messages, set closable to false. Note that in this case two-way binding is not necessary as the component\r\n            does not need to update its value.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [value]=\"msgs\" [closable]=\"false\"&gt;&lt;/p-messages&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Severities</h3>\r\n            <p>Here are the possible values for the severity of a message.</p>\r\n            <ul>\r\n                <li>success</li>\r\n                <li>info</li>\r\n                <li>warn</li>\r\n                <li>error</li>\r\n            </ul>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of messages to display.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>closable</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Defines if message box can be closed by the click icon.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-messages</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-info</td>\r\n                            <td>Container element when displaying info messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-warn</td>\r\n                            <td>Container element when displaying warning messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-error</td>\r\n                            <td>Container element when displaying error messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-success</td>\r\n                            <td>Container element when displaying success messages.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-close</td>\r\n                            <td>Close icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-icon</td>\r\n                            <td>Severity icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-summary</td>\r\n                            <td>Summary of a message.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-messages-detail</td>\r\n                            <td>Detail of a message.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/messages\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-messages [(value)]=\"msgs\"&gt;&lt;/p-messages&gt;\r\n\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;div&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showSuccess()\" label=\"Success\" class=\"ui-button-success\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showInfo()\" label=\"Info\" class=\"ui-button-info\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showWarn()\" label=\"Warn\" class=\"ui-button-warning\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showError()\" label=\"Error\" class=\"ui-button-danger\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"showMultiple()\" label=\"Multiple\"&gt;&lt;/button&gt;\r\n    &lt;button type=\"button\" pButton (click)=\"clear()\" icon=\"fa-close\" style=\"float:right\" label=\"Clear\"&gt;&lt;/button&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Message Service&lt;/h3&gt;\r\n&lt;button type=\"button\" pButton (click)=\"showViaService()\" label=\"Use Service\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;SelectItem&#125; from 'primeng/components/common/api';\r\nimport &#123;Message&#125; from 'primeng/components/common/api';\r\nimport &#123;MessageService&#125; from 'primeng/components/common/messageservice';\r\n\r\n@Component(&#123;\r\n    templateUrl: './messagesdemo.html',\r\n    providers: [MessageService]\r\n&#125;)\r\nexport class GrowlDemo &#123;\r\n\r\n    msgs: Message[] = [];\r\n    \r\n    constructor(private messageService: MessageService) &#123;&#125;\r\n\r\n    showSuccess() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'success', summary:'Success Message', detail:'Order submitted'&#125;);\r\n    &#125;\r\n\r\n    showInfo() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Info Message', detail:'PrimeNG rocks'&#125;);\r\n    &#125;\r\n\r\n    showWarn() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'&#125;);\r\n    &#125;\r\n\r\n    showError() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'error', summary:'Error Message', detail:'Validation failed'&#125;);\r\n    &#125;\r\n\r\n    showMultiple() &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Message 1', detail:'PrimeNG rocks'&#125;);\r\n        this.msgs.push(&#123;severity:'info', summary:'Message 2', detail:'PrimeUI rocks'&#125;);\r\n        this.msgs.push(&#123;severity:'info', summary:'Message 3', detail:'PrimeFaces rocks'&#125;);\r\n    &#125;\r\n    \r\n    showViaService() &#123;\r\n        this.messageService.add(&#123;severity:'success', summary:'Service Message', detail:'Via MessageService'&#125;);\r\n    &#125;\r\n\r\n    clear() &#123;\r\n        this.msgs = [];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputtext/inputtextdemo.module.ts":
+/***/ "./src/app/showcase/components/messages/messagesdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtextdemo__ = __webpack_require__("./src/app/showcase/components/inputtext/inputtextdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputtextdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inputtext/inputtextdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputTextDemoModule", function() { return InputTextDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__messagesdemo__ = __webpack_require__("./src/app/showcase/components/messages/messagesdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__messagesdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/messages/messagesdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_messages_messages__ = __webpack_require__("./src/app/components/messages/messages.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MessagesDemoModule", function() { return MessagesDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -479,62 +478,94 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-var InputTextDemoModule = (function () {
-    function InputTextDemoModule() {
+var MessagesDemoModule = (function () {
+    function MessagesDemoModule() {
     }
-    return InputTextDemoModule;
+    return MessagesDemoModule;
 }());
-InputTextDemoModule = __decorate([
+MessagesDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_4__inputtextdemo_routing_module__["a" /* InputTextDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_button_button__["a" /* ButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__messagesdemo_routing_module__["a" /* MessagesDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_messages_messages__["a" /* MessagesModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__inputtextdemo__["a" /* InputTextDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__messagesdemo__["a" /* MessagesDemo */]
         ]
     })
-], InputTextDemoModule);
+], MessagesDemoModule);
 
-//# sourceMappingURL=inputtextdemo.module.js.map
+//# sourceMappingURL=messagesdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputtext/inputtextdemo.ts":
+/***/ "./src/app/showcase/components/messages/messagesdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputTextDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var InputTextDemo = (function () {
-    function InputTextDemo() {
-        this.disabled = true;
+
+var MessagesDemo = (function () {
+    function MessagesDemo(messageService) {
+        this.messageService = messageService;
+        this.msgs = [];
     }
-    InputTextDemo.prototype.toggleDisabled = function () {
-        this.disabled = !this.disabled;
+    MessagesDemo.prototype.showSuccess = function () {
+        this.msgs = [];
+        this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
     };
-    return InputTextDemo;
+    MessagesDemo.prototype.showInfo = function () {
+        this.msgs = [];
+        this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks' });
+    };
+    MessagesDemo.prototype.showWarn = function () {
+        this.msgs = [];
+        this.msgs.push({ severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes' });
+    };
+    MessagesDemo.prototype.showError = function () {
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: 'Error Message', detail: 'Validation failed' });
+    };
+    MessagesDemo.prototype.showMultiple = function () {
+        this.msgs = [];
+        this.msgs.push({ severity: 'info', summary: 'Message 1', detail: 'PrimeNG rocks' });
+        this.msgs.push({ severity: 'info', summary: 'Message 2', detail: 'PrimeUI rocks' });
+        this.msgs.push({ severity: 'info', summary: 'Message 3', detail: 'PrimeFaces rocks' });
+    };
+    MessagesDemo.prototype.showViaService = function () {
+        this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+    };
+    MessagesDemo.prototype.clear = function () {
+        this.msgs = [];
+    };
+    return MessagesDemo;
 }());
-InputTextDemo = __decorate([
+MessagesDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/inputtext/inputtextdemo.html")
-    })
-], InputTextDemo);
+        template: __webpack_require__("./src/app/showcase/components/messages/messagesdemo.html"),
+        providers: [__WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__["a" /* MessageService */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__components_common_messageservice__["a" /* MessageService */]) === "function" && _a || Object])
+], MessagesDemo);
 
-//# sourceMappingURL=inputtextdemo.js.map
+var _a;
+//# sourceMappingURL=messagesdemo.js.map
 
 /***/ })
 

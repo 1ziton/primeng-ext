@@ -1,15 +1,15 @@
 webpackJsonp([37],{
 
-/***/ "./src/app/components/carousel/carousel.ts":
+/***/ "./src/app/components/checkbox/checkbox.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* unused harmony export Carousel */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export CHECKBOX_VALUE_ACCESSOR */
+/* unused harmony export Checkbox */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -22,322 +22,151 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var Carousel = (function () {
-    function Carousel(el, domHandler, renderer, cd) {
-        this.el = el;
-        this.domHandler = domHandler;
-        this.renderer = renderer;
+var CHECKBOX_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Checkbox; }),
+    multi: true
+};
+var Checkbox = (function () {
+    function Checkbox(cd) {
         this.cd = cd;
-        this.numVisible = 3;
-        this.firstVisible = 0;
-        this.circular = false;
-        this.breakpoint = 560;
-        this.responsive = true;
-        this.autoplayInterval = 0;
-        this.effectDuration = '1s';
-        this.easing = 'ease-out';
-        this.pageLinks = 3;
-        this.onPage = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.left = 0;
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
+        this.focused = false;
+        this.checked = false;
     }
-    Carousel.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this.templates.forEach(function (item) {
-            switch (item.getType()) {
-                case 'item':
-                    _this.itemTemplate = item.template;
-                    break;
-                default:
-                    _this.itemTemplate = item.template;
-                    break;
-            }
-        });
-    };
-    Object.defineProperty(Carousel.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        set: function (val) {
-            this._value = val;
-            this.handleDataChange();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Carousel.prototype.handleDataChange = function () {
-        if (this.value && this.value.length) {
-            if (this.value.length && this.firstVisible >= this.value.length) {
-                this.setPage(this.totalPages - 1);
-            }
-        }
-        else {
-            this.setPage(0);
-        }
-        this.valuesChanged = true;
-    };
-    Carousel.prototype.ngAfterViewChecked = function () {
-        if (this.valuesChanged && this.containerViewChild.nativeElement.offsetParent) {
-            this.render();
-            this.valuesChanged = false;
-        }
-    };
-    Carousel.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        if (this.responsive) {
-            this.documentResponsiveListener = this.renderer.listen('window', 'resize', function (event) {
-                _this.updateState();
-            });
-        }
-    };
-    Carousel.prototype.updateLinks = function () {
-        this.anchorPageLinks = [];
-        for (var i = 0; i < this.totalPages; i++) {
-            this.anchorPageLinks.push(i);
-        }
-    };
-    Carousel.prototype.updateDropdown = function () {
-        this.selectDropdownOptions = [];
-        for (var i = 0; i < this.totalPages; i++) {
-            this.selectDropdownOptions.push(i);
-        }
-    };
-    Carousel.prototype.updateMobileDropdown = function () {
-        this.mobileDropdownOptions = [];
-        for (var i = 0; i < this.value.length; i++) {
-            this.mobileDropdownOptions.push(i);
-        }
-    };
-    Carousel.prototype.render = function () {
-        if (this.autoplayInterval) {
-            this.stopAutoplay();
-        }
-        this.items = this.domHandler.find(this.itemsViewChild.nativeElement, 'li');
-        this.calculateColumns();
-        this.calculateItemWidths();
-        if (!this.responsive) {
-            this.containerViewChild.nativeElement.style.width = (this.domHandler.width(this.containerViewChild.nativeElement)) + 'px';
-        }
-        if (this.autoplayInterval) {
-            this.circular = true;
-            this.startAutoplay();
-        }
-        this.updateMobileDropdown();
-        this.updateLinks();
-        this.updateDropdown();
-        this.cd.detectChanges();
-    };
-    Carousel.prototype.calculateItemWidths = function () {
-        var firstItem = (this.items && this.items.length) ? this.items[0] : null;
-        if (firstItem) {
-            for (var i = 0; i < this.items.length; i++) {
-                this.items[i].style.width = ((this.domHandler.innerWidth(this.viewportViewChild.nativeElement) - (this.domHandler.getHorizontalMargin(firstItem) * this.columns)) / this.columns) + 'px';
-            }
-        }
-    };
-    Carousel.prototype.calculateColumns = function () {
-        if (window.innerWidth <= this.breakpoint) {
-            this.shrinked = true;
-            this.columns = 1;
-        }
-        else {
-            this.shrinked = false;
-            this.columns = this.numVisible;
-        }
-        this.page = Math.floor(this.firstVisible / this.columns);
-    };
-    Carousel.prototype.onNextNav = function () {
-        var lastPage = (this.page === (this.totalPages - 1));
-        if (!lastPage)
-            this.setPage(this.page + 1);
-        else if (this.circular)
-            this.setPage(0);
-    };
-    Carousel.prototype.onPrevNav = function () {
-        if (this.page !== 0)
-            this.setPage(this.page - 1);
-        else if (this.circular)
-            this.setPage(this.totalPages - 1);
-    };
-    Carousel.prototype.setPageWithLink = function (event, p) {
-        this.setPage(p);
+    Checkbox.prototype.onClick = function (event, checkbox, focus) {
         event.preventDefault();
-    };
-    Carousel.prototype.setPage = function (p, enforce) {
-        if (p !== this.page || enforce) {
-            this.page = p;
-            this.left = (-1 * (this.domHandler.innerWidth(this.viewportViewChild.nativeElement) * this.page));
-            this.firstVisible = this.page * this.columns;
-            this.onPage.emit({
-                page: this.page
-            });
+        if (this.disabled) {
+            return;
+        }
+        this.checked = !this.checked;
+        this.updateModel();
+        if (focus) {
+            checkbox.focus();
         }
     };
-    Carousel.prototype.onDropdownChange = function (val) {
-        this.setPage(parseInt(val));
-    };
-    Object.defineProperty(Carousel.prototype, "displayPageLinks", {
-        get: function () {
-            return (this.totalPages <= this.pageLinks && !this.shrinked);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Carousel.prototype, "displayPageDropdown", {
-        get: function () {
-            return (this.totalPages > this.pageLinks && !this.shrinked);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Carousel.prototype, "totalPages", {
-        get: function () {
-            return (this.value && this.value.length) ? Math.ceil(this.value.length / this.columns) : 0;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Carousel.prototype.routerDisplay = function () {
-        var win = window;
-        if (win.innerWidth <= this.breakpoint)
-            return true;
-        else
-            return false;
-    };
-    Carousel.prototype.updateState = function () {
-        var win = window;
-        if (win.innerWidth <= this.breakpoint) {
-            this.shrinked = true;
-            this.columns = 1;
-        }
-        else if (this.shrinked) {
-            this.shrinked = false;
-            this.columns = this.numVisible;
-            this.updateLinks();
-            this.updateDropdown();
-        }
-        this.calculateItemWidths();
-        this.setPage(Math.floor(this.firstVisible / this.columns), true);
-    };
-    Carousel.prototype.startAutoplay = function () {
-        var _this = this;
-        this.interval = setInterval(function () {
-            if (_this.page === (_this.totalPages - 1))
-                _this.setPage(0);
+    Checkbox.prototype.updateModel = function () {
+        if (!this.binary) {
+            if (this.checked)
+                this.addValue();
             else
-                _this.setPage(_this.page + 1);
-        }, this.autoplayInterval);
-    };
-    Carousel.prototype.stopAutoplay = function () {
-        clearInterval(this.interval);
-    };
-    Carousel.prototype.ngOnDestroy = function () {
-        if (this.documentResponsiveListener) {
-            this.documentResponsiveListener();
+                this.removeValue();
+            this.onModelChange(this.model);
         }
-        if (this.autoplayInterval) {
-            this.stopAutoplay();
+        else {
+            this.onModelChange(this.checked);
         }
+        this.onChange.emit(this.checked);
     };
-    return Carousel;
+    Checkbox.prototype.handleChange = function (event) {
+        this.checked = event.target.checked;
+        this.updateModel();
+    };
+    Checkbox.prototype.isChecked = function () {
+        if (this.binary)
+            return this.model;
+        else
+            return this.model && this.model.indexOf(this.value) > -1;
+    };
+    Checkbox.prototype.removeValue = function () {
+        var _this = this;
+        this.model = this.model.filter(function (val) { return val !== _this.value; });
+    };
+    Checkbox.prototype.addValue = function () {
+        if (this.model)
+            this.model = this.model.concat([this.value]);
+        else
+            this.model = [this.value];
+    };
+    Checkbox.prototype.onFocus = function (event) {
+        this.focused = true;
+    };
+    Checkbox.prototype.onBlur = function (event) {
+        this.focused = false;
+        this.onModelTouched();
+    };
+    Checkbox.prototype.writeValue = function (model) {
+        this.model = model;
+        this.checked = this.isChecked();
+        this.cd.markForCheck();
+    };
+    Checkbox.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    Checkbox.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    Checkbox.prototype.setDisabledState = function (val) {
+        this.disabled = val;
+    };
+    return Checkbox;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Carousel.prototype, "numVisible", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Carousel.prototype, "firstVisible", void 0);
+    __metadata("design:type", Object)
+], Checkbox.prototype, "value", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Carousel.prototype, "headerText", void 0);
+], Checkbox.prototype, "name", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Carousel.prototype, "circular", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Carousel.prototype, "breakpoint", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Carousel.prototype, "responsive", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Carousel.prototype, "autoplayInterval", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Carousel.prototype, "effectDuration", void 0);
+], Checkbox.prototype, "disabled", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Carousel.prototype, "easing", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Carousel.prototype, "pageLinks", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Carousel.prototype, "style", void 0);
+], Checkbox.prototype, "binary", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Carousel.prototype, "styleClass", void 0);
+], Checkbox.prototype, "label", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Checkbox.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "inputId", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Checkbox.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "styleClass", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Carousel.prototype, "onPage", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _b || Object)
-], Carousel.prototype, "templates", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
-], Carousel.prototype, "containerViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('viewport'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], Carousel.prototype, "viewportViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('items'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object)
-], Carousel.prototype, "itemsViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Carousel.prototype, "value", null);
-Carousel = __decorate([
+], Checkbox.prototype, "onChange", void 0);
+Checkbox = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-carousel',
-        template: "\n        <div #container [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header ui-corner-all\">\n                <span class=\"ui-carousel-header-title\">{{headerText}}</span>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\" *ngIf=\"value&&value.length\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\" *ngIf=\"value&&value.length\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" (click)=\"setPageWithLink($event,i)\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive&&value&&value.length\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div #viewport class=\"ui-carousel-viewport\">\n                <ul #items class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <li *ngFor=\"let item of value\" class=\"ui-carousel-item ui-widget-content ui-corner-all\">\n                        <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-checkbox',
+        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-chkbox ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" [attr.id]=\"inputId\" [name]=\"name\" [value]=\"value\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (change)=\"handleChange($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        [ngClass]=\"{'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-chkbox-label\" (click)=\"onClick($event,cb,true)\" \n                [ngClass]=\"{'ui-label-active':checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n                *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
+        providers: [CHECKBOX_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _j || Object])
-], Carousel);
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _b || Object])
+], Checkbox);
 
-var CarouselModule = (function () {
-    function CarouselModule() {
+var CheckboxModule = (function () {
+    function CheckboxModule() {
     }
-    return CarouselModule;
+    return CheckboxModule;
 }());
-CarouselModule = __decorate([
+CheckboxModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_3__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
-        exports: [Carousel, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
-        declarations: [Carousel]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [Checkbox],
+        declarations: [Checkbox]
     })
-], CarouselModule);
+], CheckboxModule);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-//# sourceMappingURL=carousel.js.map
+var _a, _b;
+//# sourceMappingURL=checkbox.js.map
 
 /***/ }),
 
@@ -394,16 +223,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/growl/growl.ts":
+/***/ "./src/app/components/radiobutton/radiobutton.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* unused harmony export Growl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrowlModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export RADIO_VALUE_ACCESSOR */
+/* unused harmony export RadioButton */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioButtonModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -413,197 +242,126 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
+
+
+
+var RADIO_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return RadioButton; }),
+    multi: true
 };
-
-
-
-
-var Growl = (function () {
-    function Growl(el, domHandler, differs, messageService) {
-        var _this = this;
-        this.el = el;
-        this.domHandler = domHandler;
-        this.differs = differs;
-        this.messageService = messageService;
-        this.life = 3000;
-        this.immutable = true;
+var RadioButton = (function () {
+    function RadioButton(cd) {
+        this.cd = cd;
         this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.zIndex = __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.differ = differs.find([]).create(null);
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
-            });
-        }
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
     }
-    Growl.prototype.ngAfterViewInit = function () {
-        this.container = this.containerViewChild.nativeElement;
-        if (!this.sticky) {
-            this.initTimeout();
+    RadioButton.prototype.handleClick = function () {
+        if (!this.disabled) {
+            this.onClick.emit(null);
+            this.select();
         }
     };
-    Object.defineProperty(Growl.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        set: function (val) {
-            this._value = val;
-            if (this.container && this.immutable) {
-                this.handleValueChange();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Growl.prototype.ngDoCheck = function () {
-        if (!this.immutable && this.container) {
-            var changes = this.differ.diff(this.value);
-            if (changes) {
-                this.handleValueChange();
-            }
+    RadioButton.prototype.select = function () {
+        if (!this.disabled) {
+            this.inputViewChild.nativeElement.checked = true;
+            this.checked = true;
+            this.onModelChange(this.value);
         }
     };
-    Growl.prototype.handleValueChange = function () {
-        if (this.preventRerender) {
-            this.preventRerender = false;
-            return;
+    RadioButton.prototype.writeValue = function (value) {
+        this.checked = (value == this.value);
+        if (this.inputViewChild.nativeElement) {
+            this.inputViewChild.nativeElement.checked = this.checked;
         }
-        this.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.domHandler.fadeIn(this.container, 250);
-        if (!this.sticky) {
-            this.initTimeout();
-        }
+        this.cd.markForCheck();
     };
-    Growl.prototype.initTimeout = function () {
-        var _this = this;
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(function () {
-            _this.removeAll();
-        }, this.life);
+    RadioButton.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
     };
-    Growl.prototype.remove = function (index, msgel) {
-        var _this = this;
-        this.closeIconClick = true;
-        this.domHandler.fadeOut(msgel, 250);
-        setTimeout(function () {
-            _this.preventRerender = true;
-            _this.onClose.emit({ message: _this.value[index] });
-            if (_this.immutable) {
-                _this._value = _this.value.filter(function (val, i) { return i != index; });
-                _this.valueChange.emit(_this._value);
-            }
-            else {
-                _this._value.splice(index, 1);
-            }
-        }, 250);
+    RadioButton.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
     };
-    Growl.prototype.removeAll = function () {
-        var _this = this;
-        if (this.value && this.value.length) {
-            this.domHandler.fadeOut(this.container, 250);
-            setTimeout(function () {
-                _this.value.forEach(function (msg, index) { return _this.onClose.emit({ message: _this.value[index] }); });
-                if (_this.immutable) {
-                    _this.value = [];
-                    _this.valueChange.emit(_this.value);
-                }
-                else {
-                    _this.value.splice(0, _this.value.length);
-                }
-            }, 250);
-        }
+    RadioButton.prototype.setDisabledState = function (val) {
+        this.disabled = val;
     };
-    Growl.prototype.onMessageClick = function (i) {
-        if (this.closeIconClick)
-            this.closeIconClick = false;
-        else
-            this.onClick.emit({ message: this.value[i] });
+    RadioButton.prototype.onFocus = function (event) {
+        this.focused = true;
     };
-    Growl.prototype.ngOnDestroy = function () {
-        if (!this.sticky) {
-            clearTimeout(this.timeout);
-        }
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
+    RadioButton.prototype.onBlur = function (event) {
+        this.focused = false;
+        this.onModelTouched();
     };
-    return Growl;
+    RadioButton.prototype.onChange = function (event) {
+        this.select();
+    };
+    return RadioButton;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Growl.prototype, "sticky", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Growl.prototype, "life", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], Growl.prototype, "style", void 0);
+], RadioButton.prototype, "value", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Growl.prototype, "styleClass", void 0);
+], RadioButton.prototype, "name", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Growl.prototype, "immutable", void 0);
+], RadioButton.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], RadioButton.prototype, "label", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], RadioButton.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], RadioButton.prototype, "inputId", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], RadioButton.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], RadioButton.prototype, "styleClass", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Growl.prototype, "onClick", void 0);
+], RadioButton.prototype, "onClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Growl.prototype, "onClose", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], Growl.prototype, "valueChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], Growl.prototype, "containerViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Growl.prototype, "value", null);
-Growl = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('rb'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object)
+], RadioButton.prototype, "inputViewChild", void 0);
+RadioButton = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-growl',
-        template: "\n        <div #container [ngClass]=\"'ui-growl ui-widget'\" [style.zIndex]=\"zIndex\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div #msgel *ngFor=\"let msg of value;let i = index\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn',\n                    'ui-growl-message-error':msg.severity == 'error','ui-growl-message-success':msg.severity == 'success'}\" (click)=\"onMessageClick(i)\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(i,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-exclamation-circle':msg.severity == 'warn',\n                                'fa-close':msg.severity == 'error','fa-check':msg.severity == 'success'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p [innerHTML]=\"msg.detail\"></p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-radioButton',
+        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div (click)=\"handleClick()\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-radiobutton-label\" (click)=\"select()\" \n            [ngClass]=\"{'ui-label-active':rb.checked,'ui-label-disabled':disabled,'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
+        providers: [RADIO_VALUE_ACCESSOR]
     }),
-    __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Optional */])()),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */]) === "function" && _h || Object])
-], Growl);
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _c || Object])
+], RadioButton);
 
-var GrowlModule = (function () {
-    function GrowlModule() {
+var RadioButtonModule = (function () {
+    function RadioButtonModule() {
     }
-    return GrowlModule;
+    return RadioButtonModule;
 }());
-GrowlModule = __decorate([
+RadioButtonModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Growl],
-        declarations: [Growl]
+        exports: [RadioButton],
+        declarations: [RadioButton]
     })
-], GrowlModule);
+], RadioButtonModule);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
-//# sourceMappingURL=growl.js.map
+var _a, _b, _c;
+//# sourceMappingURL=radiobutton.js.map
 
 /***/ }),
 
@@ -958,14 +716,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/carousel/carouseldemo-routing.module.ts":
+/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__carouseldemo__ = __webpack_require__("./src/app/showcase/components/carousel/carouseldemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputgroupdemo__ = __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputGroupDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -975,50 +733,52 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CarouselDemoRoutingModule = (function () {
-    function CarouselDemoRoutingModule() {
+var InputGroupDemoRoutingModule = (function () {
+    function InputGroupDemoRoutingModule() {
     }
-    return CarouselDemoRoutingModule;
+    return InputGroupDemoRoutingModule;
 }());
-CarouselDemoRoutingModule = __decorate([
+InputGroupDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__carouseldemo__["a" /* CarouselDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inputgroupdemo__["a" /* InputGroupDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], CarouselDemoRoutingModule);
+], InputGroupDemoRoutingModule);
 
-//# sourceMappingURL=carouseldemo-routing.module.js.map
+//# sourceMappingURL=inputgroupdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/carousel/carouseldemo.html":
+/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Carousel</span>\r\n        <span>Carousel displays content using a slide effect featuring responsive mode, swipe support for touch enabled devices and various customization options.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n\r\n    <p-carousel headerText=\"Cars\" [value]=\"cars\">\r\n        <ng-template let-car pTemplate=\"item\">\r\n            <div class=\"ui-grid ui-grid-responsive\">\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-12\"><img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" width=\"60\"></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-6\">Vin</div>\r\n                    <div class=\"ui-grid-col-6\">{{car.vin}}</div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-6\">Year</div>\r\n                    <div class=\"ui-grid-col-6\">{{car.year}}</div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-6\">Color</div>\r\n                    <div class=\"ui-grid-col-6\">{{car.color}}</div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-12\">\r\n                        <button type=\"button\" pButton icon=\"fa-search\" (click)=\"selectCar(car)\"></button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </ng-template>\r\n    </p-carousel>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;CarouselModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Carousel requires a collection of items as its value and a ng-template content to display\r\n                where each item can be accessed using the implicit variable.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel [value]=\"items\"&gt;\r\n    &lt;ng-template let-item pTemplate=\"item\"&gt;\r\n        Content to display\r\n    &lt;/ul&gt;\r\n&lt;/p-carousel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Managing Data</h3>\r\n            <p>DataTable uses setter based checking to realize if the underlying data has changed to update the UI so your data changes such as adding or removing a record \r\n                should always create a new array reference instead of manipulating an existing array. For example, use slice instead of splice when removing an item \r\n                or use spread operator instead of push method when adding an item.</p>\r\n\r\n            <h3>Limiting Visible Items</h3>\r\n            <p>Default number of visible items is 3, use numVisible option to customize this.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel numVisible=\"1\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Effects</h3>\r\n            <p>The easing function to use is \"ease-out\" by default and this can be customized using easing property. \r\n                See <a href=\"http://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp\">here</a> for possible alternative values.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel easing=\"easeOutStrong\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>SlideShow</h3>\r\n            <p>Carousel can display the contents in a slideshow, for this purpose autoPlayInterval and circular attributes are used.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel circular=\"circular\" autoplayInterval=\"3000\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Responsive</h3>\r\n            <p>Responsive mode is enabled by default causing carousel to switch between small and large viewport depending on the breakpoint value which is 560 initially.</p>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>Array of data to display.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>numVisible</td>\r\n                            <td>number</td>\r\n                            <td>3</td>\r\n                            <td>Number of visible items per page.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>firstVisible</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Index of the first visible item.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>headerText</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Text of the header section.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>effectDuration</td>\r\n                            <td>any</td>\r\n                            <td>500</td>\r\n                            <td>Duration of the scrolling animation in milliseconds or a predefined value like \"slow\", \"normal\" and \"fast\".</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>circular</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines continuous scrolling.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>breakpoint</td>\r\n                            <td>number</td>\r\n                            <td>560</td>\r\n                            <td>Breakpoint value in pixels to switch between small and large viewport.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>responsive</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>When defined, causes carousel to adjust its width based on screen size.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>autoplayInterval</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Time in milliseconds to have carousel start scrolling automatically.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>easing</td>\r\n                            <td>string</td>\r\n                            <td>ease-out</td>\r\n                            <td>Easing animation to use for scrolling.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>pageLinks</td>\r\n                            <td>number</td>\r\n                            <td>3</td>\r\n                            <td>Number of maximum page links to display. If total page count exceeds this value a dropdown is displayed instead.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onPage</td>\r\n                            <td>event.page: New page index</td>\r\n                            <td>Callback to invoke on page change.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Element</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-carousel</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-header</td>\r\n                            <td>Header element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-header-title</td>\r\n                            <td>Header text.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-viewport</td>\r\n                            <td>Viewport containing the items.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-button</td>\r\n                            <td>Navigator button at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-next-button</td>\r\n                            <td>Next page button at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-prev-button</td>\r\n                            <td>Previous page button at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-page-links</td>\r\n                            <td>Page links container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-page-link</td>\r\n                            <td>A page link.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-mobiledropdown</td>\r\n                            <td>Cancel icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-item</td>\r\n                            <td>Cancel icon.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/carousel\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;p-carousel headerText=\"Cars\" [value]=\"cars\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-grid ui-grid-responsive\"&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-12\"&gt;&lt;img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" width=\"60\"&gt;&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;Vin&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;{{car.vin}}&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;Year&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;{{car.year}}&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;Color&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;{{car.color}}&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-12\"&gt;\r\n                    &lt;button type=\"button\" pButton icon=\"fa-search\" (click)=\"selectCar(car)\"&gt;&lt;/button&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-carousel&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class CarouselDemo &#123;\r\n\r\n    cars: Car[];\r\n\r\n    msgs: Message[];\r\n\r\n    constructor() &#123;\r\n        this.msgs = [];\r\n        this.cars = [\r\n            &#123;vin: 'r3278r2', year: 2010, brand: 'Audi', color: 'Black'&#125;,\r\n            &#123;vin: 'jhto2g2', year: 2015, brand: 'BMW', color: 'White'&#125;,\r\n            &#123;vin: 'h453w54', year: 2012, brand: 'Honda', color: 'Blue'&#125;,\r\n            &#123;vin: 'g43gwwg', year: 1998, brand: 'Renault', color: 'White'&#125;,\r\n            &#123;vin: 'gf45wg5', year: 2011, brand: 'VW', color: 'Red'&#125;,\r\n            &#123;vin: 'bhv5y5w', year: 2015, brand: 'Jaguar', color: 'Blue'&#125;,\r\n            &#123;vin: 'ybw5fsd', year: 2012, brand: 'Ford', color: 'Yellow'&#125;,\r\n            &#123;vin: '45665e5', year: 2011, brand: 'Mercedes', color: 'Brown'&#125;,\r\n            &#123;vin: 'he6sb5v', year: 2015, brand: 'Ford', color: 'Black'&#125;\r\n        ];\r\n    &#125;\r\n\r\n    selectCar(car: Car) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity: 'info', summary: 'Car Selected', detail: 'Vin:' + car.vin&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">InputGroup</span>\r\n        <span>Text, icon, buttons and other content can be grouped next to an input by wrapping the addons and input inside\r\n            .ui-inputgroup element. Multiple addons can be used within the same group as well.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Addons</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><i class=\"fa fa-user\"></i></span>\r\n                <input type=\"text\" pInputText placeholder=\"Username\">         \r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\">$</span>\r\n                <input type=\"text\" pInputText placeholder=\"Price\">   \r\n                <span class=\"ui-inputgroup-addon\">.00</span>      \r\n            </div>\r\n        </div>\r\n                \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\">www</span>\r\n                <input type=\"text\" pInputText placeholder=\"Website\">      \r\n            </div>\r\n        </div>\r\n    </div>\r\n        \r\n    <h3>Multiple Addons</h3>\r\n    <div class=\"ui-g\">\r\n        <div class=\"ui-g-12\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><i class=\"fa fa-credit-card\"></i></span>  \r\n                <span class=\"ui-inputgroup-addon\"><i class=\"fa fa-cc-visa\"></i></span>   \r\n                <input type=\"text\" pInputText placeholder=\"Price\"> \r\n                <span class=\"ui-inputgroup-addon\">$</span>  \r\n                <span class=\"ui-inputgroup-addon\">.00</span>      \r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <h3>Button Addons</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <button pButton type=\"button\" label=\"Search\"></button>\r\n                <input type=\"text\" pInputText placeholder=\"Keyword\">         \r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <input type=\"text\" pInputText placeholder=\"Keyword\">   \r\n                <button pButton type=\"button\" icon=\"fa-search\" class=\"ui-button-secondary\"></button>      \r\n            </div>\r\n        </div>\r\n                \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <button pButton type=\"button\" icon=\"fa-check\" class=\"ui-button-success\"></button>    \r\n                <input type=\"text\" pInputText placeholder=\"Vote\">   \r\n                <button pButton type=\"button\" icon=\"fa-close\" class=\"ui-button-danger\"></button>      \r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <h3>Checkbox and RadioButton</h3>\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><p-checkbox></p-checkbox></span>\r\n                <input type=\"text\" pInputText placeholder=\"Username\">         \r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <input type=\"text\" pInputText placeholder=\"Price\">   \r\n                <span class=\"ui-inputgroup-addon\"><p-radioButton></p-radioButton></span>      \r\n            </div>\r\n        </div>\r\n                \r\n        <div class=\"ui-g-12 ui-md-4\">\r\n            <div class=\"ui-inputgroup\">\r\n                <span class=\"ui-inputgroup-addon\"><p-checkbox></p-checkbox></span>\r\n                <input type=\"text\" pInputText placeholder=\"Website\">      \r\n                <span class=\"ui-inputgroup-addon\"><p-radioButton></p-radioButton></span> \r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"inputgroupdemo.html\">\r\n<a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inputgroup\" class=\"btn-viewsource\" target=\"_blank\">\r\n    <i class=\"fa fa-github\"></i>\r\n    <span>View on GitHub</span>\r\n</a>\r\n\r\n    <pre>\r\n    <code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Addons&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-user\"&gt;&lt;/i&gt;&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Username\"&gt;         \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;$&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt;   \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;.00&lt;/span&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n            \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;www&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Website\"&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n    \r\n&lt;h3&gt;Multiple Addons&lt;/h3&gt;\r\n&lt;div class=\"ui-g\"&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-credit-card\"&gt;&lt;/i&gt;&lt;/span&gt;  \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;i class=\"fa fa-cc-visa\"&gt;&lt;/i&gt;&lt;/span&gt;   \r\n            &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt; \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;$&lt;/span&gt;  \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;.00&lt;/span&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Button Addons&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;button pButton type=\"button\" label=\"Search\"&gt;&lt;/button&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Keyword\"&gt;         \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Keyword\"&gt;   \r\n            &lt;button pButton type=\"button\" icon=\"fa-search\" class=\"ui-button-secondary\"&gt;&lt;/button&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n            \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;button pButton type=\"button\" icon=\"fa-check\" class=\"ui-button-success\"&gt;&lt;/button&gt;    \r\n            &lt;input type=\"text\" pInputText placeholder=\"Vote\"&gt;   \r\n            &lt;button pButton type=\"button\" icon=\"fa-close\" class=\"ui-button-danger\"&gt;&lt;/button&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Checkbox and RadioButton&lt;/h3&gt;\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-checkbox&gt;&lt;/p-checkbox&gt;&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Username\"&gt;         \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Price\"&gt;   \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-radioButton&gt;&lt;/p-radioButton&gt;&lt;/span&gt;      \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n            \r\n    &lt;div class=\"ui-g-12 ui-md-4\"&gt;\r\n        &lt;div class=\"ui-inputgroup\"&gt;\r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-checkbox&gt;&lt;/p-checkbox&gt;&lt;/span&gt;\r\n            &lt;input type=\"text\" pInputText placeholder=\"Website\"&gt;      \r\n            &lt;span class=\"ui-inputgroup-addon\"&gt;&lt;p-radioButton&gt;&lt;/p-radioButton&gt;&lt;/span&gt; \r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"inputgroupdemo.ts\">\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class InputGroupDemo &#123;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/carousel/carouseldemo.module.ts":
+/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__carouseldemo__ = __webpack_require__("./src/app/showcase/components/carousel/carouseldemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__carouseldemo_routing_module__ = __webpack_require__("./src/app/showcase/components/carousel/carouseldemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_carousel_carousel__ = __webpack_require__("./src/app/components/carousel/carousel.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CarouselDemoModule", function() { return CarouselDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputgroupdemo__ = __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputgroupdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_checkbox_checkbox__ = __webpack_require__("./src/app/components/checkbox/checkbox.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_radiobutton_radiobutton__ = __webpack_require__("./src/app/components/radiobutton/radiobutton.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputGroupDemoModule", function() { return InputGroupDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1034,78 +794,61 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CarouselDemoModule = (function () {
-    function CarouselDemoModule() {
+
+
+var InputGroupDemoModule = (function () {
+    function InputGroupDemoModule() {
     }
-    return CarouselDemoModule;
+    return InputGroupDemoModule;
 }());
-CarouselDemoModule = __decorate([
+InputGroupDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__carouseldemo_routing_module__["a" /* CarouselDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_carousel_carousel__["a" /* CarouselModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__["a" /* GrowlModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_4__inputgroupdemo_routing_module__["a" /* InputGroupDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_checkbox_checkbox__["a" /* CheckboxModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_radiobutton_radiobutton__["a" /* RadioButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_9__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_10__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__carouseldemo__["a" /* CarouselDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__inputgroupdemo__["a" /* InputGroupDemo */]
         ]
     })
-], CarouselDemoModule);
+], InputGroupDemoModule);
 
-//# sourceMappingURL=carouseldemo.module.js.map
+//# sourceMappingURL=inputgroupdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/carousel/carouseldemo.ts":
+/***/ "./src/app/showcase/components/inputgroup/inputgroupdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputGroupDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-var CarouselDemo = (function () {
-    function CarouselDemo() {
-        this.msgs = [];
-        this.cars = [
-            { vin: 'r3278r2', year: 2010, brand: 'Audi', color: 'Black' },
-            { vin: 'jhto2g2', year: 2015, brand: 'BMW', color: 'White' },
-            { vin: 'h453w54', year: 2012, brand: 'Honda', color: 'Blue' },
-            { vin: 'g43gwwg', year: 1998, brand: 'Renault', color: 'White' },
-            { vin: 'gf45wg5', year: 2011, brand: 'VW', color: 'Red' },
-            { vin: 'bhv5y5w', year: 2015, brand: 'Jaguar', color: 'Blue' },
-            { vin: 'ybw5fsd', year: 2012, brand: 'Ford', color: 'Yellow' },
-            { vin: '45665e5', year: 2011, brand: 'Mercedes', color: 'Brown' },
-            { vin: 'he6sb5v', year: 2015, brand: 'Ford', color: 'Black' }
-        ];
+var InputGroupDemo = (function () {
+    function InputGroupDemo() {
     }
-    CarouselDemo.prototype.selectCar = function (car) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Car Selected', detail: 'Vin:' + car.vin });
-    };
-    return CarouselDemo;
+    return InputGroupDemo;
 }());
-CarouselDemo = __decorate([
+InputGroupDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/carousel/carouseldemo.html"),
-        styles: ["\n        .ui-grid-row {\n            text-align: center;\n        }\n\n        .ui-grid {\n            margin: 10px 0px;\n        }\n\n        .ui-grid-row > div {\n            padding: 4px 10px;\n        }\n    "]
-    }),
-    __metadata("design:paramtypes", [])
-], CarouselDemo);
+        template: __webpack_require__("./src/app/showcase/components/inputgroup/inputgroupdemo.html")
+    })
+], InputGroupDemo);
 
-//# sourceMappingURL=carouseldemo.js.map
+//# sourceMappingURL=inputgroupdemo.js.map
 
 /***/ })
 

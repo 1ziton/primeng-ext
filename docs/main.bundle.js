@@ -1,4 +1,4 @@
-webpackJsonp([94],{
+webpackJsonp([95],{
 
 /***/ "./node_modules/css-loader/index.js?{\"sourceMap\":false,\"importLoaders\":1}!./node_modules/postcss-loader/index.js?{\"ident\":\"postcss\"}!./src/app/showcase/style/common.less":
 /***/ (function(module, exports, __webpack_require__) {
@@ -148,35 +148,35 @@ exports.push([module.i, "@media only screen and (min-width: 320px) and (max-widt
 var map = {
 	"./components/accordion/accordiondemo.module": [
 		"./src/app/showcase/components/accordion/accordiondemo.module.ts",
-		41
+		42
 	],
 	"./components/autocomplete/autocompletedemo.module": [
 		"./src/app/showcase/components/autocomplete/autocompletedemo.module.ts",
-		75
+		76
 	],
 	"./components/blockui/blockuidemo.module": [
 		"./src/app/showcase/components/blockui/blockuidemo.module.ts",
-		40
+		41
 	],
 	"./components/breadcrumb/breadcrumbdemo.module": [
 		"./src/app/showcase/components/breadcrumb/breadcrumbdemo.module.ts",
-		39
+		40
 	],
 	"./components/button/buttondemo.module": [
 		"./src/app/showcase/components/button/buttondemo.module.ts",
-		87
+		88
 	],
 	"./components/calendar/calendardemo.module": [
 		"./src/app/showcase/components/calendar/calendardemo.module.ts",
-		74
+		75
 	],
 	"./components/captcha/captchademo.module": [
 		"./src/app/showcase/components/captcha/captchademo.module.ts",
-		38
+		39
 	],
 	"./components/carousel/carouseldemo.module": [
 		"./src/app/showcase/components/carousel/carouseldemo.module.ts",
-		37
+		38
 	],
 	"./components/chart/chartdemo.module": [
 		"./src/app/showcase/components/chart/chartdemo.module.ts",
@@ -184,19 +184,19 @@ var map = {
 	],
 	"./components/checkbox/checkboxdemo.module": [
 		"./src/app/showcase/components/checkbox/checkboxdemo.module.ts",
-		73
+		74
 	],
 	"./components/chips/chipsdemo.module": [
 		"./src/app/showcase/components/chips/chipsdemo.module.ts",
-		72
+		73
 	],
 	"./components/codehighlighter/codehighlighterdemo.module": [
 		"./src/app/showcase/components/codehighlighter/codehighlighterdemo.module.ts",
-		86
+		87
 	],
 	"./components/colorpicker/colorpickerdemo.module": [
 		"./src/app/showcase/components/colorpicker/colorpickerdemo.module.ts",
-		71
+		72
 	],
 	"./components/confirmdialog/confirmdialogdemo.module": [
 		"./src/app/showcase/components/confirmdialog/confirmdialogdemo.module.ts",
@@ -204,15 +204,15 @@ var map = {
 	],
 	"./components/contextmenu/contextmenudemo.module": [
 		"./src/app/showcase/components/contextmenu/contextmenudemo.module.ts",
-		35
+		36
 	],
 	"./components/datagrid/datagriddemo.module": [
 		"./src/app/showcase/components/datagrid/datagriddemo.module.ts",
-		28
+		29
 	],
 	"./components/datalist/datalistdemo.module": [
 		"./src/app/showcase/components/datalist/datalistdemo.module.ts",
-		70
+		71
 	],
 	"./components/datascroller/datascrollerdemo.module": [
 		"./src/app/showcase/components/datascroller/datascrollerdemo.module.ts",
@@ -224,147 +224,147 @@ var map = {
 	],
 	"./components/defer/deferdemo.module": [
 		"./src/app/showcase/components/defer/deferdemo.module.ts",
-		27
+		28
 	],
 	"./components/dialog/dialogdemo.module": [
 		"./src/app/showcase/components/dialog/dialogdemo.module.ts",
-		85
+		86
 	],
 	"./components/dragdrop/dragdropdemo.module": [
 		"./src/app/showcase/components/dragdrop/dragdropdemo.module.ts",
-		26
+		27
 	],
 	"./components/dropdown/dropdowndemo.module": [
 		"./src/app/showcase/components/dropdown/dropdowndemo.module.ts",
-		84
+		85
 	],
 	"./components/editor/editordemo.module": [
 		"./src/app/showcase/components/editor/editordemo.module.ts",
-		69
+		70
 	],
 	"./components/fieldset/fieldsetdemo.module": [
 		"./src/app/showcase/components/fieldset/fieldsetdemo.module.ts",
-		68
+		69
 	],
 	"./components/fileupload/fileuploaddemo.module": [
 		"./src/app/showcase/components/fileupload/fileuploaddemo.module.ts",
-		25
+		26
 	],
 	"./components/galleria/galleriademo.module": [
 		"./src/app/showcase/components/galleria/galleriademo.module.ts",
-		67
+		68
 	],
 	"./components/gmap/gmapdemo.module": [
 		"./src/app/showcase/components/gmap/gmapdemo.module.ts",
-		19
+		20
 	],
 	"./components/grid/griddemo.module": [
 		"./src/app/showcase/components/grid/griddemo.module.ts",
-		83
+		84
 	],
 	"./components/growl/growldemo.module": [
 		"./src/app/showcase/components/growl/growldemo.module.ts",
-		66
+		67
 	],
 	"./components/inplace/inplacedemo.module": [
 		"./src/app/showcase/components/inplace/inplacedemo.module.ts",
-		63
+		64
 	],
 	"./components/inputgroup/inputgroupdemo.module": [
 		"./src/app/showcase/components/inputgroup/inputgroupdemo.module.ts",
-		36
+		37
 	],
 	"./components/inputmask/inputmaskdemo.module": [
 		"./src/app/showcase/components/inputmask/inputmaskdemo.module.ts",
-		62
+		63
 	],
 	"./components/inputswitch/inputswitchdemo.module": [
 		"./src/app/showcase/components/inputswitch/inputswitchdemo.module.ts",
-		61
+		62
 	],
 	"./components/inputtext/inputtextdemo.module": [
 		"./src/app/showcase/components/inputtext/inputtextdemo.module.ts",
-		82
+		83
 	],
 	"./components/inputtextarea/inputtextareademo.module": [
 		"./src/app/showcase/components/inputtextarea/inputtextareademo.module.ts",
-		60
+		61
 	],
 	"./components/lightbox/lightboxdemo.module": [
 		"./src/app/showcase/components/lightbox/lightboxdemo.module.ts",
-		59
+		60
 	],
 	"./components/listbox/listboxdemo.module": [
 		"./src/app/showcase/components/listbox/listboxdemo.module.ts",
-		58
+		59
 	],
 	"./components/megamenu/megamenudemo.module": [
 		"./src/app/showcase/components/megamenu/megamenudemo.module.ts",
-		57
+		58
 	],
 	"./components/menu/menudemo.module": [
 		"./src/app/showcase/components/menu/menudemo.module.ts",
-		34
+		35
 	],
 	"./components/menubar/menubardemo.module": [
 		"./src/app/showcase/components/menubar/menubardemo.module.ts",
-		33
+		34
 	],
 	"./components/menumodel/menumodeldemo.module": [
 		"./src/app/showcase/components/menumodel/menumodeldemo.module.ts",
-		90
+		91
 	],
 	"./components/messages/messagesdemo.module": [
 		"./src/app/showcase/components/messages/messagesdemo.module.ts",
-		81
+		82
 	],
 	"./components/multiselect/multiselectdemo.module": [
 		"./src/app/showcase/components/multiselect/multiselectdemo.module.ts",
-		80
+		81
 	],
 	"./components/orderlist/orderlistdemo.module": [
 		"./src/app/showcase/components/orderlist/orderlistdemo.module.ts",
-		56
+		57
 	],
 	"./components/organizationchart/organizationchartdemo.module": [
 		"./src/app/showcase/components/organizationchart/organizationchartdemo.module.ts",
-		17
+		18
 	],
 	"./components/overlaypanel/overlaypaneldemo.module": [
 		"./src/app/showcase/components/overlaypanel/overlaypaneldemo.module.ts",
-		79
+		80
 	],
 	"./components/paginator/paginatordemo.module": [
 		"./src/app/showcase/components/paginator/paginatordemo.module.ts",
-		78
+		79
 	],
 	"./components/panel/paneldemo.module": [
 		"./src/app/showcase/components/panel/paneldemo.module.ts",
-		16
+		17
 	],
 	"./components/panelmenu/panelmenudemo.module": [
 		"./src/app/showcase/components/panelmenu/panelmenudemo.module.ts",
-		32
+		33
 	],
 	"./components/password/passworddemo.module": [
 		"./src/app/showcase/components/password/passworddemo.module.ts",
-		55
+		56
 	],
 	"./components/picklist/picklistdemo.module": [
 		"./src/app/showcase/components/picklist/picklistdemo.module.ts",
-		77
+		78
 	],
 	"./components/progressbar/progressbardemo.module": [
 		"./src/app/showcase/components/progressbar/progressbardemo.module.ts",
-		65
+		66
 	],
 	"./components/radiobutton/radiobuttondemo.module": [
 		"./src/app/showcase/components/radiobutton/radiobuttondemo.module.ts",
-		54
+		55
 	],
 	"./components/rating/ratingdemo.module": [
 		"./src/app/showcase/components/rating/ratingdemo.module.ts",
-		53
+		54
 	],
 	"./components/responsive/responsivedemo.module": [
 		"./src/app/showcase/components/responsive/responsivedemo.module.ts",
@@ -372,75 +372,75 @@ var map = {
 	],
 	"./components/rtl/rtldemo.module": [
 		"./src/app/showcase/components/rtl/rtldemo.module.ts",
-		76
+		77
 	],
 	"./components/schedule/scheduledemo.module": [
 		"./src/app/showcase/components/schedule/scheduledemo.module.ts",
-		20
+		21
 	],
 	"./components/selectbutton/selectbuttondemo.module": [
 		"./src/app/showcase/components/selectbutton/selectbuttondemo.module.ts",
-		52
+		53
 	],
 	"./components/setup/setup.module": [
 		"./src/app/showcase/components/setup/setup.module.ts",
-		89
+		90
 	],
 	"./components/slidemenu/slidemenudemo.module": [
 		"./src/app/showcase/components/slidemenu/slidemenudemo.module.ts",
-		31
+		32
 	],
 	"./components/slider/sliderdemo.module": [
 		"./src/app/showcase/components/slider/sliderdemo.module.ts",
-		51
+		52
 	],
 	"./components/spinner/spinnerdemo.module": [
 		"./src/app/showcase/components/spinner/spinnerdemo.module.ts",
-		50
+		51
 	],
 	"./components/splitbutton/splitbuttondemo.module": [
 		"./src/app/showcase/components/splitbutton/splitbuttondemo.module.ts",
-		24
+		25
 	],
 	"./components/steps/stepsdemo.module": [
 		"./src/app/showcase/components/steps/stepsdemo.module.ts",
-		23
+		24
 	],
 	"./components/support/support.module": [
 		"./src/app/showcase/components/support/support.module.ts",
-		92
+		93
 	],
 	"./components/tabmenu/tabmenudemo.module": [
 		"./src/app/showcase/components/tabmenu/tabmenudemo.module.ts",
-		30
+		31
 	],
 	"./components/tabview/tabviewdemo.module": [
 		"./src/app/showcase/components/tabview/tabviewdemo.module.ts",
-		64
+		65
 	],
 	"./components/terminal/terminaldemo.module": [
 		"./src/app/showcase/components/terminal/terminaldemo.module.ts",
-		21
+		22
 	],
 	"./components/theming/theming.module": [
 		"./src/app/showcase/components/theming/theming.module.ts",
-		91
+		92
 	],
 	"./components/tieredmenu/tieredmenudemo.module": [
 		"./src/app/showcase/components/tieredmenu/tieredmenudemo.module.ts",
-		29
+		30
 	],
 	"./components/togglebutton/togglebuttondemo.module": [
 		"./src/app/showcase/components/togglebutton/togglebuttondemo.module.ts",
-		49
+		50
 	],
 	"./components/toolbar/toolbardemo.module": [
 		"./src/app/showcase/components/toolbar/toolbardemo.module.ts",
-		22
+		23
 	],
 	"./components/tooltip/tooltipdemo.module": [
 		"./src/app/showcase/components/tooltip/tooltipdemo.module.ts",
-		48
+		49
 	],
 	"./components/tree/treedemo.module": [
 		"./src/app/showcase/components/tree/treedemo.module.ts",
@@ -448,27 +448,27 @@ var map = {
 	],
 	"./components/treetable/treetabledemo.module": [
 		"./src/app/showcase/components/treetable/treetabledemo.module.ts",
-		10
+		11
 	],
 	"./components/tristatecheckbox/tristatecheckboxdemo.module": [
 		"./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.module.ts",
-		47
+		48
 	],
 	"./components/validation/validationdemo.module": [
 		"./src/app/showcase/components/validation/validationdemo.module.ts",
-		18
+		19
 	],
 	"./custom-components/area-demo/area-demo.module": [
 		"./src/app/showcase/custom-components/area-demo/area-demo.module.ts",
-		15
+		16
 	],
 	"./custom-components/cnee-select-demo/cnee-select-demo.module": [
 		"./src/app/showcase/custom-components/cnee-select-demo/cnee-select-demo.module.ts",
-		14
+		15
 	],
 	"./custom-components/department-select-demo/department-select-demo.module": [
 		"./src/app/showcase/custom-components/department-select-demo/department-select-demo.module.ts",
-		45
+		46
 	],
 	"./custom-components/echarts-demo/echarts-demo.module": [
 		"./src/app/showcase/custom-components/echarts-demo/echarts-demo.module.ts",
@@ -476,47 +476,51 @@ var map = {
 	],
 	"./custom-components/exception-select-demo/exception-select-demo.module": [
 		"./src/app/showcase/custom-components/exception-select-demo/exception-select-demo.module.ts",
-		44
+		45
 	],
 	"./custom-components/good-select-demo/good-select-demo.module": [
 		"./src/app/showcase/custom-components/good-select-demo/good-select-demo.module.ts",
-		13
+		14
 	],
 	"./custom-components/master-select-demo/master-select-demo.module": [
 		"./src/app/showcase/custom-components/master-select-demo/master-select-demo.module.ts",
-		8
+		9
 	],
 	"./custom-components/meta-select-demo/meta-select-demo.module": [
 		"./src/app/showcase/custom-components/meta-select-demo/meta-select-demo.module.ts",
-		43
+		44
 	],
 	"./custom-components/repairgoods-select-demo/repairgoods-select-demo.module": [
 		"./src/app/showcase/custom-components/repairgoods-select-demo/repairgoods-select-demo.module.ts",
-		12
+		13
 	],
 	"./custom-components/shipper-select-demo/shipper-select-demo.module": [
 		"./src/app/showcase/custom-components/shipper-select-demo/shipper-select-demo.module.ts",
-		11
+		12
 	],
 	"./custom-components/ui-calendar-demo/ui-calendar-demo.module": [
 		"./src/app/showcase/custom-components/ui-calendar-demo/ui-calendar-demo.module.ts",
-		7
+		8
 	],
 	"./custom-components/ui-grid-demo/ui-grid-demo.module": [
 		"./src/app/showcase/custom-components/ui-grid-demo/ui-grid-demo.module.ts",
-		9
+		10
 	],
 	"./custom-components/ui-select-demo/ui-select-demo.module": [
 		"./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.module.ts",
-		88
+		89
 	],
 	"./custom-components/ui-tree-demo/ui-tree-demo.module": [
 		"./src/app/showcase/custom-components/ui-tree-demo/ui-tree-demo.module.ts",
-		42
+		43
+	],
+	"./custom-components/ui-upload-demo/ui-upload-demo.module": [
+		"./src/app/showcase/custom-components/ui-upload-demo/ui-upload-demo.module.ts",
+		7
 	],
 	"./security/security.module": [
 		"./src/app/showcase/security/security.module.ts",
-		46
+		47
 	]
 };
 function webpackAsyncContext(req) {
@@ -9551,7 +9555,7 @@ __decorate([
 FileUpload = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
         selector: 'p-fileUpload',
-        template: "\n        <div *ngIf=\"uploadType!=='file'\"  [ngClass]=\"'ui-fileupload ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\">\n                <button type=\"button\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton class=\"ui-fileupload-choose\" (click)=\"onChooseClick($event, fileinput)\" [disabled]=\"disabled\"> \n                    <input #fileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple\" [accept]=\"accept\" [disabled]=\"disabled\">\n                </button>\n\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n            <div [ngClass]=\"{'ui-fileupload-content ui-widget-content ui-corner-bottom':true,'ui-fileupload-highlight':dragHighlight}\" \n                (dragenter)=\"onDragEnter($event)\" (dragover)=\"onDragOver($event)\" (dragleave)=\"onDragLeave($event)\" (drop)=\"onDrop($event)\">\n                <p-progressBar [value]=\"progress\" [showValue]=\"false\" *ngIf=\"hasFiles()\"></p-progressBar>\n                \n                <p-messages [value]=\"msgs\"></p-messages>\n                \n                <div class=\"ui-fileupload-files\" *ngIf=\"hasFiles()\">\n                    <div *ngIf=\"!fileTemplate\">\n                        <div class=\"ui-fileupload-row\" *ngFor=\"let file of files; let i = index;\">\n                            <div><img [src]=\"file.objectURL\" *ngIf=\"isImage(file)\" [width]=\"previewWidth\"/></div>\n                            <div>{{file.name}}</div>\n                            <div>{{formatSize(file.size)}}</div>\n                            <div><button type=\"button\" icon=\"fa-close\" pButton (click)=\"remove(i)\"></button></div>\n                        </div>\n                    </div>\n                    <div *ngIf=\"fileTemplate\">\n                        <ng-template ngFor [ngForOf]=\"files\" [ngForTemplate]=\"fileTemplate\"></ng-template>\n                    </div>\n                </div>\n                \n                <p-templateLoader [template]=\"contentTemplate\"></p-templateLoader>\n            </div>\n        </div>\n         <div *ngIf=\"uploadType==='file'\" class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\" style=\"display: inline-block;border:none;background:none;\">\n                <button type=\"button\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton class=\"ui-fileupload-choose\" (click)=\"onChooseClick($event, fileinput)\" [disabled]=\"disabled\"> \n                    <input #fileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple\" [accept]=\"accept\" [disabled]=\"disabled\">\n                </button>\n\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n    "
+        template: "\n        <div *ngIf=\"uploadType!=='file'\"  [ngClass]=\"'ui-fileupload ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\">\n                <button type=\"button\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton class=\"ui-fileupload-choose\" (click)=\"onChooseClick($event, fileinput)\" [disabled]=\"disabled\"> \n                    <input #fileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple\" [accept]=\"accept\" [disabled]=\"disabled\">\n                </button>\n\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n            <div [ngClass]=\"{'ui-fileupload-content ui-widget-content ui-corner-bottom':true,'ui-fileupload-highlight':dragHighlight}\" \n                (dragenter)=\"onDragEnter($event)\" (dragover)=\"onDragOver($event)\" (dragleave)=\"onDragLeave($event)\" (drop)=\"onDrop($event)\">\n                <p-progressBar [value]=\"progress\" [showValue]=\"false\" *ngIf=\"hasFiles()\"></p-progressBar>\n                \n                <p-messages [value]=\"msgs\"></p-messages>\n                \n                <div class=\"ui-fileupload-files\" *ngIf=\"hasFiles()\">\n                    <div *ngIf=\"!fileTemplate\">\n                        <div class=\"ui-fileupload-row\" *ngFor=\"let file of files; let i = index;\">\n                            <div><img [src]=\"file.objectURL\" *ngIf=\"isImage(file)\" [width]=\"previewWidth\"/></div>\n                            <div>{{file.name}}</div>\n                            <div>{{formatSize(file.size)}}</div>\n                            <div><button type=\"button\" icon=\"fa-close\" pButton (click)=\"remove(i)\"></button></div>\n                        </div>\n                    </div>\n                    <div *ngIf=\"fileTemplate\">\n                        <ng-template ngFor [ngForOf]=\"files\" [ngForTemplate]=\"fileTemplate\"></ng-template>\n                    </div>\n                </div>\n                \n                <p-templateLoader [template]=\"contentTemplate\"></p-templateLoader>\n            </div>\n        </div>\n         <div *ngIf=\"uploadType==='file'\" class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\" style=\"display: inline-block;border:none;background:none;\">\n                <button type=\"button\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton class=\"ui-fileupload-choose\" (click)=\"onChooseClick($event, fileinput)\" [disabled]=\"disabled\"> \n                    <input #fileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple==='multiple'\" [accept]=\"accept\" [disabled]=\"disabled\">\n                </button>\n\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n    "
     }),
     __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _h || Object])
 ], FileUpload);
@@ -10589,17 +10593,17 @@ var _a, _b;
 /* unused harmony reexport DepartmentSelectModule */
 /* unused harmony reexport WorkersSelectComponent */
 /* unused harmony reexport ShipperSelectComponent */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_29_app_custom_components_good_select_good_select_component__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_21_app_custom_components_grid_grid__["a"]; });
-/* unused harmony reexport UIUpload */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_29_app_custom_components_good_select_good_select_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_21_app_custom_components_grid_grid__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_app_custom_components_tree_tree__ = __webpack_require__("./src/app/custom-components/tree/tree.ts");
 /* unused harmony reexport UITree */
 /* unused harmony reexport UISelectBoxModule */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_24_app_custom_components_master_select_master_select_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_24_app_custom_components_master_select_master_select_component__["a"]; });
 /* unused harmony reexport MetaSelectComponent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_app_custom_components_repair_goods_select_repair_goods_select_component__ = __webpack_require__("./src/app/custom-components/repair-goods-select/repair-goods-select.component.ts");
 /* unused harmony reexport RepairGoodsComponent */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_30_app_custom_components_exception_select_exception_select_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_30_app_custom_components_exception_select_exception_select_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
 /* unused harmony reexport API */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomComponentsModule; });
@@ -10708,10 +10712,10 @@ CustomComponentsModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_17_app_custom_components_department_select_department_select_component__["a" /* DepartmentSelectModule */],
             __WEBPACK_IMPORTED_MODULE_24_app_custom_components_master_select_master_select_component__["a" /* MasterSelectModule */],
             __WEBPACK_IMPORTED_MODULE_30_app_custom_components_exception_select_exception_select_component__["a" /* ExceptionSelectModule */],
-            __WEBPACK_IMPORTED_MODULE_23_app_custom_components_select_box_select_box__["a" /* UISelectBoxModule */]
+            __WEBPACK_IMPORTED_MODULE_23_app_custom_components_select_box_select_box__["a" /* UISelectBoxModule */],
+            __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a" /* UIUploadModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a" /* UIUpload */],
             __WEBPACK_IMPORTED_MODULE_14_app_custom_components_area_select_area_select_component__["a" /* AreaSelectComponent */],
             __WEBPACK_IMPORTED_MODULE_15_app_custom_components_abnormal_mover_abnormal_mover_select_component__["a" /* AbnormalMoverComponent */],
             __WEBPACK_IMPORTED_MODULE_19_app_custom_components_shipper_select_shipper_select_component__["a" /* ShipperSelectComponent */],
@@ -10723,7 +10727,7 @@ CustomComponentsModule = __decorate([
         exports: [
             __WEBPACK_IMPORTED_MODULE_13__primeng_ext_calendar_calendar__["a" /* UICalendarModule */],
             __WEBPACK_IMPORTED_MODULE_21_app_custom_components_grid_grid__["a" /* UIGridModule */],
-            __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a" /* UIUpload */],
+            __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a" /* UIUploadModule */],
             __WEBPACK_IMPORTED_MODULE_23_app_custom_components_select_box_select_box__["a" /* UISelectBoxModule */],
             __WEBPACK_IMPORTED_MODULE_20_app_custom_components_echarts_echarts__["a" /* EchartsModule */],
             __WEBPACK_IMPORTED_MODULE_14_app_custom_components_area_select_area_select_component__["a" /* AreaSelectComponent */],
@@ -14062,8 +14066,11 @@ module.exports = "<p-fileUpload *ngIf=\"type!=='file'\" #upload name=\"file\" [u
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_config__ = __webpack_require__("./src/app/showcase/custom-components/config.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_custom_components_primeng_ext_fileupload__ = __webpack_require__("./src/app/custom-components/_primeng-ext/fileupload.ts");
 /* unused harmony export CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIUpload; });
+/* unused harmony export UIUpload */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIUploadModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -14074,6 +14081,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /*tslint:disable*/
+
+
 
 
 
@@ -14290,6 +14299,25 @@ UIUpload = __decorate([
     __metadata("design:paramtypes", [])
 ], UIUpload);
 
+var UIUploadModule = (function () {
+    function UIUploadModule() {
+    }
+    return UIUploadModule;
+}());
+UIUploadModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        declarations: [
+            UIUpload
+        ],
+        exports: [UIUpload],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_3__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4_app_custom_components_primeng_ext_fileupload__["a" /* FileUploadModule */]
+        ]
+    })
+], UIUploadModule);
+
 var _a;
 //# sourceMappingURL=upload.js.map
 
@@ -14497,6 +14525,7 @@ AppRoutingModule = __decorate([
                 { path: 'repair-goods-select', loadChildren: './custom-components/repairgoods-select-demo/repairgoods-select-demo.module#RepairGoodsDemoModule' },
                 { path: 'master-select', loadChildren: './custom-components/master-select-demo/master-select-demo.module#MasterSelectDemoModule' },
                 { path: 'exception-select', loadChildren: './custom-components/exception-select-demo/exception-select-demo.module#ExceptionSelectDemoModule' },
+                { path: 'ui-upload', loadChildren: './custom-components/ui-upload-demo/ui-upload-demo.module#UIUploadDemoModule' },
                 // primeng demo
                 { path: 'setup', loadChildren: './components/setup/setup.module#SetupModule' },
                 { path: 'theming', loadChildren: './components/theming/theming.module#ThemingModule' },
@@ -14607,7 +14636,7 @@ module.exports = module.exports.toString();
 /***/ "./src/app/showcase/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"layout-wrapper\">\r\n    <div id=\"layout-topbar\">\r\n        <a href=\"#\" class=\"menu-button\" (click)=\"onMenuButtonClick($event)\">\r\n            <i class=\"fa fa-bars\"></i>\r\n        </a>\r\n\r\n        <a href=\"#\" class=\"logo\" [routerLink]=\"['/']\">\r\n            <img alt=\"logo\" src=\"assets/showcase/images/logo.png\" />\r\n            <span style=\"color:#c3002f\">~EXT</span>\r\n        </a>\r\n\r\n        <ul class=\"topbar-menu\">\r\n            <li>\r\n                <a [routerLink]=\"['/security/login']\" *ngIf=\"!loginUser\">Login</a>\r\n                <a *ngIf=\"loginUser\" href=\"javascript:void(0)\">{{loginUser}}</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n\r\n    <div id=\"layout-sidebar\" [ngClass]=\"{'active': menuActive}\">\r\n\r\n\r\n        <div class=\"menu-content\">\r\n            <div class=\"layout-menu\">\r\n                <a id=\"ui_component\" #uiconponent [class.active-menuitem]=\"uiconponent.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === uiconponent.id ? null : uiconponent.id)\">\r\n                      <img src=\"assets/showcase/images/icons/button-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                     <img src=\"assets/showcase/images/icons/button.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                                    <span>UI组件</span>\r\n                      </a>\r\n                <div [ngClass]=\"{'submenushow': (uiconponent.id == activeMenuId), 'submenuhide': (uiconponent.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/ui-select']\" (click)=\"menuActive = false\">&#9679; UISelect</a>\r\n                    <a [routerLink]=\"['/echarts']\" (click)=\"menuActive = false\">&#9679; Echarts指令</a>\r\n                    <a [routerLink]=\"['/ui-calendar']\" (click)=\"menuActive = false\">&#9679; UICalendar</a>\r\n                </div>\r\n                <a id=\"business_component\" #businesscomponent [class.active-menuitem]=\"businesscomponent.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === businesscomponent.id ? null : businesscomponent.id)\">\r\n                    <img src=\"assets/showcase/images/icons/button-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                   <img src=\"assets/showcase/images/icons/button.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                                  <span>业务组件</span>\r\n                    </a>\r\n                <div [ngClass]=\"{'submenushow': (businesscomponent.id == activeMenuId), 'submenuhide': (businesscomponent.id != activeMenuId)}\">\r\n\r\n                    <a [routerLink]=\"['/ui-grid']\" (click)=\"menuActive = false\">&#9679; 数据表格</a>\r\n                    <a [routerLink]=\"['/ui-upload']\" (click)=\"menuActive = false\">&#9679; 图片&文件上传</a>\r\n                    <a [routerLink]=\"['/area-select']\" (click)=\"menuActive = false\">&#9679; 区域选择</a>\r\n\r\n                    <a [routerLink]=\"['/ui-tree']\" (click)=\"menuActive = false\">&#9679; 区域树</a>\r\n                    <a [routerLink]=\"['/meta-select']\" (click)=\"menuActive = false\">&#9679; 字典选择</a>\r\n                    <a [routerLink]=\"['/department-select']\" (click)=\"menuActive = false\">&#9679; 开单网点</a>\r\n                    <a [routerLink]=\"['/shipper-select']\" (click)=\"menuActive = false\">&#9679; 发货人选择</a>\r\n                    <a [routerLink]=\"['/cnee-select']\" (click)=\"menuActive = false\">&#9679; 收货人选择</a>\r\n                    <a [routerLink]=\"['/exception-select']\" (click)=\"menuActive = false\">&#9679; 异常类型选择</a>\r\n                    <a [routerLink]=\"['/master-select']\" (click)=\"menuActive = false\">&#9679; 师傅名称/账号</a>\r\n                    <a [routerLink]=\"['/repair-goods-select']\" (click)=\"menuActive = false\">&#9679; 维修品名</a>\r\n                    <a [routerLink]=\"['/good-select']\" (click)=\"menuActive = false\">&#9679; 品名选择</a>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"layout-menu\">\r\n                <a id=\"menu_input\" #inputmenutitle [class.active-menuitem]=\"inputmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === inputmenutitle.id ? null : inputmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/input-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/input.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Input</span>\r\n            </a>\r\n                <div [ngClass]=\"{submenushow: (inputmenutitle.id == activeMenuId), 'submenuhide': (inputmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/inputgroup']\" (click)=\"menuActive = false\">&#9679; InputGroup</a>\r\n                    <a [routerLink]=\"['/autocomplete']\" (click)=\"menuActive = false\">&#9679; AutoComplete</a>\r\n                    <a [routerLink]=\"['/calendar']\" (click)=\"menuActive = false\">&#9679; Calendar</a>\r\n                    <a [routerLink]=\"['/checkbox']\" (click)=\"menuActive = false\">&#9679; Checkbox</a>\r\n                    <a [routerLink]=\"['/chips']\" (click)=\"menuActive = false\">&#9679; Chips</a>\r\n                    <a [routerLink]=\"['/colorpicker']\" (click)=\"menuActive = false\">&#9679; ColorPicker</a>\r\n                    <a [routerLink]=\"['/dropdown']\" (click)=\"menuActive = false\">&#9679; Dropdown</a>\r\n                    <a [routerLink]=\"['/editor']\" (click)=\"menuActive = false\">&#9679; Editor</a>\r\n                    <a [routerLink]=\"['/inputswitch']\" (click)=\"menuActive = false\">&#9679; InputSwitch</a>\r\n                    <a [routerLink]=\"['/inputtext']\" (click)=\"menuActive = false\">&#9679; InputText</a>\r\n                    <a [routerLink]=\"['/inputtextarea']\" (click)=\"menuActive = false\">&#9679; InputTextArea</a>\r\n                    <a [routerLink]=\"['/listbox']\" (click)=\"menuActive = false\">&#9679; Listbox</a>\r\n                    <a [routerLink]=\"['/inputmask']\" (click)=\"menuActive = false\">&#9679; Mask</a>\r\n                    <a [routerLink]=\"['/multiselect']\" (click)=\"menuActive = false\">&#9679; MultiSelect</a>\r\n                    <a [routerLink]=\"['/password']\" (click)=\"menuActive = false\">&#9679; Password</a>\r\n                    <a [routerLink]=\"['/radiobutton']\" (click)=\"menuActive = false\">&#9679; RadioButton</a>\r\n                    <a [routerLink]=\"['/rating']\" (click)=\"menuActive = false\">&#9679; Rating</a>\r\n                    <a [routerLink]=\"['/slider']\" (click)=\"menuActive = false\">&#9679; Slider</a>\r\n                    <a [routerLink]=\"['/spinner']\" (click)=\"menuActive = false\">&#9679; Spinner</a>\r\n                    <a [routerLink]=\"['/selectbutton']\" (click)=\"menuActive = false\">&#9679; SelectButton</a>\r\n                    <a [routerLink]=\"['/togglebutton']\" (click)=\"menuActive = false\">&#9679; ToggleButton</a>\r\n                    <a [routerLink]=\"['/tristatecheckbox']\" (click)=\"menuActive = false\">&#9679; TriCheckbox</a>\r\n                </div>\r\n\r\n                <a id=\"button_menutitle\" #buttonmenutitle [class.active-menuitem]=\"buttonmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === buttonmenutitle.id ? null : buttonmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/button-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/button.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Button</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (buttonmenutitle.id == activeMenuId), 'submenuhide': (buttonmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/button']\" (click)=\"menuActive = false\">&#9679; Button</a>\r\n                    <a [routerLink]=\"['/splitbutton']\" (click)=\"menuActive = false\">&#9679; SplitButton</a>\r\n                </div>\r\n\r\n                <a id=\"data_menutitle\" #datamenutitle [class.active-menuitem]=\"datamenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === datamenutitle.id ? null : datamenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/data-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/data.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Data</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (datamenutitle.id == activeMenuId), 'submenuhide': (datamenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/carousel']\" (click)=\"menuActive = false\">&#9679; Carousel</a>\r\n                    <a [routerLink]=\"['/datagrid']\" (click)=\"menuActive = false\">&#9679; DataGrid</a>\r\n                    <a [routerLink]=\"['/datalist']\" (click)=\"menuActive = false\">&#9679; DataList</a>\r\n                    <a [routerLink]=\"['/datascroller']\" (click)=\"menuActive = false\">&#9679; DataScroller</a>\r\n                    <a [routerLink]=\"['/datatable']\" (click)=\"menuActive = false\">&#9679; DataTable</a>\r\n                    <a [routerLink]=\"['/organizationchart']\" (click)=\"menuActive = false\">&#9679; Org Chart</a>\r\n                    <a [routerLink]=\"['/orderlist']\" (click)=\"menuActive = false\">&#9679; OrderList</a>\r\n                    <a [routerLink]=\"['/gmap']\" (click)=\"menuActive = false\">&#9679; GMap</a>\r\n                    <a [routerLink]=\"['/paginator']\" (click)=\"menuActive = false\">&#9679; Paginator</a>\r\n                    <a [routerLink]=\"['/picklist']\" (click)=\"menuActive = false\">&#9679; PickList</a>\r\n                    <a [routerLink]=\"['/schedule']\" (click)=\"menuActive = false\">&#9679; Schedule</a>\r\n                    <a [routerLink]=\"['/tree']\" (click)=\"menuActive = false\">&#9679; Tree</a>\r\n                    <a [routerLink]=\"['/treetable']\" (click)=\"menuActive = false\">&#9679; TreeTable</a>\r\n                </div>\r\n\r\n                <a id=\"menu_panel\" #panelmenutitle [class.active-menuitem]=\"panelmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === panelmenutitle.id ? null : panelmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/panel-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/panel.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Panel</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (panelmenutitle.id == activeMenuId), 'submenuhide': (panelmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/accordion']\" (click)=\"menuActive = false\">&#9679; Accordion</a>\r\n                    <a [routerLink]=\"['/fieldset']\" (click)=\"menuActive = false\">&#9679; Fieldset</a>\r\n                    <a [routerLink]=\"['/panel']\" (click)=\"menuActive = false\">&#9679; Panel</a>\r\n                    <a [routerLink]=\"['/grid']\" (click)=\"menuActive = false\">&#9679; Grid</a>\r\n                    <a [routerLink]=\"['/tabview']\" (click)=\"menuActive = false\">&#9679; TabView</a>\r\n                    <a [routerLink]=\"['/toolbar']\" (click)=\"menuActive = false\">&#9679; Toolbar</a>\r\n                </div>\r\n\r\n                <a id=\"menu_overlay\" #overlaymenutitle [class.active-menuitem]=\"overlaymenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === overlaymenutitle.id ? null : overlaymenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/overlay-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/overlay.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Overlay</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (overlaymenutitle.id == activeMenuId), 'submenuhide': (overlaymenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/confirmdialog']\" (click)=\"menuActive = false\">&#9679; ConfirmDialog</a>\r\n                    <a [routerLink]=\"['/dialog']\" (click)=\"menuActive = false\">&#9679; Dialog</a>\r\n                    <a [routerLink]=\"['/lightbox']\" (click)=\"menuActive = false\">&#9679; Lightbox</a>\r\n                    <a [routerLink]=\"['/overlaypanel']\" (click)=\"menuActive = false\">&#9679; OverlayPanel</a>\r\n                    <a [routerLink]=\"['/tooltip']\" (click)=\"menuActive = false\">&#9679; Tooltip</a>\r\n                </div>\r\n\r\n                <a id=\"menu_file\" #filemenutitle [class.active-menuitem]=\"filemenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === filemenutitle.id ? null : filemenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/file-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/file.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>File</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (filemenutitle.id == activeMenuId), 'submenuhide': (filemenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/fileupload']\" (click)=\"menuActive = false\">&#9679; Upload</a>\r\n                </div>\r\n\r\n                <a id=\"menu_menu\" #menumenutitle [class.active-menuitem]=\"menumenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === menumenutitle.id ? null : menumenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/menu-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/menu.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Menu</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (menumenutitle.id == activeMenuId), 'submenuhide': (menumenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/menumodel']\" (click)=\"menuActive = false\">&#9679; MenuModel</a>\r\n                    <a [routerLink]=\"['/breadcrumb']\" (click)=\"menuActive = false\">&#9679; Breadcrumb</a>\r\n                    <a [routerLink]=\"['/contextmenu']\" (click)=\"menuActive = false\">&#9679; ContextMenu</a>\r\n                    <a [routerLink]=\"['/megamenu']\" (click)=\"menuActive = false\">&#9679; MegaMenu</a>\r\n                    <a [routerLink]=\"['/menu']\" (click)=\"menuActive = false\">&#9679; Menu</a>\r\n                    <a [routerLink]=\"['/menubar']\" (click)=\"menuActive = false\">&#9679; Menubar</a>\r\n                    <a [routerLink]=\"['/panelmenu']\" (click)=\"menuActive = false\">&#9679; PanelMenu</a>\r\n                    <a [routerLink]=\"['/slidemenu']\" (click)=\"menuActive = false\">&#9679; SlideMenu</a>\r\n                    <a [routerLink]=\"['/steps']\" (click)=\"menuActive = false\">&#9679; Steps</a>\r\n                    <a [routerLink]=\"['/tabmenu']\" (click)=\"menuActive = false\">&#9679; TabMenu</a>\r\n                    <a [routerLink]=\"['/tieredmenu']\" (click)=\"menuActive = false\">&#9679; TieredMenu</a>\r\n                </div>\r\n\r\n                <a id=\"menu_chart\" #chartmenutitle [class.active-menuitem]=\"chartmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === chartmenutitle.id ? null : chartmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/charts-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/charts.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Charts</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (chartmenutitle.id == activeMenuId), 'submenuhide': (chartmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/chart']\" (click)=\"menuActive = false\">&#9679; ChartModel</a>\r\n                    <a [routerLink]=\"['/chart/bar']\" (click)=\"menuActive = false\">&#9679; Bar</a>\r\n                    <a [routerLink]=\"['/chart/doughnut']\" (click)=\"menuActive = false\">&#9679; Doughnut</a>\r\n                    <a [routerLink]=\"['/chart/line']\" (click)=\"menuActive = false\">&#9679; Line</a>\r\n                    <a [routerLink]=\"['/chart/polararea']\" (click)=\"menuActive = false\">&#9679; PolarArea</a>\r\n                    <a [routerLink]=\"['/chart/pie']\" (click)=\"menuActive = false\">&#9679; Pie</a>\r\n                    <a [routerLink]=\"['/chart/radar']\" (click)=\"menuActive = false\">&#9679; Radar</a>\r\n                </div>\r\n\r\n                <a id=\"menu_messages\" #messagesmenutitle [class.active-menuitem]=\"messagesmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === messagesmenutitle.id ? null : messagesmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/message-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/message.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Messages</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (messagesmenutitle.id == activeMenuId), 'submenuhide': (messagesmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/messages']\" (click)=\"menuActive = false\">&#9679; Messages</a>\r\n                    <a [routerLink]=\"['/growl']\" (click)=\"menuActive = false\">&#9679; Growl</a>\r\n                </div>\r\n\r\n                <a id=\"menu_multimedia\" #multimediamenutitle [class.active-menuitem]=\"multimediamenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === multimediamenutitle.id ? null : multimediamenutitle.id)\">\r\n                    <img src=\"assets/showcase/images/icons/multimedia-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                    <img src=\"assets/showcase/images/icons/multimedia.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                    <span>Multimedia</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (multimediamenutitle.id == activeMenuId), 'submenuhide': (multimediamenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/galleria']\" (click)=\"menuActive = false\">&#9679; Galleria</a>\r\n                </div>\r\n\r\n                <a id=\"menu_dnd\" #dndmenutitle [class.active-menuitem]=\"dndmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === dndmenutitle.id ? null : dndmenutitle.id)\">\r\n                    <img src=\"assets/showcase/images/icons/dragdrop-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                    <img src=\"assets/showcase/images/icons/dragdrop.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                    <span>DragDrop</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (dndmenutitle.id == activeMenuId), 'submenuhide': (dndmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/dragdrop']\" (click)=\"menuActive = false\">&#9679; Drag&amp;Drop</a>\r\n                </div>\r\n\r\n                <a id=\"menu_misc\" #misctitle [class.active-menuitem]=\"misctitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === misctitle.id ? null : misctitle.id)\">\r\n                    <img src=\"assets/showcase/images/icons/misc-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                    <img src=\"assets/showcase/images/icons/misc.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                    <span>Misc</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (misctitle.id == activeMenuId), 'submenuhide': (misctitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/responsive']\" (click)=\"menuActive = false\">&#9679; Responsive</a>\r\n                    <a [routerLink]=\"['/rtl']\" (click)=\"menuActive = false\">&#9679; RTL</a>\r\n                    <a [routerLink]=\"['/defer']\" (click)=\"menuActive = false\">&#9679; Defer</a>\r\n                    <a [routerLink]=\"['/blockui']\" (click)=\"menuActive = false\">&#9679; BlockUI</a>\r\n                    <a [routerLink]=\"['/captcha']\" (click)=\"menuActive = false\">&#9679; Captcha</a>\r\n                    <a [routerLink]=\"['/inplace']\" (click)=\"menuActive = false\">&#9679; Inplace</a>\r\n                    <a [routerLink]=\"['/validation']\" (click)=\"menuActive = false\">&#9679; Validation</a>\r\n                    <a [routerLink]=\"['/progressbar']\" (click)=\"menuActive = false\">&#9679; ProgressBar</a>\r\n                    <a [routerLink]=\"['/codehighlighter']\" (click)=\"menuActive = false\">&#9679; CodeHighlighter</a>\r\n                    <a [routerLink]=\"['/terminal']\" (click)=\"menuActive = false\">&#9679; Terminal</a>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"layout-mask\" *ngIf=\"menuActive\">\r\n    </div>\r\n\r\n    <div id=\"layout-content\">\r\n        <div class=\"demo-content\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n\r\n        <div class=\"content-section layout-footer clearfix\">\r\n            <span><a href=\"http://www.primetek.com.tr\">PrimeTek</a>, Copyright &copy; 2017 ;</span>\r\n            <span> Modified by <a href=\"https://github.com/1ziton\"> 1ziton FE Team  </a></span>\r\n            <div class=\"footer-links\">\r\n                <a href=\"https://github.com/primefaces/primeng\"><i class=\"fa fa-github\"></i></a>\r\n                <a href=\"https://twitter.com/prime_ng\"><i class=\"fa fa-twitter\"></i></a>\r\n                <div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n"
+module.exports = "<div class=\"layout-wrapper\">\r\n    <div id=\"layout-topbar\">\r\n        <a href=\"#\" class=\"menu-button\" (click)=\"onMenuButtonClick($event)\">\r\n            <i class=\"fa fa-bars\"></i>\r\n        </a>\r\n\r\n        <a href=\"#\" class=\"logo\" [routerLink]=\"['/']\">\r\n            <img alt=\"logo\" src=\"assets/showcase/images/logo.png\" />\r\n            <span style=\"color:#c3002f\">~EXT</span>\r\n        </a>\r\n\r\n        <ul class=\"topbar-menu\">\r\n            <li>\r\n                <a [routerLink]=\"['/security/login']\" *ngIf=\"!loginUser\">Login</a>\r\n                <a *ngIf=\"loginUser\" href=\"javascript:void(0)\">{{loginUser}}</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n\r\n    <div id=\"layout-sidebar\" [ngClass]=\"{'active': menuActive}\">\r\n\r\n\r\n        <div class=\"menu-content\">\r\n            <div class=\"layout-menu\">\r\n                <a id=\"ui_component\" #uiconponent [class.active-menuitem]=\"uiconponent.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === uiconponent.id ? null : uiconponent.id)\">\r\n                      <img src=\"assets/showcase/images/icons/button-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                     <img src=\"assets/showcase/images/icons/button.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                                    <span>UI组件</span>\r\n                      </a>\r\n                <div [ngClass]=\"{'submenushow': (uiconponent.id == activeMenuId), 'submenuhide': (uiconponent.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/ui-select']\" (click)=\"menuActive = false\">&#9679; UISelect</a>\r\n                    <a [routerLink]=\"['/echarts']\" (click)=\"menuActive = false\">&#9679; Echarts指令</a>\r\n                    <a [routerLink]=\"['/ui-calendar']\" (click)=\"menuActive = false\">&#9679; UICalendar</a>\r\n                </div>\r\n                <a id=\"business_component\" #businesscomponent [class.active-menuitem]=\"businesscomponent.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === businesscomponent.id ? null : businesscomponent.id)\">\r\n                    <img src=\"assets/showcase/images/icons/button-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                   <img src=\"assets/showcase/images/icons/button.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                                  <span>业务组件(需要登录)</span>\r\n                    </a>\r\n                <div [ngClass]=\"{'submenushow': (businesscomponent.id == activeMenuId), 'submenuhide': (businesscomponent.id != activeMenuId)}\">\r\n\r\n                    <a [routerLink]=\"['/ui-grid']\" (click)=\"menuActive = false\">&#9679; 数据表格</a>\r\n                    <a [routerLink]=\"['/ui-upload']\" (click)=\"menuActive = false\">&#9679; 图片&文件上传</a>\r\n                    <a [routerLink]=\"['/area-select']\" (click)=\"menuActive = false\">&#9679; 区域选择</a>\r\n\r\n                    <a [routerLink]=\"['/ui-tree']\" (click)=\"menuActive = false\">&#9679; 区域树</a>\r\n                    <a [routerLink]=\"['/meta-select']\" (click)=\"menuActive = false\">&#9679; 字典选择</a>\r\n                    <a [routerLink]=\"['/department-select']\" (click)=\"menuActive = false\">&#9679; 开单网点</a>\r\n                    <a [routerLink]=\"['/shipper-select']\" (click)=\"menuActive = false\">&#9679; 发货人选择</a>\r\n                    <a [routerLink]=\"['/cnee-select']\" (click)=\"menuActive = false\">&#9679; 收货人选择</a>\r\n                    <a [routerLink]=\"['/exception-select']\" (click)=\"menuActive = false\">&#9679; 异常类型选择</a>\r\n                    <a [routerLink]=\"['/master-select']\" (click)=\"menuActive = false\">&#9679; 师傅名称/账号</a>\r\n                    <a [routerLink]=\"['/repair-goods-select']\" (click)=\"menuActive = false\">&#9679; 维修品名</a>\r\n                    <a [routerLink]=\"['/good-select']\" (click)=\"menuActive = false\">&#9679; 品名选择</a>\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"layout-menu\">\r\n                <a id=\"menu_input\" #inputmenutitle [class.active-menuitem]=\"inputmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === inputmenutitle.id ? null : inputmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/input-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/input.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Input</span>\r\n            </a>\r\n                <div [ngClass]=\"{submenushow: (inputmenutitle.id == activeMenuId), 'submenuhide': (inputmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/inputgroup']\" (click)=\"menuActive = false\">&#9679; InputGroup</a>\r\n                    <a [routerLink]=\"['/autocomplete']\" (click)=\"menuActive = false\">&#9679; AutoComplete</a>\r\n                    <a [routerLink]=\"['/calendar']\" (click)=\"menuActive = false\">&#9679; Calendar</a>\r\n                    <a [routerLink]=\"['/checkbox']\" (click)=\"menuActive = false\">&#9679; Checkbox</a>\r\n                    <a [routerLink]=\"['/chips']\" (click)=\"menuActive = false\">&#9679; Chips</a>\r\n                    <a [routerLink]=\"['/colorpicker']\" (click)=\"menuActive = false\">&#9679; ColorPicker</a>\r\n                    <a [routerLink]=\"['/dropdown']\" (click)=\"menuActive = false\">&#9679; Dropdown</a>\r\n                    <a [routerLink]=\"['/editor']\" (click)=\"menuActive = false\">&#9679; Editor</a>\r\n                    <a [routerLink]=\"['/inputswitch']\" (click)=\"menuActive = false\">&#9679; InputSwitch</a>\r\n                    <a [routerLink]=\"['/inputtext']\" (click)=\"menuActive = false\">&#9679; InputText</a>\r\n                    <a [routerLink]=\"['/inputtextarea']\" (click)=\"menuActive = false\">&#9679; InputTextArea</a>\r\n                    <a [routerLink]=\"['/listbox']\" (click)=\"menuActive = false\">&#9679; Listbox</a>\r\n                    <a [routerLink]=\"['/inputmask']\" (click)=\"menuActive = false\">&#9679; Mask</a>\r\n                    <a [routerLink]=\"['/multiselect']\" (click)=\"menuActive = false\">&#9679; MultiSelect</a>\r\n                    <a [routerLink]=\"['/password']\" (click)=\"menuActive = false\">&#9679; Password</a>\r\n                    <a [routerLink]=\"['/radiobutton']\" (click)=\"menuActive = false\">&#9679; RadioButton</a>\r\n                    <a [routerLink]=\"['/rating']\" (click)=\"menuActive = false\">&#9679; Rating</a>\r\n                    <a [routerLink]=\"['/slider']\" (click)=\"menuActive = false\">&#9679; Slider</a>\r\n                    <a [routerLink]=\"['/spinner']\" (click)=\"menuActive = false\">&#9679; Spinner</a>\r\n                    <a [routerLink]=\"['/selectbutton']\" (click)=\"menuActive = false\">&#9679; SelectButton</a>\r\n                    <a [routerLink]=\"['/togglebutton']\" (click)=\"menuActive = false\">&#9679; ToggleButton</a>\r\n                    <a [routerLink]=\"['/tristatecheckbox']\" (click)=\"menuActive = false\">&#9679; TriCheckbox</a>\r\n                </div>\r\n\r\n                <a id=\"button_menutitle\" #buttonmenutitle [class.active-menuitem]=\"buttonmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === buttonmenutitle.id ? null : buttonmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/button-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/button.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Button</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (buttonmenutitle.id == activeMenuId), 'submenuhide': (buttonmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/button']\" (click)=\"menuActive = false\">&#9679; Button</a>\r\n                    <a [routerLink]=\"['/splitbutton']\" (click)=\"menuActive = false\">&#9679; SplitButton</a>\r\n                </div>\r\n\r\n                <a id=\"data_menutitle\" #datamenutitle [class.active-menuitem]=\"datamenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === datamenutitle.id ? null : datamenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/data-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/data.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Data</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (datamenutitle.id == activeMenuId), 'submenuhide': (datamenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/carousel']\" (click)=\"menuActive = false\">&#9679; Carousel</a>\r\n                    <a [routerLink]=\"['/datagrid']\" (click)=\"menuActive = false\">&#9679; DataGrid</a>\r\n                    <a [routerLink]=\"['/datalist']\" (click)=\"menuActive = false\">&#9679; DataList</a>\r\n                    <a [routerLink]=\"['/datascroller']\" (click)=\"menuActive = false\">&#9679; DataScroller</a>\r\n                    <a [routerLink]=\"['/datatable']\" (click)=\"menuActive = false\">&#9679; DataTable</a>\r\n                    <a [routerLink]=\"['/organizationchart']\" (click)=\"menuActive = false\">&#9679; Org Chart</a>\r\n                    <a [routerLink]=\"['/orderlist']\" (click)=\"menuActive = false\">&#9679; OrderList</a>\r\n                    <a [routerLink]=\"['/gmap']\" (click)=\"menuActive = false\">&#9679; GMap</a>\r\n                    <a [routerLink]=\"['/paginator']\" (click)=\"menuActive = false\">&#9679; Paginator</a>\r\n                    <a [routerLink]=\"['/picklist']\" (click)=\"menuActive = false\">&#9679; PickList</a>\r\n                    <a [routerLink]=\"['/schedule']\" (click)=\"menuActive = false\">&#9679; Schedule</a>\r\n                    <a [routerLink]=\"['/tree']\" (click)=\"menuActive = false\">&#9679; Tree</a>\r\n                    <a [routerLink]=\"['/treetable']\" (click)=\"menuActive = false\">&#9679; TreeTable</a>\r\n                </div>\r\n\r\n                <a id=\"menu_panel\" #panelmenutitle [class.active-menuitem]=\"panelmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === panelmenutitle.id ? null : panelmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/panel-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/panel.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Panel</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (panelmenutitle.id == activeMenuId), 'submenuhide': (panelmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/accordion']\" (click)=\"menuActive = false\">&#9679; Accordion</a>\r\n                    <a [routerLink]=\"['/fieldset']\" (click)=\"menuActive = false\">&#9679; Fieldset</a>\r\n                    <a [routerLink]=\"['/panel']\" (click)=\"menuActive = false\">&#9679; Panel</a>\r\n                    <a [routerLink]=\"['/grid']\" (click)=\"menuActive = false\">&#9679; Grid</a>\r\n                    <a [routerLink]=\"['/tabview']\" (click)=\"menuActive = false\">&#9679; TabView</a>\r\n                    <a [routerLink]=\"['/toolbar']\" (click)=\"menuActive = false\">&#9679; Toolbar</a>\r\n                </div>\r\n\r\n                <a id=\"menu_overlay\" #overlaymenutitle [class.active-menuitem]=\"overlaymenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === overlaymenutitle.id ? null : overlaymenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/overlay-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/overlay.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Overlay</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (overlaymenutitle.id == activeMenuId), 'submenuhide': (overlaymenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/confirmdialog']\" (click)=\"menuActive = false\">&#9679; ConfirmDialog</a>\r\n                    <a [routerLink]=\"['/dialog']\" (click)=\"menuActive = false\">&#9679; Dialog</a>\r\n                    <a [routerLink]=\"['/lightbox']\" (click)=\"menuActive = false\">&#9679; Lightbox</a>\r\n                    <a [routerLink]=\"['/overlaypanel']\" (click)=\"menuActive = false\">&#9679; OverlayPanel</a>\r\n                    <a [routerLink]=\"['/tooltip']\" (click)=\"menuActive = false\">&#9679; Tooltip</a>\r\n                </div>\r\n\r\n                <a id=\"menu_file\" #filemenutitle [class.active-menuitem]=\"filemenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === filemenutitle.id ? null : filemenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/file-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/file.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>File</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (filemenutitle.id == activeMenuId), 'submenuhide': (filemenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/fileupload']\" (click)=\"menuActive = false\">&#9679; Upload</a>\r\n                </div>\r\n\r\n                <a id=\"menu_menu\" #menumenutitle [class.active-menuitem]=\"menumenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === menumenutitle.id ? null : menumenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/menu-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/menu.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Menu</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (menumenutitle.id == activeMenuId), 'submenuhide': (menumenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/menumodel']\" (click)=\"menuActive = false\">&#9679; MenuModel</a>\r\n                    <a [routerLink]=\"['/breadcrumb']\" (click)=\"menuActive = false\">&#9679; Breadcrumb</a>\r\n                    <a [routerLink]=\"['/contextmenu']\" (click)=\"menuActive = false\">&#9679; ContextMenu</a>\r\n                    <a [routerLink]=\"['/megamenu']\" (click)=\"menuActive = false\">&#9679; MegaMenu</a>\r\n                    <a [routerLink]=\"['/menu']\" (click)=\"menuActive = false\">&#9679; Menu</a>\r\n                    <a [routerLink]=\"['/menubar']\" (click)=\"menuActive = false\">&#9679; Menubar</a>\r\n                    <a [routerLink]=\"['/panelmenu']\" (click)=\"menuActive = false\">&#9679; PanelMenu</a>\r\n                    <a [routerLink]=\"['/slidemenu']\" (click)=\"menuActive = false\">&#9679; SlideMenu</a>\r\n                    <a [routerLink]=\"['/steps']\" (click)=\"menuActive = false\">&#9679; Steps</a>\r\n                    <a [routerLink]=\"['/tabmenu']\" (click)=\"menuActive = false\">&#9679; TabMenu</a>\r\n                    <a [routerLink]=\"['/tieredmenu']\" (click)=\"menuActive = false\">&#9679; TieredMenu</a>\r\n                </div>\r\n\r\n                <a id=\"menu_chart\" #chartmenutitle [class.active-menuitem]=\"chartmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === chartmenutitle.id ? null : chartmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/charts-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/charts.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Charts</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (chartmenutitle.id == activeMenuId), 'submenuhide': (chartmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/chart']\" (click)=\"menuActive = false\">&#9679; ChartModel</a>\r\n                    <a [routerLink]=\"['/chart/bar']\" (click)=\"menuActive = false\">&#9679; Bar</a>\r\n                    <a [routerLink]=\"['/chart/doughnut']\" (click)=\"menuActive = false\">&#9679; Doughnut</a>\r\n                    <a [routerLink]=\"['/chart/line']\" (click)=\"menuActive = false\">&#9679; Line</a>\r\n                    <a [routerLink]=\"['/chart/polararea']\" (click)=\"menuActive = false\">&#9679; PolarArea</a>\r\n                    <a [routerLink]=\"['/chart/pie']\" (click)=\"menuActive = false\">&#9679; Pie</a>\r\n                    <a [routerLink]=\"['/chart/radar']\" (click)=\"menuActive = false\">&#9679; Radar</a>\r\n                </div>\r\n\r\n                <a id=\"menu_messages\" #messagesmenutitle [class.active-menuitem]=\"messagesmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === messagesmenutitle.id ? null : messagesmenutitle.id)\">\r\n                <img src=\"assets/showcase/images/icons/message-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                <img src=\"assets/showcase/images/icons/message.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                <span>Messages</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (messagesmenutitle.id == activeMenuId), 'submenuhide': (messagesmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/messages']\" (click)=\"menuActive = false\">&#9679; Messages</a>\r\n                    <a [routerLink]=\"['/growl']\" (click)=\"menuActive = false\">&#9679; Growl</a>\r\n                </div>\r\n\r\n                <a id=\"menu_multimedia\" #multimediamenutitle [class.active-menuitem]=\"multimediamenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === multimediamenutitle.id ? null : multimediamenutitle.id)\">\r\n                    <img src=\"assets/showcase/images/icons/multimedia-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                    <img src=\"assets/showcase/images/icons/multimedia.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                    <span>Multimedia</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (multimediamenutitle.id == activeMenuId), 'submenuhide': (multimediamenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/galleria']\" (click)=\"menuActive = false\">&#9679; Galleria</a>\r\n                </div>\r\n\r\n                <a id=\"menu_dnd\" #dndmenutitle [class.active-menuitem]=\"dndmenutitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === dndmenutitle.id ? null : dndmenutitle.id)\">\r\n                    <img src=\"assets/showcase/images/icons/dragdrop-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                    <img src=\"assets/showcase/images/icons/dragdrop.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                    <span>DragDrop</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (dndmenutitle.id == activeMenuId), 'submenuhide': (dndmenutitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/dragdrop']\" (click)=\"menuActive = false\">&#9679; Drag&amp;Drop</a>\r\n                </div>\r\n\r\n                <a id=\"menu_misc\" #misctitle [class.active-menuitem]=\"misctitle.id == activeMenuId\" (click)=\"activeMenuId = (activeMenuId === misctitle.id ? null : misctitle.id)\">\r\n                    <img src=\"assets/showcase/images/icons/misc-active.svg\" class=\"layout-menu-icon-active\"/>\r\n                    <img src=\"assets/showcase/images/icons/misc.svg\" class=\"layout-menu-icon-inactive\"/>\r\n                    <span>Misc</span>\r\n            </a>\r\n                <div [ngClass]=\"{'submenushow': (misctitle.id == activeMenuId), 'submenuhide': (misctitle.id != activeMenuId)}\">\r\n                    <a [routerLink]=\"['/responsive']\" (click)=\"menuActive = false\">&#9679; Responsive</a>\r\n                    <a [routerLink]=\"['/rtl']\" (click)=\"menuActive = false\">&#9679; RTL</a>\r\n                    <a [routerLink]=\"['/defer']\" (click)=\"menuActive = false\">&#9679; Defer</a>\r\n                    <a [routerLink]=\"['/blockui']\" (click)=\"menuActive = false\">&#9679; BlockUI</a>\r\n                    <a [routerLink]=\"['/captcha']\" (click)=\"menuActive = false\">&#9679; Captcha</a>\r\n                    <a [routerLink]=\"['/inplace']\" (click)=\"menuActive = false\">&#9679; Inplace</a>\r\n                    <a [routerLink]=\"['/validation']\" (click)=\"menuActive = false\">&#9679; Validation</a>\r\n                    <a [routerLink]=\"['/progressbar']\" (click)=\"menuActive = false\">&#9679; ProgressBar</a>\r\n                    <a [routerLink]=\"['/codehighlighter']\" (click)=\"menuActive = false\">&#9679; CodeHighlighter</a>\r\n                    <a [routerLink]=\"['/terminal']\" (click)=\"menuActive = false\">&#9679; Terminal</a>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"layout-mask\" *ngIf=\"menuActive\">\r\n    </div>\r\n\r\n    <div id=\"layout-content\">\r\n        <div class=\"demo-content\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n\r\n        <div class=\"content-section layout-footer clearfix\">\r\n            <span><a href=\"http://www.primetek.com.tr\">PrimeTek</a>, Copyright &copy; 2017 ;</span>\r\n            <span> Modified by <a href=\"https://github.com/1ziton\"> 1ziton FE Team  </a></span>\r\n            <div class=\"footer-links\">\r\n                <a href=\"https://github.com/primefaces/primeng\"><i class=\"fa fa-github\"></i></a>\r\n                <a href=\"https://twitter.com/prime_ng\"><i class=\"fa fa-twitter\"></i></a>\r\n                <div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n"
 
 /***/ }),
 

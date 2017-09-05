@@ -1,13 +1,15 @@
 webpackJsonp([38],{
 
-/***/ "./src/app/components/captcha/captcha.ts":
+/***/ "./src/app/components/carousel/carousel.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* unused harmony export Captcha */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CaptchaModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export Carousel */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -19,129 +21,323 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var Captcha = (function () {
-    function Captcha(el, _zone) {
+
+
+var Carousel = (function () {
+    function Carousel(el, domHandler, renderer, cd) {
         this.el = el;
-        this._zone = _zone;
-        this.siteKey = null;
-        this.theme = 'light';
-        this.type = 'image';
-        this.size = 'normal';
-        this.tabindex = 0;
-        this.language = null;
-        this.initCallback = "initRecaptcha";
-        this.onResponse = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onExpire = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this._instance = null;
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+        this.cd = cd;
+        this.numVisible = 3;
+        this.firstVisible = 0;
+        this.circular = false;
+        this.breakpoint = 560;
+        this.responsive = true;
+        this.autoplayInterval = 0;
+        this.effectDuration = '1s';
+        this.easing = 'ease-out';
+        this.pageLinks = 3;
+        this.onPage = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.left = 0;
     }
-    Captcha.prototype.ngAfterViewInit = function () {
+    Carousel.prototype.ngAfterContentInit = function () {
         var _this = this;
-        if (window.grecaptcha) {
-            this.init();
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'item':
+                    _this.itemTemplate = item.template;
+                    break;
+                default:
+                    _this.itemTemplate = item.template;
+                    break;
+            }
+        });
+    };
+    Object.defineProperty(Carousel.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        set: function (val) {
+            this._value = val;
+            this.handleDataChange();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Carousel.prototype.handleDataChange = function () {
+        if (this.value && this.value.length) {
+            if (this.value.length && this.firstVisible >= this.value.length) {
+                this.setPage(this.totalPages - 1);
+            }
         }
         else {
-            window[this.initCallback] = function () {
-                _this.init();
-            };
+            this.setPage(0);
+        }
+        this.valuesChanged = true;
+    };
+    Carousel.prototype.ngAfterViewChecked = function () {
+        if (this.valuesChanged && this.containerViewChild.nativeElement.offsetParent) {
+            this.render();
+            this.valuesChanged = false;
         }
     };
-    Captcha.prototype.init = function () {
+    Carousel.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this._instance = window.grecaptcha.render(this.el.nativeElement.children[0], {
-            'sitekey': this.siteKey,
-            'theme': this.theme,
-            'type': this.type,
-            'size': this.size,
-            'tabindex': this.tabindex,
-            'hl': this.language,
-            'callback': function (response) { _this._zone.run(function () { return _this.recaptchaCallback(response); }); },
-            'expired-callback': function () { _this._zone.run(function () { return _this.recaptchaExpiredCallback(); }); }
-        });
-    };
-    Captcha.prototype.reset = function () {
-        if (this._instance === null)
-            return;
-        window.grecaptcha.reset(this._instance);
-    };
-    Captcha.prototype.getResponse = function () {
-        if (this._instance === null)
-            return null;
-        return window.grecaptcha.getResponse(this._instance);
-    };
-    Captcha.prototype.recaptchaCallback = function (response) {
-        this.onResponse.emit({
-            response: response
-        });
-    };
-    Captcha.prototype.recaptchaExpiredCallback = function () {
-        this.onExpire.emit();
-    };
-    Captcha.prototype.ngOnDestroy = function () {
-        if (this._instance != null) {
-            window.grecaptcha.reset(this._instance);
+        if (this.responsive) {
+            this.documentResponsiveListener = this.renderer.listen('window', 'resize', function (event) {
+                _this.updateState();
+            });
         }
     };
-    return Captcha;
+    Carousel.prototype.updateLinks = function () {
+        this.anchorPageLinks = [];
+        for (var i = 0; i < this.totalPages; i++) {
+            this.anchorPageLinks.push(i);
+        }
+    };
+    Carousel.prototype.updateDropdown = function () {
+        this.selectDropdownOptions = [];
+        for (var i = 0; i < this.totalPages; i++) {
+            this.selectDropdownOptions.push(i);
+        }
+    };
+    Carousel.prototype.updateMobileDropdown = function () {
+        this.mobileDropdownOptions = [];
+        for (var i = 0; i < this.value.length; i++) {
+            this.mobileDropdownOptions.push(i);
+        }
+    };
+    Carousel.prototype.render = function () {
+        if (this.autoplayInterval) {
+            this.stopAutoplay();
+        }
+        this.items = this.domHandler.find(this.itemsViewChild.nativeElement, 'li');
+        this.calculateColumns();
+        this.calculateItemWidths();
+        if (!this.responsive) {
+            this.containerViewChild.nativeElement.style.width = (this.domHandler.width(this.containerViewChild.nativeElement)) + 'px';
+        }
+        if (this.autoplayInterval) {
+            this.circular = true;
+            this.startAutoplay();
+        }
+        this.updateMobileDropdown();
+        this.updateLinks();
+        this.updateDropdown();
+        this.cd.detectChanges();
+    };
+    Carousel.prototype.calculateItemWidths = function () {
+        var firstItem = (this.items && this.items.length) ? this.items[0] : null;
+        if (firstItem) {
+            for (var i = 0; i < this.items.length; i++) {
+                this.items[i].style.width = ((this.domHandler.innerWidth(this.viewportViewChild.nativeElement) - (this.domHandler.getHorizontalMargin(firstItem) * this.columns)) / this.columns) + 'px';
+            }
+        }
+    };
+    Carousel.prototype.calculateColumns = function () {
+        if (window.innerWidth <= this.breakpoint) {
+            this.shrinked = true;
+            this.columns = 1;
+        }
+        else {
+            this.shrinked = false;
+            this.columns = this.numVisible;
+        }
+        this.page = Math.floor(this.firstVisible / this.columns);
+    };
+    Carousel.prototype.onNextNav = function () {
+        var lastPage = (this.page === (this.totalPages - 1));
+        if (!lastPage)
+            this.setPage(this.page + 1);
+        else if (this.circular)
+            this.setPage(0);
+    };
+    Carousel.prototype.onPrevNav = function () {
+        if (this.page !== 0)
+            this.setPage(this.page - 1);
+        else if (this.circular)
+            this.setPage(this.totalPages - 1);
+    };
+    Carousel.prototype.setPageWithLink = function (event, p) {
+        this.setPage(p);
+        event.preventDefault();
+    };
+    Carousel.prototype.setPage = function (p, enforce) {
+        if (p !== this.page || enforce) {
+            this.page = p;
+            this.left = (-1 * (this.domHandler.innerWidth(this.viewportViewChild.nativeElement) * this.page));
+            this.firstVisible = this.page * this.columns;
+            this.onPage.emit({
+                page: this.page
+            });
+        }
+    };
+    Carousel.prototype.onDropdownChange = function (val) {
+        this.setPage(parseInt(val));
+    };
+    Object.defineProperty(Carousel.prototype, "displayPageLinks", {
+        get: function () {
+            return (this.totalPages <= this.pageLinks && !this.shrinked);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Carousel.prototype, "displayPageDropdown", {
+        get: function () {
+            return (this.totalPages > this.pageLinks && !this.shrinked);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Carousel.prototype, "totalPages", {
+        get: function () {
+            return (this.value && this.value.length) ? Math.ceil(this.value.length / this.columns) : 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Carousel.prototype.routerDisplay = function () {
+        var win = window;
+        if (win.innerWidth <= this.breakpoint)
+            return true;
+        else
+            return false;
+    };
+    Carousel.prototype.updateState = function () {
+        var win = window;
+        if (win.innerWidth <= this.breakpoint) {
+            this.shrinked = true;
+            this.columns = 1;
+        }
+        else if (this.shrinked) {
+            this.shrinked = false;
+            this.columns = this.numVisible;
+            this.updateLinks();
+            this.updateDropdown();
+        }
+        this.calculateItemWidths();
+        this.setPage(Math.floor(this.firstVisible / this.columns), true);
+    };
+    Carousel.prototype.startAutoplay = function () {
+        var _this = this;
+        this.interval = setInterval(function () {
+            if (_this.page === (_this.totalPages - 1))
+                _this.setPage(0);
+            else
+                _this.setPage(_this.page + 1);
+        }, this.autoplayInterval);
+    };
+    Carousel.prototype.stopAutoplay = function () {
+        clearInterval(this.interval);
+    };
+    Carousel.prototype.ngOnDestroy = function () {
+        if (this.documentResponsiveListener) {
+            this.documentResponsiveListener();
+        }
+        if (this.autoplayInterval) {
+            this.stopAutoplay();
+        }
+    };
+    return Carousel;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Captcha.prototype, "siteKey", void 0);
+    __metadata("design:type", Number)
+], Carousel.prototype, "numVisible", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Captcha.prototype, "theme", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Captcha.prototype, "type", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Captcha.prototype, "size", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Captcha.prototype, "tabindex", void 0);
+    __metadata("design:type", Number)
+], Carousel.prototype, "firstVisible", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], Captcha.prototype, "language", void 0);
+], Carousel.prototype, "headerText", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Carousel.prototype, "circular", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Carousel.prototype, "breakpoint", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Carousel.prototype, "responsive", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Carousel.prototype, "autoplayInterval", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], Captcha.prototype, "initCallback", void 0);
+], Carousel.prototype, "effectDuration", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Carousel.prototype, "easing", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Carousel.prototype, "pageLinks", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Carousel.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Carousel.prototype, "styleClass", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Captcha.prototype, "onResponse", void 0);
+], Carousel.prototype, "onPage", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Captcha.prototype, "onExpire", void 0);
-Captcha = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _b || Object)
+], Carousel.prototype, "templates", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
+], Carousel.prototype, "containerViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('viewport'),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
+], Carousel.prototype, "viewportViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('items'),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object)
+], Carousel.prototype, "itemsViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array),
+    __metadata("design:paramtypes", [Array])
+], Carousel.prototype, "value", null);
+Carousel = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-captcha',
-        template: "<div></div>"
+        selector: 'p-carousel',
+        template: "\n        <div #container [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header ui-corner-all\">\n                <span class=\"ui-carousel-header-title\">{{headerText}}</span>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\" *ngIf=\"value&&value.length\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\" *ngIf=\"value&&value.length\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" (click)=\"setPageWithLink($event,i)\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive&&value&&value.length\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div #viewport class=\"ui-carousel-viewport\">\n                <ul #items class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <li *ngFor=\"let item of value\" class=\"ui-carousel-item ui-widget-content ui-corner-all\">\n                        <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _d || Object])
-], Captcha);
+    __metadata("design:paramtypes", [typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _j || Object])
+], Carousel);
 
-var CaptchaModule = (function () {
-    function CaptchaModule() {
+var CarouselModule = (function () {
+    function CarouselModule() {
     }
-    return CaptchaModule;
+    return CarouselModule;
 }());
-CaptchaModule = __decorate([
+CarouselModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Captcha],
-        declarations: [Captcha]
+        imports: [__WEBPACK_IMPORTED_MODULE_3__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        exports: [Carousel, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [Carousel]
     })
-], CaptchaModule);
+], CarouselModule);
 
-var _a, _b, _c, _d;
-//# sourceMappingURL=captcha.js.map
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+//# sourceMappingURL=carousel.js.map
 
 /***/ }),
 
@@ -762,14 +958,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/captcha/captchademo-routing.module.ts":
+/***/ "./src/app/showcase/components/carousel/carouseldemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__captchademo__ = __webpack_require__("./src/app/showcase/components/captcha/captchademo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CaptchaDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__carouseldemo__ = __webpack_require__("./src/app/showcase/components/carousel/carouseldemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -779,49 +975,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CaptchaDemoRoutingModule = (function () {
-    function CaptchaDemoRoutingModule() {
+var CarouselDemoRoutingModule = (function () {
+    function CarouselDemoRoutingModule() {
     }
-    return CaptchaDemoRoutingModule;
+    return CarouselDemoRoutingModule;
 }());
-CaptchaDemoRoutingModule = __decorate([
+CarouselDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__captchademo__["a" /* CaptchaDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__carouseldemo__["a" /* CarouselDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], CaptchaDemoRoutingModule);
+], CarouselDemoRoutingModule);
 
-//# sourceMappingURL=captchademo-routing.module.js.map
+//# sourceMappingURL=carouseldemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/captcha/captchademo.html":
+/***/ "./src/app/showcase/components/carousel/carouseldemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Captcha</span>\r\n        <span>Captcha is a form validation component based on Recaptcha.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\" sticky=\"sticky\"></p-growl>\r\n    \r\n    <p-captcha siteKey=\"6Lf2XQkTAAAAANcvOwYqPxWL4iZDksFqHpS39GDA\" (onResponse)=\"showResponse($event)\"></p-captcha>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;CaptchaModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Captcha is used with a siteKey and a callback to verify the response.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-captcha siteKey=\"YOUR_SITE_KEY\" (onResponse)=\"showResponse($event)\"&gt;&lt;/p-captcha&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>In addition include the captcha widget resource to your page.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;script src=\"https://www.google.com/recaptcha/api.js?render=explicit&onload=initRecaptcha\" async defer>&lt;/script&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>Global callback name is initRecaptcha by default and it can be changed using initCallback property .</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;script src=\"https://www.google.com/recaptcha/api.js?render=explicit&onload=loadCaptcha\" async defer>&lt;/script&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-captcha siteKey=\"YOUR_SITE_KEY\" (onResponse)=\"showResponse($event)\" initCallback=\"loadCaptcha\"&gt;&lt;/p-captcha&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n            <h3>Verification</h3>\r\n            <p>In order to ensure if a response token is valid, verification against recaptcha api needs to be done at backend. <a href=\"https://developers.google.com/recaptcha/docs/verify\">Read more</a> at \r\n            official documentation.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nshowResponse(response) &#123;\r\n    //call to a backend to verify against recaptcha with private key\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>sitekey</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Public sitekey.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>theme</td>\r\n                            <td>string</td>\r\n                            <td>light</td>\r\n                            <td>The color scheme of the widget.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>type</td>\r\n                            <td>string</td>\r\n                            <td>image</td>\r\n                            <td>The type of CAPTCHA to serve.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>size</td>\r\n                            <td>string</td>\r\n                            <td>normal</td>\r\n                            <td>The size of the widget.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>The tabindex of the widget and challenge.\r\n                                If other elements in your page use tabindex, \r\n                                it should be set to make user navigation easier.\r\n                            </td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>language</td>\r\n                            <td>string</td>\r\n                            <td>en</td>\r\n                            <td>Language of the widget.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>initCallback</td>\r\n                            <td>string</td>\r\n                            <td>initRecaptcha</td>\r\n                            <td>Name of global callback to initialize recaptcha.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onResponse</td>\r\n                            <td>event.response: The user response token.</td>\r\n                            <td>The callback function to be executed when the user submits a successful CAPTCHA response.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onExpire</td>\r\n                            <td>-</td>\r\n                            <td>The callback function to be executed when the recaptcha response expires and the user needs to solve a new CAPTCHA.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Methods</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>reset</td>\r\n                            <td>-</td>\r\n                            <td>Resets the reCAPTCHA widget.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>getResponse</td>\r\n                            <td>-</td>\r\n                            <td>Gets the response for the reCAPTCHA widget.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Official Documentation</h3>\r\n            <a href=\"https://developers.google.com/recaptcha/docs/display\">Here</a>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>Google Recaptcha V2</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/captcha\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\" sticky=\"sticky\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;p-captcha siteKey=\"6Lf2XQkTAAAAANcvOwYqPxWL4iZDksFqHpS39GDA\" (onResponse)=\"showResponse($event)\"&gt;&lt;/p-captcha&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class CaptchaDemo &#123;\r\n    \r\n    msgs: Message[] = [];\r\n    \r\n    showResponse(event) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Succees', detail: 'User Responded'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Carousel</span>\r\n        <span>Carousel displays content using a slide effect featuring responsive mode, swipe support for touch enabled devices and various customization options.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n\r\n    <p-carousel headerText=\"Cars\" [value]=\"cars\">\r\n        <ng-template let-car pTemplate=\"item\">\r\n            <div class=\"ui-grid ui-grid-responsive\">\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-12\"><img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" width=\"60\"></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-6\">Vin</div>\r\n                    <div class=\"ui-grid-col-6\">{{car.vin}}</div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-6\">Year</div>\r\n                    <div class=\"ui-grid-col-6\">{{car.year}}</div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-6\">Color</div>\r\n                    <div class=\"ui-grid-col-6\">{{car.color}}</div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-12\">\r\n                        <button type=\"button\" pButton icon=\"fa-search\" (click)=\"selectCar(car)\"></button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </ng-template>\r\n    </p-carousel>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;CarouselModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Carousel requires a collection of items as its value and a ng-template content to display\r\n                where each item can be accessed using the implicit variable.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel [value]=\"items\"&gt;\r\n    &lt;ng-template let-item pTemplate=\"item\"&gt;\r\n        Content to display\r\n    &lt;/ul&gt;\r\n&lt;/p-carousel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Managing Data</h3>\r\n            <p>DataTable uses setter based checking to realize if the underlying data has changed to update the UI so your data changes such as adding or removing a record \r\n                should always create a new array reference instead of manipulating an existing array. For example, use slice instead of splice when removing an item \r\n                or use spread operator instead of push method when adding an item.</p>\r\n\r\n            <h3>Limiting Visible Items</h3>\r\n            <p>Default number of visible items is 3, use numVisible option to customize this.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel numVisible=\"1\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Effects</h3>\r\n            <p>The easing function to use is \"ease-out\" by default and this can be customized using easing property. \r\n                See <a href=\"http://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp\">here</a> for possible alternative values.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel easing=\"easeOutStrong\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>SlideShow</h3>\r\n            <p>Carousel can display the contents in a slideshow, for this purpose autoPlayInterval and circular attributes are used.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-carousel circular=\"circular\" autoplayInterval=\"3000\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Responsive</h3>\r\n            <p>Responsive mode is enabled by default causing carousel to switch between small and large viewport depending on the breakpoint value which is 560 initially.</p>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>Array of data to display.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>numVisible</td>\r\n                            <td>number</td>\r\n                            <td>3</td>\r\n                            <td>Number of visible items per page.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>firstVisible</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Index of the first visible item.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>headerText</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Text of the header section.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>effectDuration</td>\r\n                            <td>any</td>\r\n                            <td>500</td>\r\n                            <td>Duration of the scrolling animation in milliseconds or a predefined value like \"slow\", \"normal\" and \"fast\".</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>circular</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines continuous scrolling.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>breakpoint</td>\r\n                            <td>number</td>\r\n                            <td>560</td>\r\n                            <td>Breakpoint value in pixels to switch between small and large viewport.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>responsive</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>When defined, causes carousel to adjust its width based on screen size.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>autoplayInterval</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Time in milliseconds to have carousel start scrolling automatically.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>easing</td>\r\n                            <td>string</td>\r\n                            <td>ease-out</td>\r\n                            <td>Easing animation to use for scrolling.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>pageLinks</td>\r\n                            <td>number</td>\r\n                            <td>3</td>\r\n                            <td>Number of maximum page links to display. If total page count exceeds this value a dropdown is displayed instead.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onPage</td>\r\n                            <td>event.page: New page index</td>\r\n                            <td>Callback to invoke on page change.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Element</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-carousel</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-header</td>\r\n                            <td>Header element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-header-title</td>\r\n                            <td>Header text.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-viewport</td>\r\n                            <td>Viewport containing the items.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-button</td>\r\n                            <td>Navigator button at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-next-button</td>\r\n                            <td>Next page button at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-prev-button</td>\r\n                            <td>Previous page button at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-page-links</td>\r\n                            <td>Page links container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-page-link</td>\r\n                            <td>A page link.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-mobiledropdown</td>\r\n                            <td>Cancel icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-carousel-item</td>\r\n                            <td>Cancel icon.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/carousel\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;p-carousel headerText=\"Cars\" [value]=\"cars\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-grid ui-grid-responsive\"&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-12\"&gt;&lt;img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" width=\"60\"&gt;&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;Vin&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;{{car.vin}}&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;Year&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;{{car.year}}&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;Color&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;{{car.color}}&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-12\"&gt;\r\n                    &lt;button type=\"button\" pButton icon=\"fa-search\" (click)=\"selectCar(car)\"&gt;&lt;/button&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-carousel&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class CarouselDemo &#123;\r\n\r\n    cars: Car[];\r\n\r\n    msgs: Message[];\r\n\r\n    constructor() &#123;\r\n        this.msgs = [];\r\n        this.cars = [\r\n            &#123;vin: 'r3278r2', year: 2010, brand: 'Audi', color: 'Black'&#125;,\r\n            &#123;vin: 'jhto2g2', year: 2015, brand: 'BMW', color: 'White'&#125;,\r\n            &#123;vin: 'h453w54', year: 2012, brand: 'Honda', color: 'Blue'&#125;,\r\n            &#123;vin: 'g43gwwg', year: 1998, brand: 'Renault', color: 'White'&#125;,\r\n            &#123;vin: 'gf45wg5', year: 2011, brand: 'VW', color: 'Red'&#125;,\r\n            &#123;vin: 'bhv5y5w', year: 2015, brand: 'Jaguar', color: 'Blue'&#125;,\r\n            &#123;vin: 'ybw5fsd', year: 2012, brand: 'Ford', color: 'Yellow'&#125;,\r\n            &#123;vin: '45665e5', year: 2011, brand: 'Mercedes', color: 'Brown'&#125;,\r\n            &#123;vin: 'he6sb5v', year: 2015, brand: 'Ford', color: 'Black'&#125;\r\n        ];\r\n    &#125;\r\n\r\n    selectCar(car: Car) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity: 'info', summary: 'Car Selected', detail: 'Vin:' + car.vin&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/captcha/captchademo.module.ts":
+/***/ "./src/app/showcase/components/carousel/carouseldemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__captchademo__ = __webpack_require__("./src/app/showcase/components/captcha/captchademo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__captchademo_routing_module__ = __webpack_require__("./src/app/showcase/components/captcha/captchademo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_captcha_captcha__ = __webpack_require__("./src/app/components/captcha/captcha.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CaptchaDemoModule", function() { return CaptchaDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__carouseldemo__ = __webpack_require__("./src/app/showcase/components/carousel/carouseldemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__carouseldemo_routing_module__ = __webpack_require__("./src/app/showcase/components/carousel/carouseldemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_carousel_carousel__ = __webpack_require__("./src/app/components/carousel/carousel.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CarouselDemoModule", function() { return CarouselDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -836,61 +1033,79 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CaptchaDemoModule = (function () {
-    function CaptchaDemoModule() {
+
+var CarouselDemoModule = (function () {
+    function CarouselDemoModule() {
     }
-    return CaptchaDemoModule;
+    return CarouselDemoModule;
 }());
-CaptchaDemoModule = __decorate([
+CarouselDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__captchademo_routing_module__["a" /* CaptchaDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_captcha_captcha__["a" /* CaptchaModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__["a" /* GrowlModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__carouseldemo_routing_module__["a" /* CarouselDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_carousel_carousel__["a" /* CarouselModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__["a" /* GrowlModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__captchademo__["a" /* CaptchaDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__carouseldemo__["a" /* CarouselDemo */]
         ]
     })
-], CaptchaDemoModule);
+], CarouselDemoModule);
 
-//# sourceMappingURL=captchademo.module.js.map
+//# sourceMappingURL=carouseldemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/captcha/captchademo.ts":
+/***/ "./src/app/showcase/components/carousel/carouseldemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CaptchaDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CarouselDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var CaptchaDemo = (function () {
-    function CaptchaDemo() {
+var CarouselDemo = (function () {
+    function CarouselDemo() {
         this.msgs = [];
+        this.cars = [
+            { vin: 'r3278r2', year: 2010, brand: 'Audi', color: 'Black' },
+            { vin: 'jhto2g2', year: 2015, brand: 'BMW', color: 'White' },
+            { vin: 'h453w54', year: 2012, brand: 'Honda', color: 'Blue' },
+            { vin: 'g43gwwg', year: 1998, brand: 'Renault', color: 'White' },
+            { vin: 'gf45wg5', year: 2011, brand: 'VW', color: 'Red' },
+            { vin: 'bhv5y5w', year: 2015, brand: 'Jaguar', color: 'Blue' },
+            { vin: 'ybw5fsd', year: 2012, brand: 'Ford', color: 'Yellow' },
+            { vin: '45665e5', year: 2011, brand: 'Mercedes', color: 'Brown' },
+            { vin: 'he6sb5v', year: 2015, brand: 'Ford', color: 'Black' }
+        ];
     }
-    CaptchaDemo.prototype.showResponse = function (event) {
+    CarouselDemo.prototype.selectCar = function (car) {
         this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'User Responsed' });
+        this.msgs.push({ severity: 'info', summary: 'Car Selected', detail: 'Vin:' + car.vin });
     };
-    return CaptchaDemo;
+    return CarouselDemo;
 }());
-CaptchaDemo = __decorate([
+CarouselDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/captcha/captchademo.html")
-    })
-], CaptchaDemo);
+        template: __webpack_require__("./src/app/showcase/components/carousel/carouseldemo.html"),
+        styles: ["\n        .ui-grid-row {\n            text-align: center;\n        }\n\n        .ui-grid {\n            margin: 10px 0px;\n        }\n\n        .ui-grid-row > div {\n            padding: 4px 10px;\n        }\n    "]
+    }),
+    __metadata("design:paramtypes", [])
+], CarouselDemo);
 
-//# sourceMappingURL=captchademo.js.map
+//# sourceMappingURL=carouseldemo.js.map
 
 /***/ })
 

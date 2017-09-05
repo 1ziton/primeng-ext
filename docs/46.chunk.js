@@ -1,226 +1,20 @@
 webpackJsonp([46],{
 
-/***/ "./src/app/components/growl/growl.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* unused harmony export Growl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrowlModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-
-
-var Growl = (function () {
-    function Growl(el, domHandler, differs, messageService) {
-        var _this = this;
-        this.el = el;
-        this.domHandler = domHandler;
-        this.differs = differs;
-        this.messageService = messageService;
-        this.life = 3000;
-        this.immutable = true;
-        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.zIndex = __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.differ = differs.find([]).create(null);
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
-            });
-        }
-    }
-    Growl.prototype.ngAfterViewInit = function () {
-        this.container = this.containerViewChild.nativeElement;
-        if (!this.sticky) {
-            this.initTimeout();
-        }
-    };
-    Object.defineProperty(Growl.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        set: function (val) {
-            this._value = val;
-            if (this.container && this.immutable) {
-                this.handleValueChange();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Growl.prototype.ngDoCheck = function () {
-        if (!this.immutable && this.container) {
-            var changes = this.differ.diff(this.value);
-            if (changes) {
-                this.handleValueChange();
-            }
-        }
-    };
-    Growl.prototype.handleValueChange = function () {
-        if (this.preventRerender) {
-            this.preventRerender = false;
-            return;
-        }
-        this.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.domHandler.fadeIn(this.container, 250);
-        if (!this.sticky) {
-            this.initTimeout();
-        }
-    };
-    Growl.prototype.initTimeout = function () {
-        var _this = this;
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(function () {
-            _this.removeAll();
-        }, this.life);
-    };
-    Growl.prototype.remove = function (index, msgel) {
-        var _this = this;
-        this.closeIconClick = true;
-        this.domHandler.fadeOut(msgel, 250);
-        setTimeout(function () {
-            _this.preventRerender = true;
-            _this.onClose.emit({ message: _this.value[index] });
-            if (_this.immutable) {
-                _this._value = _this.value.filter(function (val, i) { return i != index; });
-                _this.valueChange.emit(_this._value);
-            }
-            else {
-                _this._value.splice(index, 1);
-            }
-        }, 250);
-    };
-    Growl.prototype.removeAll = function () {
-        var _this = this;
-        if (this.value && this.value.length) {
-            this.domHandler.fadeOut(this.container, 250);
-            setTimeout(function () {
-                _this.value.forEach(function (msg, index) { return _this.onClose.emit({ message: _this.value[index] }); });
-                if (_this.immutable) {
-                    _this.value = [];
-                    _this.valueChange.emit(_this.value);
-                }
-                else {
-                    _this.value.splice(0, _this.value.length);
-                }
-            }, 250);
-        }
-    };
-    Growl.prototype.onMessageClick = function (i) {
-        if (this.closeIconClick)
-            this.closeIconClick = false;
-        else
-            this.onClick.emit({ message: this.value[i] });
-    };
-    Growl.prototype.ngOnDestroy = function () {
-        if (!this.sticky) {
-            clearTimeout(this.timeout);
-        }
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return Growl;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Growl.prototype, "sticky", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Growl.prototype, "life", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Growl.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Growl.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Growl.prototype, "immutable", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Growl.prototype, "onClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Growl.prototype, "onClose", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], Growl.prototype, "valueChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], Growl.prototype, "containerViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Growl.prototype, "value", null);
-Growl = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-growl',
-        template: "\n        <div #container [ngClass]=\"'ui-growl ui-widget'\" [style.zIndex]=\"zIndex\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div #msgel *ngFor=\"let msg of value;let i = index\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn',\n                    'ui-growl-message-error':msg.severity == 'error','ui-growl-message-success':msg.severity == 'success'}\" (click)=\"onMessageClick(i)\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(i,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-exclamation-circle':msg.severity == 'warn',\n                                'fa-close':msg.severity == 'error','fa-check':msg.severity == 'success'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p [innerHTML]=\"msg.detail\"></p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Optional */])()),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */]) === "function" && _h || Object])
-], Growl);
-
-var GrowlModule = (function () {
-    function GrowlModule() {
-    }
-    return GrowlModule;
-}());
-GrowlModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Growl],
-        declarations: [Growl]
-    })
-], GrowlModule);
-
-var _a, _b, _c, _d, _e, _f, _g, _h;
-//# sourceMappingURL=growl.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/security/page/login/security-login.component.html":
+/***/ "./node_modules/raw-loader/index.js!./src/app/showcase/custom-components/department-select-demo/Department-select-demo-basic.component.ts":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content1\">\n    <div class=\"content1_in\">\n        <div class=\"top_cun\">\n            <div class=\"j_currtun\">\n                <h1 class=\"logo\">\n                    <a href=\"javascript:void(0)\"></a>\n                </h1>\n            </div>\n        </div>\n\n        <div class=\"bottom_cun\">\n            <div class=\"right_cun\">\n                <span class=\"cun_titl\">用户登录</span>\n                <span [hidden]=\"!errorFlag\" class=\"error-text\">{{errorInfo}}</span>\n                <span class=\"cun_user\">\n\t\t\t\t\t\t\t<label><i class=\"iconfont yonhu\" title=\"账户\"></i></label>\n                            <label><i class=\"zhanghao\">账号</i></label>\n\t\t\t\t\t\t\t<input id=\"user_name\" [(ngModel)]=\"loginUser.mobile\" class=\"User_name\" type=\"text\"\n                                   maxlength=\"11\" placeholder=\"输入手机号\" onkeyup=\"value=this.value.replace(/\\D+/g,'')\"\n                                   (focus)=\"inputFocus($event)\"/>\n\t\t\t\t\t\t\t<span id=\"clear_name\" class=\"xi guan_bi\"></span>\n                </span>\n                <span class=\"cun_user\">\n\t\t\t\t\t\t\t<label><i class=\"iconfont mima\" title=\"mima\"></i></label>\n\t\t\t\t\t\t\t<label><i class=\"zhanghao\">密码</i></label>\n\t\t\t\t\t\t\t<input class=\"User_name\" [(ngModel)]=\"loginUser.password\" type=\"password\" maxlength=\"16\"\n                                   placeholder=\"请输入登录密码\" (focus)=\"inputFocus($event)\" (keyup.enter)=\"doLogin()\"/>\n\t\t\t\t\t\t\t<span id=\"show_password\" class=\"xi cha_kan\"></span>\n                </span>\n                <span class=\"cun_user forget\">\n\t\t\t\t\t\t\t<span class=\"left\"><label><input type=\"checkbox\" name=\"check\"\n                                                             checked=\"checked\">14天内自动登录</label></span>\n                </span>\n                <span class=\"cun_user Signin\">\n\t\t\t\t\t\t\t<!--<a  href=\"javascript:void(0)\" class=\"cun_Signin\" (click)=\"doLogin()\">{{loginText}}</a>-->\n                    <button  (click)=\"doLogin()\" class=\"{{login ?'cun_Signin_no':'cun_Signin_yes'}}\" [disabled]=\"login\">{{loginText}}</button>\n                </span>\n            </div>\n        </div>\n    </div>\n</div>\n<p-growl [value]=\"msgs\" sticky=\"sticky\"></p-growl>\n"
+module.exports = "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'department-demo-basic',\n  template: `\n    <h3>开单网点选择组件</h3>\n    <!--复制开始-->\n    <div style=\"margin: 15px 0\">例如输入  一智通</div>\n    <department-select width=\"200px\" defaultLabel=\"请选择…\" [(ngModel)]=\"departmentCode\"></department-select>\n    <!--复制结束-->\n    <div style=\"margin: 15px 0\">{{departmentCode}}</div>\n    <br>\n\n    <button (click)=\"doTest()\">测试取Code</button>\n  `,\n  styles: []\n})\nexport class DepartmentDemoBasicComponent implements OnInit {\n  departmentCode: string = \"\";\n\n  constructor() {\n  }\n\n  ngOnInit() {\n\n  }\n\n  doTest() {\n    alert('值为：' + this.departmentCode);\n  }\n\n}\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/page/login/security-login.component.scss":
+/***/ "./src/app/showcase/custom-components/department-select-demo/Department-select-demo.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<article>\n  <section class=\"markdown\"><h1>开单网点组件</h1>\n    <section class=\"markdown\"><p>通过选择框选定网点。</p>\n      <h2 id=\"何时使用\"><span>何时使用</span>\n        <!-- <a class=\"anchor\">#</a> -->\n      </h2>\n      <ul>\n        <li><p>选择网点获取网点code的时候。</p></li>\n      </ul>\n    </section>\n    <h2>代码演示<i class=\"code-box-expand-trigger anticon anticon-appstore\" title=\"展开全部代码\"></i></h2>\n  </section>\n  <div nz-row [nzGutter]=\"8\">\n    <div nz-col [nzSpan]=\"24\">\n      <nz-code-box [nzTitle]=\"'基本'\" id=\"components-alert-demo-basic\" [nzCode]=\"DepartmentDemoSelectBasicComponent\">\n        <department-demo-basic demo></department-demo-basic>\n        <div intro>\n          <p>最简单的用法。</p>\n        </div>\n      </nz-code-box>\n    </div>\n  </div>\n  <section class=\"markdown api-container\">\n    <h2 id=\"API\"><span>API</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h2>\n    <h3 id=\"Rate\"><span>meta-select</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h3>\n    <table>\n      <thead>\n      <tr>\n        <th>参数</th>\n        <th>说明</th>\n        <th>类型</th>\n        <th>默认值</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr>\n        <td>width</td>\n        <td>输入框宽度</td>\n        <td>String</td>\n        <td><code>200px</code></td>\n      </tr>\n      <tr>\n        <td>onChange</td>\n        <td>值改变事件</td>\n        <td>EventEmitter</td>\n        <td> -</td>\n      </tr>\n      </tbody>\n    </table>\n  </section>\n</article>\n"
+
+/***/ }),
+
+/***/ "./src/app/showcase/custom-components/department-select-demo/Department-select-demo.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -228,7 +22,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n/*登录*/\n.content1 {\n  width: 100%;\n  height: 100%;\n  background-size: 100% 100%;\n  position: static;\n  top: 0;\n  left: 0; }\n  .content1 > .content1_in {\n    position: absolute;\n    width: 1000px;\n    height: 560px;\n    top: 50%;\n    left: 50%;\n    margin-left: -500px;\n    margin-top: -295px; }\n    .content1 > .content1_in > .top_cun {\n      width: 100%;\n      height: 120px;\n      text-align: center; }\n\n.content1_in .top_cun > .j_currtun {\n  display: inline-block;\n  width: 220px;\n  height: 80px; }\n  .content1_in .top_cun > .j_currtun .logo {\n    width: 100%;\n    height: 56px; }\n    .content1_in .top_cun > .j_currtun .logo a {\n      display: block;\n      width: 100%;\n      height: 100%; }\n  .content1_in .top_cun > .j_currtun > p {\n    font-size: 22px;\n    color: #858585;\n    letter-spacing: 5px;\n    margin-top: 10px; }\n\n.content1_in .bottom_cun {\n  float: left;\n  width: 100%;\n  height: 380px; }\n  .content1_in .bottom_cun .right_cun {\n    margin: 0 auto;\n    width: 400px;\n    height: 360px;\n    box-shadow: 0 0 10px #ccc;\n    border-radius: 5px;\n    background: #F2F2F5;\n    padding: 50px;\n    box-sizing: border-box; }\n    .content1_in .bottom_cun .right_cun .cun_titl {\n      font-size: 20px;\n      color: #444444; }\n\n.bottom_cun .right_cun .cun_user {\n  float: left;\n  width: 300px;\n  height: 41px;\n  border-bottom: 1px solid #ccc;\n  margin-top: 24px;\n  position: relative; }\n\n.bottom_cun .right_cun .cun_user > label {\n  float: left;\n  width: 40px;\n  height: 40px; }\n\n.bottom_cun .right_cun .cun_user .zhanghao {\n  height: 40px;\n  line-height: 40px; }\n\n.bottom_cun .right_cun .cun_user > label > i {\n  display: block;\n  width: 100%;\n  height: 100%; }\n\n.bottom_cun .right_cun .cun_user > input {\n  font-size: 12px;\n  float: left;\n  width: 215px;\n  height: 40px;\n  line-height: 40px;\n  padding: 2px 26px 2px 2px;\n  box-sizing: border-box;\n  border: none;\n  outline: none;\n  background-color: #F2F2F5; }\n\n.bottom_cun .right_cun .cun_user .xi {\n  width: 20px;\n  height: 20px;\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  cursor: pointer; }\n\n.bottom_cun .right_cun .cun_user .guan_bi {\n  visibility: hidden; }\n\n.bottom_cun .right_cun .cun_user .cha_kan {\n  visibility: hidden; }\n\n.bottom_cun .right_cun .cun_user.forget {\n  margin: 15px 0;\n  height: auto;\n  border: none; }\n\n.bottom_cun .right_cun .cun_user.forget .left {\n  float: left;\n  line-height: 14px; }\n\n.bottom_cun .right_cun .cun_user.forget .left input {\n  float: left;\n  width: 15px;\n  height: 15px;\n  border: 1px solid #ccc;\n  margin-right: 3px;\n  cursor: pointer; }\n\n.bottom_cun .right_cun .cun_user.forget .right {\n  float: right; }\n\n.bottom_cun .right_cun .cun_user.forget .right > a:link,\n.bottom_cun .right_cun .cun_user.forget .right > a:visited {\n  color: blue; }\n\n.bottom_cun .right_cun .cun_user.forget .right > a:hover,\n.bottom_cun .right_cun .cun_user.forget .right > a:active {\n  color: red; }\n\n.bottom_cun .right_cun .cun_user.Signin {\n  border: none;\n  margin-top: 0px; }\n\n.bottom_cun .right_cun .cun_user > .cun_Signin_yes {\n  display: block;\n  width: 100%;\n  height: 100%;\n  line-height: 36px;\n  text-align: center;\n  color: #fff;\n  background: #373B4F;\n  font-size: 18px;\n  margin-top: 20px;\n  border: none;\n  cursor: pointer; }\n\n.bottom_cun .right_cun .cun_user > .cun_Signin_no {\n  display: block;\n  width: 100%;\n  height: 100%;\n  line-height: 36px;\n  text-align: center;\n  color: #fff;\n  background: #7a94c7;\n  font-size: 18px;\n  margin-top: 20px;\n  border: none;\n  cursor: not-allowed; }\n\n.error-text {\n  color: red;\n  margin-left: 10px; }\n\n.footer {\n  width: 100%;\n  text-align: center;\n  position: absolute;\n  bottom: 30px;\n  color: #7C7C7C;\n  font-size: 14px; }\n", ""]);
+exports.push([module.i, ".test-content{\r\n  margin:30px 0 0 30px;\r\n}\r\n.meta-select{\r\n  width: 100px;\r\n}\r\n.component{\r\n  margin-top:50px;\r\n}\r\n.test-content a.back{\r\n  color: #0b7dd8;\r\n  font-size: 16px;\r\n  margin-left: 280px;\r\n  text-decoration: underline;\r\n}\r\n", ""]);
 
 // exports
 
@@ -238,16 +32,12 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/page/login/security-login.component.ts":
+/***/ "./src/app/showcase/custom-components/department-select-demo/department-select-demo-basic.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_config__ = __webpack_require__("./src/app/showcase/custom-components/config.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityLoginComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DepartmentDemoBasicComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -258,291 +48,83 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-
-
-
-var SecurityLoginComponent = (function () {
-    function SecurityLoginComponent(http, api, router) {
-        this.http = http;
-        this.api = api;
-        this.router = router;
-        this.loginUser = { source: "boss", mobile: '', password: '' };
-        this.errorFlag = false;
-        this.errorInfo = '';
-        this.logining = false;
-        this.login = false;
-        this.isLoggedIn = false;
-        this.loginText = "登录";
-        this.msgs = [];
-        this.copyrightYear = new Date().getFullYear();
-        this.phoneReg = /^(((13[0-9]{1})|(12[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+var DepartmentDemoBasicComponent = (function () {
+    function DepartmentDemoBasicComponent() {
+        this.departmentCode = "";
     }
-    SecurityLoginComponent.prototype.ngOnInit = function () {
+    DepartmentDemoBasicComponent.prototype.ngOnInit = function () {
     };
-    SecurityLoginComponent.prototype.inputFocus = function ($event) {
-        this.errorFlag = false;
+    DepartmentDemoBasicComponent.prototype.doTest = function () {
+        alert('值为：' + this.departmentCode);
     };
-    SecurityLoginComponent.prototype.doLogin = function () {
-        var _this = this;
-        this.loginText = "登录中...";
-        this.login = true;
-        this.errorFlag = false;
-        if (!this.valid()) {
-            setTimeout(function () {
-                _this.login = false;
-                _this.loginText = "登录";
-            }, 100);
-            return;
-        }
-        ;
-        if (this.logining) {
-            return;
-        }
-        ; //正在登录中
-        this.logining = true;
-        this.http.post(__WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_config__["a" /* BASEURL */] + "/login", this.loginUser).map(function (res) {
-            return res.json();
-        }).subscribe(function (json) {
-            if (json && json.jwt) {
-                _this.show();
-                localStorage.setItem("jwt", json.jwt);
-                setTimeout(function () {
-                    _this.getUserInfo();
-                    _this.login = false;
-                    _this.loginText = "登录";
-                    // this.router.navigate(['/modules'])
-                }, 300);
-            }
-            else {
-                _this.error();
-            }
-            _this.logining = false;
-        }, function (error) {
-            _this.login = false;
-            _this.loginText = "登录";
-            _this.errorFlag = true;
-            if (error && error['_body']) {
-                try {
-                    var body = JSON.parse(error._body);
-                    if (body['code'] === -1) {
-                        _this.errorInfo = body['error'];
-                    }
-                    else {
-                        _this.errorInfo = '登录失败，请检查账号和密码';
-                    }
-                }
-                catch (e) {
-                    _this.errorInfo = '服务器出错';
-                }
-            }
-            else {
-                _this.errorInfo = '登录失败，请检查账号和密码';
-            }
-            _this.logining = false;
-        });
-    };
-    /**
-     * 登录验证
-     * @returns {boolean}
-     */
-    SecurityLoginComponent.prototype.valid = function () {
-        if (!this.loginUser.mobile) {
-            this.errorFlag = true;
-            this.errorInfo = '用户名不能为空';
-            return false;
-        }
-        else if (!this.phoneReg.test(this.loginUser.mobile)) {
-            this.errorFlag = true;
-            this.errorInfo = '请输入正确的手机号码';
-            return;
-        }
-        else if (!this.loginUser.password) {
-            this.errorFlag = true;
-            this.errorInfo = '密码不能为空';
-            return false;
-        }
-        return true;
-    };
-    /**
-     * 获取用户信息
-     */
-    SecurityLoginComponent.prototype.getUserInfo = function () {
-        var _this = this;
-        this.checkUserLogin().then(function (isLogin) {
-            if (isLogin) {
-                _this.router.navigateByUrl("/");
-            }
-            else {
-                localStorage.removeItem("jwt");
-            }
-        }).catch(function (err) {
-            _this.errorFlag = true;
-            _this.errorInfo = '获取用户信息失败';
-        });
-    };
-    /**
-    * 获取用户信息
-    * @returns {boolean}
-    */
-    SecurityLoginComponent.prototype.checkUserLogin = function () {
-        var _this = this;
-        try {
-            return new Promise(function (resolve, reject) {
-                _this.api.call("SecurityController.currentUser").ok(function (json) {
-                    if (json.result) {
-                        localStorage.setItem('currentUser', JSON.stringify(json.result.attributes));
-                        // localStorage.setItem('permissions', JSON.stringify(json.result.permissions));
-                        _this.isLoggedIn = true;
-                        resolve(_this.isLoggedIn);
-                    }
-                    else {
-                        _this.isLoggedIn = false;
-                        resolve(_this.isLoggedIn);
-                    }
-                }).fail(function (err) {
-                    localStorage.clear();
-                    _this.isLoggedIn = false;
-                    _this.router.navigate(['/security/login']);
-                    reject(err);
-                });
-            });
-        }
-        catch (e) {
-            localStorage.clear();
-            this.isLoggedIn = false;
-        }
-    };
-    SecurityLoginComponent.prototype.show = function (msg) {
-        msg = msg ? msg : '登录成功！';
-        this.msgs = [];
-        this.msgs.push({ severity: 'success', summary: '提示', detail: msg });
-    };
-    SecurityLoginComponent.prototype.error = function (msg) {
-        msg = msg ? msg : '登录失败！';
-        this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: '提示', detail: msg });
-    };
-    SecurityLoginComponent.prototype.warning = function (msg) {
-        msg = msg ? msg : '登录失败！';
-        this.msgs = [];
-        this.msgs.push({ severity: 'warn', summary: '提示', detail: msg });
-    };
-    return SecurityLoginComponent;
+    return DepartmentDemoBasicComponent;
 }());
-SecurityLoginComponent = __decorate([
+DepartmentDemoBasicComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/security/page/login/security-login.component.html"),
-        styles: [__webpack_require__("./src/app/showcase/security/page/login/security-login.component.scss")]
+        selector: 'department-demo-basic',
+        template: "\n    <h3>\u5F00\u5355\u7F51\u70B9\u9009\u62E9\u7EC4\u4EF6</h3>\n    <!--\u590D\u5236\u5F00\u59CB-->\n    <div style=\"margin: 15px 0\">\u4F8B\u5982\u8F93\u5165  \u4E00\u667A\u901A</div>\n    <department-select width=\"200px\" defaultLabel=\"\u8BF7\u9009\u62E9\u2026\" [(ngModel)]=\"departmentCode\"></department-select>\n    <!--\u590D\u5236\u7ED3\u675F-->\n    <div style=\"margin: 15px 0\">{{departmentCode}}</div>\n    <br>\n\n    <button (click)=\"doTest()\">\u6D4B\u8BD5\u53D6Code</button>\n  ",
+        styles: []
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4_app_custom_components_services_api__["a" /* API */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_app_custom_components_services_api__["a" /* API */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _c || Object])
-], SecurityLoginComponent);
+    __metadata("design:paramtypes", [])
+], DepartmentDemoBasicComponent);
 
-var _a, _b, _c;
-//# sourceMappingURL=security-login.component.js.map
+//# sourceMappingURL=department-select-demo-basic.component.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/security-routing.module.ts":
+/***/ "./src/app/showcase/custom-components/department-select-demo/department-select-demo.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__security_component__ = __webpack_require__("./src/app/showcase/security/security.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_showcase_security_page_login_security_login_component__ = __webpack_require__("./src/app/showcase/security/page/login/security-login.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityRoutingModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DepartmentSelectDemoComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
-
-
-
-var routes = [
-    {
-        path: '',
-        component: __WEBPACK_IMPORTED_MODULE_2__security_component__["a" /* SecurityComponent */],
-        children: [
-            {
-                path: '',
-                redirectTo: 'login',
-                pathMatch: 'full'
-            },
-            {
-                path: 'login',
-                component: __WEBPACK_IMPORTED_MODULE_3_app_showcase_security_page_login_security_login_component__["a" /* SecurityLoginComponent */]
-            }
-        ]
-    }
-];
-var SecurityRoutingModule = (function () {
-    function SecurityRoutingModule() {
-    }
-    return SecurityRoutingModule;
-}());
-SecurityRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild(routes)
-        ],
-        exports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
-        ],
-        declarations: [],
-        providers: [],
-    })
-], SecurityRoutingModule);
-
-//# sourceMappingURL=security-routing.module.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/security/security.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var SecurityComponent = (function () {
-    function SecurityComponent() {
+var DepartmentSelectDemoComponent = (function () {
+    function DepartmentSelectDemoComponent() {
+        this.DepartmentDemoSelectBasicComponent = __webpack_require__("./node_modules/raw-loader/index.js!./src/app/showcase/custom-components/department-select-demo/Department-select-demo-basic.component.ts");
     }
-    return SecurityComponent;
+    DepartmentSelectDemoComponent.prototype.ngOnInit = function () {
+    };
+    return DepartmentSelectDemoComponent;
 }());
-SecurityComponent = __decorate([
+DepartmentSelectDemoComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: "<router-outlet></router-outlet>"
-    })
-], SecurityComponent);
+        selector: 'Department-demo',
+        template: __webpack_require__("./src/app/showcase/custom-components/department-select-demo/Department-select-demo.component.html"),
+        styles: [__webpack_require__("./src/app/showcase/custom-components/department-select-demo/Department-select-demo.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], DepartmentSelectDemoComponent);
 
-//# sourceMappingURL=security.component.js.map
+//# sourceMappingURL=department-select-demo.component.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/security.module.ts":
+/***/ "./src/app/showcase/custom-components/department-select-demo/department-select-demo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__security_component__ = __webpack_require__("./src/app/showcase/security/security.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__security_routing_module__ = __webpack_require__("./src/app/showcase/security/security-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_showcase_security_page_login_security_login_component__ = __webpack_require__("./src/app/showcase/security/page/login/security-login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SecurityModule", function() { return SecurityModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_showcase_share_nz_grid_nz_grid_module__ = __webpack_require__("./src/app/showcase/share/nz-grid/nz-grid.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_showcase_share_nz_tooltip_nz_tooltip_module__ = __webpack_require__("./src/app/showcase/share/nz-tooltip/nz-tooltip.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_showcase_share_nz_codebox_nz_codebox_module__ = __webpack_require__("./src/app/showcase/share/nz-codebox/nz-codebox.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__custom_components_custom_components_module__ = __webpack_require__("./src/app/custom-components/custom-components.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__department_select_demo_routing_module__ = __webpack_require__("./src/app/showcase/custom-components/department-select-demo/department-select-demo.routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__department_select_demo_component__ = __webpack_require__("./src/app/showcase/custom-components/department-select-demo/department-select-demo.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__department_select_demo_basic_component__ = __webpack_require__("./src/app/showcase/custom-components/department-select-demo/department-select-demo-basic.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "departmentDemoModule", function() { return departmentDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -558,31 +140,66 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SecurityModule = (function () {
-    function SecurityModule() {
+
+var departmentDemoModule = (function () {
+    function departmentDemoModule() {
     }
-    return SecurityModule;
+    return departmentDemoModule;
 }());
-SecurityModule = __decorate([
+departmentDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_5__security_routing_module__["a" /* SecurityRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_6_app_components_growl_growl__["a" /* GrowlModule */]
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_3_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
+            __WEBPACK_IMPORTED_MODULE_4_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
+            __WEBPACK_IMPORTED_MODULE_5_app_showcase_share_nz_codebox_nz_codebox_module__["a" /* NzCodeBoxModule */],
+            __WEBPACK_IMPORTED_MODULE_7__department_select_demo_routing_module__["a" /* DepartmentDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_6__custom_components_custom_components_module__["a" /* CustomComponentsModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_4__security_component__["a" /* SecurityComponent */],
-            __WEBPACK_IMPORTED_MODULE_7_app_showcase_security_page_login_security_login_component__["a" /* SecurityLoginComponent */]
-        ],
-        providers: [
-            __WEBPACK_IMPORTED_MODULE_8_app_custom_components_services_api__["a" /* API */]
-        ],
+            __WEBPACK_IMPORTED_MODULE_8__department_select_demo_component__["a" /* DepartmentSelectDemoComponent */],
+            __WEBPACK_IMPORTED_MODULE_9__department_select_demo_basic_component__["a" /* DepartmentDemoBasicComponent */]
+        ]
     })
-], SecurityModule);
+], departmentDemoModule);
 
-//# sourceMappingURL=security.module.js.map
+//# sourceMappingURL=department-select-demo.module.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/custom-components/department-select-demo/department-select-demo.routing.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__department_select_demo_component__ = __webpack_require__("./src/app/showcase/custom-components/department-select-demo/department-select-demo.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DepartmentDemoRoutingModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var DepartmentDemoRoutingModule = (function () {
+    function DepartmentDemoRoutingModule() {
+    }
+    return DepartmentDemoRoutingModule;
+}());
+DepartmentDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__department_select_demo_component__["a" /* DepartmentSelectDemoComponent */] }
+            ])],
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
+    })
+], DepartmentDemoRoutingModule);
+
+//# sourceMappingURL=department-select-demo.routing.module.js.map
 
 /***/ })
 

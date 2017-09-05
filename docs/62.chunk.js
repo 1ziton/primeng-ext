@@ -53,18 +53,17 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/inputmask/inputmask.ts":
+/***/ "./src/app/components/inputswitch/inputswitch.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export INPUTMASK_VALUE_ACCESSOR */
-/* unused harmony export InputMask */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputMaskModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export INPUTSWITCH_VALUE_ACCESSOR */
+/* unused harmony export InputSwitch */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputSwitchModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -74,580 +73,190 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/*
-    Port of jQuery MaskedInput by DigitalBush as a Native Angular2 Component in Typescript without jQuery
-    https://github.com/digitalBush/jquery.maskedinput/
-    
-    Copyright (c) 2007-2014 Josh Bush (digitalbush.com)
-
-    Permission is hereby granted, free of charge, to any person
-    obtaining a copy of this software and associated documentation
-    files (the "Software"), to deal in the Software without
-    restriction, including without limitation the rights to use,
-    copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the
-    Software is furnished to do so, subject to the following
-    conditions:
-
-    The above copyright notice and this permission notice shall be
-    included in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-    OTHER DEALINGS IN THE SOFTWARE.
-*/
 
 
 
 
-
-var INPUTMASK_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return InputMask; }),
+var INPUTSWITCH_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return InputSwitch; }),
     multi: true
 };
-var InputMask = (function () {
-    function InputMask(el, domHandler) {
+var InputSwitch = (function () {
+    function InputSwitch(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
-        this.type = 'text';
-        this.slotChar = '_';
-        this.autoClear = true;
-        this.onComplete = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onFocus = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onBlur = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onLabel = 'On';
+        this.offLabel = 'Off';
+        this.ariaLabelTemplate = "InputSwitch {0}";
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.checked = false;
+        this.focused = false;
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
+        this.initialized = false;
     }
-    InputMask.prototype.ngOnInit = function () {
-        var ua = this.domHandler.getUserAgent();
-        this.androidChrome = /chrome/i.test(ua) && /android/i.test(ua);
-        this.initMask();
+    InputSwitch.prototype.ngAfterViewInit = function () {
+        this.container = this.el.nativeElement.children[0];
+        this.handle = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-inputswitch-handle');
+        this.onContainer = this.domHandler.findSingle(this.container, 'div.ui-inputswitch-on');
+        this.offContainer = this.domHandler.findSingle(this.container, 'div.ui-inputswitch-off');
+        this.onLabelChild = this.domHandler.findSingle(this.onContainer, 'span.ui-inputswitch-onlabel');
+        this.offLabelChild = this.domHandler.findSingle(this.offContainer, 'span.ui-inputswitch-offlabel');
     };
-    Object.defineProperty(InputMask.prototype, "mask", {
-        get: function () {
-            return this._mask;
-        },
-        set: function (val) {
-            this._mask = val;
-            this.initMask();
-            this.writeValue('');
-            this.onModelChange(this.value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    InputMask.prototype.initMask = function () {
-        this.tests = [];
-        this.partialPosition = this.mask.length;
-        this.len = this.mask.length;
-        this.firstNonMaskPos = null;
-        this.defs = {
-            '9': '[0-9]',
-            'a': '[A-Za-z]',
-            '*': '[A-Za-z0-9]'
-        };
-        var maskTokens = this.mask.split('');
-        for (var i = 0; i < maskTokens.length; i++) {
-            var c = maskTokens[i];
-            if (c == '?') {
-                this.len--;
-                this.partialPosition = i;
-            }
-            else if (this.defs[c]) {
-                this.tests.push(new RegExp(this.defs[c]));
-                if (this.firstNonMaskPos === null) {
-                    this.firstNonMaskPos = this.tests.length - 1;
-                }
-                if (i < this.partialPosition) {
-                    this.lastRequiredNonMaskPos = this.tests.length - 1;
-                }
+    InputSwitch.prototype.ngAfterViewChecked = function () {
+        if (this.container.offsetParent && !this.initialized) {
+            this.render();
+        }
+    };
+    InputSwitch.prototype.render = function () {
+        var onContainerWidth = this.domHandler.width(this.onContainer), offContainerWidth = this.domHandler.width(this.offContainer), spanPadding = this.domHandler.innerWidth(this.offLabelChild) - this.domHandler.width(this.offLabelChild), handleMargins = this.domHandler.getOuterWidth(this.handle) - this.domHandler.innerWidth(this.handle);
+        var containerWidth = (onContainerWidth > offContainerWidth) ? onContainerWidth : offContainerWidth, handleWidth = containerWidth;
+        this.handle.style.width = handleWidth + 'px';
+        handleWidth = this.domHandler.width(this.handle);
+        containerWidth = containerWidth + handleWidth + 6;
+        var labelWidth = containerWidth - handleWidth - spanPadding - handleMargins;
+        this.container.style.width = containerWidth + 'px';
+        this.onLabelChild.style.width = labelWidth + 'px';
+        this.offLabelChild.style.width = labelWidth + 'px';
+        //position
+        this.offContainer.style.width = (this.domHandler.width(this.container) - 5) + 'px';
+        this.offset = this.domHandler.width(this.container) - this.domHandler.getOuterWidth(this.handle);
+        //default value
+        if (this.checked) {
+            this.handle.style.left = this.offset + 'px';
+            this.onContainer.style.width = this.offset + 'px';
+            this.offLabelChild.style.marginRight = -this.offset + 'px';
+        }
+        else {
+            this.onContainer.style.width = 0 + 'px';
+            this.onLabelChild.style.marginLeft = -this.offset + 'px';
+        }
+        this.initialized = true;
+    };
+    InputSwitch.prototype.toggle = function (event, checkbox) {
+        if (!this.disabled) {
+            if (this.checked) {
+                this.checked = false;
+                this.uncheckUI();
             }
             else {
-                this.tests.push(null);
+                this.checked = true;
+                this.checkUI();
             }
+            this.onModelChange(this.checked);
+            this.onChange.emit({
+                originalEvent: event,
+                checked: this.checked
+            });
+            checkbox.focus();
         }
-        this.buffer = [];
-        for (var i = 0; i < maskTokens.length; i++) {
-            var c = maskTokens[i];
-            if (c != '?') {
-                if (this.defs[c])
-                    this.buffer.push(this.getPlaceholder(i));
-                else
-                    this.buffer.push(c);
-            }
-        }
-        this.defaultBuffer = this.buffer.join('');
     };
-    InputMask.prototype.writeValue = function (value) {
-        this.value = value;
-        if (this.inputViewChild.nativeElement) {
-            if (this.value == undefined || this.value == null)
-                this.inputViewChild.nativeElement.value = '';
+    InputSwitch.prototype.checkUI = function () {
+        this.onContainer.style.width = this.offset + 'px';
+        this.onLabelChild.style.marginLeft = 0 + 'px';
+        this.offLabelChild.style.marginRight = -this.offset + 'px';
+        this.handle.style.left = this.offset + 'px';
+        this.updateAriaLabel();
+    };
+    InputSwitch.prototype.uncheckUI = function () {
+        this.onContainer.style.width = 0 + 'px';
+        this.onLabelChild.style.marginLeft = -this.offset + 'px';
+        this.offLabelChild.style.marginRight = 0 + 'px';
+        this.handle.style.left = 0 + 'px';
+        this.updateAriaLabel();
+    };
+    InputSwitch.prototype.onFocus = function (event) {
+        this.focused = true;
+    };
+    InputSwitch.prototype.onBlur = function (event) {
+        this.focused = false;
+        this.onModelTouched();
+    };
+    InputSwitch.prototype.writeValue = function (checked) {
+        this.checked = checked;
+        if (this.initialized) {
+            if (this.checked === true)
+                this.checkUI();
             else
-                this.inputViewChild.nativeElement.value = this.value;
-            this.checkVal();
-            this.focusText = this.inputViewChild.nativeElement.value;
-            this.updateFilledState();
+                this.uncheckUI();
         }
     };
-    InputMask.prototype.registerOnChange = function (fn) {
+    InputSwitch.prototype.registerOnChange = function (fn) {
         this.onModelChange = fn;
     };
-    InputMask.prototype.registerOnTouched = function (fn) {
+    InputSwitch.prototype.registerOnTouched = function (fn) {
         this.onModelTouched = fn;
     };
-    InputMask.prototype.setDisabledState = function (val) {
+    InputSwitch.prototype.setDisabledState = function (val) {
         this.disabled = val;
     };
-    InputMask.prototype.caret = function (first, last) {
-        var range, begin, end;
-        if (!this.inputViewChild.nativeElement.offsetParent || this.inputViewChild.nativeElement !== document.activeElement) {
-            return;
-        }
-        if (typeof first == 'number') {
-            begin = first;
-            end = (typeof last === 'number') ? last : begin;
-            if (this.inputViewChild.nativeElement.setSelectionRange) {
-                this.inputViewChild.nativeElement.setSelectionRange(begin, end);
-            }
-            else if (this.inputViewChild.nativeElement['createTextRange']) {
-                range = this.inputViewChild.nativeElement['createTextRange']();
-                range.collapse(true);
-                range.moveEnd('character', end);
-                range.moveStart('character', begin);
-                range.select();
-            }
-        }
-        else {
-            if (this.inputViewChild.nativeElement.setSelectionRange) {
-                begin = this.inputViewChild.nativeElement.selectionStart;
-                end = this.inputViewChild.nativeElement.selectionEnd;
-            }
-            else if (document['selection'] && document['selection'].createRange) {
-                range = document['selection'].createRange();
-                begin = 0 - range.duplicate().moveStart('character', -100000);
-                end = begin + range.text.length;
-            }
-            return { begin: begin, end: end };
-        }
+    InputSwitch.prototype.updateAriaLabel = function () {
+        var pattern = /{(.*?)}/, value = this.checked ? this.onLabel : this.offLabel;
+        this.ariaLabel = this.ariaLabelTemplate.replace(this.ariaLabelTemplate.match(pattern)[0], value);
     };
-    InputMask.prototype.isCompleted = function () {
-        var completed;
-        for (var i = this.firstNonMaskPos; i <= this.lastRequiredNonMaskPos; i++) {
-            if (this.tests[i] && this.buffer[i] === this.getPlaceholder(i)) {
-                return false;
-            }
-        }
-        return true;
-    };
-    InputMask.prototype.getPlaceholder = function (i) {
-        if (i < this.slotChar.length) {
-            return this.slotChar.charAt(i);
-        }
-        return this.slotChar.charAt(0);
-    };
-    InputMask.prototype.seekNext = function (pos) {
-        while (++pos < this.len && !this.tests[pos])
-            ;
-        return pos;
-    };
-    InputMask.prototype.seekPrev = function (pos) {
-        while (--pos >= 0 && !this.tests[pos])
-            ;
-        return pos;
-    };
-    InputMask.prototype.shiftL = function (begin, end) {
-        var i, j;
-        if (begin < 0) {
-            return;
-        }
-        for (i = begin, j = this.seekNext(end); i < this.len; i++) {
-            if (this.tests[i]) {
-                if (j < this.len && this.tests[i].test(this.buffer[j])) {
-                    this.buffer[i] = this.buffer[j];
-                    this.buffer[j] = this.getPlaceholder(j);
-                }
-                else {
-                    break;
-                }
-                j = this.seekNext(j);
-            }
-        }
-        this.writeBuffer();
-        this.caret(Math.max(this.firstNonMaskPos, begin));
-    };
-    InputMask.prototype.shiftR = function (pos) {
-        var i, c, j, t;
-        for (i = pos, c = this.getPlaceholder(pos); i < this.len; i++) {
-            if (this.tests[i]) {
-                j = this.seekNext(i);
-                t = this.buffer[i];
-                this.buffer[i] = c;
-                if (j < this.len && this.tests[j].test(t)) {
-                    c = t;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-    };
-    InputMask.prototype.handleAndroidInput = function (e) {
-        var _this = this;
-        var curVal = this.inputViewChild.nativeElement.value;
-        var pos = this.caret();
-        if (this.oldVal && this.oldVal.length && this.oldVal.length > curVal.length) {
-            // a deletion or backspace happened
-            this.checkVal(true);
-            while (pos.begin > 0 && !this.tests[pos.begin - 1])
-                pos.begin--;
-            if (pos.begin === 0) {
-                while (pos.begin < this.firstNonMaskPos && !this.tests[pos.begin])
-                    pos.begin++;
-            }
-            this.caret(pos.begin, pos.begin);
-        }
-        else {
-            this.checkVal(true);
-            while (pos.begin < this.len && !this.tests[pos.begin - 1])
-                pos.begin++;
-            setTimeout(function () { return _this.caret(pos.begin, pos.begin); });
-        }
-        if (this.isCompleted()) {
-            this.onComplete.emit();
-        }
-    };
-    InputMask.prototype.onInputBlur = function (e) {
-        this.focus = false;
-        this.onModelTouched();
-        this.checkVal();
-        this.updateModel(e);
-        this.updateFilledState();
-        this.onBlur.emit(e);
-        if (this.inputViewChild.nativeElement.value != this.focusText) {
-            var event = document.createEvent('HTMLEvents');
-            event.initEvent('change', true, false);
-            this.inputViewChild.nativeElement.dispatchEvent(event);
-        }
-    };
-    InputMask.prototype.onKeyDown = function (e) {
-        if (this.readonly) {
-            return;
-        }
-        var k = e.which || e.keyCode, pos, begin, end;
-        var iPhone = /iphone/i.test(this.domHandler.getUserAgent());
-        this.oldVal = this.inputViewChild.nativeElement.value;
-        //backspace, delete, and escape get special treatment
-        if (k === 8 || k === 46 || (iPhone && k === 127)) {
-            pos = this.caret();
-            begin = pos.begin;
-            end = pos.end;
-            if (end - begin === 0) {
-                begin = k !== 46 ? this.seekPrev(begin) : (end = this.seekNext(begin - 1));
-                end = k === 46 ? this.seekNext(end) : end;
-            }
-            this.clearBuffer(begin, end);
-            this.shiftL(begin, end - 1);
-            this.updateModel(e);
-            e.preventDefault();
-        }
-        else if (k === 13) {
-            this.onInputBlur(e);
-            this.updateModel(e);
-        }
-        else if (k === 27) {
-            this.inputViewChild.nativeElement.value = this.focusText;
-            this.caret(0, this.checkVal());
-            this.updateModel(e);
-            e.preventDefault();
-        }
-    };
-    InputMask.prototype.onKeyPress = function (e) {
-        var _this = this;
-        if (this.readonly) {
-            return;
-        }
-        var k = e.which || e.keyCode, pos = this.caret(), p, c, next, completed;
-        if (e.ctrlKey || e.altKey || e.metaKey || k < 32) {
-            return;
-        }
-        else if (k && k !== 13) {
-            if (pos.end - pos.begin !== 0) {
-                this.clearBuffer(pos.begin, pos.end);
-                this.shiftL(pos.begin, pos.end - 1);
-            }
-            p = this.seekNext(pos.begin - 1);
-            if (p < this.len) {
-                c = String.fromCharCode(k);
-                if (this.tests[p].test(c)) {
-                    this.shiftR(p);
-                    this.buffer[p] = c;
-                    this.writeBuffer();
-                    next = this.seekNext(p);
-                    if (/android/i.test(this.domHandler.getUserAgent())) {
-                        //Path for CSP Violation on FireFox OS 1.1
-                        var proxy = function () {
-                            _this.caret(next);
-                        };
-                        setTimeout(proxy, 0);
-                    }
-                    else {
-                        this.caret(next);
-                    }
-                    if (pos.begin <= this.lastRequiredNonMaskPos) {
-                        completed = this.isCompleted();
-                    }
-                }
-            }
-            e.preventDefault();
-        }
-        this.updateModel(e);
-        this.updateFilledState();
-        if (completed) {
-            this.onComplete.emit();
-        }
-    };
-    InputMask.prototype.clearBuffer = function (start, end) {
-        var i;
-        for (i = start; i < end && i < this.len; i++) {
-            if (this.tests[i]) {
-                this.buffer[i] = this.getPlaceholder(i);
-            }
-        }
-    };
-    InputMask.prototype.writeBuffer = function () {
-        this.inputViewChild.nativeElement.value = this.buffer.join('');
-    };
-    InputMask.prototype.checkVal = function (allow) {
-        //try to place characters where they belong
-        var test = this.inputViewChild.nativeElement.value, lastMatch = -1, i, c, pos;
-        for (i = 0, pos = 0; i < this.len; i++) {
-            if (this.tests[i]) {
-                this.buffer[i] = this.getPlaceholder(i);
-                while (pos++ < test.length) {
-                    c = test.charAt(pos - 1);
-                    if (this.tests[i].test(c)) {
-                        this.buffer[i] = c;
-                        lastMatch = i;
-                        break;
-                    }
-                }
-                if (pos > test.length) {
-                    this.clearBuffer(i + 1, this.len);
-                    break;
-                }
-            }
-            else {
-                if (this.buffer[i] === test.charAt(pos)) {
-                    pos++;
-                }
-                if (i < this.partialPosition) {
-                    lastMatch = i;
-                }
-            }
-        }
-        if (allow) {
-            this.writeBuffer();
-        }
-        else if (lastMatch + 1 < this.partialPosition) {
-            if (this.autoClear || this.buffer.join('') === this.defaultBuffer) {
-                // Invalid value. Remove it and replace it with the
-                // mask, which is the default behavior.
-                if (this.inputViewChild.nativeElement.value)
-                    this.inputViewChild.nativeElement.value = '';
-                this.clearBuffer(0, this.len);
-            }
-            else {
-                // Invalid value, but we opt to show the value to the
-                // user and allow them to correct their mistake.
-                this.writeBuffer();
-            }
-        }
-        else {
-            this.writeBuffer();
-            this.inputViewChild.nativeElement.value = this.inputViewChild.nativeElement.value.substring(0, lastMatch + 1);
-        }
-        return (this.partialPosition ? i : this.firstNonMaskPos);
-    };
-    InputMask.prototype.onInputFocus = function (event) {
-        var _this = this;
-        if (this.readonly) {
-            return;
-        }
-        this.focus = true;
-        clearTimeout(this.caretTimeoutId);
-        var pos;
-        this.focusText = this.inputViewChild.nativeElement.value;
-        pos = this.checkVal();
-        this.caretTimeoutId = setTimeout(function () {
-            if (_this.inputViewChild.nativeElement !== document.activeElement) {
-                return;
-            }
-            _this.writeBuffer();
-            if (pos == _this.mask.replace("?", "").length) {
-                _this.caret(0, pos);
-            }
-            else {
-                _this.caret(pos);
-            }
-        }, 10);
-        this.onFocus.emit(event);
-    };
-    InputMask.prototype.onInput = function (event) {
-        if (this.androidChrome)
-            this.handleAndroidInput(event);
-        else
-            this.handleInputChange(event);
-    };
-    InputMask.prototype.handleInputChange = function (event) {
-        var _this = this;
-        if (this.readonly) {
-            return;
-        }
-        setTimeout(function () {
-            var pos = _this.checkVal(true);
-            _this.caret(pos);
-            _this.updateModel(event);
-            if (_this.isCompleted()) {
-                _this.onComplete.emit();
-            }
-        }, 0);
-    };
-    InputMask.prototype.getUnmaskedValue = function () {
-        var unmaskedBuffer = [];
-        for (var i = 0; i < this.buffer.length; i++) {
-            var c = this.buffer[i];
-            if (this.tests[i] && c != this.getPlaceholder(i)) {
-                unmaskedBuffer.push(c);
-            }
-        }
-        return unmaskedBuffer.join('');
-    };
-    InputMask.prototype.updateModel = function (e) {
-        this.onModelChange(this.unmask ? this.getUnmaskedValue() : e.target.value);
-    };
-    InputMask.prototype.updateFilledState = function () {
-        this.filled = this.inputViewChild.nativeElement && this.inputViewChild.nativeElement.value != '';
-    };
-    InputMask.prototype.ngOnDestroy = function () {
-    };
-    return InputMask;
+    return InputSwitch;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], InputMask.prototype, "type", void 0);
+], InputSwitch.prototype, "onLabel", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], InputMask.prototype, "slotChar", void 0);
+], InputSwitch.prototype, "offLabel", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], InputMask.prototype, "autoClear", void 0);
+], InputSwitch.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], InputSwitch.prototype, "style", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], InputMask.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], InputMask.prototype, "inputId", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], InputMask.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], InputMask.prototype, "placeholder", void 0);
+], InputSwitch.prototype, "styleClass", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Number)
-], InputMask.prototype, "size", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], InputMask.prototype, "maxlength", void 0);
+], InputSwitch.prototype, "tabindex", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], InputMask.prototype, "tabindex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "readonly", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "unmask", void 0);
+], InputSwitch.prototype, "inputId", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], InputMask.prototype, "name", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "required", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('input'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object)
-], InputMask.prototype, "inputViewChild", void 0);
+], InputSwitch.prototype, "ariaLabelTemplate", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], InputMask.prototype, "onComplete", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], InputMask.prototype, "onFocus", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
-], InputMask.prototype, "onBlur", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], InputMask.prototype, "mask", null);
-InputMask = __decorate([
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], InputSwitch.prototype, "onChange", void 0);
+InputSwitch = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-inputMask',
-        template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
-        host: {
-            '[class.ui-inputwrapper-filled]': 'filled',
-            '[class.ui-inputwrapper-focus]': 'focus'
-        },
-        providers: [INPUTMASK_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-inputSwitch',
+        template: "\n        <div [ngClass]=\"{'ui-inputswitch ui-widget ui-widget-content ui-corner-all': true,\n            'ui-state-disabled': disabled,'ui-inputswitch-checked':checked, 'ui-state-focus':focused}\" (click)=\"toggle($event, in)\"\n            [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inputswitch-off\">\n                <span class=\"ui-inputswitch-offlabel\">{{offLabel}}</span>\n            </div>\n            <div class=\"ui-inputswitch-on\">\n                <span class=\"ui-inputswitch-onlabel\">{{onLabel}}</span>\n            </div>\n            <div [ngClass]=\"{'ui-inputswitch-handle ui-state-default':true, 'ui-state-focus':focused}\"></div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"checkbox\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" aria-live=\"polite\" [attr.id]=\"inputId\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" readonly=\"readonly\" [attr.tabindex]=\"tabindex\"/>\n            </div>\n        </div>\n    ",
+        providers: [INPUTSWITCH_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object])
-], InputMask);
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _c || Object])
+], InputSwitch);
 
-var InputMaskModule = (function () {
-    function InputMaskModule() {
+var InputSwitchModule = (function () {
+    function InputSwitchModule() {
     }
-    return InputMaskModule;
+    return InputSwitchModule;
 }());
-InputMaskModule = __decorate([
+InputSwitchModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__inputtext_inputtext__["a" /* InputTextModule */]],
-        exports: [InputMask],
-        declarations: [InputMask]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [InputSwitch],
+        declarations: [InputSwitch]
     })
-], InputMaskModule);
+], InputSwitchModule);
 
-var _a, _b, _c, _d, _e, _f;
-//# sourceMappingURL=inputmask.js.map
+var _a, _b, _c;
+//# sourceMappingURL=inputswitch.js.map
 
 /***/ }),
 
@@ -1002,14 +611,21 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputmask/inputmaskdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/inputswitch/inputswitch.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">InputSwitch</span>\r\n        <span>InputSwitch is used to select a boolean value.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic - {{checked1}}</h3>\r\n    <p-inputSwitch [(ngModel)]=\"checked1\"></p-inputSwitch>\r\n\r\n    <h3>Labels - {{checked2}}</h3>\r\n    <p-inputSwitch onLabel=\"Yes\" offLabel=\"No\" [(ngModel)]=\"checked2\"></p-inputSwitch>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;InputSwitchModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way binding to a boolean property is defined using the standard ngModel directive.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch [(ngModel)]=\"checked\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    checked: boolean;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>As model is two-way binding enabled, setting the bound value as true displays the state as checked by default.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n   checked: boolean = true;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>InputSwitch can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch formControlName=\"enabled\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Customization</h3>\r\n            <p>Labels can be customized using onLabel and offLabel properties.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch onLabel=\"I confirm\" offLabel=\"I reject\" [(ngModel)]=\"val\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onLabel</td>\r\n                            <td>string</td>\r\n                            <td>On</td>\r\n                            <td>Label for the on state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>offLabel</td>\r\n                            <td>string</td>\r\n                            <td>Off</td>\r\n                            <td>Label for the off state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                          <td>tabindex</td>\r\n                          <td>number</td>\r\n                          <td>null</td>\r\n                          <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ariaLabelTemplate</td>\r\n                            <td>string</td>\r\n                            <td>InputSwitch &#123;0&#125;</td>\r\n                            <td>The aria-label template is used to define a string that labels the current element with a template.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                    <tr>\r\n                        <td>onChange</td>\r\n                        <td>event.originalEvent: browser event<br>\r\n                            event.checked: checked state as a boolean</td>\r\n                        <td>Callback to invoke on state change.</td>\r\n                    </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch (onChange)=\"handleChange($event)\" [(ngModel)]=\"val\"&gt;\r\n</code>\r\n</pre>\r\n <pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    handleChange(e) &#123;\r\n        var isChecked = e.checked;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-inputswitch</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inputswitch-on</td>\r\n                            <td>Checked state element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inputswitch-off</td>\r\n                            <td>Unchecked state element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inputswitch\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic - {{checked1}}&lt;/h3&gt;\r\n&lt;p-inputSwitch [(ngModel)]=\"checked1\"&gt;&lt;/p-inputSwitch&gt;\r\n\r\n&lt;h3&gt;Labels - &lt;span&gt; {{checked2}}&lt;/h3&gt;\r\n&lt;p-inputSwitch onLabel=\"Yes\" offLabel=\"No\" [(ngModel)]=\"checked2\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class InputSwitchDemo &#123;\r\n\r\n    checked1: boolean = false;\r\n\r\n    checked2: boolean = true;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/inputswitch/inputswitchdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputmaskdemo__ = __webpack_require__("./src/app/showcase/components/inputmask/inputmaskdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputMaskDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputswitchdemo__ = __webpack_require__("./src/app/showcase/components/inputswitch/inputswitchdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputSwitchDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1019,36 +635,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var InputMaskDemoRoutingModule = (function () {
-    function InputMaskDemoRoutingModule() {
+var InputSwitchDemoRoutingModule = (function () {
+    function InputSwitchDemoRoutingModule() {
     }
-    return InputMaskDemoRoutingModule;
+    return InputSwitchDemoRoutingModule;
 }());
-InputMaskDemoRoutingModule = __decorate([
+InputSwitchDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inputmaskdemo__["a" /* InputMaskDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inputswitchdemo__["a" /* InputSwitchDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], InputMaskDemoRoutingModule);
+], InputSwitchDemoRoutingModule);
 
-//# sourceMappingURL=inputmaskdemo-routing.module.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/components/inputmask/inputmaskdemo.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">InputMask</span>\r\n        <span>InputMask component is used to enter input in a certain format such as numeric, date, currency, email and phone.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n\r\n    <div class=\"ui-g ui-fluid\">\r\n        <div class=\"ui-g-12 ui-md-6 ui-lg-4\">\r\n            <span>Basic</span>\r\n            <p-inputMask mask=\"99-999999\" [(ngModel)]=\"val1\" placeholder=\"99-999999\"></p-inputMask>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-6 ui-lg-4\">\r\n            <span>SSN</span>\r\n            <p-inputMask mask=\"999-99-9999\" [(ngModel)]=\"val2\" placeholder=\"999-99-9999\"></p-inputMask>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-6 ui-lg-4\">\r\n            <span>Date</span>\r\n            <p-inputMask mask=\"99/99/9999\" [(ngModel)]=\"val3\" placeholder=\"99/99/9999\" slotChar=\"mm/dd/yyyy\"></p-inputMask>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-6 ui-lg-4\">\r\n            <span>Phone</span>\r\n            <p-inputMask mask=\"(999) 999-9999\" [(ngModel)]=\"val4\" placeholder=\"(999) 999-9999\"></p-inputMask>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-6 ui-lg-4\">\r\n            <span>Phone Ext</span>\r\n            <p-inputMask mask=\"(999) 999-9999? x99999\" [(ngModel)]=\"val5\" placeholder=\"(999) 999-9999? x99999\"></p-inputMask>\r\n        </div>\r\n        \r\n        <div class=\"ui-g-12 ui-md-6 ui-lg-4\">\r\n            <span>Serial Number</span>\r\n            <p-inputMask mask=\"a*-999-a999\" [(ngModel)]=\"val6\" placeholder=\"a*-999-a999\"></p-inputMask>\r\n        </div>\r\n    </div>\r\n    \r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;InputMaskModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Component is defined using p-inputMask element with a mask and two-way value binding is enabled with standard ngModel directive.</p>   \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputMask [(ngModel)]=\"val\" mask=\"99-9999\"&gt;&lt;/p-inputMask&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Mask</h3>\r\n            <p>Mask format can be a combination of the the following built-in definitions.</p>\r\n            <ul>\r\n                <li>a - Alpha character (A-Z,a-z)</li>\r\n                <li>9 - Numeric character (0-9)</li>\r\n                <li>* - Alpha numberic character (A-Z,a-z,0-9)</li>\r\n            </ul>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputMask [(ngModel)]=\"val\" mask=\"a*-999-a999\"&gt;&lt;/p-inputMask&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>SlotChar</h3>\r\n            <p>Underscore is the default placeholder for a mask and this can be customized using slotChart option.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputMask [(ngModel)]=\"val\" mask=\"99-9999\" slotChar=\" \"&gt;&lt;/p-inputMask&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Optional Values</h3>\r\n            <p>If the input does not complete the mask definition, it is cleared by default. Use autoClear property to control this behavior. In addition,\r\n            certain part of a mask can be made optional by using ? symbol where anything after the question mark becomes optional.</p>\r\n                        \r\n            <h3>Model Driven Forms</h3>\r\n            <p>InputMask can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputMask formControlName=\"username\" mask=\"(999) 999-9999? x99999\"&gt;&lt;/p-inputMask&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>type</td>\r\n                            <td>string</td>\r\n                            <td>text</td>\r\n                            <td>HTML5 input type</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>mask</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Mask pattern.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>slotChar</td>\r\n                            <td>string</td>\r\n                            <td>_</td>\r\n                            <td>Placeholder character in mask, default is underscore.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>autoClear</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Clears the incomplete value on blur.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>unmask</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines if ngModel sets the raw unmasked value to bound value or the formatted mask value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>placeholder</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Advisory information to display on input.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>size</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Size of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>maxlength</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Maximum number of character allows in the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Specifies tab order of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element value cannot be altered.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>readonly</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that an input field is read-only.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>name</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Name of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>required</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that an input field must be filled out before submitting the form.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onFocus</td>\r\n                            <td>event: Browser event</td>\r\n                            <td>Callback to invoke when input receives focus.</td>\r\n                        </tr> \r\n                        <tr>\r\n                            <td>onBlur</td>\r\n                            <td>event: Browser event</td>\r\n                            <td>Callback to invoke when input loses focus.</td>\r\n                        </tr>   \r\n                        <tr>\r\n                            <td>onComplete</td>\r\n                            <td>-</td>\r\n                            <td>Callback to invoke on when user completes the mask pattern.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Styling is same as <a href=\"#\" [routerLink]=\"['/inputtext']\">inputtext component</a>, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inputmask\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;div class=\"ui-g ui-fluid\"&gt;\r\n    &lt;div class=\"ui-g-12 ui-md-6 ui-lg-4\"&gt;\r\n        &lt;span&gt;Basic&lt;/span&gt;\r\n        &lt;p-inputMask mask=\"99-999999\" [(ngModel)]=\"val1\" placeholder=\"99-999999\"&gt;&lt;/p-inputMask&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-6 ui-lg-4\"&gt;\r\n        &lt;span&gt;SSN&lt;/span&gt;\r\n        &lt;p-inputMask mask=\"999-99-9999\" [(ngModel)]=\"val2\" placeholder=\"999-99-9999\"&gt;&lt;/p-inputMask&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-6 ui-lg-4\"&gt;\r\n        &lt;span&gt;Date&lt;/span&gt;\r\n        &lt;p-inputMask mask=\"99/99/9999\" [(ngModel)]=\"val3\" placeholder=\"99/99/9999\" slotChar=\"mm/dd/yyyy\"&gt;&lt;/p-inputMask&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-6 ui-lg-4\"&gt;\r\n        &lt;span&gt;Phone&lt;/span&gt;\r\n        &lt;p-inputMask mask=\"(999) 999-9999\" [(ngModel)]=\"val4\" placeholder=\"(999) 999-9999\"&gt;&lt;/p-inputMask&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-6 ui-lg-4\"&gt;\r\n        &lt;span&gt;Phone Ext&lt;/span&gt;\r\n        &lt;p-inputMask mask=\"(999) 999-9999? x99999\" [(ngModel)]=\"val5\" placeholder=\"(999) 999-9999? x99999\"&gt;&lt;/p-inputMask&gt;\r\n    &lt;/div&gt;\r\n    \r\n    &lt;div class=\"ui-g-12 ui-md-6 ui-lg-4\"&gt;\r\n        &lt;span&gt;Serial Number&lt;/span&gt;\r\n        &lt;p-inputMask mask=\"a*-999-a999\" [(ngModel)]=\"val6\" placeholder=\"a*-999-a999\"&gt;&lt;/p-inputMask&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class InputMaskDemo &#123;\r\n\r\n    val1: string;\r\n\r\n    val2: string;\r\n\r\n    val3: string;\r\n\r\n    val4: string;\r\n\r\n    val5: string;\r\n    \r\n    val6: string;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+//# sourceMappingURL=inputswitchdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputmask/inputmaskdemo.module.ts":
+/***/ "./src/app/showcase/components/inputswitch/inputswitchdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1056,12 +665,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputmaskdemo__ = __webpack_require__("./src/app/showcase/components/inputmask/inputmaskdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputmaskdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inputmask/inputmaskdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputmask_inputmask__ = __webpack_require__("./src/app/components/inputmask/inputmask.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputswitchdemo__ = __webpack_require__("./src/app/showcase/components/inputswitch/inputswitchdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputswitchdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inputswitch/inputswitchdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputswitch_inputswitch__ = __webpack_require__("./src/app/components/inputswitch/inputswitch.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputMaskDemoModule", function() { return InputMaskDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputSwitchDemoModule", function() { return InputSwitchDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1076,37 +685,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var InputMaskDemoModule = (function () {
-    function InputMaskDemoModule() {
+var InputSwitchDemoModule = (function () {
+    function InputSwitchDemoModule() {
     }
-    return InputMaskDemoModule;
+    return InputSwitchDemoModule;
 }());
-InputMaskDemoModule = __decorate([
+InputSwitchDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__inputmaskdemo_routing_module__["a" /* InputMaskDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_inputmask_inputmask__["a" /* InputMaskModule */],
+            __WEBPACK_IMPORTED_MODULE_4__inputswitchdemo_routing_module__["a" /* InputSwitchDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_inputswitch_inputswitch__["a" /* InputSwitchModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__inputmaskdemo__["a" /* InputMaskDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__inputswitchdemo__["a" /* InputSwitchDemo */]
         ]
     })
-], InputMaskDemoModule);
+], InputSwitchDemoModule);
 
-//# sourceMappingURL=inputmaskdemo.module.js.map
+//# sourceMappingURL=inputswitchdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inputmask/inputmaskdemo.ts":
+/***/ "./src/app/showcase/components/inputswitch/inputswitchdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputMaskDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputSwitchDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1114,19 +723,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var InputMaskDemo = (function () {
-    function InputMaskDemo() {
+var InputSwitchDemo = (function () {
+    function InputSwitchDemo() {
+        this.checked1 = false;
+        this.checked2 = true;
     }
-    return InputMaskDemo;
+    return InputSwitchDemo;
 }());
-InputMaskDemo = __decorate([
+InputSwitchDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/inputmask/inputmaskdemo.html"),
-        styles: ["\n        .ui-g-12 > span {\n            display: block;\n            margin-bottom: 4px;\n        }\n    "]
+        template: __webpack_require__("./src/app/showcase/components/inputswitch/inputswitch.html")
     })
-], InputMaskDemo);
+], InputSwitchDemo);
 
-//# sourceMappingURL=inputmaskdemo.js.map
+//# sourceMappingURL=inputswitchdemo.js.map
 
 /***/ })
 

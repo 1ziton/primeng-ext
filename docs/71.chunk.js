@@ -53,18 +53,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/colorpicker/colorpicker.ts":
+/***/ "./src/app/components/datalist/datalist.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export COLORPICKER_VALUE_ACCESSOR */
-/* unused harmony export ColorPicker */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ColorPickerModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__paginator_paginator__ = __webpack_require__("./src/app/components/paginator/paginator.ts");
+/* unused harmony export DataList */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataListModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -78,478 +76,230 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var COLORPICKER_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return ColorPicker; }),
-    multi: true
-};
-var ColorPicker = (function () {
-    function ColorPicker(el, domHandler, renderer, cd) {
+var DataList = (function () {
+    function DataList(el, differs) {
         this.el = el;
-        this.domHandler = domHandler;
-        this.renderer = renderer;
-        this.cd = cd;
-        this.format = 'hex';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.defaultColor = 'ff0000';
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
+        this.differs = differs;
+        this.pageLinks = 5;
+        this.onLazyLoad = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.paginatorPosition = 'bottom';
+        this.emptyMessage = 'No records found';
+        this.alwaysShowPaginator = true;
+        this.trackBy = function (index, item) { return item; };
+        this.immutable = true;
+        this.onPage = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.first = 0;
+        this.page = 0;
+        this.differ = differs.find([]).create(null);
     }
-    ColorPicker.prototype.ngAfterViewChecked = function () {
-        if (this.shown) {
-            this.onShow();
-            this.shown = false;
-        }
-    };
-    ColorPicker.prototype.onHueMousedown = function (event) {
-        if (this.disabled) {
-            return;
-        }
-        this.bindDocumentMousemoveListener();
-        this.bindDocumentMouseupListener();
-        this.hueDragging = true;
-        this.pickHue(event);
-    };
-    ColorPicker.prototype.pickHue = function (event) {
-        var top = this.hueViewChild.nativeElement.getBoundingClientRect().top + document.body.scrollTop;
-        this.value = this.validateHSB({
-            h: Math.floor(360 * (150 - Math.max(0, Math.min(150, (event.pageY - top)))) / 150),
-            s: 100,
-            b: 100
+    DataList.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'item':
+                    _this.itemTemplate = item.template;
+                    break;
+                default:
+                    _this.itemTemplate = item.template;
+                    break;
+            }
         });
-        this.updateColorSelector();
-        this.updateUI();
-        this.updateModel();
-        this.onChange.emit({ originalEvent: event, value: this.value });
     };
-    ColorPicker.prototype.onColorMousedown = function (event) {
-        if (this.disabled) {
-            return;
+    DataList.prototype.ngAfterViewInit = function () {
+        if (this.lazy) {
+            this.onLazyLoad.emit({
+                first: this.first,
+                rows: this.rows
+            });
         }
-        this.bindDocumentMousemoveListener();
-        this.bindDocumentMouseupListener();
-        this.colorDragging = true;
-        this.pickColor(event);
     };
-    ColorPicker.prototype.pickColor = function (event) {
-        var rect = this.colorSelectorViewChild.nativeElement.getBoundingClientRect();
-        var top = rect.top + document.body.scrollTop;
-        var left = rect.left + document.body.scrollLeft;
-        var saturation = Math.floor(100 * (Math.max(0, Math.min(150, (event.pageX - left)))) / 150);
-        var brightness = Math.floor(100 * (150 - Math.max(0, Math.min(150, (event.pageY - top)))) / 150);
-        this.value = this.validateHSB({
-            h: this.value.h,
-            s: saturation,
-            b: brightness
+    Object.defineProperty(DataList.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        set: function (val) {
+            this._value = val;
+            if (this.immutable) {
+                this.handleDataChange();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DataList.prototype.handleDataChange = function () {
+        if (this.paginator) {
+            this.updatePaginator();
+        }
+        this.updateDataToRender(this.value);
+    };
+    DataList.prototype.ngDoCheck = function () {
+        if (!this.immutable) {
+            var changes = this.differ.diff(this.value);
+            if (changes) {
+                this.handleDataChange();
+            }
+        }
+    };
+    DataList.prototype.updatePaginator = function () {
+        //total records
+        this.totalRecords = this.lazy ? this.totalRecords : (this.value ? this.value.length : 0);
+        //first
+        if (this.totalRecords && this.first >= this.totalRecords) {
+            var numberOfPages = Math.ceil(this.totalRecords / this.rows);
+            this.first = Math.max((numberOfPages - 1) * this.rows, 0);
+        }
+    };
+    DataList.prototype.paginate = function (event) {
+        this.first = event.first;
+        this.rows = event.rows;
+        if (this.lazy) {
+            this.onLazyLoad.emit(this.createLazyLoadMetadata());
+        }
+        else {
+            this.updateDataToRender(this.value);
+        }
+        this.onPage.emit({
+            first: this.first,
+            rows: this.rows
         });
-        this.updateUI();
-        this.updateModel();
-        this.onChange.emit({ originalEvent: event, value: this.getValueToUpdate() });
     };
-    ColorPicker.prototype.getValueToUpdate = function () {
-        var val;
-        switch (this.format) {
-            case 'hex':
-                val = '#' + this.HSBtoHEX(this.value);
-                break;
-            case 'rgb':
-                val = this.HSBtoRGB(this.value);
-                break;
-            case 'hsb':
-                val = this.value;
-                break;
-        }
-        return val;
-    };
-    ColorPicker.prototype.updateModel = function () {
-        this.onModelChange(this.getValueToUpdate());
-    };
-    ColorPicker.prototype.writeValue = function (value) {
-        if (value) {
-            switch (this.format) {
-                case 'hex':
-                    this.value = this.HEXtoHSB(value);
+    DataList.prototype.updateDataToRender = function (datasource) {
+        if (this.paginator && datasource) {
+            this.dataToRender = [];
+            var startIndex = this.lazy ? 0 : this.first;
+            for (var i = startIndex; i < (startIndex + this.rows); i++) {
+                if (i >= datasource.length) {
                     break;
-                case 'rgb':
-                    this.value = this.RGBtoHSB(value);
-                    break;
-                case 'hsb':
-                    this.value = value;
-                    break;
+                }
+                this.dataToRender.push(datasource[i]);
             }
         }
         else {
-            this.value = this.HEXtoHSB(this.defaultColor);
-        }
-        this.updateColorSelector();
-        this.updateUI();
-    };
-    ColorPicker.prototype.updateColorSelector = function () {
-        this.colorSelectorViewChild.nativeElement.style.backgroundColor = '#' + this.HSBtoHEX(this.value);
-    };
-    ColorPicker.prototype.updateUI = function () {
-        this.colorHandleViewChild.nativeElement.style.left = Math.floor(150 * this.value.s / 100) + 'px';
-        this.colorHandleViewChild.nativeElement.style.top = Math.floor(150 * (100 - this.value.b) / 100) + 'px';
-        this.hueHandleViewChild.nativeElement.style.top = Math.floor(150 - (150 * this.value.h / 360)) + 'px';
-        this.inputBgColor = '#' + this.HSBtoHEX(this.value);
-    };
-    ColorPicker.prototype.onInputFocus = function () {
-        this.onModelTouched();
-    };
-    ColorPicker.prototype.show = function () {
-        this.panelViewChild.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */].zindex);
-        this.panelVisible = true;
-        this.shown = true;
-    };
-    ColorPicker.prototype.hide = function () {
-        this.panelVisible = false;
-        this.unbindDocumentClickListener();
-    };
-    ColorPicker.prototype.onShow = function () {
-        this.alignPanel();
-        this.bindDocumentClickListener();
-    };
-    ColorPicker.prototype.alignPanel = function () {
-        if (this.appendTo)
-            this.domHandler.absolutePosition(this.panelViewChild.nativeElement, this.inputViewChild.nativeElement);
-        else
-            this.domHandler.relativePosition(this.panelViewChild.nativeElement, this.inputViewChild.nativeElement);
-    };
-    ColorPicker.prototype.onInputClick = function () {
-        this.selfClick = true;
-        this.togglePanel();
-    };
-    ColorPicker.prototype.togglePanel = function () {
-        if (!this.panelVisible)
-            this.show();
-        else
-            this.hide();
-    };
-    ColorPicker.prototype.onInputKeydown = function (event) {
-        switch (event.which) {
-            //space
-            case 32:
-                this.togglePanel();
-                event.preventDefault();
-                break;
-            //escape and tab
-            case 27:
-            case 9:
-                this.hide();
-                break;
+            this.dataToRender = datasource;
         }
     };
-    ColorPicker.prototype.onPanelClick = function () {
-        this.selfClick = true;
+    DataList.prototype.isEmpty = function () {
+        return !this.dataToRender || (this.dataToRender.length == 0);
     };
-    ColorPicker.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
-    };
-    ColorPicker.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
-    };
-    ColorPicker.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    ColorPicker.prototype.bindDocumentClickListener = function () {
-        var _this = this;
-        if (!this.documentClickListener) {
-            this.documentClickListener = this.renderer.listen('document', 'click', function () {
-                if (!_this.selfClick) {
-                    _this.panelVisible = false;
-                    _this.unbindDocumentClickListener();
-                }
-                _this.selfClick = false;
-                _this.cd.markForCheck();
-            });
-        }
-    };
-    ColorPicker.prototype.unbindDocumentClickListener = function () {
-        if (this.documentClickListener) {
-            this.documentClickListener();
-            this.documentClickListener = null;
-        }
-    };
-    ColorPicker.prototype.bindDocumentMousemoveListener = function () {
-        var _this = this;
-        if (!this.documentMousemoveListener) {
-            this.documentMousemoveListener = this.renderer.listen('document', 'mousemove', function (event) {
-                if (_this.colorDragging) {
-                    _this.pickColor(event);
-                }
-                if (_this.hueDragging) {
-                    _this.pickHue(event);
-                }
-            });
-        }
-    };
-    ColorPicker.prototype.unbindDocumentMousemoveListener = function () {
-        if (this.documentMousemoveListener) {
-            this.documentMousemoveListener();
-            this.documentMousemoveListener = null;
-        }
-    };
-    ColorPicker.prototype.bindDocumentMouseupListener = function () {
-        var _this = this;
-        if (!this.documentMouseupListener) {
-            this.documentMouseupListener = this.renderer.listen('document', 'mouseup', function () {
-                _this.colorDragging = false;
-                _this.hueDragging = false;
-                _this.unbindDocumentMousemoveListener();
-                _this.unbindDocumentMouseupListener();
-            });
-        }
-    };
-    ColorPicker.prototype.unbindDocumentMouseupListener = function () {
-        if (this.documentMouseupListener) {
-            this.documentMouseupListener();
-            this.documentMouseupListener = null;
-        }
-    };
-    ColorPicker.prototype.validateHSB = function (hsb) {
+    DataList.prototype.createLazyLoadMetadata = function () {
         return {
-            h: Math.min(360, Math.max(0, hsb.h)),
-            s: Math.min(100, Math.max(0, hsb.s)),
-            b: Math.min(100, Math.max(0, hsb.b))
+            first: this.first,
+            rows: this.rows
         };
     };
-    ColorPicker.prototype.validateRGB = function (rgb) {
-        return {
-            r: Math.min(255, Math.max(0, rgb.r)),
-            g: Math.min(255, Math.max(0, rgb.g)),
-            b: Math.min(255, Math.max(0, rgb.b))
-        };
+    DataList.prototype.getBlockableElement = function () {
+        return this.el.nativeElement.children[0];
     };
-    ColorPicker.prototype.validateHEX = function (hex) {
-        var len = 6 - hex.length;
-        if (len > 0) {
-            var o = [];
-            for (var i = 0; i < len; i++) {
-                o.push('0');
-            }
-            o.push(hex);
-            hex = o.join('');
-        }
-        return hex;
-    };
-    ColorPicker.prototype.HEXtoRGB = function (hex) {
-        var hexValue = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
-        return { r: hexValue >> 16, g: (hexValue & 0x00FF00) >> 8, b: (hexValue & 0x0000FF) };
-    };
-    ColorPicker.prototype.HEXtoHSB = function (hex) {
-        return this.RGBtoHSB(this.HEXtoRGB(hex));
-    };
-    ColorPicker.prototype.RGBtoHSB = function (rgb) {
-        var hsb = {
-            h: 0,
-            s: 0,
-            b: 0
-        };
-        var min = Math.min(rgb.r, rgb.g, rgb.b);
-        var max = Math.max(rgb.r, rgb.g, rgb.b);
-        var delta = max - min;
-        hsb.b = max;
-        if (max != 0) {
-        }
-        hsb.s = max != 0 ? 255 * delta / max : 0;
-        if (hsb.s != 0) {
-            if (rgb.r == max) {
-                hsb.h = (rgb.g - rgb.b) / delta;
-            }
-            else if (rgb.g == max) {
-                hsb.h = 2 + (rgb.b - rgb.r) / delta;
-            }
-            else {
-                hsb.h = 4 + (rgb.r - rgb.g) / delta;
-            }
-        }
-        else {
-            hsb.h = -1;
-        }
-        hsb.h *= 60;
-        if (hsb.h < 0) {
-            hsb.h += 360;
-        }
-        hsb.s *= 100 / 255;
-        hsb.b *= 100 / 255;
-        return hsb;
-    };
-    ColorPicker.prototype.HSBtoRGB = function (hsb) {
-        var rgb = {
-            r: null, g: null, b: null
-        };
-        var h = Math.round(hsb.h);
-        var s = Math.round(hsb.s * 255 / 100);
-        var v = Math.round(hsb.b * 255 / 100);
-        if (s == 0) {
-            rgb = {
-                r: v,
-                g: v,
-                b: v
-            };
-        }
-        else {
-            var t1 = v;
-            var t2 = (255 - s) * v / 255;
-            var t3 = (t1 - t2) * (h % 60) / 60;
-            if (h == 360)
-                h = 0;
-            if (h < 60) {
-                rgb.r = t1;
-                rgb.b = t2;
-                rgb.g = t2 + t3;
-            }
-            else if (h < 120) {
-                rgb.g = t1;
-                rgb.b = t2;
-                rgb.r = t1 - t3;
-            }
-            else if (h < 180) {
-                rgb.g = t1;
-                rgb.r = t2;
-                rgb.b = t2 + t3;
-            }
-            else if (h < 240) {
-                rgb.b = t1;
-                rgb.r = t2;
-                rgb.g = t1 - t3;
-            }
-            else if (h < 300) {
-                rgb.b = t1;
-                rgb.g = t2;
-                rgb.r = t2 + t3;
-            }
-            else if (h < 360) {
-                rgb.r = t1;
-                rgb.g = t2;
-                rgb.b = t1 - t3;
-            }
-            else {
-                rgb.r = 0;
-                rgb.g = 0;
-                rgb.b = 0;
-            }
-        }
-        return { r: Math.round(rgb.r), g: Math.round(rgb.g), b: Math.round(rgb.b) };
-    };
-    ColorPicker.prototype.RGBtoHEX = function (rgb) {
-        var hex = [
-            rgb.r.toString(16),
-            rgb.g.toString(16),
-            rgb.b.toString(16)
-        ];
-        for (var key in hex) {
-            if (hex[key].length == 1) {
-                hex[key] = '0' + hex[key];
-            }
-        }
-        return hex.join('');
-    };
-    ColorPicker.prototype.HSBtoHEX = function (hsb) {
-        return this.RGBtoHEX(this.HSBtoRGB(hsb));
-    };
-    ColorPicker.prototype.ngOnDestroy = function () {
-        this.unbindDocumentClickListener();
-    };
-    return ColorPicker;
+    return DataList;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], ColorPicker.prototype, "style", void 0);
+    __metadata("design:type", Boolean)
+], DataList.prototype, "paginator", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ColorPicker.prototype, "styleClass", void 0);
+    __metadata("design:type", Number)
+], DataList.prototype, "rows", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], DataList.prototype, "totalRecords", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], DataList.prototype, "pageLinks", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array)
+], DataList.prototype, "rowsPerPageOptions", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], ColorPicker.prototype, "inline", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ColorPicker.prototype, "format", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ColorPicker.prototype, "appendTo", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], ColorPicker.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ColorPicker.prototype, "tabindex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ColorPicker.prototype, "inputId", void 0);
+], DataList.prototype, "lazy", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], ColorPicker.prototype, "onChange", void 0);
+], DataList.prototype, "onLazyLoad", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('panel'),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object)
-], ColorPicker.prototype, "panelViewChild", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], DataList.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('colorSelector'),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
-], ColorPicker.prototype, "colorSelectorViewChild", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataList.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('colorHandle'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
-], ColorPicker.prototype, "colorHandleViewChild", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataList.prototype, "paginatorPosition", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('hue'),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _e || Object)
-], ColorPicker.prototype, "hueViewChild", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataList.prototype, "emptyMessage", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('hueHandle'),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _f || Object)
-], ColorPicker.prototype, "hueHandleViewChild", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataList.prototype, "alwaysShowPaginator", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('input'),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _g || Object)
-], ColorPicker.prototype, "inputViewChild", void 0);
-ColorPicker = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], DataList.prototype, "trackBy", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataList.prototype, "immutable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataList.prototype, "scrollable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataList.prototype, "scrollHeight", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+], DataList.prototype, "onPage", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["d" /* Header */]),
+    __metadata("design:type", Object)
+], DataList.prototype, "header", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["c" /* Footer */]),
+    __metadata("design:type", Object)
+], DataList.prototype, "footer", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+], DataList.prototype, "templates", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array),
+    __metadata("design:paramtypes", [Array])
+], DataList.prototype, "value", null);
+DataList = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-colorPicker',
-        template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"{'ui-colorpicker ui-widget':true,'ui-colorpicker-overlay':!inline,'ui-colorpicker-dragging':colorDragging||hueDragging}\">\n            <input #input type=\"text\" *ngIf=\"!inline\" class=\"ui-colorpicker-preview ui-inputtext ui-state-default ui-corner-all\" readonly=\"readonly\" [ngClass]=\"{'ui-state-disabled': disabled}\"\n                (focus)=\"onInputFocus()\" (click)=\"onInputClick()\" (keydown)=\"onInputKeydown($event)\" [attr.id]=\"inputId\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\"\n                [style.backgroundColor]=\"inputBgColor\">\n            <div #panel [ngClass]=\"{'ui-colorpicker-panel ui-corner-all': true, 'ui-colorpicker-overlay-panel ui-shadow':!inline, 'ui-state-disabled': disabled}\" (click)=\"onPanelClick()\"\n                [@panelState]=\"inline ? 'visible' : (panelVisible ? 'visible' : 'hidden')\" [style.display]=\"inline ? 'block' : (panelVisible ? 'block' : 'none')\">\n                <div class=\"ui-colorpicker-content\">\n                    <div #colorSelector class=\"ui-colorpicker-color-selector\" (mousedown)=\"onColorMousedown($event)\">\n                        <div class=\"ui-colorpicker-color\">\n                            <div #colorHandle class=\"ui-colorpicker-color-handle\"></div>\n                        </div>\n                    </div>\n                    <div #hue class=\"ui-colorpicker-hue\" (mousedown)=\"onHueMousedown($event)\">\n                        <div #hueHandle class=\"ui-colorpicker-hue-handle\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ",
-        animations: [
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["a" /* trigger */])('panelState', [
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    opacity: 0
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    opacity: 1
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('visible => hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms ease-in')),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('hidden => visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms ease-out'))
-            ])
-        ],
-        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */], COLORPICKER_VALUE_ACCESSOR]
+        selector: 'p-dataList',
+        template: "\n        <div [ngClass]=\"{'ui-datalist ui-widget': true, 'ui-datalist-scrollable': scrollable}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datalist-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator  && paginatorPosition!='bottom' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datalist-content ui-widget-content\" [ngStyle]=\"{'max-height': scrollHeight}\">\n                <div *ngIf=\"isEmpty()\" class=\"ui-datalist-emptymessage\">{{emptyMessage}}</div>\n                <ul class=\"ui-datalist-data\">\n                    <li *ngFor=\"let item of dataToRender;let i = index;trackBy: trackBy\">\n                        <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\" [index]=\"i\"></ng-template>\n                    </li>\n                </ul>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator  && paginatorPosition!='top' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datalist-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _l || Object])
-], ColorPicker);
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _e || Object])
+], DataList);
 
-var ColorPickerModule = (function () {
-    function ColorPickerModule() {
+var DataListModule = (function () {
+    function DataListModule() {
     }
-    return ColorPickerModule;
+    return DataListModule;
 }());
-ColorPickerModule = __decorate([
+DataListModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */]],
-        exports: [ColorPicker],
-        declarations: [ColorPicker]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_3__paginator_paginator__["a" /* PaginatorModule */]],
+        exports: [DataList, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [DataList]
     })
-], ColorPickerModule);
+], DataListModule);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-//# sourceMappingURL=colorpicker.js.map
+var _a, _b, _c, _d, _e;
+//# sourceMappingURL=datalist.js.map
 
 /***/ }),
 
@@ -904,14 +654,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/colorpicker/colorpickerdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/datalist/datalistdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__colorpickerdemo__ = __webpack_require__("./src/app/showcase/components/colorpicker/colorpickerdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ColorPickerDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datalistdemo__ = __webpack_require__("./src/app/showcase/components/datalist/datalistdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataListDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -921,49 +671,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ColorPickerDemoRoutingModule = (function () {
-    function ColorPickerDemoRoutingModule() {
+var DataListDemoRoutingModule = (function () {
+    function DataListDemoRoutingModule() {
     }
-    return ColorPickerDemoRoutingModule;
+    return DataListDemoRoutingModule;
 }());
-ColorPickerDemoRoutingModule = __decorate([
+DataListDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__colorpickerdemo__["a" /* ColorPickerDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__datalistdemo__["a" /* DataListDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], ColorPickerDemoRoutingModule);
+], DataListDemoRoutingModule);
 
-//# sourceMappingURL=colorpickerdemo-routing.module.js.map
+//# sourceMappingURL=datalistdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/colorpicker/colorpickerdemo.html":
+/***/ "./src/app/showcase/components/datalist/datalistdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">ColorPicker</span>\r\n        <span>ColorPicker is an input component to select a color.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Inline</h3>\r\n    <p-colorPicker [(ngModel)]=\"color1\" inline=\"true\"></p-colorPicker>\r\n    \r\n    <p style=\"margin-top:.5em\">Selected Color: <span style=\"display:inline-block;width:32px;height:32px;vertical-align:middle\" [style.backgroundColor]=\"color1\"></span> {{color1}} </p>    \r\n    \r\n    <h3>Overlay</h3>\r\n    <p-colorPicker [(ngModel)]=\"color2\"></p-colorPicker>\r\n    \r\n    <p style=\"margin-top:.5em\">Selected Color: <span [ngStyle]=\"{'color':color2}\">{{color2}}</span></p> \r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header =\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;ColorPickerModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>ColorPicker uses ngModel directive to bind a value.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-colorPicker [(ngModel)]=\"color\"&gt;&lt;/p-colorPicker&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyComponent &#123;\r\n\r\n    color: string;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Formats</h3>\r\n            <p>Default color format to use in value binding is \"hex\" and other possible values are \"rgb\" and \"hsb\". \r\n                Example below has 3 colorpickers having default values with different formats.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-colorPicker [(ngModel)]=\"color1\"&gt;&lt;/p-colorPicker&gt;\r\n&lt;p-colorPicker [(ngModel)]=\"color2\" format=\"rgb\"&gt;&lt;/p-colorPicker&gt;\r\n&lt;p-colorPicker [(ngModel)]=\"color3\" format=\"hsb\"&gt;&lt;/p-colorPicker&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyComponent &#123;\r\n\r\n    color1: string;\r\n    \r\n    color2: any = &#123;\r\n        r: 100, g: 130, b: 150\r\n    &#125;;\r\n    \r\n    color3: any = &#123;\r\n        h: 100, s: 50, b: 50\r\n    &#125;;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Overlay and Inline</h3>\r\n            <p>ColorPicker can be displayed as inline or as an overlay (default) using the \"inline\" property.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-colorPicker [(ngModel)]=\"color1\" &gt;&lt;/p-colorPicker&gt;\r\n&lt;p-colorPicker [(ngModel)]=\"color2\" inline=\"true\"&gt;&lt;/p-colorPicker&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Dropdown can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-colorPicker formControlName=\"color\"&gt;&lt;/p-dropdown&gt;\r\n</code>\r\n</pre>\r\n            \r\n    \r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inline</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether to display as an overlay or not.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>format</td>\r\n                            <td>string</td>\r\n                            <td>hex</td>\r\n                            <td>Format to use in value binding, supported formats are \"hex\", \"rgb\" and \"hsb\".</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>appendTo</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Target element to attach the overlay, valid values are \"body\" or a local ng-template variable of another element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the component should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the dropdown.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n        <h3>Events</h3>\r\n        <div class=\"doc-tablewrapper\">\r\n            <table class=\"doc-table\">\r\n                <thead>\r\n                <tr>\r\n                    <th>Name</th>\r\n                    <th>Parameters</th>\r\n                    <th>Description</th>\r\n                </tr>\r\n                </thead>\r\n                <tbody>\r\n                    <tr>\r\n                        <td>onChange</td>\r\n                        <td>event.originalEvent: Browser event<br />\r\n                            event.value: Selected color\r\n                        </td>\r\n                        <td>Callback to invoke when a color is selected.</td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n\r\n        <h3>Styling</h3>\r\n        <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n        <div class=\"doc-tablewrapper\">\r\n            <table class=\"doc-table\">\r\n                <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Element</th>\r\n                    </tr>\r\n                </thead>\r\n                <tbody>\r\n                    <tr>\r\n                        <td>ui-colorpicker</td>\r\n                        <td>Container element.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-overlay</td>\r\n                        <td>Container element in overlay mode.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-preview </td>\r\n                        <td>Preview input in overlay mode.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-panel</td>\r\n                        <td>Panel element of the colorpicker.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-content</td>\r\n                        <td>Wrapper that contains color and hue sections.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-color-selector</td>\r\n                        <td>Color selector container.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-color</td>\r\n                        <td>Color element.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-color-handle</td>\r\n                        <td>Handle of the color element.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-hue</td>\r\n                        <td>Hue slider.</td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>ui-colorpicker-hue-handle</td>\r\n                        <td>Handle of the hue slider.</td>\r\n                    </tr>\r\n                </tbody>\r\n            </table>\r\n        </div>\r\n\r\n        <h3>Dependencies</h3>\r\n        <p>None.</p>\r\n\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/colorpicker\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Inline&lt;/h3&gt;\r\n&lt;p-colorPicker [(ngModel)]=\"color1\" inline=\"true\"&gt;&lt;/p-colorPicker&gt;\r\n\r\n&lt;p style=\"margin-top:.5em\"&gt;Selected Color: &lt;span style=\"display:inline-block;width:32px;height:32px;vertical-align:middle\" [style.backgroundColor]=\"color1\"&gt;&lt;/span&gt; &#123;&#123;color1&#125;&#125; &lt;/p&gt;    \r\n\r\n&lt;h3&gt;Overlay&lt;/h3&gt;\r\n&lt;p-colorPicker [(ngModel)]=\"color2\"&gt;&lt;/p-colorPicker&gt;\r\n\r\n&lt;p style=\"margin-top:.5em\"&gt;Selected Color: &lt;span [ngStyle]=\"&#123;'color':color2&#125;\"&gt;&#123;&#123;color2&#125;&#125;&lt;/span&gt;&lt;/p&gt; \r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ColorPickerDemo &#123;\r\n\r\n    color1: string;\r\n    \r\n    color2: string = '#1976D2';\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">DataList</span>\r\n        <span>DataList displays data in list layout.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-dataList [value]=\"cars\" [paginator]=\"true\" [rows]=\"5\">\r\n        <p-header>\r\n            List of Cars\r\n        </p-header>\r\n        <ng-template let-car pTemplate=\"item\">\r\n            <div class=\"ui-g ui-fluid car-item\">\r\n                <div class=\"ui-g-12 ui-md-3\" style=\"text-align:center\">\r\n                    <img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\">\r\n                </div>\r\n                <div class=\"ui-g-12 ui-md-9 car-details\">\r\n                    <div class=\"ui-g\">\r\n                        <div class=\"ui-g-2 ui-sm-6\">Vin: </div>\r\n                        <div class=\"ui-g-10 ui-sm-6\">{{car.vin}}</div>\r\n                        \r\n                        <div class=\"ui-g-2 ui-sm-6\">Year: </div>\r\n                        <div class=\"ui-g-10 ui-sm-6\">{{car.year}}</div>\r\n                        \r\n                        <div class=\"ui-g-2 ui-sm-6\">Brand: </div>\r\n                        <div class=\"ui-g-10 ui-sm-6\">{{car.brand}}</div>\r\n                        \r\n                        <div class=\"ui-g-2 ui-sm-6\">Color: </div>\r\n                        <div class=\"ui-g-10 ui-sm-6\">{{car.color}}</div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </ng-template>\r\n    </p-dataList>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;DataListModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>DataList requires a collection of items as its value and a ng-template content to display\r\n                where each item can be accessed using the implicit variable.</p>\r\n                \r\n            <p>Throughout the samples, a car interface having vin, brand, year and color properties are \r\n                used to define an object to be displayed by the datalist.  Cars are loaded by a CarService that \r\n                connects to a server to fetch the cars with a Promise.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport interface Car &#123;\r\n    vin;\r\n    year;\r\n    brand;\r\n    color;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Injectable&#125; from 'angular2/core';\r\nimport &#123;Http, Response&#125; from 'angular2/http';\r\nimport &#123;Car&#125; from '../domain/car';\r\n    \r\n@Injectable()\r\nexport class CarService &#123;\r\n    \r\n    constructor(private http: Http) &#123;&#125;\r\n\r\n    getCarsLarge() &#123;\r\n        return this.http.get('/showcase/resources/data/cars-large.json')\r\n                    .toPromise()\r\n                    .then(res => &lt;Car[]&gt; res.json().data)\r\n                    .then(data => &#123; return data; &#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        \r\n            <p>Here is a sample DataList that displays a list of cars.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class DataListDemo implements OnInit &#123;\r\n\r\n    cars: Car[];\r\n\r\n    constructor(private carService: CarService) &#123; &#125;\r\n\r\n    ngOnInit() &#123;\r\n        this.carService.getCarsLarge().then(cars => this.cars = cars);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-dataList [value]=\"cars\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        Car content\r\n    &lt;/ng-template&gt;\r\n&lt;/p-dataList&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>Index of the row is available at the ng-template.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-dataList [value]=\"cars\"&gt;\r\n    &lt;ng-template let-car let-i=\"index\" pTemplate=\"item\"&gt;\r\n        Car content for {{i}}\r\n    &lt;/ng-template&gt;\r\n&lt;/p-dataList&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Change Detection</h3>\r\n            <p>DataList either uses setter based checking or ngDoCheck to realize if the underlying data has changed to update the UI. This is configured using the immutable\r\n                property, when enabled (default) setter based detection is utilized so your data changes such as adding or removing a record \r\n                should always create a new array reference instead of manipulating an existing array as Angular does not trigger setters if the reference does not change. \r\n                For example, use slice instead of splice when removing an item or use spread operator instead of push method when adding an item. On the other hand, setting immutable property to false removes\r\n                this restriction by using ngDoCheck with IterableDiffers to listen changes without the need to create a new reference of data. Setter based method is faster however\r\n                both methods can be used depending on your preference.\r\n            </p>\r\n\r\n            <h3>Facets</h3>\r\n            <p>Header and Footer are the two sections aka facets that are capable of displaying custom content.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Header&#125; from 'primeng/primeng';\r\nimport &#123;Footer&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-dataList [value]=\"cars\"&gt;\r\n    &lt;p-header&gt;List of Cars&lt;/p-header&gt;\r\n    &lt;p-footer&gt;Choose from the list.&lt;/p-footer&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        Car content\r\n    &lt;/ng-template&gt;\r\n&lt;/p-dataList&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Paginator</h3>\r\n            <p>Pagination is enabled by setting paginator property to true, rows attribute defines the number of rows per page and pageLinks specify the the number\r\n                of page links to display.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-dataList [value]=\"cars\" [paginator]=\"true\" [rows]=\"10\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        Car content\r\n    &lt;/ng-template&gt;\r\n&lt;/p-dataList&gt;\r\n</code>\r\n</pre>\r\n    \r\n            <h3>Lazy Loading</h3>\r\n            <p>Lazy mode is handy to deal with large datasets, instead of loading the entire data, small chunks of data is loaded by invoking\r\n             onLazyLoad callback everytime paging happens. To implement lazy loading,\r\n            enable lazy attribute and provide a method callback using onLazyLoad that actually loads the data from a remote datasource. onLazyLoad gets an event object \r\n            that contains information about what to load. It is also important to assign the logical number of rows to totalRecords by doing a projection query for paginator configuration so that paginator \r\n            displays the UI assuming there are actually records of totalRecords size although in reality they aren't as in lazy mode, only the records that are displayed on the current page exist.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-dataList [value]=\"cars\" [paginator]=\"true\" [rows]=\"9\" [lazy]=\"true\" (onLazyLoad)=\"loadData($event)\" [totalRecords]=\"totalRecords\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        Car content\r\n    &lt;/ng-template&gt;\r\n&lt;/p-dataList&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nloadData(event) &#123;\r\n    //event.first = First row offset\r\n    //event.rows = Number of rows per page\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of objects to display.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>rows</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Number of rows to display per page.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>paginator</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When specified as true, enables the pagination.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>totalRecords</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Number of total records, defaults to length of value when not defined.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>pageLinks</td>\r\n                            <td>number</td>\r\n                            <td>5</td>\r\n                            <td>Number of page links to display in paginator.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>rowsPerPageOptions</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>Array of integer values to display inside rows per page dropdown of paginator</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>alwaysShowPaginator</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether to show it even there is only one page.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>lazy</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines if data is loaded and interacted with in lazy manner.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>paginatorPosition</td>\r\n                            <td>string</td>\r\n                            <td>bottom</td>\r\n                            <td>Position of the paginator, options are \"top\",\"bottom\" or \"both\".</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>emptyMessage</td>\r\n                            <td>string</td>\r\n                            <td>No records found.</td>\r\n                            <td>Text to display when there is no data.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>trackBy</td>\r\n                            <td>Function</td>\r\n                            <td>null</td>\r\n                            <td>Function to optimize the dom operations by delegating to ngForTrackBy, default algoritm checks for object identity.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>immutable</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Defines how the data should be manipulated.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>scrollable</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Whether the content section is scrollable based on scrollHeight.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>scrollHeight</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Maximum height of the viewport in scrollable list.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onLazyLoad</td>\r\n                            <td>event.first = First row offset <br>\r\n                                event.rows = Number of rows per page <br></td>\r\n                            <td>Callback to invoke when paging, sorting or filtering happens in lazy mode.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onPage</td>\r\n                            <td>event.first: Index of first record in page<br>\r\n                                event.rows: Number of rows on the page</td>\r\n                            <td>Callback to invoke when pagination occurs.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Element</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-datalist</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-datalist-header</td>\r\n                            <td>Header section.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-datalist-footer</td>\r\n                            <td>Footer section.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-datalist-content</td>\r\n                            <td>Wrapper of item container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-datalist-data</td>\r\n                            <td>Item container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-datalist-emptymessage</td>\r\n                            <td>Element containing the empty message.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/datalist\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-dataList [value]=\"cars\" [paginator]=\"true\" [rows]=\"5\"&gt;\r\n    &lt;p-header&gt;\r\n        List of Cars\r\n    &lt;/p-header&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-g ui-fluid car-item\"&gt;\r\n            &lt;div class=\"ui-g-12 ui-md-3\" style=\"text-align:center\"&gt;\r\n                &lt;img src=\"assets/showcase/images/demo/car/&#123;&#123;car.brand&#125;&#125;.png\"&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-g-12 ui-md-9 car-details\"&gt;\r\n                &lt;div class=\"ui-g\"&gt;\r\n                    &lt;div class=\"ui-g-2 ui-sm-6\"&gt;Vin: &lt;/div&gt;\r\n                    &lt;div class=\"ui-g-10 ui-sm-6\"&gt;&#123;&#123;car.vin&#125;&#125;&lt;/div&gt;\r\n                    \r\n                    &lt;div class=\"ui-g-2 ui-sm-6\"&gt;Year: &lt;/div&gt;\r\n                    &lt;div class=\"ui-g-10 ui-sm-6\"&gt;&#123;&#123;car.year&#125;&#125;&lt;/div&gt;\r\n                    \r\n                    &lt;div class=\"ui-g-2 ui-sm-6\"&gt;Brand: &lt;/div&gt;\r\n                    &lt;div class=\"ui-g-10 ui-sm-6\"&gt;&#123;&#123;car.brand&#125;&#125;&lt;/div&gt;\r\n                    \r\n                    &lt;div class=\"ui-g-2 ui-sm-6\"&gt;Color: &lt;/div&gt;\r\n                    &lt;div class=\"ui-g-10 ui-sm-6\"&gt;&#123;&#123;car.color&#125;&#125;&lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-dataList&gt;\r\n</code>\r\n</pre>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class DataListDemo implements OnInit &#123;\r\n\r\n    cars: Car[];\r\n        \r\n    constructor(private carService: CarService) &#123; &#125;\r\n\r\n    ngOnInit() &#123;\r\n        this.carService.getCarsLarge().then(cars => this.cars = cars);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/colorpicker/colorpickerdemo.module.ts":
+/***/ "./src/app/showcase/components/datalist/datalistdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__colorpickerdemo__ = __webpack_require__("./src/app/showcase/components/colorpicker/colorpickerdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__colorpickerdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/colorpicker/colorpickerdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_colorpicker_colorpicker__ = __webpack_require__("./src/app/components/colorpicker/colorpicker.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datalistdemo__ = __webpack_require__("./src/app/showcase/components/datalist/datalistdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__datalistdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/datalist/datalistdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_datalist_datalist__ = __webpack_require__("./src/app/components/datalist/datalist.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_dialog_dialog__ = __webpack_require__("./src/app/components/dialog/dialog.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ColorPickerDemoModule", function() { return ColorPickerDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataListDemoModule", function() { return DataListDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -978,57 +728,69 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ColorPickerDemoModule = (function () {
-    function ColorPickerDemoModule() {
+var DataListDemoModule = (function () {
+    function DataListDemoModule() {
     }
-    return ColorPickerDemoModule;
+    return DataListDemoModule;
 }());
-ColorPickerDemoModule = __decorate([
+DataListDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__colorpickerdemo_routing_module__["a" /* ColorPickerDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_colorpicker_colorpicker__["a" /* ColorPickerModule */],
+            __WEBPACK_IMPORTED_MODULE_3__datalistdemo_routing_module__["a" /* DataListDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_datalist_datalist__["a" /* DataListModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_dialog_dialog__["a" /* DialogModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__colorpickerdemo__["a" /* ColorPickerDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__datalistdemo__["a" /* DataListDemo */]
         ]
     })
-], ColorPickerDemoModule);
+], DataListDemoModule);
 
-//# sourceMappingURL=colorpickerdemo.module.js.map
+//# sourceMappingURL=datalistdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/colorpicker/colorpickerdemo.ts":
+/***/ "./src/app/showcase/components/datalist/datalistdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ColorPickerDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_carservice__ = __webpack_require__("./src/app/showcase/service/carservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataListDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var ColorPickerDemo = (function () {
-    function ColorPickerDemo() {
-        this.color2 = '#1976D2';
+
+var DataListDemo = (function () {
+    function DataListDemo(carService) {
+        this.carService = carService;
     }
-    return ColorPickerDemo;
+    DataListDemo.prototype.ngOnInit = function () {
+        var _this = this;
+        this.carService.getCarsLarge().then(function (cars) { return _this.cars = cars; });
+    };
+    return DataListDemo;
 }());
-ColorPickerDemo = __decorate([
+DataListDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/colorpicker/colorpickerdemo.html")
-    })
-], ColorPickerDemo);
+        template: __webpack_require__("./src/app/showcase/components/datalist/datalistdemo.html"),
+        styles: ["\n        .car-item {\n            padding: 1.5em;\n            border-bottom: 1px solid #d9d9d9;\n        }\n                \n        .ui-g > div {\n            padding: .4em;\n        }\n        \n        .ui-g .ui-g-10 {\n            font-weight: bold;\n        }\n        \n        @media (max-width: 40em) {\n            .car-details {\n                text-align:center;\n            }\n        }\n    "]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */]) === "function" && _a || Object])
+], DataListDemo);
 
-//# sourceMappingURL=colorpickerdemo.js.map
+var _a;
+//# sourceMappingURL=datalistdemo.js.map
 
 /***/ })
 

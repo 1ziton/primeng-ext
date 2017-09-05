@@ -53,16 +53,18 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/megamenu/megamenu.ts":
+/***/ "./src/app/components/orderlist/orderlist.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* unused harmony export MegaMenu */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MegaMenuModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_objectutils__ = __webpack_require__("./src/app/components/utils/objectutils.ts");
+/* unused harmony export OrderList */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrderListModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -76,114 +78,327 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var MegaMenu = (function () {
-    function MegaMenu(el, domHandler, renderer) {
+
+
+var OrderList = (function () {
+    function OrderList(el, domHandler, objectUtils) {
         this.el = el;
         this.domHandler = domHandler;
-        this.renderer = renderer;
-        this.orientation = 'horizontal';
+        this.objectUtils = objectUtils;
+        this.metaKeySelection = true;
+        this.onReorder = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onSelectionChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onFilterEvent = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
     }
-    MegaMenu.prototype.onItemMouseEnter = function (event, item, menuitem) {
-        if (menuitem.disabled) {
-            return;
-        }
-        this.activeItem = item;
-        var submenu = item.children[0].nextElementSibling;
-        if (submenu) {
-            submenu.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-            if (this.orientation === 'horizontal') {
-                submenu.style.top = this.domHandler.getOuterHeight(item.children[0]) + 'px';
-                submenu.style.left = '0px';
+    OrderList.prototype.ngAfterViewInit = function () {
+        this.listContainer = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-orderlist-list');
+    };
+    OrderList.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'item':
+                    _this.itemTemplate = item.template;
+                    break;
+                default:
+                    _this.itemTemplate = item.template;
+                    break;
             }
-            else if (this.orientation === 'vertical') {
-                submenu.style.top = '0px';
-                submenu.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
+        });
+    };
+    OrderList.prototype.ngAfterViewChecked = function () {
+        if (this.movedUp || this.movedDown) {
+            var listItems = this.domHandler.find(this.listContainer, 'li.ui-state-highlight');
+            var listItem = void 0;
+            if (this.movedUp)
+                listItem = listItems[0];
+            else
+                listItem = listItems[listItems.length - 1];
+            this.domHandler.scrollInView(this.listContainer, listItem);
+            this.movedUp = false;
+            this.movedDown = false;
+        }
+    };
+    Object.defineProperty(OrderList.prototype, "value", {
+        get: function () {
+            return this._value;
+        },
+        set: function (val) {
+            this._value = val;
+            if (this.filterValue) {
+                this.filter();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    OrderList.prototype.onItemClick = function (event, item) {
+        var index = this.findIndexInList(item, this.selectedItems);
+        var selected = (index != -1);
+        var metaSelection = this.itemTouched ? false : this.metaKeySelection;
+        if (metaSelection) {
+            var metaKey = (event.metaKey || event.ctrlKey);
+            if (selected && metaKey) {
+                this.selectedItems.splice(index, 1);
+            }
+            else {
+                this.selectedItems = (metaKey) ? this.selectedItems || [] : [];
+                this.selectedItems.push(item);
             }
         }
+        else {
+            if (selected) {
+                this.selectedItems.splice(index, 1);
+            }
+            else {
+                this.selectedItems = this.selectedItems || [];
+                this.selectedItems.push(item);
+            }
+        }
+        this.onSelectionChange.emit({ originalEvent: event, value: this.selectedItems });
+        this.itemTouched = false;
     };
-    MegaMenu.prototype.onItemMouseLeave = function (event, link) {
-        this.activeItem = null;
+    OrderList.prototype.onFilterKeyup = function (event) {
+        this.filterValue = event.target.value.trim().toLowerCase();
+        this.filter();
+        this.onFilterEvent.emit({
+            originalEvent: event,
+            value: this.visibleOptions
+        });
     };
-    MegaMenu.prototype.itemClick = function (event, item) {
-        if (item.disabled) {
+    OrderList.prototype.filter = function () {
+        var searchFields = this.filterBy.split(',');
+        this.visibleOptions = this.objectUtils.filter(this.value, searchFields, this.filterValue);
+    };
+    OrderList.prototype.isItemVisible = function (item) {
+        if (this.filterValue && this.filterValue.trim().length) {
+            for (var i = 0; i < this.visibleOptions.length; i++) {
+                if (item == this.visibleOptions[i]) {
+                    return true;
+                }
+            }
+        }
+        else {
+            return true;
+        }
+    };
+    OrderList.prototype.onItemTouchEnd = function (event) {
+        this.itemTouched = true;
+    };
+    OrderList.prototype.isSelected = function (item) {
+        return this.findIndexInList(item, this.selectedItems) != -1;
+    };
+    OrderList.prototype.findIndexInList = function (item, list) {
+        var index = -1;
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i] == item) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
+    OrderList.prototype.moveUp = function (event, listElement) {
+        if (this.selectedItems) {
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != 0) {
+                    var movedItem = this.value[selectedItemIndex];
+                    var temp = this.value[selectedItemIndex - 1];
+                    this.value[selectedItemIndex - 1] = movedItem;
+                    this.value[selectedItemIndex] = temp;
+                }
+                else {
+                    break;
+                }
+            }
+            this.movedUp = true;
+            this.onReorder.emit(event);
+        }
+    };
+    OrderList.prototype.moveTop = function (event, listElement) {
+        if (this.selectedItems) {
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != 0) {
+                    var movedItem = this.value.splice(selectedItemIndex, 1)[0];
+                    this.value.unshift(movedItem);
+                    listElement.scrollTop = 0;
+                }
+                else {
+                    break;
+                }
+            }
+            this.onReorder.emit(event);
+            listElement.scrollTop = 0;
+        }
+    };
+    OrderList.prototype.moveDown = function (event, listElement) {
+        if (this.selectedItems) {
+            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != (this.value.length - 1)) {
+                    var movedItem = this.value[selectedItemIndex];
+                    var temp = this.value[selectedItemIndex + 1];
+                    this.value[selectedItemIndex + 1] = movedItem;
+                    this.value[selectedItemIndex] = temp;
+                }
+                else {
+                    break;
+                }
+            }
+            this.movedDown = true;
+            this.onReorder.emit(event);
+        }
+    };
+    OrderList.prototype.moveBottom = function (event, listElement) {
+        if (this.selectedItems) {
+            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != (this.value.length - 1)) {
+                    var movedItem = this.value.splice(selectedItemIndex, 1)[0];
+                    this.value.push(movedItem);
+                }
+                else {
+                    break;
+                }
+            }
+            this.onReorder.emit(event);
+            listElement.scrollTop = listElement.scrollHeight;
+        }
+    };
+    OrderList.prototype.onDragStart = function (event, index) {
+        this.dragging = true;
+        this.draggedItemIndex = index;
+        if (this.dragdropScope) {
+            event.dataTransfer.setData("text", this.dragdropScope);
+        }
+    };
+    OrderList.prototype.onDragOver = function (event, index) {
+        if (this.draggedItemIndex !== index && this.draggedItemIndex + 1 !== index) {
+            this.dragOverItemIndex = index;
             event.preventDefault();
-            return;
         }
-        if (!item.url) {
-            event.preventDefault();
-        }
-        if (item.command) {
-            item.command({
-                originalEvent: event,
-                item: item
-            });
-        }
-        this.activeItem = null;
     };
-    MegaMenu.prototype.getColumnClass = function (menuitem) {
-        var length = menuitem.items ? menuitem.items.length : 0;
-        var columnClass;
-        switch (length) {
-            case 2:
-                columnClass = 'ui-g-6';
-                break;
-            case 3:
-                columnClass = 'ui-g-4';
-                break;
-            case 4:
-                columnClass = 'ui-g-3';
-                break;
-            case 6:
-                columnClass = 'ui-g-2';
-                break;
-            default:
-                columnClass = 'ui-g-12';
-                break;
-        }
-        return columnClass;
+    OrderList.prototype.onDragLeave = function (event, index) {
+        this.dragOverItemIndex = null;
     };
-    return MegaMenu;
+    OrderList.prototype.onDrop = function (event, index) {
+        var dropIndex = (this.draggedItemIndex > index) ? index : (index === 0) ? 0 : index - 1;
+        this.objectUtils.reorderArray(this.value, this.draggedItemIndex, dropIndex);
+        this.dragOverItemIndex = null;
+    };
+    OrderList.prototype.onDragEnd = function (event) {
+        this.dragging = false;
+    };
+    OrderList.prototype.onListMouseMove = function (event) {
+        if (this.dragging) {
+            var offsetY = this.listViewChild.nativeElement.getBoundingClientRect().top + document.body.scrollTop;
+            var bottomDiff = (offsetY + this.listViewChild.nativeElement.clientHeight) - event.pageY;
+            var topDiff = (event.pageY - offsetY);
+            if (bottomDiff < 25 && bottomDiff > 0)
+                this.listViewChild.nativeElement.scrollTop += 15;
+            else if (topDiff < 25 && topDiff > 0)
+                this.listViewChild.nativeElement.scrollTop -= 15;
+        }
+    };
+    return OrderList;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], MegaMenu.prototype, "model", void 0);
+    __metadata("design:type", String)
+], OrderList.prototype, "header", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], MegaMenu.prototype, "style", void 0);
+], OrderList.prototype, "style", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], MegaMenu.prototype, "styleClass", void 0);
+], OrderList.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], OrderList.prototype, "listStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], OrderList.prototype, "responsive", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], MegaMenu.prototype, "orientation", void 0);
-MegaMenu = __decorate([
+], OrderList.prototype, "filterBy", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], OrderList.prototype, "filterPlaceholder", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], OrderList.prototype, "metaKeySelection", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], OrderList.prototype, "dragdrop", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], OrderList.prototype, "dragdropScope", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], OrderList.prototype, "onReorder", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+], OrderList.prototype, "onSelectionChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
+], OrderList.prototype, "onFilterEvent", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('listelement'),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object)
+], OrderList.prototype, "listViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+], OrderList.prototype, "templates", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array),
+    __metadata("design:paramtypes", [Array])
+], OrderList.prototype, "value", null);
+OrderList = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-megaMenu',
-        template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\"\n            [ngClass]=\"{'ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-megamenu-vertical': orientation == 'vertical'}\">\n            <ul class=\"ui-menu-list ui-helper-reset ui-menubar-root-list\">\n                <ng-template ngFor let-category [ngForOf]=\"model\">\n                    <li *ngIf=\"category.separator\" class=\"ui-menu-separator ui-widget-content\">\n                    <li *ngIf=\"!category.separator\" #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':category.items,'ui-menuitem-active':item==activeItem}\"\n                        (mouseenter)=\"onItemMouseEnter($event, item, category)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                        <a class=\"ui-menuitem-link ui-corner-all ui-submenu-link\" [ngClass]=\"{'ui-state-disabled':category.disabled}\">\n                            <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"category.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{category.label}}</span>\n                            <span class=\"ui-submenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-down':orientation=='horizontal','fa-caret-right':orientation=='vertical'}\"></span>\n                        </a>\n                        <div class=\"ui-megamenu-panel ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow\">\n                            <div class=\"ui-g\">\n                                <ng-template ngFor let-column [ngForOf]=\"category.items\">\n                                    <div [class]=\"getColumnClass(category)\">\n                                        <ng-template ngFor let-submenu [ngForOf]=\"column\">\n                                            <ul class=\"ui-menu-list ui-helper-reset\">\n                                                <li class=\"ui-widget-header ui-corner-all\"><h3>{{submenu.label}}</h3></li>\n                                                <ng-template ngFor let-item [ngForOf]=\"submenu.items\">\n                                                    <li *ngIf=\"item.separator\" class=\"ui-menu-separator ui-widget-content\">\n                                                    <li *ngIf=\"!item.separator\" class=\"ui-menuitem ui-widget ui-corner-all\">\n                                                        <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [attr.title]=\"item.title\"\n                                                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                                                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                                                        </a>\n                                                        <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [routerLinkActive]=\"'ui-state-active'\" \n                                                            [routerLinkActiveOptions]=\"item.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link ui-corner-all\" \n                                                             [attr.target]=\"item.target\" [attr.title]=\"item.title\"\n                                                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                                                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                                                        </a>\n                                                    </li>\n                                                </ng-template>\n                                            </ul>\n                                        </ng-template>\n                                    </div>\n                                </ng-template>\n                            </div>\n                        </div>\n                    </li>\n                </ng-template>\n                <li class=\"ui-menuitem ui-menuitem-custom ui-widget ui-corner-all\" *ngIf=\"orientation === 'horizontal'\">\n                    <ng-content></ng-content>\n                </li>\n            </ul>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-orderList',
+        template: "\n        <div [ngClass]=\"{'ui-orderlist ui-widget':true,'ui-orderlist-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-orderlist-controls\">\n                <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n            </div>\n            <div class=\"ui-orderlist-list-container\">\n                <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                <div class=\"ui-orderlist-filter-container ui-widget-content\" *ngIf=\"filterBy\">\n                    <input type=\"text\" role=\"textbox\" (keyup)=\"onFilterKeyup($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"filterPlaceholder\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" (dragover)=\"onListMouseMove($event)\">\n                    <ng-template ngFor let-item [ngForOf]=\"value\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-orderlist-droppoint\" *ngIf=\"dragdrop && isItemVisible(item)\" (dragover)=\"onDragOver($event, i)\" (drop)=\"onDrop($event, i)\" (dragleave)=\"onDragLeave($event)\" \n                            [ngClass]=\"{'ui-state-highlight': (i === dragOverItemIndex)}\"></li>\n                        <li class=\"ui-orderlist-item\"\n                            [ngClass]=\"{'ui-state-highlight':isSelected(item)}\" \n                            (click)=\"onItemClick($event,item)\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                        </li>\n                        <li class=\"ui-orderlist-droppoint\" *ngIf=\"dragdrop && l\" (dragover)=\"onDragOver($event, i + 1)\" (drop)=\"onDrop($event, i + 1)\" (dragleave)=\"onDragLeave($event)\" \n                            [ngClass]=\"{'ui-state-highlight': (i + 1 === dragOverItemIndex)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */], __WEBPACK_IMPORTED_MODULE_5__utils_objectutils__["a" /* ObjectUtils */]]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _c || Object])
-], MegaMenu);
+    __metadata("design:paramtypes", [typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_5__utils_objectutils__["a" /* ObjectUtils */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__utils_objectutils__["a" /* ObjectUtils */]) === "function" && _h || Object])
+], OrderList);
 
-var MegaMenuModule = (function () {
-    function MegaMenuModule() {
+var OrderListModule = (function () {
+    function OrderListModule() {
     }
-    return MegaMenuModule;
+    return OrderListModule;
 }());
-MegaMenuModule = __decorate([
+OrderListModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
-        exports: [MegaMenu, __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
-        declarations: [MegaMenu]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__button_button__["a" /* ButtonModule */], __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
+        exports: [OrderList, __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
+        declarations: [OrderList]
     })
-], MegaMenuModule);
+], OrderListModule);
 
-var _a, _b, _c;
-//# sourceMappingURL=megamenu.js.map
+var _a, _b, _c, _d, _e, _f, _g, _h;
+//# sourceMappingURL=orderlist.js.map
 
 /***/ }),
 
@@ -538,14 +753,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/megamenu/megamenudemo-routing.module.ts":
+/***/ "./src/app/showcase/components/orderlist/orderlistdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__megamenudemo__ = __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MegaMenuDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__orderlistdemo__ = __webpack_require__("./src/app/showcase/components/orderlist/orderlistdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrderListDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -555,48 +770,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var MegaMenuDemoRoutingModule = (function () {
-    function MegaMenuDemoRoutingModule() {
+var OrderListDemoRoutingModule = (function () {
+    function OrderListDemoRoutingModule() {
     }
-    return MegaMenuDemoRoutingModule;
+    return OrderListDemoRoutingModule;
 }());
-MegaMenuDemoRoutingModule = __decorate([
+OrderListDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__megamenudemo__["a" /* MegaMenuDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__orderlistdemo__["a" /* OrderListDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], MegaMenuDemoRoutingModule);
+], OrderListDemoRoutingModule);
 
-//# sourceMappingURL=megamenudemo-routing.module.js.map
+//# sourceMappingURL=orderlistdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/megamenu/megamenudemo.html":
+/***/ "./src/app/showcase/components/orderlist/orderlistdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">MegaMenu</span>\r\n        <span>MegaMenu displays submenus of root items together.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Default</h3>\r\n    <p-megaMenu [model]=\"items\"></p-megaMenu>\r\n    \r\n    <h3>Vertical</h3>\r\n    <p-megaMenu [model]=\"items\" orientation=\"vertical\"></p-megaMenu>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MegaMenuModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n<h3>MenuModel API</h3>\r\n<p>MegaMenu uses the common menumodel api to define its items, visit <a [routerLink]=\"['/menumodel']\">MenuModel API</a> for details.</p>\r\n\r\n<h3>Getting Started</h3>\r\n<p>MegaMenu requires nested menuitems as its model where the items of a root menuitem is a two dimensional array to define columns in an overlay submenu.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-megaMenu [model]=\"items\"&gt;&lt;/p-megaMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\n    export class MegaMenuDemo &#123;\r\n\r\n        items: MenuItem[];\r\n\r\n        ngOnInit() &#123;\r\n            this.items = [\r\n                &#123;\r\n                    label: 'TV', icon: 'fa-check',\r\n                    items: [\r\n                        [\r\n                            &#123;\r\n                                label: 'TV 1',\r\n                                items: [&#123;label: 'TV 1.1'&#125;,&#123;label: 'TV 1.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'TV 2',\r\n                                items: [&#123;label: 'TV 2.1'&#125;,&#123;label: 'TV 2.2'&#125;]\r\n                            &#125;\r\n                        ],\r\n                        [\r\n                            &#123;\r\n                                label: 'TV 3',\r\n                                items: [&#123;label: 'TV 3.1'&#125;,&#123;label: 'TV 3.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'TV 4',\r\n                                items: [&#123;label: 'TV 4.1'&#125;,&#123;label: 'TV 4.2'&#125;]\r\n                            &#125;    \r\n                        ]\r\n                    ]\r\n                &#125;,\r\n                &#123;\r\n                    label: 'Sports', icon: 'fa-soccer-ball-o',\r\n                    items: [\r\n                        [\r\n                            &#123;\r\n                                label: 'Sports 1',\r\n                                items: [&#123;label: 'Sports 1.1'&#125;,&#123;label: 'Sports 1.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'Sports 2',\r\n                                items: [&#123;label: 'Sports 2.1'&#125;,&#123;label: 'Sports 2.2'&#125;]\r\n                            &#125;,\r\n\r\n                        ],\r\n                        [\r\n                            &#123;\r\n                                label: 'Sports 3',\r\n                                items: [&#123;label: 'Sports 3.1'&#125;,&#123;label: 'Sports 3.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'Sports 4',\r\n                                items: [&#123;label: 'Sports 4.1'&#125;,&#123;label: 'Sports 4.2'&#125;]\r\n                            &#125;\r\n                        ],\r\n                        [\r\n                            &#123;\r\n                                label: 'Sports 5',\r\n                                items: [&#123;label: 'Sports 5.1'&#125;,&#123;label: 'Sports 5.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'Sports 6',\r\n                                items: [&#123;label: 'Sports 6.1'&#125;,&#123;label: 'Sports 6.2'&#125;]\r\n                            &#125;\r\n                        ]\r\n                    ]\r\n                &#125;\r\n            ];\r\n        &#125;\r\n    &#125;\r\n</code>\r\n</pre>\r\n\r\n<h3>Custom Content</h3>\r\n<p>Custom content can be placed between p-megaMenu tags. Megamenu should be horizontal for custom content.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-megaMenu [model]=\"items\"&gt;\r\n    &lt;input type=\"text\" pInputText placeholder=\"Search\"&gt;\r\n    &lt;button pButton label=\"Logout\" icon=\"fa-sign-out\"&gt;&lt;/button&gt;\r\n&lt;/p-megaMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n<h3>Properties</h3>\r\n<div class=\"doc-tablewrapper\">\r\n    <table class=\"doc-table\">\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n                <th>Type</th>\r\n                <th>Default</th>\r\n                <th>Description</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr>\r\n                <td>model</td>\r\n                <td>array</td>\r\n                <td>null</td>\r\n                <td>An array of menuitems.</td>\r\n            </tr>\r\n            <tr>\r\n                <td>orientation</td>\r\n                <td>string</td>\r\n                <td>horizontal</td>\r\n                <td>Defines the orientation, valid values are horizontal and vertical.</td>\r\n            </tr>\r\n            <tr>\r\n                <td>style</td>\r\n                <td>string</td>\r\n                <td>null</td>\r\n                <td>Inline style of the component.</td>\r\n            </tr>\r\n            <tr>\r\n                <td>styleClass</td>\r\n                <td>string</td>\r\n                <td>null</td>\r\n                <td>Style class of the component.</td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<h3>Styling</h3>\r\n<p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n<div class=\"doc-tablewrapper\">\r\n    <table class=\"doc-table\">\r\n        <thead>\r\n        <tr>\r\n            <th>Name</th>\r\n            <th>Element</th>\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <tr>\r\n            <td>ui-megamenu</td>\r\n            <td>Container element.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menu-list</td>\r\n            <td>List element.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menuitem</td>\r\n            <td>Menuitem element.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menuitem-text</td>\r\n            <td>Label of a menuitem.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menuitem-icon</td>\r\n            <td>Icon of a menuitem.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-submenu-icon</td>\r\n            <td>Arrow icon of a submenu.</td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<h3>Dependencies</h3>\r\n<p>None.</p>\r\n</p-tabPanel>\r\n\r\n<p-tabPanel header=\"Source\">\r\n    <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/megamenu\" class=\"btn-viewsource\" target=\"_blank\">\r\n        <i class=\"fa fa-github\"></i>\r\n        <span>View on GitHub</span>\r\n    </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-megaMenu [model]=\"items\"&gt;&lt;/p-megaMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MegaMenuDemo &#123;\r\n\r\n    items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [\r\n            &#123;\r\n                label: 'TV', icon: 'fa-check',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'TV 1',\r\n                            items: [&#123;label: 'TV 1.1'&#125;,&#123;label: 'TV 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'TV 2',\r\n                            items: [&#123;label: 'TV 2.1'&#125;,&#123;label: 'TV 2.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'TV 3',\r\n                            items: [&#123;label: 'TV 3.1'&#125;,&#123;label: 'TV 3.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'TV 4',\r\n                            items: [&#123;label: 'TV 4.1'&#125;,&#123;label: 'TV 4.2'&#125;]\r\n                        &#125;    \r\n                    ]\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Sports', icon: 'fa-soccer-ball-o',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'Sports 1',\r\n                            items: [&#123;label: 'Sports 1.1'&#125;,&#123;label: 'Sports 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Sports 2',\r\n                            items: [&#123;label: 'Sports 2.1'&#125;,&#123;label: 'Sports 2.2'&#125;]\r\n                        &#125;,\r\n\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Sports 3',\r\n                            items: [&#123;label: 'Sports 3.1'&#125;,&#123;label: 'Sports 3.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Sports 4',\r\n                            items: [&#123;label: 'Sports 4.1'&#125;,&#123;label: 'Sports 4.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Sports 5',\r\n                            items: [&#123;label: 'Sports 5.1'&#125;,&#123;label: 'Sports 5.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Sports 6',\r\n                            items: [&#123;label: 'Sports 6.1'&#125;,&#123;label: 'Sports 6.2'&#125;]\r\n                        &#125;\r\n                    ]\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Entertainment', icon: 'fa-child',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'Entertainment 1',\r\n                            items: [&#123;label: 'Entertainment 1.1'&#125;,&#123;label: 'Entertainment 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Entertainment 2',\r\n                            items: [&#123;label: 'Entertainment 2.1'&#125;,&#123;label: 'Entertainment 2.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Entertainment 3',\r\n                            items: [&#123;label: 'Entertainment 3.1'&#125;,&#123;label: 'Entertainment 3.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Entertainment 4',\r\n                            items: [&#123;label: 'Entertainment 4.1'&#125;,&#123;label: 'Entertainment 4.2'&#125;]\r\n                        &#125;    \r\n                    ]\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Technology', icon: 'fa-gears',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'Technology 1',\r\n                            items: [&#123;label: 'Technology 1.1'&#125;,&#123;label: 'Technology 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Technology 2',\r\n                            items: [&#123;label: 'Technology 2.1'&#125;,&#123;label: 'Technology 2.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Technology 3',\r\n                            items: [&#123;label: 'Technology 3.1'&#125;,&#123;label: 'Technology 3.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Technology 4',\r\n                            items: [&#123;label: 'Technology 4.1'&#125;,&#123;label: 'Technology 4.2'&#125;]\r\n                        &#125;  \r\n                    ]\r\n                ]\r\n            &#125;\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n</p-tabPanel>\r\n</p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">OrderList</span>\r\n        <span>OrderList is used to sort a collection. When the position of an item changes, the backend array is updated as well.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    \r\n    <p-orderList [value]=\"cars\" [listStyle]=\"{'height':'350px'}\" responsive=\"true\" header=\"Cars\" filterBy=\"brand\" filterPlaceholder=\"Filter by brand\"\r\n        dragdrop=\"true\">\r\n        <ng-template let-car pTemplate=\"item\">\r\n            <div class=\"ui-helper-clearfix\">\r\n                <img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"display:inline-block;margin:2px 0 2px 2px\" width=\"48\">\r\n                <div style=\"font-size:14px;float:right;margin:15px 5px 0 0\">{{car.brand}} - {{car.year}} - {{car.color}}</div>\r\n            </div>\r\n        </ng-template>\r\n    </p-orderList>\r\n    \r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;OrderListModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>OrderList requires an array as its value and a ng-template for its content where each item in the array\r\n                 can be accessed inside the ng-template using a local ng-template variable.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-orderList [value]=\"cars\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-helper-clearfix\"&gt;\r\n            &lt;img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"display:inline-block;margin:2px 0 2px 2px\" width=\"48\"&gt;\r\n            &lt;div style=\"font-size:14px;float:right;margin:15px 5px 0 0\"&gt;{{car.brand}} - {{car.year}} - {{car.color}}&lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-orderList&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyComponent &#123;\r\n\r\n    cars: Car[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.cars = //initialize cars\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Multiple Selection</h3>\r\n            <p>Multiple items can either be selected using metaKey or toggled individually depending on the value of metaKeySelection property value which is true by default. On touch enabled\r\n            devices metaKeySelection is turned off automatically.</p>\r\n            \r\n            <h3>Filtering</h3>\r\n            <p>Items can be filtered using an input field by enabling the filterBy property that specifies the fields to use in filtering.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-orderList [value]=\"cars\" filterBy=\"brand\"&gt;&lt;/p-orderList&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>Multiple fields can be defines using a comma separates list.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-orderList [value]=\"cars\" filterBy=\"brand,color,address.city\"&gt;&lt;/p-orderList&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>DragDrop</h3>\r\n            <p>Items can be reordered using drag and drop by enabling dragdrop property along with dragdropScope to avoid conflict with other drag drop events on view.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-orderList [value]=\"cars\" dragdrop=\"true\" dragdropScope=\"cars\"&gt;\r\n</code>\r\n</pre>\r\n            \r\n            <h3>Responsive</h3>\r\n            <p>In responsive mode, orderlist adjusts its controls based on screen size. To activate this mode, set responsive as true.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-orderList [value]=\"cars\" [responsive]=\"true\"&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of objects to reorder.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>header</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Text for the caption</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>listStyle</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the list element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>responsive</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When enabled orderlist adjusts its controls based on screen size.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>filterBy</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>When specified displays an input field to filter the items on keyup and decides which fields to search against.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>metaKeySelection</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>When true metaKey needs to be pressed to select or unselect an item and when set to false selection of each item\r\n                            can be toggled individually. On touch enabled devices, metaKeySelection is turned off automatically.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>dragdrop</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether to enable dragdrop based reordering.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>dragdropScope</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Unique key of drag drop events to avoid conflict with other drag drop events on the page.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>filterPlaceHolder</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Placeholder text on filter input.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onReorder</td>\r\n                            <td>event: browser event</td>\r\n                            <td>Callback to invoke when list is reordered.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onSelectionChange</td>\r\n                            <td>originalEvent: browser event<br/>\r\n                                value: Current selection</td>\r\n                            <td>Callback to invoke when selection changes.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onFilterEvent</td>\r\n                            <td>originalEvent: browser event<br/>\r\n                                value: Current filter values</td>\r\n                            <td>Callback to invoke when filtering occurs.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-orderlist</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-orderlist-list</td>\r\n                            <td>List container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-orderlist-item</td>\r\n                            <td>An item in the list.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/orderlist\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-orderList [value]=\"cars\" [listStyle]=\"&#123;'height':'250px'&#125;\" [responsive]=\"true\" header=\"Cars\" \r\n    filter=\"filter\" filterBy=\"brand\" filterPlaceholder=\"Filter by brand\" dragdrop=\"true\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-helper-clearfix\"&gt;\r\n            &lt;img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"display:inline-block;margin:2px 0 2px 2px\" width=\"48\"&gt;\r\n            &lt;div style=\"font-size:14px;float:right;margin:15px 5px 0 0\"&gt;{{car.brand}} - {{car.year}} - {{car.color}}&lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-orderList&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class OrderListDemo &#123;\r\n\r\n    cars: Car[];\r\n    \r\n    constructor(private carService: CarService) &#123; &#125;\r\n\r\n    ngOnInit() &#123;\r\n        this.carService.getCarsSmall().then(cars => this.cars = cars);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/megamenu/megamenudemo.module.ts":
+/***/ "./src/app/showcase/components/orderlist/orderlistdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__megamenudemo__ = __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__megamenudemo_routing_module__ = __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_megamenu_megamenu__ = __webpack_require__("./src/app/components/megamenu/megamenu.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__orderlistdemo__ = __webpack_require__("./src/app/showcase/components/orderlist/orderlistdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__orderlistdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/orderlist/orderlistdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_orderlist_orderlist__ = __webpack_require__("./src/app/components/orderlist/orderlist.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MegaMenuDemoModule", function() { return MegaMenuDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderListDemoModule", function() { return OrderListDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -610,169 +825,67 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var MegaMenuDemoModule = (function () {
-    function MegaMenuDemoModule() {
+var OrderListDemoModule = (function () {
+    function OrderListDemoModule() {
     }
-    return MegaMenuDemoModule;
+    return OrderListDemoModule;
 }());
-MegaMenuDemoModule = __decorate([
+OrderListDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__megamenudemo_routing_module__["a" /* MegaMenuDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_megamenu_megamenu__["a" /* MegaMenuModule */],
+            __WEBPACK_IMPORTED_MODULE_3__orderlistdemo_routing_module__["a" /* OrderListDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_orderlist_orderlist__["a" /* OrderListModule */],
             __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__megamenudemo__["a" /* MegaMenuDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__orderlistdemo__["a" /* OrderListDemo */]
         ]
     })
-], MegaMenuDemoModule);
+], OrderListDemoModule);
 
-//# sourceMappingURL=megamenudemo.module.js.map
+//# sourceMappingURL=orderlistdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/megamenu/megamenudemo.ts":
+/***/ "./src/app/showcase/components/orderlist/orderlistdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MegaMenuDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_carservice__ = __webpack_require__("./src/app/showcase/service/carservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OrderListDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var MegaMenuDemo = (function () {
-    function MegaMenuDemo() {
+
+var OrderListDemo = (function () {
+    function OrderListDemo(carService) {
+        this.carService = carService;
     }
-    MegaMenuDemo.prototype.ngOnInit = function () {
-        this.items = [
-            {
-                label: 'TV', icon: 'fa-check',
-                items: [
-                    [
-                        {
-                            label: 'TV 1',
-                            items: [{ label: 'TV 1.1' }, { label: 'TV 1.2' }]
-                        },
-                        {
-                            label: 'TV 2',
-                            items: [{ label: 'TV 2.1' }, { label: 'TV 2.2' }]
-                        }
-                    ],
-                    [
-                        {
-                            label: 'TV 3',
-                            items: [{ label: 'TV 3.1' }, { label: 'TV 3.2' }]
-                        },
-                        {
-                            label: 'TV 4',
-                            items: [{ label: 'TV 4.1' }, { label: 'TV 4.2' }]
-                        }
-                    ]
-                ]
-            },
-            {
-                label: 'Sports', icon: 'fa-soccer-ball-o',
-                items: [
-                    [
-                        {
-                            label: 'Sports 1',
-                            items: [{ label: 'Sports 1.1' }, { label: 'Sports 1.2' }]
-                        },
-                        {
-                            label: 'Sports 2',
-                            items: [{ label: 'Sports 2.1' }, { label: 'Sports 2.2' }]
-                        },
-                    ],
-                    [
-                        {
-                            label: 'Sports 3',
-                            items: [{ label: 'Sports 3.1' }, { label: 'Sports 3.2' }]
-                        },
-                        {
-                            label: 'Sports 4',
-                            items: [{ label: 'Sports 4.1' }, { label: 'Sports 4.2' }]
-                        }
-                    ],
-                    [
-                        {
-                            label: 'Sports 5',
-                            items: [{ label: 'Sports 5.1' }, { label: 'Sports 5.2' }]
-                        },
-                        {
-                            label: 'Sports 6',
-                            items: [{ label: 'Sports 6.1' }, { label: 'Sports 6.2' }]
-                        }
-                    ]
-                ]
-            },
-            {
-                label: 'Entertainment', icon: 'fa-child',
-                items: [
-                    [
-                        {
-                            label: 'Entertainment 1',
-                            items: [{ label: 'Entertainment 1.1' }, { label: 'Entertainment 1.2' }]
-                        },
-                        {
-                            label: 'Entertainment 2',
-                            items: [{ label: 'Entertainment 2.1' }, { label: 'Entertainment 2.2' }]
-                        }
-                    ],
-                    [
-                        {
-                            label: 'Entertainment 3',
-                            items: [{ label: 'Entertainment 3.1' }, { label: 'Entertainment 3.2' }]
-                        },
-                        {
-                            label: 'Entertainment 4',
-                            items: [{ label: 'Entertainment 4.1' }, { label: 'Entertainment 4.2' }]
-                        }
-                    ]
-                ]
-            },
-            {
-                label: 'Technology', icon: 'fa-gears',
-                items: [
-                    [
-                        {
-                            label: 'Technology 1',
-                            items: [{ label: 'Technology 1.1' }, { label: 'Technology 1.2' }]
-                        },
-                        {
-                            label: 'Technology 2',
-                            items: [{ label: 'Technology 2.1' }, { label: 'Technology 2.2' }]
-                        },
-                        {
-                            label: 'Technology 3',
-                            items: [{ label: 'Technology 3.1' }, { label: 'Technology 3.2' }]
-                        }
-                    ],
-                    [
-                        {
-                            label: 'Technology 4',
-                            items: [{ label: 'Technology 4.1' }, { label: 'Technology 4.2' }]
-                        }
-                    ]
-                ]
-            }
-        ];
+    OrderListDemo.prototype.ngOnInit = function () {
+        var _this = this;
+        this.carService.getCarsSmall().then(function (cars) { return _this.cars = cars; });
     };
-    return MegaMenuDemo;
+    return OrderListDemo;
 }());
-MegaMenuDemo = __decorate([
+OrderListDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo.html")
-    })
-], MegaMenuDemo);
+        template: __webpack_require__("./src/app/showcase/components/orderlist/orderlistdemo.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */]) === "function" && _a || Object])
+], OrderListDemo);
 
-//# sourceMappingURL=megamenudemo.js.map
+var _a;
+//# sourceMappingURL=orderlistdemo.js.map
 
 /***/ })
 

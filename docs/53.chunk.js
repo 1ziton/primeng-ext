@@ -53,16 +53,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/rating/rating.ts":
+/***/ "./src/app/components/selectbutton/selectbutton.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export RATING_VALUE_ACCESSOR */
-/* unused harmony export Rating */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RatingModule; });
+/* unused harmony export SELECTBUTTON_VALUE_ACCESSOR */
+/* unused harmony export SelectButton */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectButtonModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -75,108 +75,128 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var RATING_VALUE_ACCESSOR = {
+var SELECTBUTTON_VALUE_ACCESSOR = {
     provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Rating; }),
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return SelectButton; }),
     multi: true
 };
-var Rating = (function () {
-    function Rating() {
-        this.stars = 5;
-        this.cancel = true;
-        this.onRate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onCancel = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+var SelectButton = (function () {
+    function SelectButton() {
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
     }
-    Rating.prototype.ngOnInit = function () {
-        this.starsArray = [];
-        for (var i = 0; i < this.stars; i++) {
-            this.starsArray[i] = i;
-        }
-    };
-    Rating.prototype.rate = function (event, i) {
-        if (!this.readonly && !this.disabled) {
-            this.value = (i + 1);
-            this.onModelChange(this.value);
-            this.onModelTouched();
-            this.onRate.emit({
-                originalEvent: event,
-                value: (i + 1)
-            });
-        }
-        event.preventDefault();
-    };
-    Rating.prototype.clear = function (event) {
-        if (!this.readonly && !this.disabled) {
-            this.value = null;
-            this.onModelChange(this.value);
-            this.onModelTouched();
-            this.onCancel.emit(event);
-        }
-        event.preventDefault();
-    };
-    Rating.prototype.writeValue = function (value) {
+    SelectButton.prototype.writeValue = function (value) {
         this.value = value;
     };
-    Rating.prototype.registerOnChange = function (fn) {
+    SelectButton.prototype.registerOnChange = function (fn) {
         this.onModelChange = fn;
     };
-    Rating.prototype.registerOnTouched = function (fn) {
+    SelectButton.prototype.registerOnTouched = function (fn) {
         this.onModelTouched = fn;
     };
-    Rating.prototype.setDisabledState = function (val) {
+    SelectButton.prototype.setDisabledState = function (val) {
         this.disabled = val;
     };
-    return Rating;
+    SelectButton.prototype.onItemClick = function (event, option, checkbox) {
+        if (this.disabled) {
+            return;
+        }
+        checkbox.focus();
+        if (this.multiple) {
+            var itemIndex_1 = this.findItemIndex(option);
+            if (itemIndex_1 != -1)
+                this.value = this.value.filter(function (val, i) { return i != itemIndex_1; });
+            else
+                this.value = (this.value || []).concat([option.value]);
+        }
+        else {
+            this.value = option.value;
+        }
+        this.onModelChange(this.value);
+        this.onChange.emit({
+            originalEvent: event,
+            value: this.value
+        });
+    };
+    SelectButton.prototype.onFocus = function (event) {
+        this.focusedItem = event.target;
+    };
+    SelectButton.prototype.onBlur = function (event) {
+        this.focusedItem = null;
+        this.onModelTouched();
+    };
+    SelectButton.prototype.isSelected = function (option) {
+        if (this.multiple)
+            return this.findItemIndex(option) != -1;
+        else
+            return option.value == this.value;
+    };
+    SelectButton.prototype.findItemIndex = function (option) {
+        var index = -1;
+        if (this.value) {
+            for (var i = 0; i < this.value.length; i++) {
+                if (this.value[i] == option.value) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
+    return SelectButton;
 }());
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Rating.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Rating.prototype, "readonly", void 0);
+    __metadata("design:type", Array)
+], SelectButton.prototype, "options", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Number)
-], Rating.prototype, "stars", void 0);
+], SelectButton.prototype, "tabindex", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
-], Rating.prototype, "cancel", void 0);
+], SelectButton.prototype, "multiple", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], SelectButton.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], SelectButton.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], SelectButton.prototype, "disabled", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Rating.prototype, "onRate", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Rating.prototype, "onCancel", void 0);
-Rating = __decorate([
+], SelectButton.prototype, "onChange", void 0);
+SelectButton = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-rating',
-        template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\">\n                <span class=\"fa fa-ban\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"fa\" [ngClass]=\"{'fa-star-o': (!value || i >= value), 'fa-star':(i < value)}\"></span>\n            </a>\n        </div>\n    ",
-        providers: [RATING_VALUE_ACCESSOR]
+        selector: 'p-selectButton',
+        template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + options.length\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options;\" class=\"ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-active':isSelected(option), 'ui-state-disabled':disabled, 'ui-state-focus': cbox == focusedItem}\" (click)=\"onItemClick($event,option,cbox)\">\n                <span class=\"ui-button-text ui-clickable\">{{option.label}}</span>\n                <div class=\"ui-helper-hidden-accessible\">\n                    <input #cbox type=\"checkbox\" [checked]=\"isSelected(option)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [attr.tabindex]=\"tabindex\" [attr.disabled]=\"disabled\">\n                </div>\n            </div>\n        </div>\n    ",
+        providers: [SELECTBUTTON_VALUE_ACCESSOR]
     })
-], Rating);
+], SelectButton);
 
-var RatingModule = (function () {
-    function RatingModule() {
+var SelectButtonModule = (function () {
+    function SelectButtonModule() {
     }
-    return RatingModule;
+    return SelectButtonModule;
 }());
-RatingModule = __decorate([
+SelectButtonModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Rating],
-        declarations: [Rating]
+        exports: [SelectButton],
+        declarations: [SelectButton]
     })
-], RatingModule);
+], SelectButtonModule);
 
-var _a, _b;
-//# sourceMappingURL=rating.js.map
+var _a;
+//# sourceMappingURL=selectbutton.js.map
 
 /***/ }),
 
@@ -531,14 +551,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/rating/ratingdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/selectbutton/selectbuttondemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ratingdemo__ = __webpack_require__("./src/app/showcase/components/rating/ratingdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RatingDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__selectbuttondemo__ = __webpack_require__("./src/app/showcase/components/selectbutton/selectbuttondemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectButtonDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -548,36 +568,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var RatingDemoRoutingModule = (function () {
-    function RatingDemoRoutingModule() {
+var SelectButtonDemoRoutingModule = (function () {
+    function SelectButtonDemoRoutingModule() {
     }
-    return RatingDemoRoutingModule;
+    return SelectButtonDemoRoutingModule;
 }());
-RatingDemoRoutingModule = __decorate([
+SelectButtonDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__ratingdemo__["a" /* RatingDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__selectbuttondemo__["a" /* SelectButtonDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], RatingDemoRoutingModule);
+], SelectButtonDemoRoutingModule);
 
-//# sourceMappingURL=ratingdemo-routing.module.js.map
+//# sourceMappingURL=selectbuttondemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/rating/ratingdemo.html":
+/***/ "./src/app/showcase/components/selectbutton/selectbuttondemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Rating</span>\r\n        <span>Rating components is a star based selection input.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic {{val1}}</h3> \r\n    <p-rating [(ngModel)]=\"val1\"></p-rating>\r\n    <br />\r\n\r\n    <h3>Callback {{val2}}</h3>\r\n    <p-rating [(ngModel)]=\"val2\" (onRate)=\"handleRate($event)\" (onCancel)=\"handleCancel($event)\"></p-rating> <span *ngIf=\"msg\" style=\"margin-left:10px\">{{msg}}</span>\r\n    <br />\r\n\r\n    <h3>No Cancel {{val3}}</h3> \r\n    <p-rating [(ngModel)]=\"val3\" [cancel]=\"false\"></p-rating>\r\n    <br />\r\n\r\n    <h3>ReadOnly</h3> \r\n    <p-rating [ngModel]=\"5\" readonly=\"true\" stars=\"10\" [cancel]=\"false\"></p-rating>\r\n    <br />\r\n\r\n    <h3>Disabled</h3> \r\n    <p-rating [ngModel]=\"val4\" disabled=\"true\" stars=\"10\"></p-rating>\r\n    <br />\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;RatingModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using ngModel.</p>\r\n                    \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-rating [(ngModel)]=\"val\"&gt;&lt;/p-rating&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    val: number;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>Defining a default value would be enough to display the initial number of selected stars.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    val: number = 3;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Rating can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-rating formControlName=\"score\"&gt;&lt;/p-rating&gt;\r\n</code>\r\n</pre>\r\n\r\n                    <h3>Properties</h3>\r\n                    <div class=\"doc-tablewrapper\">\r\n                        <table class=\"doc-table\">\r\n                            <thead>\r\n                                <tr>\r\n                                    <th>Name</th>\r\n                                    <th>Type</th>\r\n                                    <th>Default</th>\r\n                                    <th>Description</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>stars</td>\r\n                                    <td>number</td>\r\n                                    <td>5</td>\r\n                                    <td>Number of stars.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>cancel</td>\r\n                                    <td>boolean</td>\r\n                                    <td>true</td>\r\n                                    <td>When specified a cancel icon is displayed to allow removing the value.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>disabled</td>\r\n                                    <td>boolean</td>\r\n                                    <td>false</td>\r\n                                    <td>When present, it specifies that the element should be disabled.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>readonly</td>\r\n                                    <td>boolean</td>\r\n                                    <td>false</td>\r\n                                    <td>When present, changing the value is not possible.</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n\r\n                    <h3>Events</h3>\r\n                    <div class=\"doc-tablewrapper\">\r\n                        <table class=\"doc-table\">\r\n                            <thead>\r\n                                <tr>\r\n                                    <th>Name</th>\r\n                                    <th>Parameters</th>\r\n                                    <th>Description</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>onRate</td>\r\n                                    <td>event.originalEvent: browser event <br>\r\n                                        event.value: selected value\r\n                                    </td>\r\n                                    <td>Callback to invoke on rate change.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>onCancel</td>\r\n                                    <td>event: browser event</td>\r\n                                    <td>Callback to invoke when value is removed.</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n\r\n                    <h3>Styling</h3>\r\n                    <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n                    <div class=\"doc-tablewrapper\">\r\n                        <table class=\"doc-table\">\r\n                            <thead>\r\n                                <tr>\r\n                                    <th>Name</th>\r\n                                    <th>Element</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>ui-rating</td>\r\n                                    <td>Container element</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>ui-rating-star</td>\r\n                                    <td>Star element</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>ui-rating-star-on</td>\r\n                                    <td>Selected star element.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>ui-rating-cancel</td>\r\n                                    <td>Cancel icon.</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n\r\n                    <h3>Dependencies</h3>\r\n                    <p>None.</p>\r\n                </p-tabPanel>\r\n\r\n                <p-tabPanel header=\"Source\">\r\n                    <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/rating\" class=\"btn-viewsource\" target=\"_blank\">\r\n                        <i class=\"fa fa-github\"></i>\r\n                        <span>View on GitHub</span>\r\n                    </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic {{val1}}&lt;/h3&gt; \r\n&lt;p-rating [(ngModel)]=\"val1\"&gt;&lt;/p-rating&gt;\r\n\r\n&lt;h3&gt;Callback {{val2}}&lt;/h3&gt;\r\n&lt;p-rating [(ngModel)]=\"val2\" (onRate)=\"handleRate($event)\" (onCancel)=\"handleCancel($event)\"&gt;&lt;/p-rating&gt; &lt;span *ngIf=\"msg\" style=\"margin-left:10px\"&gt;{{msg}}&lt;/span&gt;\r\n\r\n&lt;h3&gt;No Cancel {{val3}}&lt;/h3&gt; \r\n&lt;p-rating [(ngModel)]=\"val3\" [cancel]=\"false\"&gt;&lt;/p-rating&gt;\r\n\r\n&lt;h3&gt;ReadOnly&lt;/h3&gt; \r\n&lt;p-rating [ngModel]=\"5\" readonly=\"true\" stars=\"10\" [cancel]=\"false\"&gt;&lt;/p-rating&gt;\r\n\r\n&lt;h3&gt;Disabled&lt;/h3&gt; \r\n&lt;p-rating [ngModel]=\"val4\" disabled=\"true\" stars=\"10\"&gt;&lt;/p-rating&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class RatingDemo &#123;\r\n\r\n    val1: number;\r\n\r\n    val2: number = 5;\r\n\r\n    val3: number;\r\n\r\n    val4: number = 5;\r\n\r\n    msg: string;\r\n\r\n    handleRate(event) &#123;\r\n        this.msg = \"You have rated \" + event.value;\r\n    &#125;\r\n\r\n    handleCancel(event) &#123;\r\n        this.msg = \"Rating Cancelled\";\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n                </p-tabPanel>\r\n            </p-tabView>\r\n        </div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">SelectButton</span>\r\n        <span>SelectButton is used to choose single or multiple items from a list using buttons.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Single</h3>\r\n    <p-selectButton [options]=\"types\" [(ngModel)]=\"selectedType\"></p-selectButton>\r\n\r\n    <p>Selected Type: {{selectedType}}</p>\r\n\r\n    <h3>Multiple</h3>\r\n    <p-selectButton [options]=\"types\" [(ngModel)]=\"selectedTypes\" multiple=\"multiple\"></p-selectButton>\r\n    <p>Selected Types: <span *ngFor=\"let type of selectedTypes\">{{type}} </span></p>\r\n\r\n    <hr />\r\n\r\n    <button type=\"button\" (click)=\"clear()\" pButton icon=\"fa-close\" label=\"Clear\"></button>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectButtonModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using ngModel and selectbutton requires a collection of options \r\n                where each option should follow the SelectItem interface that defines label-value properties.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-selectButton [options]=\"cities\" [(ngModel)]=\"selectedCity\"&gt;&lt;/p-selectButton&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectItem&#125; from 'primeng/primeng';\r\n\r\nexport class MyModel &#123;\r\n\r\n    cities: SelectItem[];\r\n\r\n    selectedCity: string;\r\n\r\n    constructor() &#123;\r\n        this.cities = [];\r\n        this.cities.push(&#123;label:'New York', value:'New York'&#125;);\r\n        this.cities.push(&#123;label:'Rome', value:'Rome'&#125;);\r\n        this.cities.push(&#123;label:'London', value:'London'&#125;);\r\n        this.cities.push(&#123;label:'Istanbul', value:'Istanbul'&#125;);\r\n        this.cities.push(&#123;label:'Paris', value:'Paris'&#125;);\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Multiple</h3>\r\n            <p>SelectButton allows selecting only one item by default and setting multiple option enables choosing more than one item. \r\n                In multiple case, model property should be an array instance that is not null or undefined.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-selectButton [options]=\"cities\" [(ngModel)]=\"selectedCities\"&gt;&lt;/p-selectButton&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectItem&#125; from 'primeng/primeng';\r\n\r\nexport class MyModel &#123;\r\n\r\n    cities: SelectItem[];\r\n\r\n    selectedCities: string[] = [];\r\n\r\n    constructor() &#123;\r\n        this.cities = [];\r\n        this.cities.push(&#123;label:'New York', value:'New York'&#125;);\r\n        this.cities.push(&#123;label:'Rome', value:'Rome'&#125;);\r\n        this.cities.push(&#123;label:'London', value:'London'&#125;);\r\n        this.cities.push(&#123;label:'Istanbul', value:'Istanbul'&#125;);\r\n        this.cities.push(&#123;label:'Paris', value:'Paris'&#125;);\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>SelectButton can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-selectButton [options]=\"cities\" formControlName=\"selectedCity\"&gt;&lt;/p-selectButton&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>options</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of selectitems to display as the available options.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>multiple</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When specified, allows selecting multiple values.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                    <tr>\r\n                        <td>onChange</td>\r\n                        <td>event.originalEvent: browser event<br />\r\n                            event.value: single value or an array of values that are selected\r\n                        </td>\r\n                        <td>Callback to invoke when value changes.</td>\r\n                    </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/selectbutton\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Single&lt;/h3&gt;\r\n&lt;p-selectButton [options]=\"types\" [(ngModel)]=\"selectedType\"&gt;&lt;/p-selectButton&gt;\r\n\r\n&lt;p&gt;Selected Type: {{selectedType}}&lt;/p&gt;\r\n\r\n&lt;h3&gt;Multiple&lt;/h3&gt;\r\n&lt;p-selectButton [options]=\"types\" [(ngModel)]=\"selectedTypes\" multiple=\"multiple\"&gt;&lt;/p-selectButton&gt;\r\n&lt;p&gt;Selected Types: &lt;span *ngFor=\"let type of selectedTypes\"&gt;{{type}} &lt;/span&gt;&lt;/p&gt;\r\n\r\n&lt;hr /&gt;\r\n\r\n&lt;button type=\"button\" (click)=\"clear()\" pButton icon=\"fa-close\" label=\"Clear\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class SelectButtonDemo &#123;\r\n\r\n    types: SelectItem[];\r\n\r\n    selectedType: string;\r\n\r\n    selectedTypes: string[] = ['Apartment','Studio'];\r\n\r\n    constructor() &#123;\r\n        this.types = [];\r\n        this.types.push(&#123;label: 'Apartment', value: 'Apartment'&#125;);\r\n        this.types.push(&#123;label: 'House', value: 'House'&#125;);\r\n        this.types.push(&#123;label: 'Studio', value: 'Studio'&#125;);\r\n    &#125;\r\n\r\n    clear() &#123;\r\n        this.selectedType = null;\r\n        this.selectedTypes = [];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/rating/ratingdemo.module.ts":
+/***/ "./src/app/showcase/components/selectbutton/selectbuttondemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -585,12 +605,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ratingdemo__ = __webpack_require__("./src/app/showcase/components/rating/ratingdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ratingdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/rating/ratingdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_rating_rating__ = __webpack_require__("./src/app/components/rating/rating.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RatingDemoModule", function() { return RatingDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__selectbuttondemo__ = __webpack_require__("./src/app/showcase/components/selectbutton/selectbuttondemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selectbuttondemo_routing_module__ = __webpack_require__("./src/app/showcase/components/selectbutton/selectbuttondemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_selectbutton_selectbutton__ = __webpack_require__("./src/app/components/selectbutton/selectbutton.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectButtonDemoModule", function() { return SelectButtonDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -605,63 +626,71 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var RatingDemoModule = (function () {
-    function RatingDemoModule() {
+
+var SelectButtonDemoModule = (function () {
+    function SelectButtonDemoModule() {
     }
-    return RatingDemoModule;
+    return SelectButtonDemoModule;
 }());
-RatingDemoModule = __decorate([
+SelectButtonDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_4__selectbuttondemo_routing_module__["a" /* SelectButtonDemoRoutingModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__ratingdemo_routing_module__["a" /* RatingDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_rating_rating__["a" /* RatingModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_5__components_selectbutton_selectbutton__["a" /* SelectButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__ratingdemo__["a" /* RatingDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__selectbuttondemo__["a" /* SelectButtonDemo */]
         ]
     })
-], RatingDemoModule);
+], SelectButtonDemoModule);
 
-//# sourceMappingURL=ratingdemo.module.js.map
+//# sourceMappingURL=selectbuttondemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/rating/ratingdemo.ts":
+/***/ "./src/app/showcase/components/selectbutton/selectbuttondemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RatingDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectButtonDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var RatingDemo = (function () {
-    function RatingDemo() {
-        this.val4 = 5;
+var SelectButtonDemo = (function () {
+    function SelectButtonDemo() {
+        this.selectedTypes = ['Apartment', 'Studio'];
+        this.types = [];
+        this.types.push({ label: 'Apartment', value: 'Apartment' });
+        this.types.push({ label: 'House', value: 'House' });
+        this.types.push({ label: 'Studio', value: 'Studio' });
     }
-    RatingDemo.prototype.handleRate = function (event) {
-        this.msg = "You have rated " + event.value;
+    SelectButtonDemo.prototype.clear = function () {
+        this.selectedType = null;
+        this.selectedTypes = [];
     };
-    RatingDemo.prototype.handleCancel = function (event) {
-        this.msg = "Rating Cancelled";
-    };
-    return RatingDemo;
+    return SelectButtonDemo;
 }());
-RatingDemo = __decorate([
+SelectButtonDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/rating/ratingdemo.html")
-    })
-], RatingDemo);
+        template: __webpack_require__("./src/app/showcase/components/selectbutton/selectbuttondemo.html")
+    }),
+    __metadata("design:paramtypes", [])
+], SelectButtonDemo);
 
-//# sourceMappingURL=ratingdemo.js.map
+//# sourceMappingURL=selectbuttondemo.js.map
 
 /***/ })
 

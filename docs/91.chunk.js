@@ -1,13 +1,66 @@
 webpackJsonp([91],{
 
-/***/ "./src/app/showcase/components/theming/theming-routing.module.ts":
+/***/ "./src/app/components/codehighlighter/codehighlighter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export CodeHighlighter */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CodeHighlighterModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CodeHighlighter = (function () {
+    function CodeHighlighter(el) {
+        this.el = el;
+    }
+    CodeHighlighter.prototype.ngOnInit = function () {
+        Prism.highlightElement(this.el.nativeElement);
+    };
+    return CodeHighlighter;
+}());
+CodeHighlighter = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+        selector: '[pCode]'
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+], CodeHighlighter);
+
+var CodeHighlighterModule = (function () {
+    function CodeHighlighterModule() {
+    }
+    return CodeHighlighterModule;
+}());
+CodeHighlighterModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [CodeHighlighter],
+        declarations: [CodeHighlighter]
+    })
+], CodeHighlighterModule);
+
+var _a;
+//# sourceMappingURL=codehighlighter.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/menumodel/menumodeldemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__theming_component__ = __webpack_require__("./src/app/showcase/components/theming/theming.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ThemingRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__ = __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MenuModelDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,73 +70,46 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ThemingRoutingModule = (function () {
-    function ThemingRoutingModule() {
+var MenuModelDemoRoutingModule = (function () {
+    function MenuModelDemoRoutingModule() {
     }
-    return ThemingRoutingModule;
+    return MenuModelDemoRoutingModule;
 }());
-ThemingRoutingModule = __decorate([
+MenuModelDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__theming_component__["a" /* ThemingComponent */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__["a" /* MenuModelDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], ThemingRoutingModule);
+], MenuModelDemoRoutingModule);
 
-//# sourceMappingURL=theming-routing.module.js.map
+//# sourceMappingURL=menumodeldemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/theming/theming.component.html":
+/***/ "./src/app/showcase/components/menumodel/menumodeldemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Theming</span>\r\n        <span>Create your own PrimeNG experience</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <h3 style=\"margin-top:0px\">Structural CSS</h3>\r\n    <p>These style classes define the skeleton of the components and include css properties such as margin, padding, display type, dimensions and positioning.\r\n    Refer to documentation of each component for the list of structural classes per component.</p>\r\n\r\n    <h3>Skinning CSS</h3>\r\n    <p>Skinning defines the look and feel properties like colors, border colors, background images.</p>\r\n\r\n    <div class=\"doc-tablewrapper\">\r\n        <table class=\"doc-table\">\r\n            <thead>\r\n                <tr>\r\n                    <th>Style Class</th>\r\n                    <th>Applies</th>\r\n                </tr>\r\n            </thead>\r\n            <tbody>\r\n                <tr>\r\n                    <td>ui-widget</td>\r\n                    <td>All PrimeNG components</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-widget-header</td>\r\n                    <td>Header section of a component</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-widget-content</td>\r\n                    <td>Content section of a component</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-default</td>\r\n                    <td>Default state of a clickable element</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-hover</td>\r\n                    <td>Hover state of a clickable element like mouse over</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-active</td>\r\n                    <td>Active state of a clickable element like mouse press</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-highlight</td>\r\n                    <td>Highlighed elements</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>ui-state-disabled</td>\r\n                    <td>Disabled elements</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>fa</td>\r\n                    <td>Icon elements based on font awesome</td>\r\n                </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n\r\n    <p>These classes are not aware of structural css like margins and paddings, mostly they only define colors. This clean separation brings great flexibility in theming because you don’t need to know each and every skinning selectors of components to change their style.</p>\r\n\r\n    <p>For example Panel component’s header section has the \"ui-panel-titlebar\" structural class, to change the color of a panel header you don’t need to about this class as \"ui-widget-header\" defines colors for panel header.</p>\r\n\r\n    <h3>Free Themes</h3>\r\n    <p>16 free themes are available for PrimeNG, these include the themeroller themes, twitter bootstrap theme and our custom themes. ThemeSwitcher on the top right section\r\n        of the page dynamically changes the theme at demo pages. Themes are distributed along with PrimeNG itself. In addition, <a href=\"https://jqueryui.com/themeroller/\">online ThemeRoller</a> designer allows you to create a PrimeNG theme.</p>\r\n\r\n    <p>Font-size of free themes use em to define the font size of the widgets using .ui-widget class. This is 1em by default and it is suggested to define a base font-size at the body element of your application to adjust the size of\r\n    components.</p>\r\n\r\n    <h3>Premium Layouts and Themes</h3>\r\n    <p>PrimeNG also supports sass based, fully customizable and easy to use <a href=\"http://www.primefaces.org/themes\">premium themes and layouts</a> such as <b>Ultima</b>\r\n        as Angular CLI projects.</p>\r\n\r\n    <a href=\"http://www.primefaces.org/layouts/ultima\">\r\n        <img alt=\"Ultima\" src=\"http://www.primefaces.org/images/market/ultima/ultima_layout_biggest.png\" style=\"width:100%\"/> \r\n    </a>\r\n\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">MenuModel API</span>\r\n        <span>PrimeNG menus components share a common api to specify the menuitems and submenus.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <h3 class=\"first\">MenuItem</h3>\r\n    <p>Core of the api is MenuItem class that defines various options such as the label, icon and children of an item in a menu. Example below\r\n    is a sample configuration with Menu component.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-menu [model]=\"items\"&gt;&lt;/p-menu&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MenuModule,MenuItem&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n            label: 'File',\r\n            items: [\r\n                &#123;label: 'New', icon: 'fa-plus'&#125;,\r\n                &#123;label: 'Open', icon: 'fa-download'&#125;\r\n            ]\r\n        &#125;,\r\n        &#123;\r\n            label: 'Edit',\r\n            items: [\r\n                &#123;label: 'Undo', icon: 'fa-refresh'&#125;,\r\n                &#123;label: 'Redo', icon: 'fa-repeat'&#125;\r\n            ]\r\n        &#125;];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n    <p>MenuItem provides the following properties. Note that not all of them may be utilized by the menu component.</p>\r\n    <div class=\"doc-tablewrapper\">\r\n        <table class=\"doc-table\">\r\n            <thead>\r\n                <tr>\r\n                    <th>Name</th>\r\n                    <th>Type</th>\r\n                    <th>Default</th>\r\n                    <th>Description</th>\r\n                </tr>\r\n            </thead>\r\n            <tbody>\r\n                <tr>\r\n                    <td>label</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Text of the item.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>icon</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Icon of the item.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>command</td>\r\n                    <td>function</td>\r\n                    <td>null</td>\r\n                    <td>Callback to execute when item is clicked.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>url</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>External link to navigate when item is clicked.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>routerLink</td>\r\n                    <td>array</td>\r\n                    <td>null</td>\r\n                    <td>RouterLink definition for internal navigation.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>routerLinkActiveOptions</td>\r\n                    <td>object</td>\r\n                    <td>null</td>\r\n                    <td>Configuration for active router link.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>items</td>\r\n                    <td>array</td>\r\n                    <td>null</td>\r\n                    <td>An array of children menuitems.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>expanded</td>\r\n                    <td>boolean</td>\r\n                    <td>false</td>\r\n                    <td>Visibility of submenu.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>disabled</td>\r\n                    <td>boolean</td>\r\n                    <td>false</td>\r\n                    <td>When set as true, disables the menuitem.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>visible</td>\r\n                    <td>boolean</td>\r\n                    <td>true</td>\r\n                    <td>Whether the dom element of menuitem is created or not.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>target</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Specifies where to open the linked document.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>separator</td>\r\n                    <td>boolean</td>\r\n                    <td>false</td>\r\n                    <td>Defines the item as a separator.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>style</td>\r\n                    <td>object</td>\r\n                    <td>null</td>\r\n                    <td>Inline style of the menuitem.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>styleClass</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Style class of the menuitem.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>badge</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Value of the badge.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>badgeStyleClass</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Style class of the badge.</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>title</td>\r\n                    <td>string</td>\r\n                    <td>null</td>\r\n                    <td>Tooltip text of the item.</td>\r\n                </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n    \r\n    <h4>Command</h4>\r\n    <p>The function to invoke when an item is clicked is defined using the command property.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n            label: 'File',\r\n            items: [\r\n                &#123;label: 'New', icon: 'fa-plus', command: (event) => &#123;\r\n                    //event.originalEvent: Browser event\r\n                    //event.item: menuitem metadata\r\n                }}\r\n            ]\r\n        &#125;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n    <h4>Navigation</h4>\r\n    <p>Navigation is specified using url property for external links and with routerLink for internal ones. If a menuitem has an active route, <i>ui-state-active</i> style class is added as an indicator. Active route link can be\r\n    configured with routerLinkActiveOptions property of MenuItem API.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MenuDemo &#123;\r\n    \r\n    private items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [&#123;\r\n            label: 'File',\r\n            items: [\r\n                &#123;label: 'New', icon: 'fa-plus', url: 'http://www.primefaces.org/primeng'&#125;,\r\n                &#123;label: 'Open', icon: 'fa-download', routerLink: ['/pagename']&#125;\r\n            ]\r\n        &#125;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/theming/theming.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ThemingComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var ThemingComponent = (function () {
-    function ThemingComponent() {
-    }
-    return ThemingComponent;
-}());
-ThemingComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/theming/theming.component.html")
-    })
-], ThemingComponent);
-
-//# sourceMappingURL=theming.component.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/components/theming/theming.module.ts":
+/***/ "./src/app/showcase/components/menumodel/menumodeldemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__theming_component__ = __webpack_require__("./src/app/showcase/components/theming/theming.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__theming_routing_module__ = __webpack_require__("./src/app/showcase/components/theming/theming-routing.module.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ThemingModule", function() { return ThemingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__ = __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menumodeldemo_routing_module__ = __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuModelDemoModule", function() { return MenuModelDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -94,24 +120,54 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ThemingModule = (function () {
-    function ThemingModule() {
+
+var MenuModelDemoModule = (function () {
+    function MenuModelDemoModule() {
     }
-    return ThemingModule;
+    return MenuModelDemoModule;
 }());
-ThemingModule = __decorate([
+MenuModelDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__theming_routing_module__["a" /* ThemingRoutingModule */]
+            __WEBPACK_IMPORTED_MODULE_3__menumodeldemo_routing_module__["a" /* MenuModelDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__theming_component__["a" /* ThemingComponent */]
+            __WEBPACK_IMPORTED_MODULE_2__menumodeldemo__["a" /* MenuModelDemo */]
         ]
     })
-], ThemingModule);
+], MenuModelDemoModule);
 
-//# sourceMappingURL=theming.module.js.map
+//# sourceMappingURL=menumodeldemo.module.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/menumodel/menumodeldemo.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MenuModelDemo; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var MenuModelDemo = (function () {
+    function MenuModelDemo() {
+    }
+    return MenuModelDemo;
+}());
+MenuModelDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        template: __webpack_require__("./src/app/showcase/components/menumodel/menumodeldemo.html")
+    })
+], MenuModelDemo);
+
+//# sourceMappingURL=menumodeldemo.js.map
 
 /***/ })
 

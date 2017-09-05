@@ -1,175 +1,5 @@
 webpackJsonp([19],{
 
-/***/ "./src/app/components/checkbox/checkbox.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export CHECKBOX_VALUE_ACCESSOR */
-/* unused harmony export Checkbox */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var CHECKBOX_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Checkbox; }),
-    multi: true
-};
-var Checkbox = (function () {
-    function Checkbox(cd) {
-        this.cd = cd;
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
-        this.focused = false;
-        this.checked = false;
-    }
-    Checkbox.prototype.onClick = function (event, checkbox, focus) {
-        event.preventDefault();
-        if (this.disabled) {
-            return;
-        }
-        this.checked = !this.checked;
-        this.updateModel();
-        if (focus) {
-            checkbox.focus();
-        }
-    };
-    Checkbox.prototype.updateModel = function () {
-        if (!this.binary) {
-            if (this.checked)
-                this.addValue();
-            else
-                this.removeValue();
-            this.onModelChange(this.model);
-        }
-        else {
-            this.onModelChange(this.checked);
-        }
-        this.onChange.emit(this.checked);
-    };
-    Checkbox.prototype.handleChange = function (event) {
-        this.checked = event.target.checked;
-        this.updateModel();
-    };
-    Checkbox.prototype.isChecked = function () {
-        if (this.binary)
-            return this.model;
-        else
-            return this.model && this.model.indexOf(this.value) > -1;
-    };
-    Checkbox.prototype.removeValue = function () {
-        var _this = this;
-        this.model = this.model.filter(function (val) { return val !== _this.value; });
-    };
-    Checkbox.prototype.addValue = function () {
-        if (this.model)
-            this.model = this.model.concat([this.value]);
-        else
-            this.model = [this.value];
-    };
-    Checkbox.prototype.onFocus = function (event) {
-        this.focused = true;
-    };
-    Checkbox.prototype.onBlur = function (event) {
-        this.focused = false;
-        this.onModelTouched();
-    };
-    Checkbox.prototype.writeValue = function (model) {
-        this.model = model;
-        this.checked = this.isChecked();
-        this.cd.markForCheck();
-    };
-    Checkbox.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
-    };
-    Checkbox.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
-    };
-    Checkbox.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    return Checkbox;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Checkbox.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "name", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Checkbox.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "binary", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "label", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Checkbox.prototype, "tabindex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "inputId", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Checkbox.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Checkbox.prototype, "onChange", void 0);
-Checkbox = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-checkbox',
-        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-chkbox ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" [attr.id]=\"inputId\" [name]=\"name\" [value]=\"value\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (change)=\"handleChange($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        [ngClass]=\"{'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-chkbox-label\" (click)=\"onClick($event,cb,true)\" \n                [ngClass]=\"{'ui-label-active':checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n                *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
-        providers: [CHECKBOX_VALUE_ACCESSOR]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _b || Object])
-], Checkbox);
-
-var CheckboxModule = (function () {
-    function CheckboxModule() {
-    }
-    return CheckboxModule;
-}());
-CheckboxModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Checkbox],
-        declarations: [Checkbox]
-    })
-], CheckboxModule);
-
-var _a, _b;
-//# sourceMappingURL=checkbox.js.map
-
-/***/ }),
-
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -220,220 +50,6 @@ CodeHighlighterModule = __decorate([
 
 var _a;
 //# sourceMappingURL=codehighlighter.js.map
-
-/***/ }),
-
-/***/ "./src/app/components/gmap/gmap.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* unused harmony export GMap */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GMapModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var GMap = (function () {
-    function GMap(el, differs, cd, zone) {
-        this.el = el;
-        this.cd = cd;
-        this.zone = zone;
-        this.onMapClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onOverlayClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onOverlayDragStart = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onOverlayDrag = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onOverlayDragEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onMapReady = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onMapDragEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onZoomChanged = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.differ = differs.find([]).create(null);
-    }
-    GMap.prototype.ngAfterViewChecked = function () {
-        if (!this.map && this.el.nativeElement.offsetParent) {
-            this.initialize();
-        }
-    };
-    GMap.prototype.initialize = function () {
-        var _this = this;
-        this.map = new google.maps.Map(this.el.nativeElement.children[0], this.options);
-        this.onMapReady.emit({
-            map: this.map
-        });
-        if (this.overlays) {
-            for (var _i = 0, _a = this.overlays; _i < _a.length; _i++) {
-                var overlay = _a[_i];
-                overlay.setMap(this.map);
-                this.bindOverlayEvents(overlay);
-            }
-        }
-        this.map.addListener('click', function (event) {
-            _this.zone.run(function () {
-                _this.onMapClick.emit(event);
-            });
-        });
-        this.map.addListener('dragend', function (event) {
-            _this.zone.run(function () {
-                _this.onMapDragEnd.emit(event);
-            });
-        });
-        this.map.addListener('zoom_changed', function (event) {
-            _this.zone.run(function () {
-                _this.onZoomChanged.emit(event);
-            });
-        });
-    };
-    GMap.prototype.bindOverlayEvents = function (overlay) {
-        var _this = this;
-        overlay.addListener('click', function (event) {
-            _this.zone.run(function () {
-                _this.onOverlayClick.emit({
-                    originalEvent: event,
-                    'overlay': overlay,
-                    map: _this.map
-                });
-            });
-        });
-        if (overlay.getDraggable()) {
-            this.bindDragEvents(overlay);
-        }
-    };
-    GMap.prototype.ngDoCheck = function () {
-        var _this = this;
-        var changes = this.differ.diff(this.overlays);
-        if (changes && this.map) {
-            changes.forEachRemovedItem(function (record) { record.item.setMap(null); });
-            changes.forEachAddedItem(function (record) {
-                record.item.setMap(_this.map);
-                record.item.addListener('click', function (event) {
-                    _this.zone.run(function () {
-                        _this.onOverlayClick.emit({
-                            originalEvent: event,
-                            overlay: record.item,
-                            map: _this.map
-                        });
-                    });
-                });
-                if (record.item.getDraggable()) {
-                    _this.bindDragEvents(record.item);
-                }
-            });
-        }
-    };
-    GMap.prototype.bindDragEvents = function (overlay) {
-        var _this = this;
-        overlay.addListener('dragstart', function (event) {
-            _this.zone.run(function () {
-                _this.onOverlayDragStart.emit({
-                    originalEvent: event,
-                    overlay: overlay,
-                    map: _this.map
-                });
-            });
-        });
-        overlay.addListener('drag', function (event) {
-            _this.zone.run(function () {
-                _this.onOverlayDrag.emit({
-                    originalEvent: event,
-                    overlay: overlay,
-                    map: _this.map
-                });
-            });
-        });
-        overlay.addListener('dragend', function (event) {
-            _this.zone.run(function () {
-                _this.onOverlayDragEnd.emit({
-                    originalEvent: event,
-                    overlay: overlay,
-                    map: _this.map
-                });
-            });
-        });
-    };
-    GMap.prototype.getMap = function () {
-        return this.map;
-    };
-    return GMap;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], GMap.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], GMap.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], GMap.prototype, "options", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], GMap.prototype, "overlays", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], GMap.prototype, "onMapClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], GMap.prototype, "onOverlayClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], GMap.prototype, "onOverlayDragStart", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
-], GMap.prototype, "onOverlayDrag", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _e || Object)
-], GMap.prototype, "onOverlayDragEnd", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
-], GMap.prototype, "onMapReady", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
-], GMap.prototype, "onMapDragEnd", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
-], GMap.prototype, "onZoomChanged", void 0);
-GMap = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-gmap',
-        template: "<div [ngStyle]=\"style\" [class]=\"styleClass\"></div>"
-    }),
-    __metadata("design:paramtypes", [typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _m || Object])
-], GMap);
-
-var GMapModule = (function () {
-    function GMapModule() {
-    }
-    return GMapModule;
-}());
-GMapModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [GMap],
-        declarations: [GMap]
-    })
-], GMapModule);
-
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
-//# sourceMappingURL=gmap.js.map
 
 /***/ }),
 
@@ -647,6 +263,288 @@ GrowlModule = __decorate([
 
 var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=growl.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/inputtextarea/inputtextarea.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export InputTextarea */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputTextareaModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var InputTextarea = (function () {
+    function InputTextarea(el) {
+        this.el = el;
+        this.onResize = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+    }
+    InputTextarea.prototype.ngOnInit = function () {
+        this.rowsDefault = this.rows;
+        this.colsDefault = this.cols;
+    };
+    InputTextarea.prototype.ngDoCheck = function () {
+        this.updateFilledState();
+    };
+    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
+    InputTextarea.prototype.onInput = function (e) {
+        this.updateFilledState();
+    };
+    InputTextarea.prototype.updateFilledState = function () {
+        this.filled = this.el.nativeElement.value && this.el.nativeElement.value.length;
+    };
+    InputTextarea.prototype.onFocus = function (e) {
+        if (this.autoResize) {
+            this.resize(e);
+        }
+    };
+    InputTextarea.prototype.onBlur = function (e) {
+        if (this.autoResize) {
+            this.resize(e);
+        }
+    };
+    InputTextarea.prototype.onKeyup = function (e) {
+        if (this.autoResize) {
+            this.resize(e);
+        }
+    };
+    InputTextarea.prototype.resize = function (event) {
+        var linesCount = 0, lines = this.el.nativeElement.value.split('\n');
+        for (var i = lines.length - 1; i >= 0; --i) {
+            linesCount += Math.floor((lines[i].length / this.colsDefault) + 1);
+        }
+        this.rows = (linesCount >= this.rowsDefault) ? (linesCount + 1) : this.rowsDefault;
+        this.onResize.emit(event || {});
+    };
+    return InputTextarea;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], InputTextarea.prototype, "autoResize", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], InputTextarea.prototype, "rows", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], InputTextarea.prototype, "cols", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], InputTextarea.prototype, "onResize", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('input', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], InputTextarea.prototype, "onInput", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('focus', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], InputTextarea.prototype, "onFocus", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('blur', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], InputTextarea.prototype, "onBlur", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('keyup', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], InputTextarea.prototype, "onKeyup", null);
+InputTextarea = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+        selector: '[pInputTextarea]',
+        host: {
+            '[class.ui-inputtext]': 'true',
+            '[class.ui-corner-all]': 'true',
+            '[class.ui-state-default]': 'true',
+            '[class.ui-widget]': 'true',
+            '[class.ui-state-filled]': 'filled',
+            '[attr.rows]': 'rows',
+            '[attr.cols]': 'cols'
+        }
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object])
+], InputTextarea);
+
+var InputTextareaModule = (function () {
+    function InputTextareaModule() {
+    }
+    return InputTextareaModule;
+}());
+InputTextareaModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [InputTextarea],
+        declarations: [InputTextarea]
+    })
+], InputTextareaModule);
+
+var _a, _b;
+//# sourceMappingURL=inputtextarea.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/panel/panel.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
+/* unused harmony export Panel */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PanelModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var Panel = (function () {
+    function Panel(el) {
+        this.el = el;
+        this.collapsed = false;
+        this.expandIcon = 'fa-plus';
+        this.collapseIcon = 'fa-minus';
+        this.collapsedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onBeforeToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onAfterToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+    }
+    Panel.prototype.toggle = function (event) {
+        if (this.animating) {
+            return false;
+        }
+        this.animating = true;
+        this.onBeforeToggle.emit({ originalEvent: event, collapsed: this.collapsed });
+        if (this.toggleable) {
+            if (this.collapsed)
+                this.expand(event);
+            else
+                this.collapse(event);
+        }
+        event.preventDefault();
+    };
+    Panel.prototype.expand = function (event) {
+        this.collapsed = false;
+        this.collapsedChange.emit(this.collapsed);
+    };
+    Panel.prototype.collapse = function (event) {
+        this.collapsed = true;
+        this.collapsedChange.emit(this.collapsed);
+    };
+    Panel.prototype.getBlockableElement = function () {
+        return this.el.nativeElement.children[0];
+    };
+    Panel.prototype.onToggleDone = function (event) {
+        this.animating = false;
+        this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
+    };
+    return Panel;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Panel.prototype, "toggleable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "header", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Panel.prototype, "collapsed", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Panel.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "expandIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Panel.prototype, "collapseIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], Panel.prototype, "collapsedChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+], Panel.prototype, "onBeforeToggle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
+], Panel.prototype, "onAfterToggle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["c" /* Footer */]),
+    __metadata("design:type", Object)
+], Panel.prototype, "footerFacet", void 0);
+Panel = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-panel',
+        template: "\n        <div [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"toggle($event)\">\n                    <span [class]=\"collapsed ? 'fa fa-fw ' + expandIcon : 'fa fa-fw ' + collapseIcon\"></span>\n                </a>\n            </div>\n            <div class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? 'hidden' : 'visible'\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
+        animations: [
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["a" /* trigger */])('panelContent', [
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["c" /* style */])({
+                    height: '0'
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["c" /* style */])({
+                    height: '*'
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["d" /* transition */])('visible <=> hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["e" /* animate */])('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+            ])
+        ]
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object])
+], Panel);
+
+var PanelModule = (function () {
+    function PanelModule() {
+    }
+    return PanelModule;
+}());
+PanelModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [Panel, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [Panel]
+    })
+], PanelModule);
+
+var _a, _b, _c, _d;
+//# sourceMappingURL=panel.js.map
 
 /***/ }),
 
@@ -1001,14 +899,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/gmap/gmapdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/validation/validationdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gmapdemo__ = __webpack_require__("./src/app/showcase/components/gmap/gmapdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GMapDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__validationdemo__ = __webpack_require__("./src/app/showcase/components/validation/validationdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ValidationDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1018,36 +916,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var GMapDemoRoutingModule = (function () {
-    function GMapDemoRoutingModule() {
+var ValidationDemoRoutingModule = (function () {
+    function ValidationDemoRoutingModule() {
     }
-    return GMapDemoRoutingModule;
+    return ValidationDemoRoutingModule;
 }());
-GMapDemoRoutingModule = __decorate([
+ValidationDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__gmapdemo__["a" /* GMapDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__validationdemo__["a" /* ValidationDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], GMapDemoRoutingModule);
+], ValidationDemoRoutingModule);
 
-//# sourceMappingURL=gmapdemo-routing.module.js.map
+//# sourceMappingURL=validationdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/gmap/gmapdemo.html":
+/***/ "./src/app/showcase/components/validation/validationdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">GMap</span>\r\n        <span>GMap component provides integration with Google Maps API. This sample demontrates\r\n        various uses cases like binding, overlays and events. Click the map to add a new item.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\"></p-growl>\r\n    \r\n    <p-gmap #gmap [style]=\"&#123;'width':'100%','height':'320px'&#125;\" [options]=\"options\" [overlays]=\"overlays\" \r\n       (onMapClick)=\"handleMapClick($event)\" (onOverlayClick)=\"handleOverlayClick($event)\" (onOverlayDragEnd)=\"handleDragEnd($event)\"></p-gmap>\r\n    <button type=\"button\" pButton label=\"Clear\" icon=\"fa-close\" (click)=\"clear()\" style=\"margin-top:10px\"></button>\r\n    <button type=\"button\" pButton label=\"Zoom In\" icon=\"fa-search-plus\" (click)=\"zoomIn(gmap.getMap())\" style=\"margin-top:10px\"></button>\r\n    <button type=\"button\" pButton label=\"Zoom Out\" icon=\"fa-search-minus\" (click)=\"zoomOut(gmap.getMap())\" style=\"margin-top:10px\"></button>\r\n\r\n    <p-dialog showEffect=\"fade\" [(visible)]=\"dialogVisible\" header=\"New Location\" [width]=\"300\">\r\n        <div class=\"ui-g ui-fluid\" *ngIf=\"selectedPosition\">\r\n            <div class=\"ui-g-2\"><label for=\"title\">Label</label></div>\r\n            <div class=\"ui-g-10\"><input type=\"text\" pInputText id=\"title\" [(ngModel)]=\"markerTitle\"></div>\r\n            \r\n            <div class=\"ui-g-2\"><label for=\"lat\">Lat</label></div>\r\n            <div class=\"ui-g-10\"><input id=\"lat\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lat()\"></div>\r\n            \r\n            <div class=\"ui-g-2\"><label for=\"lng\">Lng</label></div>\r\n            <div class=\"ui-g-10\"><input id=\"lng\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lng()\"></div>\r\n            \r\n            <div class=\"ui-g-2\"><label for=\"drg\">Drag</label></div>\r\n            <div class=\"ui-g-10\"><p-checkbox [(ngModel)]=\"draggable\" binary=\"true\" [style]=\"{'margin-top':'.25em'}\"></p-checkbox></div>\r\n        </div>\r\n        <p-footer>\r\n            <div class=\"ui-dialog-buttonpane ui-helper-clearfix\">\r\n                <button type=\"button\" pButton label=\"Add Marker\" icon=\"fa-plus\" (click)=\"addMarker()\"></button>\r\n            </div>\r\n        </p-footer>\r\n    </p-dialog>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;GMapModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>A map is initialized with options and dimensions. Refer to the google maps api for the list of available options.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-gmap [options]=\"options\" [style]=\"&#123;'width':'100%','height':'320px'&#125;\" &gt;&lt;/p-gmap&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    options: any;\r\n    \r\n    overlays: any[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.options = &#123;\r\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\r\n            zoom: 12\r\n        &#125;;\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Overlays</h3>\r\n            <p>GMap can display any type of overlay such as markers, polygons and circles. Overlay instances are bound using the overlays property array. Overlays are aware\r\n            of one-way binding so whenever the array changes, gmap updates itself.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-gmap [options]=\"options\" [overlays]=\"overlays\" [style]=\"&#123;'width':'100%','height':'320px'&#125;\" &gt;&lt;/p-gmap&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    options: any;\r\n    \r\n    overlays: any[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.options = &#123;\r\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\r\n            zoom: 12\r\n        &#125;;\r\n        \r\n        this.overlays = [\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\r\n            new google.maps.Polygon(&#123;paths: [\r\n                &#123;lat: 36.9177, lng: 30.7854&#125;,&#123;lat: 36.8851, lng: 30.7802&#125;,&#123;lat: 36.8829, lng: 30.8111&#125;,&#123;lat: 36.9177, lng: 30.8159&#125;\r\n            ], strokeOpacity: 0.5, strokeWeight: 1,fillColor: '#1976D2', fillOpacity: 0.35\r\n            &#125;),\r\n            new google.maps.Circle(&#123;center: &#123;lat: 36.90707, lng: 30.56533&#125;, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500&#125;),\r\n            new google.maps.Polyline(&#123;path: [&#123;lat: 36.86149, lng: 30.63743&#125;,&#123;lat: 36.86341, lng: 30.72463&#125;], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2&#125;)\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Events</h3>\r\n            <p>GMap provides common callbacks to hook into events including map click, overlay click and overlay dragging.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-gmap [options]=\"options\" [overlays]=\"overlays\" [style]=\"&#123;'width':'100%','height':'320px'&#125;\"\r\n            (onMapClick)=\"handleMapClick($event)\" (onOverlayClick)=\"handleOverlayClick($event)\"&gt;&lt;/p-gmap&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    options: any;\r\n    \r\n    overlays: any[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.options = &#123;\r\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\r\n            zoom: 12\r\n        &#125;;\r\n        \r\n        this.overlays = [\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\r\n            new google.maps.Polygon(&#123;paths: [\r\n                &#123;lat: 36.9177, lng: 30.7854&#125;,&#123;lat: 36.8851, lng: 30.7802&#125;,&#123;lat: 36.8829, lng: 30.8111&#125;,&#123;lat: 36.9177, lng: 30.8159&#125;\r\n            ], strokeOpacity: 0.5, strokeWeight: 1,fillColor: '#1976D2', fillOpacity: 0.35\r\n            &#125;),\r\n            new google.maps.Circle(&#123;center: &#123;lat: 36.90707, lng: 30.56533&#125;, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500&#125;),\r\n            new google.maps.Polyline(&#123;path: [&#123;lat: 36.86149, lng: 30.63743&#125;,&#123;lat: 36.86341, lng: 30.72463&#125;], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2&#125;)\r\n        ];\r\n    &#125;\r\n    \r\n    handleMapClick(event) &#123;\r\n        //event: MouseEvent of Google Maps api\r\n    &#125;\r\n    \r\n    handleOverlayClick(event) &#123;\r\n        //event.originalEvent: MouseEvent of Google Maps api\r\n        //event.overlay: Clicked overlay     \r\n        //event.map: Map instance   \r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Google Maps API</h3>\r\n            <p>In case you need to access the map instance directly, use the getMap() method.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-gmap #gmap [options]=\"options\"&gt;&lt;/p-gmap&gt;\r\n\r\n&lt;button type=\"button\" pButton label=\"Zoom In\" icon=\"fa-search-plus\" (click)=\"zoomIn(gmap.getMap())\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    options: any;\r\n    \r\n    overlays: any[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.options = &#123;\r\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\r\n            zoom: 12\r\n        &#125;;\r\n    &#125;\r\n    \r\n    zoomIn(map) &#123;\r\n        map.setZoom(map.getZoom()+1);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n            <p>Another option is to to get the map object directly after init via (onMapReady) event.\r\n               In the example below, google.maps.Map is used for adjusting map bounds to markers.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-gmap #gmap [options]=\"options\" [overlays]=\"overlays\" [style]=\"mapStyle\"\r\n    (onMapReady)=\"setMap($event)\"&gt;&lt;/p-gmap&gt;\r\n</code>\r\n</pre>\r\n            <p>Then from your component you would write</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    options: any;\r\n    \r\n    overlays: any[];\r\n    \r\n    map: google.maps.Map;\r\n    \r\n    setMap(event) &#123;\r\n        this.map = event.map;\r\n    &#125;\r\n    \r\n    ngOnInit() &#123;\r\n        let bounds = new google.maps.LatLngBounds();\r\n        this.overlays = [\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\r\n            new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\r\n        ]\r\n        // ... extend bounds\r\n        this.overlays.forEach(marker => &#123;\r\n            bounds.extend(marker.getPosition());\r\n        &#125;);\r\n        \r\n        setTimeout(()=> &#123; // map will need some time to load\r\n            this.map.fitBounds(bounds); // Map object used directly\r\n        &#125;, 1000);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>options</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Google Maps API configuration object.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>overlays</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of overlays to display.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onMapClick</td>\r\n                            <td>event: Google Maps MouseEvent</td>\r\n                            <td>Callback to invoke when map is clicked except markers.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onMapDragEnd</td>\r\n                            <td>originalEvent: Google Maps dragend<br></td>\r\n                            <td>Callback to invoke when map drag (i.e. pan) has ended.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onMapReady</td>\r\n                            <td>event.map: Google Maps Instance</td>\r\n                            <td>Callback to invoke when the map is ready to be used.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onOverlayClick</td>\r\n                            <td>originalEvent: Google Maps MouseEvent <br>\r\n                                overlay: Clicked overlay <br>\r\n                                map: Map instance <br></td>\r\n                            <td>Callback to invoke when an overlay is clicked.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onOverlayDrag</td>\r\n                            <td>originalEvent: Google Maps MouseEvent <br>\r\n                                overlay: Clicked overlay <br>\r\n                                map: Map instance <br></td>\r\n                            <td>Callback to invoke when an overlay is being dragged.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onOverlayDragEnd</td>\r\n                            <td>originalEvent: Google Maps MouseEvent <br>\r\n                                overlay: Clicked overlay <br>\r\n                                map: Map instance <br></td>\r\n                            <td>Callback to invoke when an overlay drag ends.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onOverlayDragStart</td>\r\n                            <td>originalEvent: Google Maps MouseEvent <br>\r\n                                overlay: Clicked overlay <br>\r\n                                map: Map instance <br></td>\r\n                            <td>Callback to invoke when an overlay drag starts.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onZoomChanged</td>\r\n                            <td>originalEvent: Google Maps zoom_changed</td>\r\n                            <td>Callback to invoke when zoom level has changed.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>Google Maps API.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/gmap\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;p-gmap #gmap [style]=\"&#123;'width':'100%','height':'320px'&#125;\" [options]=\"options\" [overlays]=\"overlays\" \r\n    (onMapClick)=\"handleMapClick($event)\" (onOverlayClick)=\"handleOverlayClick($event)\" (onOverlayDragEnd)=\"handleDragEnd($event)\"&gt;&lt;/p-gmap&gt;\r\n&lt;button type=\"button\" pButton label=\"Clear\" icon=\"fa-close\" (click)=\"clear()\" style=\"margin-top:10px\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton label=\"Zoom In\" icon=\"fa-search-plus\" (click)=\"zoomIn(gmap.getMap())\" style=\"margin-top:10px\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton label=\"Zoom Out\" icon=\"fa-search-minus\" (click)=\"zoomOut(gmap.getMap())\" style=\"margin-top:10px\"&gt;&lt;/button&gt;\r\n\r\n&lt;p-dialog showEffect=\"fade\" [(visible)]=\"dialogVisible\" header=\"New Location\"&gt;\r\n    &lt;div class=\"ui-g ui-fluid\" *ngIf=\"selectedPosition\"&gt;\r\n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"title\"&gt;Label&lt;/label&gt;&lt;/div&gt;\r\n        &lt;div class=\"ui-g-10\"&gt;&lt;input type=\"text\" pInputText id=\"title\" [(ngModel)]=\"markerTitle\"&gt;&lt;/div&gt;\r\n        \r\n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"lat\"&gt;Lat&lt;/label&gt;&lt;/div&gt;\r\n        &lt;div class=\"ui-g-10\"&gt;&lt;input id=\"lat\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lat()\"&gt;&lt;/div&gt;\r\n        \r\n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"lng\"&gt;Lng&lt;/label&gt;&lt;/div&gt;\r\n        &lt;div class=\"ui-g-10\"&gt;&lt;input id=\"lng\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lng()\"&gt;&lt;/div&gt;\r\n        \r\n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"drg\"&gt;Drag&lt;/label&gt;&lt;/div&gt;\r\n        &lt;div class=\"ui-g-10\"&gt;&lt;p-checkbox [(ngModel)]=\"draggable\" binary=\"true\" [style]=\"&#123;'margin-top':'.25em'&#125;\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n    &lt;/div&gt;\r\n    &lt;p-footer&gt;\r\n        &lt;div class=\"ui-dialog-buttonpane ui-helper-clearfix\"&gt;\r\n            &lt;button type=\"button\" pButton label=\"Add Marker\" icon=\"fa-plus\" (click)=\"addMarker()\"&gt;&lt;/button&gt;\r\n        &lt;/div&gt;\r\n    &lt;/p-footer&gt;\r\n&lt;/p-dialog&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class GMapDemo implements OnInit &#123;\r\n\r\n    options: any;\r\n    \r\n    overlays: any[];\r\n    \r\n    dialogVisible: boolean;\r\n    \r\n    markerTitle: string;\r\n    \r\n    selectedPosition: any;\r\n    \r\n    infoWindow: any;\r\n    \r\n    draggable: boolean;\r\n    \r\n    msgs: Message[] = [];\r\n\r\n    ngOnInit() &#123;\r\n        this.options = &#123;\r\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\r\n            zoom: 12\r\n        &#125;;\r\n        \r\n        this.initOverlays();\r\n        \r\n        this.infoWindow = new google.maps.InfoWindow();\r\n    &#125;\r\n    \r\n    handleMapClick(event) &#123;\r\n        this.dialogVisible = true;\r\n        this.selectedPosition = event.latLng;\r\n    &#125;\r\n    \r\n    handleOverlayClick(event) &#123;\r\n        this.msgs = [];\r\n        let isMarker = event.overlay.getTitle != undefined;\r\n        \r\n        if(isMarker) &#123;\r\n            let title = event.overlay.getTitle();\r\n            this.infoWindow.setContent('<div>' + title + '</div>');\r\n            this.infoWindow.open(event.map, event.overlay);\r\n            event.map.setCenter(event.overlay.getPosition());\r\n            \r\n            this.msgs.push(&#123;severity:'info', summary:'Marker Selected', detail: title&#125;);\r\n        &#125;\r\n        else &#123;\r\n            this.msgs.push(&#123;severity:'info', summary:'Shape Selected', detail: ''&#125;);\r\n        &#125;        \r\n    &#125;\r\n    \r\n    addMarker() &#123;\r\n        this.overlays.push(new google.maps.Marker(&#123;position:&#123;lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng()&#125;, title:this.markerTitle, draggable: this.draggable&#125;));\r\n        this.markerTitle = null;\r\n        this.dialogVisible = false;\r\n    &#125;\r\n    \r\n    handleDragEnd(event) &#123;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Marker Dragged', detail: event.overlay.getTitle()&#125;);\r\n    &#125;\r\n    \r\n    initOverlays() &#123;\r\n        if(!this.overlays||!this.overlays.length) &#123;\r\n            this.overlays = [\r\n                new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\r\n                new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\r\n                new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\r\n                new google.maps.Polygon(&#123;paths: [\r\n                    &#123;lat: 36.9177, lng: 30.7854&#125;,&#123;lat: 36.8851, lng: 30.7802&#125;,&#123;lat: 36.8829, lng: 30.8111&#125;,&#123;lat: 36.9177, lng: 30.8159&#125;\r\n                ], strokeOpacity: 0.5, strokeWeight: 1,fillColor: '#1976D2', fillOpacity: 0.35\r\n                &#125;),\r\n                new google.maps.Circle(&#123;center: &#123;lat: 36.90707, lng: 30.56533&#125;, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500&#125;),\r\n                new google.maps.Polyline(&#123;path: [&#123;lat: 36.86149, lng: 30.63743&#125;,&#123;lat: 36.86341, lng: 30.72463&#125;], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2&#125;)\r\n            ];\r\n        &#125;\r\n    &#125;\r\n    \r\n    zoomIn(map) &#123;\r\n        map.setZoom(map.getZoom()+1);\r\n    &#125;\r\n    \r\n    zoomOut(map) &#123;\r\n        map.setZoom(map.getZoom()-1);\r\n    &#125;\r\n    \r\n    clear() &#123;\r\n        this.overlays = [];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Validation</span>\r\n        <span>PrimeNG input components indicate validation errors automatically when their value is marked as invalid.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-growl [value]=\"msgs\" sticky=\"sticky\"></p-growl>\r\n\r\n    <form [formGroup]=\"userform\" (ngSubmit)=\"onSubmit(userform.value)\">\r\n        <p-panel header=\"Validate\">\r\n            <div class=\"ui-grid ui-grid-responsive ui-grid-pad ui-fluid\" style=\"margin: 10px 0px\">\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-2\">\r\n                        First Name *:\r\n                    </div>\r\n                    <div class=\"ui-grid-col-6\">\r\n                        <input pInputText type=\"text\" formControlName=\"firstname\" placeholder=\"Required\"/>\r\n                    </div>\r\n                    <div class=\"ui-grid-col-4\">\r\n                        <div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['firstname'].valid&&userform.controls['firstname'].dirty\">\r\n                            <i class=\"fa fa-close\"></i>\r\n                            Firstname is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-2\">\r\n                        Last Name *:\r\n                    </div>\r\n                    <div class=\"ui-grid-col-6\">\r\n                        <input pInputText type=\"text\" formControlName=\"lastname\" placeholder=\"Required\"/>\r\n                    </div>\r\n                    <div class=\"ui-grid-col-4\">\r\n                        <div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['lastname'].valid&&userform.controls['lastname'].dirty\">\r\n                            <i class=\"fa fa-close\"></i>\r\n                            Lastname is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-2\">\r\n                        Password *:\r\n                    </div>\r\n                    <div class=\"ui-grid-col-6\">\r\n                        <input pInputText type=\"password\" formControlName=\"password\" placeholder=\"Required - Min(6)\"/>\r\n                    </div>\r\n                    <div class=\"ui-grid-col-4\">\r\n                        <div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['password'].valid&&userform.controls['password'].dirty\">\r\n                            <i class=\"fa fa-close\"></i>\r\n                            <span *ngIf=\"userform.controls['password'].errors['required']\">Password is required</span>\r\n                            <span *ngIf=\"userform.controls['password'].errors['minlength']\">Must be longer than 6 characters</span>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-2\">\r\n                        Description:\r\n                    </div>\r\n                    <div class=\"ui-grid-col-6\">\r\n                        <textarea pInputTextarea type=\"text\" formControlName=\"description\"></textarea>\r\n                    </div>\r\n                    <div class=\"ui-grid-col-4\"></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-2\">\r\n                        Gender *:\r\n                    </div>\r\n                    <div class=\"ui-grid-col-6\">\r\n                        <p-dropdown [options]=\"genders\" formControlName=\"gender\" [autoWidth]=\"false\"></p-dropdown>\r\n                    </div>\r\n                    <div class=\"ui-grid-col-4\">\r\n                        <div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['gender'].valid&&userform.controls['gender'].dirty\">\r\n                            <i class=\"fa fa-close\"></i>\r\n                            Gender is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-2\"></div>\r\n                    <div class=\"ui-grid-col-6\">\r\n                        <button pButton type=\"submit\" label=\"Submit\" [disabled]=\"!userform.valid\"></button>\r\n                    </div>\r\n                    <div class=\"ui-grid-col-4\"></div>\r\n                </div>\r\n                <div style=\"text-align:center;margin-top:20px\" *ngIf=\"submitted\">\r\n                    Form Submitted\r\n                    <br>\r\n                    {{diagnostic}}\r\n                </div>\r\n            </div>\r\n        </p-panel>\r\n    </form>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/validation\" class=\"btn-viewsource\" target=\"_blank\">\r\n        <i class=\"fa fa-github\"></i>\r\n        <span>View on GitHub</span>\r\n    </a>\r\n\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"validationdemo.ts\">\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component,OnInit&#125; from '@angular/core';\r\nimport &#123;Validators,FormControl,FormGroup,FormBuilder&#125; from '@angular/forms';\r\nimport &#123;Message,SelectItem&#125; from '../../../components/common/api';\r\n\r\n@Component(&#123;\r\n    templateUrl: 'showcase/demo/validation/validationdemo.html'\r\n&#125;)\r\nexport class ValidationDemo implements OnInit &#123;\r\n\r\n    msgs: Message[] = [];\r\n\r\n    userform: FormGroup;\r\n\r\n    submitted: boolean;\r\n\r\n    genders: SelectItem[];\r\n\r\n    description: string;\r\n\r\n    constructor(private fb: FormBuilder) &#123;&#125;\r\n\r\n    ngOnInit() &#123;\r\n        this.userform = this.fb.group(&#123;\r\n            'firstname': new FormControl('', Validators.required),\r\n            'lastname': new FormControl('', Validators.required),\r\n            'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),\r\n            'description': new FormControl(''),\r\n            'gender': new FormControl('', Validators.required)\r\n        &#125;);\r\n\r\n        this.genders = [];\r\n        this.genders.push(&#123;label:'Select Gender', value:''&#125;);\r\n        this.genders.push(&#123;label:'Male', value:'Male'&#125;);\r\n        this.genders.push(&#123;label:'Female', value:'Female'&#125;);\r\n    &#125;\r\n\r\n    onSubmit(value: string) &#123;\r\n        this.submitted = true;\r\n        this.msgs = [];\r\n        this.msgs.push(&#123;severity:'info', summary:'Success', detail:'Form Submitted'&#125;);\r\n    &#125;\r\n\r\n    get diagnostic() &#123; return JSON.stringify(this.userform.value); &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"validationdemo.html\">\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-growl [value]=\"msgs\" sticky=\"sticky\"&gt;&lt;/p-growl&gt;\r\n\r\n&lt;form [formGroup]=\"userform\" (ngSubmit)=\"onSubmit(userform.value)\"&gt;\r\n    &lt;p-panel header=\"Validate\"&gt;\r\n        &lt;div class=\"ui-grid ui-grid-responsive ui-grid-pad ui-fluid\" style=\"margin: 10px 0px\"&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-2\"&gt;\r\n                    First Name *:\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;\r\n                    &lt;input pInputText type=\"text\" formControlName=\"firstname\" placeholder=\"Required\"/&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-4\"&gt;\r\n                    &lt;div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['firstname'].valid&&userform.controls['firstname'].dirty\"&gt;\r\n                        &lt;i class=\"fa fa-close\"&gt;&lt;/i&gt;\r\n                        Firstname is required\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-2\"&gt;\r\n                    Last Name *:\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;\r\n                    &lt;input pInputText type=\"text\" formControlName=\"lastname\" placeholder=\"Required\"/&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-4\"&gt;\r\n                    &lt;div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['lastname'].valid&&userform.controls['lastname'].dirty\"&gt;\r\n                        &lt;i class=\"fa fa-close\"&gt;&lt;/i&gt;\r\n                        Lastname is required\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-2\"&gt;\r\n                    Password *:\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;\r\n                    &lt;input pInputText type=\"password\" formControlName=\"password\" placeholder=\"Required - Min(6)\"/&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-4\"&gt;\r\n                    &lt;div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['password'].valid&&userform.controls['password'].dirty\"&gt;\r\n                        &lt;i class=\"fa fa-close\"&gt;&lt;/i&gt;\r\n                        &lt;span *ngIf=\"userform.controls['password'].errors['required']\"&gt;Password is required&lt;/span&gt;\r\n                        &lt;span *ngIf=\"userform.controls['password'].errors['minlength']\"&gt;Must be longer than 6 characters&lt;/span&gt;\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-2\"&gt;\r\n                    Description:\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;\r\n                    &lt;textarea pInputTextarea type=\"text\" formControlName=\"description\"&gt;&lt;/textarea&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-4\"&gt;&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-2\"&gt;\r\n                    Gender *:\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;\r\n                    &lt;p-dropdown [options]=\"genders\" formControlName=\"gender\" [autoWidth]=\"false\"&gt;&lt;/p-dropdown&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-4\"&gt;\r\n                    &lt;div class=\"ui-message ui-messages-error ui-corner-all\" *ngIf=\"!userform.controls['gender'].valid&&userform.controls['gender'].dirty\"&gt;\r\n                        &lt;i class=\"fa fa-close\"&gt;&lt;/i&gt;\r\n                        Gender is required\r\n                    &lt;/div&gt;\r\n                &lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div class=\"ui-grid-row\"&gt;\r\n                &lt;div class=\"ui-grid-col-2\"&gt;&lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-6\"&gt;\r\n                    &lt;button pButton type=\"submit\" label=\"Submit\" [disabled]=\"!userform.valid\"&gt;&lt;/button&gt;\r\n                &lt;/div&gt;\r\n                &lt;div class=\"ui-grid-col-4\"&gt;&lt;/div&gt;\r\n            &lt;/div&gt;\r\n            &lt;div style=\"text-align:center;margin-top:20px\" *ngIf=\"submitted\"&gt;\r\n                Form Submitted\r\n                &lt;br&gt;\r\n                {{diagnostic}}\r\n            &lt;/div&gt;\r\n        &lt;/div&gt;\r\n    &lt;/p-panel&gt;\r\n&lt;/form&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/gmap/gmapdemo.module.ts":
+/***/ "./src/app/showcase/components/validation/validationdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1055,17 +953,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gmapdemo__ = __webpack_require__("./src/app/showcase/components/gmap/gmapdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__gmapdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/gmap/gmapdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_gmap_gmap__ = __webpack_require__("./src/app/components/gmap/gmap.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_checkbox_checkbox__ = __webpack_require__("./src/app/components/checkbox/checkbox.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_dialog_dialog__ = __webpack_require__("./src/app/components/dialog/dialog.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__validationdemo__ = __webpack_require__("./src/app/showcase/components/validation/validationdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__validationdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/validation/validationdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__ = __webpack_require__("./src/app/components/panel/panel.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_dropdown_dropdown__ = __webpack_require__("./src/app/components/dropdown/dropdown.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inputtextarea_inputtextarea__ = __webpack_require__("./src/app/components/inputtextarea/inputtextarea.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GMapDemoModule", function() { return GMapDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ValidationDemoModule", function() { return ValidationDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1085,122 +983,94 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var GMapDemoModule = (function () {
-    function GMapDemoModule() {
+var ValidationDemoModule = (function () {
+    function ValidationDemoModule() {
     }
-    return GMapDemoModule;
+    return ValidationDemoModule;
 }());
-GMapDemoModule = __decorate([
+ValidationDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__gmapdemo_routing_module__["a" /* GMapDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_gmap_gmap__["a" /* GMapModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__["a" /* GrowlModule */],
-            __WEBPACK_IMPORTED_MODULE_9__components_inputtext_inputtext__["a" /* InputTextModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_checkbox_checkbox__["a" /* CheckboxModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_dialog_dialog__["a" /* DialogModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* ReactiveFormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4__validationdemo_routing_module__["a" /* ValidationDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__["a" /* GrowlModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__["a" /* PanelModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_dropdown_dropdown__["a" /* DropdownModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_inputtext_inputtext__["a" /* InputTextModule */],
+            __WEBPACK_IMPORTED_MODULE_9__components_inputtextarea_inputtextarea__["a" /* InputTextareaModule */],
             __WEBPACK_IMPORTED_MODULE_10__components_button_button__["a" /* ButtonModule */],
             __WEBPACK_IMPORTED_MODULE_11__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_12__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__gmapdemo__["a" /* GMapDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__validationdemo__["a" /* ValidationDemo */]
         ]
     })
-], GMapDemoModule);
+], ValidationDemoModule);
 
-//# sourceMappingURL=gmapdemo.module.js.map
+//# sourceMappingURL=validationdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/gmap/gmapdemo.ts":
+/***/ "./src/app/showcase/components/validation/validationdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GMapDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ValidationDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var GMapDemo = (function () {
-    function GMapDemo() {
+
+var ValidationDemo = (function () {
+    function ValidationDemo(fb) {
+        this.fb = fb;
         this.msgs = [];
     }
-    GMapDemo.prototype.ngOnInit = function () {
-        this.options = {
-            center: { lat: 36.890257, lng: 30.707417 },
-            zoom: 12
-        };
-        this.initOverlays();
-        this.infoWindow = new google.maps.InfoWindow();
+    ValidationDemo.prototype.ngOnInit = function () {
+        this.userform = this.fb.group({
+            'firstname': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* Validators */].required),
+            'lastname': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* Validators */].required),
+            'password': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]('', [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* Validators */].minLength(6)]),
+            'description': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */](''),
+            'gender': new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]('', __WEBPACK_IMPORTED_MODULE_1__angular_forms__["d" /* Validators */].required)
+        });
+        this.genders = [];
+        this.genders.push({ label: 'Select Gender', value: '' });
+        this.genders.push({ label: 'Male', value: 'Male' });
+        this.genders.push({ label: 'Female', value: 'Female' });
     };
-    GMapDemo.prototype.handleMapClick = function (event) {
-        this.dialogVisible = true;
-        this.selectedPosition = event.latLng;
-    };
-    GMapDemo.prototype.handleOverlayClick = function (event) {
+    ValidationDemo.prototype.onSubmit = function (value) {
+        this.submitted = true;
         this.msgs = [];
-        var isMarker = event.overlay.getTitle != undefined;
-        if (isMarker) {
-            var title = event.overlay.getTitle();
-            this.infoWindow.setContent('<div>' + title + '</div>');
-            this.infoWindow.open(event.map, event.overlay);
-            event.map.setCenter(event.overlay.getPosition());
-            this.msgs.push({ severity: 'info', summary: 'Marker Selected', detail: title });
-        }
-        else {
-            this.msgs.push({ severity: 'info', summary: 'Shape Selected', detail: '' });
-        }
+        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'Form Submitted' });
     };
-    GMapDemo.prototype.addMarker = function () {
-        this.overlays.push(new google.maps.Marker({ position: { lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng() }, title: this.markerTitle, draggable: this.draggable }));
-        this.markerTitle = null;
-        this.dialogVisible = false;
-    };
-    GMapDemo.prototype.handleDragEnd = function (event) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Marker Dragged', detail: event.overlay.getTitle() });
-    };
-    GMapDemo.prototype.initOverlays = function () {
-        if (!this.overlays || !this.overlays.length) {
-            this.overlays = [
-                new google.maps.Marker({ position: { lat: 36.879466, lng: 30.667648 }, title: "Konyaalti" }),
-                new google.maps.Marker({ position: { lat: 36.883707, lng: 30.689216 }, title: "Ataturk Park" }),
-                new google.maps.Marker({ position: { lat: 36.885233, lng: 30.702323 }, title: "Oldtown" }),
-                new google.maps.Polygon({ paths: [
-                        { lat: 36.9177, lng: 30.7854 }, { lat: 36.8851, lng: 30.7802 }, { lat: 36.8829, lng: 30.8111 }, { lat: 36.9177, lng: 30.8159 }
-                    ], strokeOpacity: 0.5, strokeWeight: 1, fillColor: '#1976D2', fillOpacity: 0.35
-                }),
-                new google.maps.Circle({ center: { lat: 36.90707, lng: 30.56533 }, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500 }),
-                new google.maps.Polyline({ path: [{ lat: 36.86149, lng: 30.63743 }, { lat: 36.86341, lng: 30.72463 }], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2 })
-            ];
-        }
-    };
-    GMapDemo.prototype.zoomIn = function (map) {
-        map.setZoom(map.getZoom() + 1);
-    };
-    GMapDemo.prototype.zoomOut = function (map) {
-        map.setZoom(map.getZoom() - 1);
-    };
-    GMapDemo.prototype.clear = function () {
-        this.overlays = [];
-    };
-    return GMapDemo;
+    Object.defineProperty(ValidationDemo.prototype, "diagnostic", {
+        get: function () { return JSON.stringify(this.userform.value); },
+        enumerable: true,
+        configurable: true
+    });
+    return ValidationDemo;
 }());
-GMapDemo = __decorate([
+ValidationDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/gmap/gmapdemo.html"),
-        styles: ["\n        .ui-g-2 {\n            padding-top: .75em;\n        }\n    "]
-    })
-], GMapDemo);
+        template: __webpack_require__("./src/app/showcase/components/validation/validationdemo.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_forms__["e" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_forms__["e" /* FormBuilder */]) === "function" && _a || Object])
+], ValidationDemo);
 
-//# sourceMappingURL=gmapdemo.js.map
+var _a;
+//# sourceMappingURL=validationdemo.js.map
 
 /***/ })
 

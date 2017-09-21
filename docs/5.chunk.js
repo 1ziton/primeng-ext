@@ -114,7 +114,7 @@ var EchartsDemoBarComponent = (function () {
     return EchartsDemoBarComponent;
 }());
 EchartsDemoBarComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo-bar',
         template: "\n  <button pButton pButton type=\"button\" (click)=\"chageDataset()\">Change dateset</button>\n  <div echarts [options]=\"chartOption\" [dataset]=\"dataset\" class=\"demo-chart\"></div>\n  ",
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
@@ -233,7 +233,7 @@ var EchartsDemoClickComponent = (function () {
     return EchartsDemoClickComponent;
 }());
 EchartsDemoClickComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo-click',
         template: "\n  <div echarts class=\"demo-chart\"\n  [options]=\"chartOption\"\n  (chartClick)=\"onChartClick($event)\"\n  (chartDblClick)=\"onChartDblClick($event)\">\n</div>\n  ",
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
@@ -346,7 +346,7 @@ var EchartsDemoLineComponent = (function () {
     return EchartsDemoLineComponent;
 }());
 EchartsDemoLineComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo-line',
         template: "\n  <div echarts [options]=\"lineStackDemoData\"class=\"demo-chart\"></div>\n  ",
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
@@ -385,7 +385,7 @@ var EchartsDemoMapComponent = (function () {
     return EchartsDemoMapComponent;
 }());
 EchartsDemoMapComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo-map',
         template: "\n  <div echarts [options]=\"mapDemoOption\" class=\"demo-chart\"></div>\n  ",
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
@@ -632,7 +632,7 @@ var EchartsDemoOptionsComponent = (function () {
     return EchartsDemoOptionsComponent;
 }());
 EchartsDemoOptionsComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo-options',
         template: "\n  <button class=\"btn btn-primary\" (click)=\"changeOptions()\" [disabled]=\"revert\">Change Options\n  </button>\n  <button class=\"btn btn-primary\" (click)=\"revertOptions()\" [disabled]=\"!revert\">Revert Options\n  </button>\n  <div echarts [options]=\"chartOption\" [dataset]=\"dataset\" class=\"demo-chart\"></div>\n  ",
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
@@ -724,7 +724,7 @@ var EchartsDemoPieComponent = (function () {
     return EchartsDemoPieComponent;
 }());
 EchartsDemoPieComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo-pie',
         template: "\n  <button pButton (click)=\"toggleLoading()\">Loading\u72B6\u6001\u5207\u6362-{{this.chartLoading}}</button>\n  <div echarts [options]=\"chartOption\" [loading]=\"chartLoading\"  class=\"demo-chart\"></div>\n  ",
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
@@ -766,9 +766,9 @@ var EchartsDemoComponent = (function () {
     return EchartsDemoComponent;
 }());
 EchartsDemoComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'echarts-demo',
-        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* ViewEncapsulation */].None,
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         template: __webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.html"),
         styles: [__webpack_require__("./src/app/showcase/custom-components/echarts-demo/echarts-demo.css")]
     }),
@@ -852,7 +852,7 @@ var EchartsDemoModule = (function () {
     return EchartsDemoModule;
 }());
 EchartsDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_9_app_showcase_custom_components_echarts_demo_echarts_demo_component__["a" /* EchartsDemoComponent */],
             __WEBPACK_IMPORTED_MODULE_7_app_showcase_custom_components_echarts_demo_echarts_demo_map_component__["a" /* EchartsDemoMapComponent */],
@@ -864,7 +864,7 @@ EchartsDemoModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_4_app_showcase_custom_components_echarts_demo_echarts_demo_routing_module__["a" /* EchartsDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_5_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
             __WEBPACK_IMPORTED_MODULE_6_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
@@ -901,7 +901,7 @@ var EchartsDemoRoutingModule = (function () {
     return EchartsDemoRoutingModule;
 }());
 EchartsDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_echarts_demo_echarts_demo_component__["a" /* EchartsDemoComponent */] }
             ])],

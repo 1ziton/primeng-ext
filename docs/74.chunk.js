@@ -1,175 +1,5 @@
 webpackJsonp([74],{
 
-/***/ "./src/app/components/checkbox/checkbox.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export CHECKBOX_VALUE_ACCESSOR */
-/* unused harmony export Checkbox */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var CHECKBOX_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Checkbox; }),
-    multi: true
-};
-var Checkbox = (function () {
-    function Checkbox(cd) {
-        this.cd = cd;
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
-        this.focused = false;
-        this.checked = false;
-    }
-    Checkbox.prototype.onClick = function (event, checkbox, focus) {
-        event.preventDefault();
-        if (this.disabled) {
-            return;
-        }
-        this.checked = !this.checked;
-        this.updateModel();
-        if (focus) {
-            checkbox.focus();
-        }
-    };
-    Checkbox.prototype.updateModel = function () {
-        if (!this.binary) {
-            if (this.checked)
-                this.addValue();
-            else
-                this.removeValue();
-            this.onModelChange(this.model);
-        }
-        else {
-            this.onModelChange(this.checked);
-        }
-        this.onChange.emit(this.checked);
-    };
-    Checkbox.prototype.handleChange = function (event) {
-        this.checked = event.target.checked;
-        this.updateModel();
-    };
-    Checkbox.prototype.isChecked = function () {
-        if (this.binary)
-            return this.model;
-        else
-            return this.model && this.model.indexOf(this.value) > -1;
-    };
-    Checkbox.prototype.removeValue = function () {
-        var _this = this;
-        this.model = this.model.filter(function (val) { return val !== _this.value; });
-    };
-    Checkbox.prototype.addValue = function () {
-        if (this.model)
-            this.model = this.model.concat([this.value]);
-        else
-            this.model = [this.value];
-    };
-    Checkbox.prototype.onFocus = function (event) {
-        this.focused = true;
-    };
-    Checkbox.prototype.onBlur = function (event) {
-        this.focused = false;
-        this.onModelTouched();
-    };
-    Checkbox.prototype.writeValue = function (model) {
-        this.model = model;
-        this.checked = this.isChecked();
-        this.cd.markForCheck();
-    };
-    Checkbox.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
-    };
-    Checkbox.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
-    };
-    Checkbox.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    return Checkbox;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Checkbox.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "name", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Checkbox.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "binary", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "label", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Checkbox.prototype, "tabindex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "inputId", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Checkbox.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Checkbox.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Checkbox.prototype, "onChange", void 0);
-Checkbox = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-checkbox',
-        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-chkbox ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" [attr.id]=\"inputId\" [name]=\"name\" [value]=\"value\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (change)=\"handleChange($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        [ngClass]=\"{'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-chkbox-label\" (click)=\"onClick($event,cb,true)\" \n                [ngClass]=\"{'ui-label-active':checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n                *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
-        providers: [CHECKBOX_VALUE_ACCESSOR]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _b || Object])
-], Checkbox);
-
-var CheckboxModule = (function () {
-    function CheckboxModule() {
-    }
-    return CheckboxModule;
-}());
-CheckboxModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Checkbox],
-        declarations: [Checkbox]
-    })
-], CheckboxModule);
-
-var _a, _b;
-//# sourceMappingURL=checkbox.js.map
-
-/***/ }),
-
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -199,10 +29,10 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
 ], CodeHighlighter);
 
 var CodeHighlighterModule = (function () {
@@ -211,8 +41,8 @@ var CodeHighlighterModule = (function () {
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
@@ -220,6 +50,213 @@ CodeHighlighterModule = __decorate([
 
 var _a;
 //# sourceMappingURL=codehighlighter.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/inputswitch/inputswitch.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export INPUTSWITCH_VALUE_ACCESSOR */
+/* unused harmony export InputSwitch */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputSwitchModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var INPUTSWITCH_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return InputSwitch; }),
+    multi: true
+};
+var InputSwitch = (function () {
+    function InputSwitch(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.onLabel = 'On';
+        this.offLabel = 'Off';
+        this.ariaLabelTemplate = "InputSwitch {0}";
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.checked = false;
+        this.focused = false;
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
+        this.initialized = false;
+    }
+    InputSwitch.prototype.ngAfterViewInit = function () {
+        this.container = this.el.nativeElement.children[0];
+        this.handle = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-inputswitch-handle');
+        this.onContainer = this.domHandler.findSingle(this.container, 'div.ui-inputswitch-on');
+        this.offContainer = this.domHandler.findSingle(this.container, 'div.ui-inputswitch-off');
+        this.onLabelChild = this.domHandler.findSingle(this.onContainer, 'span.ui-inputswitch-onlabel');
+        this.offLabelChild = this.domHandler.findSingle(this.offContainer, 'span.ui-inputswitch-offlabel');
+    };
+    InputSwitch.prototype.ngAfterViewChecked = function () {
+        if (this.container.offsetParent && !this.initialized) {
+            this.render();
+        }
+    };
+    InputSwitch.prototype.render = function () {
+        var onContainerWidth = this.domHandler.width(this.onContainer), offContainerWidth = this.domHandler.width(this.offContainer), spanPadding = this.domHandler.innerWidth(this.offLabelChild) - this.domHandler.width(this.offLabelChild), handleMargins = this.domHandler.getOuterWidth(this.handle) - this.domHandler.innerWidth(this.handle);
+        var containerWidth = (onContainerWidth > offContainerWidth) ? onContainerWidth : offContainerWidth, handleWidth = containerWidth;
+        this.handle.style.width = handleWidth + 'px';
+        handleWidth = this.domHandler.width(this.handle);
+        containerWidth = containerWidth + handleWidth + 6;
+        var labelWidth = containerWidth - handleWidth - spanPadding - handleMargins;
+        this.container.style.width = containerWidth + 'px';
+        this.onLabelChild.style.width = labelWidth + 'px';
+        this.offLabelChild.style.width = labelWidth + 'px';
+        //position
+        this.offContainer.style.width = (this.domHandler.width(this.container) - 5) + 'px';
+        this.offset = this.domHandler.width(this.container) - this.domHandler.getOuterWidth(this.handle);
+        //default value
+        if (this.checked) {
+            this.handle.style.left = this.offset + 'px';
+            this.onContainer.style.width = this.offset + 'px';
+            this.offLabelChild.style.marginRight = -this.offset + 'px';
+        }
+        else {
+            this.onContainer.style.width = 0 + 'px';
+            this.onLabelChild.style.marginLeft = -this.offset + 'px';
+        }
+        this.initialized = true;
+    };
+    InputSwitch.prototype.toggle = function (event, checkbox) {
+        if (!this.disabled) {
+            if (this.checked) {
+                this.checked = false;
+                this.uncheckUI();
+            }
+            else {
+                this.checked = true;
+                this.checkUI();
+            }
+            this.onModelChange(this.checked);
+            this.onChange.emit({
+                originalEvent: event,
+                checked: this.checked
+            });
+            checkbox.focus();
+        }
+    };
+    InputSwitch.prototype.checkUI = function () {
+        this.onContainer.style.width = this.offset + 'px';
+        this.onLabelChild.style.marginLeft = 0 + 'px';
+        this.offLabelChild.style.marginRight = -this.offset + 'px';
+        this.handle.style.left = this.offset + 'px';
+        this.updateAriaLabel();
+    };
+    InputSwitch.prototype.uncheckUI = function () {
+        this.onContainer.style.width = 0 + 'px';
+        this.onLabelChild.style.marginLeft = -this.offset + 'px';
+        this.offLabelChild.style.marginRight = 0 + 'px';
+        this.handle.style.left = 0 + 'px';
+        this.updateAriaLabel();
+    };
+    InputSwitch.prototype.onFocus = function (event) {
+        this.focused = true;
+    };
+    InputSwitch.prototype.onBlur = function (event) {
+        this.focused = false;
+        this.onModelTouched();
+    };
+    InputSwitch.prototype.writeValue = function (checked) {
+        this.checked = checked;
+        if (this.initialized) {
+            if (this.checked === true)
+                this.checkUI();
+            else
+                this.uncheckUI();
+        }
+    };
+    InputSwitch.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    InputSwitch.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    InputSwitch.prototype.setDisabledState = function (val) {
+        this.disabled = val;
+    };
+    InputSwitch.prototype.updateAriaLabel = function () {
+        var pattern = /{(.*?)}/, value = this.checked ? this.onLabel : this.offLabel;
+        this.ariaLabel = this.ariaLabelTemplate.replace(this.ariaLabelTemplate.match(pattern)[0], value);
+    };
+    return InputSwitch;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], InputSwitch.prototype, "onLabel", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], InputSwitch.prototype, "offLabel", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], InputSwitch.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], InputSwitch.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], InputSwitch.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Number)
+], InputSwitch.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], InputSwitch.prototype, "inputId", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], InputSwitch.prototype, "ariaLabelTemplate", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], InputSwitch.prototype, "onChange", void 0);
+InputSwitch = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-inputSwitch',
+        template: "\n        <div [ngClass]=\"{'ui-inputswitch ui-widget ui-widget-content ui-corner-all': true,\n            'ui-state-disabled': disabled,'ui-inputswitch-checked':checked, 'ui-state-focus':focused}\" (click)=\"toggle($event, in)\"\n            [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inputswitch-off\">\n                <span class=\"ui-inputswitch-offlabel\">{{offLabel}}</span>\n            </div>\n            <div class=\"ui-inputswitch-on\">\n                <span class=\"ui-inputswitch-onlabel\">{{onLabel}}</span>\n            </div>\n            <div [ngClass]=\"{'ui-inputswitch-handle ui-state-default':true, 'ui-state-focus':focused}\"></div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"checkbox\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" aria-live=\"polite\" [attr.id]=\"inputId\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" readonly=\"readonly\" [attr.tabindex]=\"tabindex\"/>\n            </div>\n        </div>\n    ",
+        providers: [INPUTSWITCH_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _c || Object])
+], InputSwitch);
+
+var InputSwitchModule = (function () {
+    function InputSwitchModule() {
+    }
+    return InputSwitchModule;
+}());
+InputSwitchModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [InputSwitch],
+        declarations: [InputSwitch]
+    })
+], InputSwitchModule);
+
+var _a, _b, _c;
+//# sourceMappingURL=inputswitch.js.map
 
 /***/ }),
 
@@ -249,8 +286,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TabViewNav = (function () {
     function TabViewNav() {
         this.orientation = 'top';
-        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
         var styleClass = 'ui-state-default ui-corner-' + this.orientation;
@@ -274,23 +311,23 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
 ], TabViewNav.prototype, "tabs", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabViewNav.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], TabViewNav.prototype, "onTabClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], TabViewNav.prototype, "onTabCloseClick", void 0);
 TabViewNav = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: '[p-tabViewNav]',
         host: {
             '[class.ui-tabview-nav]': 'true',
@@ -338,60 +375,60 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "closable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabPanel.prototype, "headerStyle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "headerStyleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "leftIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "rightIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "cache", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], TabPanel.prototype, "templates", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabPanel.prototype, "selected", null);
 TabPanel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabPanel',
         template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
 ], TabPanel);
 
 var TabView = (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -511,49 +548,49 @@ var TabView = (function () {
     return TabView;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabView.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabView.prototype, "controlClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(TabPanel),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
 ], TabView.prototype, "tabPanels", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], TabView.prototype, "onChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
 ], TabView.prototype, "onClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabView.prototype, "lazy", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], TabView.prototype, "activeIndex", null);
 TabView = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabView',
         template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
 ], TabView);
 
 var TabViewModule = (function () {
@@ -562,8 +599,8 @@ var TabViewModule = (function () {
     return TabViewModule;
 }());
 TabViewModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [TabView, TabPanel, TabViewNav]
     })
@@ -574,14 +611,21 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/checkbox/checkboxdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/inputswitch/inputswitch.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">InputSwitch</span>\r\n        <span>InputSwitch is used to select a boolean value.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic - {{checked1}}</h3>\r\n    <p-inputSwitch [(ngModel)]=\"checked1\"></p-inputSwitch>\r\n\r\n    <h3>Labels - {{checked2}}</h3>\r\n    <p-inputSwitch onLabel=\"Yes\" offLabel=\"No\" [(ngModel)]=\"checked2\"></p-inputSwitch>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;InputSwitchModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way binding to a boolean property is defined using the standard ngModel directive.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch [(ngModel)]=\"checked\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    checked: boolean;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>As model is two-way binding enabled, setting the bound value as true displays the state as checked by default.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n   checked: boolean = true;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>InputSwitch can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch formControlName=\"enabled\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Customization</h3>\r\n            <p>Labels can be customized using onLabel and offLabel properties.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch onLabel=\"I confirm\" offLabel=\"I reject\" [(ngModel)]=\"val\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onLabel</td>\r\n                            <td>string</td>\r\n                            <td>On</td>\r\n                            <td>Label for the on state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>offLabel</td>\r\n                            <td>string</td>\r\n                            <td>Off</td>\r\n                            <td>Label for the off state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                          <td>tabindex</td>\r\n                          <td>number</td>\r\n                          <td>null</td>\r\n                          <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ariaLabelTemplate</td>\r\n                            <td>string</td>\r\n                            <td>InputSwitch &#123;0&#125;</td>\r\n                            <td>The aria-label template is used to define a string that labels the current element with a template.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                    <tr>\r\n                        <td>onChange</td>\r\n                        <td>event.originalEvent: browser event<br>\r\n                            event.checked: checked state as a boolean</td>\r\n                        <td>Callback to invoke on state change.</td>\r\n                    </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inputSwitch (onChange)=\"handleChange($event)\" [(ngModel)]=\"val\"&gt;\r\n</code>\r\n</pre>\r\n <pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    handleChange(e) &#123;\r\n        var isChecked = e.checked;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-inputswitch</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inputswitch-on</td>\r\n                            <td>Checked state element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inputswitch-off</td>\r\n                            <td>Unchecked state element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inputswitch\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic - {{checked1}}&lt;/h3&gt;\r\n&lt;p-inputSwitch [(ngModel)]=\"checked1\"&gt;&lt;/p-inputSwitch&gt;\r\n\r\n&lt;h3&gt;Labels - &lt;span&gt; {{checked2}}&lt;/h3&gt;\r\n&lt;p-inputSwitch onLabel=\"Yes\" offLabel=\"No\" [(ngModel)]=\"checked2\"&gt;&lt;/p-inputSwitch&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class InputSwitchDemo &#123;\r\n\r\n    checked1: boolean = false;\r\n\r\n    checked2: boolean = true;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/inputswitch/inputswitchdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__checkboxdemo__ = __webpack_require__("./src/app/showcase/components/checkbox/checkboxdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputswitchdemo__ = __webpack_require__("./src/app/showcase/components/inputswitch/inputswitchdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputSwitchDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -591,36 +635,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CheckboxDemoRoutingModule = (function () {
-    function CheckboxDemoRoutingModule() {
+var InputSwitchDemoRoutingModule = (function () {
+    function InputSwitchDemoRoutingModule() {
     }
-    return CheckboxDemoRoutingModule;
+    return InputSwitchDemoRoutingModule;
 }());
-CheckboxDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+InputSwitchDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__checkboxdemo__["a" /* CheckboxDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inputswitchdemo__["a" /* InputSwitchDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], CheckboxDemoRoutingModule);
+], InputSwitchDemoRoutingModule);
 
-//# sourceMappingURL=checkboxdemo-routing.module.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/components/checkbox/checkboxdemo.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Checkbox</span>\r\n        <span>Checkbox is an extension to standard checkbox element with skinning capabilities.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\">\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group1\" value=\"New York\" label=\"New York\" [(ngModel)]=\"selectedCities\" inputId=\"ny\"></p-checkbox></div>\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group1\" value=\"San Francisco\" label=\"San Francisco\" [(ngModel)]=\"selectedCities\" inputId=\"sf\"></p-checkbox></div>\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group1\" value=\"Los Angeles\" label=\"Los Angeles\" [(ngModel)]=\"selectedCities\" inputId=\"la\"></p-checkbox></div>\r\n    </div>\r\n\r\n    Selected Cities: <span *ngFor=\"let city of selectedCities\" style=\"margin-right:10px\">{{city}}</span>\r\n\r\n    <h3>Preselection</h3>\r\n    <div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\">\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group2\" value=\"Technology\" label=\"Technology\" [(ngModel)]=\"selectedCategories\" inputId=\"technology\"></p-checkbox></div>\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group2\" value=\"Finance\" label=\"Finance\" [(ngModel)]=\"selectedCategories\" inputId=\"finance\"></p-checkbox></div>\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group2\" value=\"Sports\" label=\"Sports\" [(ngModel)]=\"selectedCategories\" inputId=\"sports\"></p-checkbox></div>\r\n        <div class=\"ui-g-12\"><p-checkbox name=\"group2\" value=\"Entertainment\" label=\"Entertainment\" [(ngModel)]=\"selectedCategories\" inputId=\"entertainment\"></p-checkbox></div>\r\n    </div>\r\n\r\n    Selected Categories: <span *ngFor=\"let cat of selectedCategories\" style=\"margin-right:10px\">{{cat}}</span>\r\n    \r\n    <h3>Boolean - {{checked}}</h3>\r\n    <p-checkbox [(ngModel)]=\"checked\" binary=\"true\"></p-checkbox>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;CheckboxModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Checkbox can either be used in multiple selection with other checkboxes or as a single checkbox to provide a boolean value.</p>\r\n            \r\n            <h4>Multiple Values</h4>\r\n            <p>Multiple mode is enabled by default, ngModel property refers to an array to bind the selected values.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-checkbox name=\"groupname\" value=\"val1\" [(ngModel)]=\"selectedValues\"&gt;&lt;/p-checkbox&gt;\r\n&lt;p-checkbox name=\"groupname\" value=\"val2\" [(ngModel)]=\"selectedValues\"&gt;&lt;/p-checkbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    selectedValues: string[] = [];\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>As ngModel is two-way binding enabled, prepopulating the model array with values is enough to display the related\r\n            checkboxes as checked by default.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    selectedValues: string[] = ['val1','val2'];\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n        <h4>Label</h4>\r\n        <p>The label attribute provides a label text for the checkbox. This label is also clickable and toggles the checked state.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-checkbox name=\"groupname\" value=\"val1\" label=\"Value 1\" [(ngModel)]=\"selectedValues\"&gt;&lt;/p-checkbox&gt;\r\n&lt;p-checkbox name=\"groupname\" value=\"val2\" label=\"Value 2\" [(ngModel)]=\"selectedValues\"&gt;&lt;/p-checkbox&gt;\r\n</code>\r\n</pre>\r\n\r\n        <h4>Boolean Value</h4>\r\n        <p>A single boolean value can be bound using the ngModel property as well by enabling the binary option.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    value: boolean;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-checkbox [(ngModel)]=\"value\" binary=\"true\"&gt;&lt;/p-checkbox&gt;\r\n</code>\r\n</pre>\r\n\r\n        <h3>Model Driven Forms</h3>\r\n        <p>Checkbox can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-checkbox formControlName=\"agreed\"&gt;&lt;/p-checkbox&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>name</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Name of the checkbox group.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>value</td>\r\n                            <td>any</td>\r\n                            <td>null</td>\r\n                            <td>Value of the checkbox.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>label</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Label of the checkbox.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>binary</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Allows to select a boolean value instead of multiple values.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>object</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>checked: Boolean value to represent new state of checkbox.</td>\r\n                            <td>Callback to invoke on checkbox click.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-chkbox</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chkbox-box</td>\r\n                            <td>Container of icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chkbox-icon</td>\r\n                            <td>Icon element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chkbox-label</td>\r\n                            <td>Label element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-label-active</td>\r\n                            <td>Label element of a checked state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-label-focus</td>\r\n                            <td>Label element of a focused state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-label-disabled</td>\r\n                            <td>Label element of a disabled state.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/checkbox\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\"&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group1\" value=\"New York\" label=\"New York\" [(ngModel)]=\"selectedCities\" inputId=\"ny\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group1\" value=\"San Francisco\" label=\"San Francisco\" [(ngModel)]=\"selectedCities\" inputId=\"sf\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group1\" value=\"Los Angeles\" label=\"Los Angeles\" [(ngModel)]=\"selectedCities\" inputId=\"la\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\nSelected Cities: &lt;span *ngFor=\"let city of selectedCities\" style=\"margin-right:10px\"&gt;{{city}}&lt;/span&gt;\r\n\r\n&lt;h3&gt;Preselection&lt;/h3&gt;\r\n&lt;div class=\"ui-g\" style=\"width:250px;margin-bottom:10px\"&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group2\" value=\"Technology\" label=\"Technology\" [(ngModel)]=\"selectedCategories\" inputId=\"technology\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group2\" value=\"Finance\" label=\"Finance\" [(ngModel)]=\"selectedCategories\" inputId=\"finance\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group2\" value=\"Sports\" label=\"Sports\" [(ngModel)]=\"selectedCategories\" inputId=\"sports\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n    &lt;div class=\"ui-g-12\"&gt;&lt;p-checkbox name=\"group2\" value=\"Entertainment\" label=\"Entertainment\" [(ngModel)]=\"selectedCategories\" inputId=\"entertainment\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\r\n&lt;/div&gt;\r\n\r\nSelected Categories: &lt;span *ngFor=\"let cat of selectedCategories\" style=\"margin-right:10px\"&gt;{{cat}} &lt;/span&gt;\r\n\r\n&lt;h3&gt;Boolean - {{checked}}&lt;/h3&gt;\r\n&lt;p-checkbox [(ngModel)]=\"checked\" binary=\"true\"&gt;&lt;/p-checkbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class CheckboxDemo &#123;\r\n\r\n    selectedCities: string[] = [];\r\n\r\n    selectedCategories: string[] = ['Technology', 'Sports'];\r\n\r\n    checked: boolean = false;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+//# sourceMappingURL=inputswitchdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/checkbox/checkboxdemo.module.ts":
+/***/ "./src/app/showcase/components/inputswitch/inputswitchdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -628,12 +665,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__checkboxdemo__ = __webpack_require__("./src/app/showcase/components/checkbox/checkboxdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__checkboxdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/checkbox/checkboxdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_checkbox_checkbox__ = __webpack_require__("./src/app/components/checkbox/checkbox.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputswitchdemo__ = __webpack_require__("./src/app/showcase/components/inputswitch/inputswitchdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputswitchdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inputswitch/inputswitchdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputswitch_inputswitch__ = __webpack_require__("./src/app/components/inputswitch/inputswitch.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CheckboxDemoModule", function() { return CheckboxDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputSwitchDemoModule", function() { return InputSwitchDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -648,37 +685,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CheckboxDemoModule = (function () {
-    function CheckboxDemoModule() {
+var InputSwitchDemoModule = (function () {
+    function InputSwitchDemoModule() {
     }
-    return CheckboxDemoModule;
+    return InputSwitchDemoModule;
 }());
-CheckboxDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+InputSwitchDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__checkboxdemo_routing_module__["a" /* CheckboxDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_checkbox_checkbox__["a" /* CheckboxModule */],
+            __WEBPACK_IMPORTED_MODULE_4__inputswitchdemo_routing_module__["a" /* InputSwitchDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_inputswitch_inputswitch__["a" /* InputSwitchModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__checkboxdemo__["a" /* CheckboxDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__inputswitchdemo__["a" /* InputSwitchDemo */]
         ]
     })
-], CheckboxDemoModule);
+], InputSwitchDemoModule);
 
-//# sourceMappingURL=checkboxdemo.module.js.map
+//# sourceMappingURL=inputswitchdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/checkbox/checkboxdemo.ts":
+/***/ "./src/app/showcase/components/inputswitch/inputswitchdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputSwitchDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -686,22 +723,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var CheckboxDemo = (function () {
-    function CheckboxDemo() {
-        this.selectedCities = [];
-        this.selectedCategories = ['Technology', 'Sports'];
-        this.checked = false;
+var InputSwitchDemo = (function () {
+    function InputSwitchDemo() {
+        this.checked1 = false;
+        this.checked2 = true;
     }
-    return CheckboxDemo;
+    return InputSwitchDemo;
 }());
-CheckboxDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/checkbox/checkboxdemo.html"),
-        styles: ["\n        .ui-grid .ui-grid-col-1,\n        .ui-grid .ui-grid-col-11 {\n            padding: 4px 10px;\n        }\n\n        .ui-grid label {\n            display: block;\n            margin: 2px 0 0 4px;\n        }\n    "]
+InputSwitchDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/inputswitch/inputswitch.html")
     })
-], CheckboxDemo);
+], InputSwitchDemo);
 
-//# sourceMappingURL=checkboxdemo.js.map
+//# sourceMappingURL=inputswitchdemo.js.map
 
 /***/ })
 

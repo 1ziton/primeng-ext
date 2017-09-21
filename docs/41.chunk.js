@@ -1,112 +1,5 @@
 webpackJsonp([41],{
 
-/***/ "./src/app/components/blockui/blockui.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* unused harmony export BlockUI */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var BlockUI = (function () {
-    function BlockUI(el, domHandler) {
-        this.el = el;
-        this.domHandler = domHandler;
-    }
-    Object.defineProperty(BlockUI.prototype, "blocked", {
-        get: function () {
-            return this._blocked;
-        },
-        set: function (val) {
-            this._blocked = val;
-            if (this.mask.nativeElement) {
-                if (this._blocked)
-                    this.block();
-                else
-                    this.unblock();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BlockUI.prototype.ngAfterViewInit = function () {
-        if (this.target && !this.target.getBlockableElement) {
-            throw 'Target of BlockUI must implement BlockableUI interface';
-        }
-    };
-    BlockUI.prototype.block = function () {
-        if (this.target) {
-            this.target.getBlockableElement().appendChild(this.mask.nativeElement);
-            var style = this.target.style || {};
-            style.position = 'relative';
-            this.target.style = style;
-        }
-        else {
-            document.body.appendChild(this.mask.nativeElement);
-        }
-        this.mask.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex);
-    };
-    BlockUI.prototype.unblock = function () {
-        this.el.nativeElement.appendChild(this.mask.nativeElement);
-    };
-    BlockUI.prototype.ngOnDestroy = function () {
-        this.unblock();
-    };
-    return BlockUI;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], BlockUI.prototype, "target", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('mask'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object)
-], BlockUI.prototype, "mask", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], BlockUI.prototype, "blocked", null);
-BlockUI = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-blockUI',
-        template: "\n        <div #mask class=\"ui-blockui ui-widget-overlay\" [ngClass]=\"{'ui-blockui-document':!target}\" [ngStyle]=\"{display: blocked ? 'block' : 'none'}\">\n            <ng-content></ng-content>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _c || Object])
-], BlockUI);
-
-var BlockUIModule = (function () {
-    function BlockUIModule() {
-    }
-    return BlockUIModule;
-}());
-BlockUIModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [BlockUI],
-        declarations: [BlockUI]
-    })
-], BlockUIModule);
-
-var _a, _b, _c;
-//# sourceMappingURL=blockui.js.map
-
-/***/ }),
-
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -136,10 +29,10 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
 ], CodeHighlighter);
 
 var CodeHighlighterModule = (function () {
@@ -148,8 +41,8 @@ var CodeHighlighterModule = (function () {
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
@@ -157,6 +50,253 @@ CodeHighlighterModule = __decorate([
 
 var _a;
 //# sourceMappingURL=codehighlighter.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/dragdrop/dragdrop.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export Draggable */
+/* unused harmony export Droppable */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DragDropModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var Draggable = (function () {
+    function Draggable(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.onDragStart = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDragEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDrag = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    Draggable.prototype.dragStart = function (event) {
+        if (this.allowDrag()) {
+            if (this.dragEffect) {
+                event.dataTransfer.effectAllowed = this.dragEffect;
+            }
+            event.dataTransfer.setData('text', this.scope);
+            this.onDragStart.emit(event);
+        }
+        else {
+            event.preventDefault();
+        }
+    };
+    Draggable.prototype.drag = function (event) {
+        this.onDrag.emit(event);
+    };
+    Draggable.prototype.dragEnd = function (event) {
+        this.onDragEnd.emit(event);
+    };
+    Draggable.prototype.mouseover = function (event) {
+        this.handle = event.target;
+    };
+    Draggable.prototype.mouseleave = function (event) {
+        this.handle = null;
+    };
+    Draggable.prototype.allowDrag = function () {
+        if (this.dragHandle && this.handle)
+            return this.domHandler.matches(this.handle, this.dragHandle);
+        else
+            return true;
+    };
+    return Draggable;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('pDraggable'),
+    __metadata("design:type", String)
+], Draggable.prototype, "scope", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Draggable.prototype, "dragEffect", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Draggable.prototype, "dragHandle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], Draggable.prototype, "onDragStart", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], Draggable.prototype, "onDragEnd", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _c || Object)
+], Draggable.prototype, "onDrag", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('dragstart', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Draggable.prototype, "dragStart", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('drag', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Draggable.prototype, "drag", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('dragend', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Draggable.prototype, "dragEnd", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('mouseover', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Draggable.prototype, "mouseover", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('mouseleave', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Draggable.prototype, "mouseleave", null);
+Draggable = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[pDraggable]',
+        host: {
+            '[draggable]': 'true'
+        },
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object])
+], Draggable);
+
+var Droppable = (function () {
+    function Droppable(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.onDragEnter = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDragLeave = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDrop = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDragOver = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    Droppable.prototype.drop = function (event) {
+        if (this.allowDrop(event)) {
+            event.preventDefault();
+            this.onDrop.emit(event);
+        }
+    };
+    Droppable.prototype.dragEnter = function (event) {
+        event.preventDefault();
+        if (this.dropEffect) {
+            event.dataTransfer.dropEffect = this.dropEffect;
+        }
+        this.onDragEnter.emit(event);
+    };
+    Droppable.prototype.dragLeave = function (event) {
+        event.preventDefault();
+        this.onDragLeave.emit(event);
+    };
+    Droppable.prototype.dragOver = function (event) {
+        event.preventDefault();
+        this.onDragOver.emit(event);
+    };
+    Droppable.prototype.allowDrop = function (event) {
+        var dragScope = event.dataTransfer.getData('text');
+        if (typeof (this.scope) == "string" && dragScope == this.scope) {
+            return true;
+        }
+        else if (this.scope instanceof Array) {
+            for (var j = 0; j < this.scope.length; j++) {
+                if (dragScope == this.scope[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    return Droppable;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('pDroppable'),
+    __metadata("design:type", Object)
+], Droppable.prototype, "scope", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Droppable.prototype, "dropEffect", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
+], Droppable.prototype, "onDragEnter", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
+], Droppable.prototype, "onDragLeave", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _h || Object)
+], Droppable.prototype, "onDrop", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _j || Object)
+], Droppable.prototype, "onDragOver", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('drop', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Droppable.prototype, "drop", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('dragenter', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Droppable.prototype, "dragEnter", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('dragleave', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Droppable.prototype, "dragLeave", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('dragover', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Droppable.prototype, "dragOver", null);
+Droppable = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[pDroppable]',
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _l || Object])
+], Droppable);
+
+var DragDropModule = (function () {
+    function DragDropModule() {
+    }
+    return DragDropModule;
+}());
+DragDropModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [Draggable, Droppable],
+        declarations: [Draggable, Droppable]
+    })
+], DragDropModule);
+
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+//# sourceMappingURL=dragdrop.js.map
 
 /***/ }),
 
@@ -189,9 +329,9 @@ var Panel = (function () {
         this.collapsed = false;
         this.expandIcon = 'fa-plus';
         this.collapseIcon = 'fa-minus';
-        this.collapsedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onBeforeToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onAfterToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.collapsedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onBeforeToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onAfterToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Panel.prototype.toggle = function (event) {
         if (this.animating) {
@@ -225,51 +365,51 @@ var Panel = (function () {
     return Panel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], Panel.prototype, "toggleable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], Panel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], Panel.prototype, "collapsed", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], Panel.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], Panel.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], Panel.prototype, "expandIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], Panel.prototype, "collapseIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], Panel.prototype, "collapsedChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], Panel.prototype, "onBeforeToggle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _c || Object)
 ], Panel.prototype, "onAfterToggle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["c" /* Footer */]),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["c" /* Footer */]),
     __metadata("design:type", Object)
 ], Panel.prototype, "footerFacet", void 0);
 Panel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-panel',
         template: "\n        <div [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"toggle($event)\">\n                    <span [class]=\"collapsed ? 'fa fa-fw ' + expandIcon : 'fa fa-fw ' + collapseIcon\"></span>\n                </a>\n            </div>\n            <div class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? 'hidden' : 'visible'\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
         animations: [
@@ -284,7 +424,7 @@ Panel = __decorate([
             ])
         ]
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _d || Object])
 ], Panel);
 
 var PanelModule = (function () {
@@ -293,8 +433,8 @@ var PanelModule = (function () {
     return PanelModule;
 }());
 PanelModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [Panel, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [Panel]
     })
@@ -331,8 +471,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TabViewNav = (function () {
     function TabViewNav() {
         this.orientation = 'top';
-        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
         var styleClass = 'ui-state-default ui-corner-' + this.orientation;
@@ -356,23 +496,23 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
 ], TabViewNav.prototype, "tabs", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabViewNav.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], TabViewNav.prototype, "onTabClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], TabViewNav.prototype, "onTabCloseClick", void 0);
 TabViewNav = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: '[p-tabViewNav]',
         host: {
             '[class.ui-tabview-nav]': 'true',
@@ -420,60 +560,60 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "closable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabPanel.prototype, "headerStyle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "headerStyleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "leftIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "rightIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "cache", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], TabPanel.prototype, "templates", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabPanel.prototype, "selected", null);
 TabPanel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabPanel',
         template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
 ], TabPanel);
 
 var TabView = (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -593,49 +733,49 @@ var TabView = (function () {
     return TabView;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabView.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabView.prototype, "controlClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(TabPanel),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
 ], TabView.prototype, "tabPanels", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], TabView.prototype, "onChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
 ], TabView.prototype, "onClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabView.prototype, "lazy", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], TabView.prototype, "activeIndex", null);
 TabView = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabView',
         template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
 ], TabView);
 
 var TabViewModule = (function () {
@@ -644,8 +784,8 @@ var TabViewModule = (function () {
     return TabViewModule;
 }());
 TabViewModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [TabView, TabPanel, TabViewNav]
     })
@@ -656,14 +796,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/blockui/blockuidemo-routing.module.ts":
+/***/ "./src/app/showcase/components/dragdrop/dragdropdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__blockuidemo__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dragdropdemo__ = __webpack_require__("./src/app/showcase/components/dragdrop/dragdropdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DragDropDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -673,50 +813,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var BlockUIDemoRoutingModule = (function () {
-    function BlockUIDemoRoutingModule() {
+var DragDropDemoRoutingModule = (function () {
+    function DragDropDemoRoutingModule() {
     }
-    return BlockUIDemoRoutingModule;
+    return DragDropDemoRoutingModule;
 }());
-BlockUIDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+DragDropDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__blockuidemo__["a" /* BlockUIDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__dragdropdemo__["a" /* DragDropDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], BlockUIDemoRoutingModule);
+], DragDropDemoRoutingModule);
 
-//# sourceMappingURL=blockuidemo-routing.module.js.map
+//# sourceMappingURL=dragdropdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/blockui/blockuidemo.html":
+/***/ "./src/app/showcase/components/dragdrop/dragdropdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">BlockUI</span>\r\n        <span>BlockUI can either block other components or the whole page.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Document</h3>\r\n    <p-blockUI [blocked]=\"blockedDocument\"></p-blockUI>\r\n    \r\n    <button type=\"button\" pButton label=\"Block\" (click)=\"blockDocument()\"></button>\r\n    \r\n    <h3>Panel</h3>\r\n    <button type=\"button\" pButton label=\"Block\" (click)=\"blockedPanel=true\"></button>\r\n    <button type=\"button\" pButton label=\"Unblock\" (click)=\"blockedPanel=false\"></button>\r\n    \r\n    <p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\">\r\n        <i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"></i>\r\n    </p-blockUI>\r\n    <p-panel #pnl header=\"Godfather I\" [style]=\"{'margin-top':'20px'}\">\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    </p-panel>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;BlockUIModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>BlockUI is controlled using the blocked property and component to block is defined as target. If target is not provided, document\r\n            itself is selected as the block target.</p>\r\n            \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BlockUIDemo &#123;\r\n\r\n    blocked: boolean;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [blocked]=\"blocked\"&gt;&lt;/p-blockUI&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>To block a certain component, define a local ng-template variable and bind it to the target option. The target component must implement the \r\n            BlockableUI interface, otherwise an exception is thrown.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [blocked]=\"blockedDocument\" [target]=\"pnl\"&gt;&lt;/p-blockUI&gt;\r\n\r\n&lt;p-panel #pnl header=\"Panel Header\"&gt;\r\n    Content of Panel\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Content</h3>\r\n            <p>Blocker mask is customized by simply adding the content inside the component<p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\"&gt;\r\n    &lt;i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"&gt;&lt;/i&gt;\r\n&lt;/p-blockUI&gt;\r\n\r\n&lt;p-panel #pnl header=\"Panel Header\"&gt;\r\n    Content of Panel\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>blocked</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Controls the blocked state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>target</td>\r\n                            <td>any</td>\r\n                            <td>document</td>\r\n                            <td>Name of the local ng-template variable referring to another component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-blockui</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/blockui\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BlockUIDemo &#123;\r\n\r\n    blockedPanel: boolean = false;\r\n    \r\n    blockedDocument: boolean = false;\r\n        \r\n    blockDocument() &#123;\r\n        this.blockedDocument = true;\r\n        setTimeout(() => &#123;\r\n            this.blockedDocument = false;\r\n        &#125;, 3000);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Document&lt;/h3&gt;\r\n&lt;p-blockUI [blocked]=\"blockedDocument\"&gt;&lt;/p-blockUI&gt;\r\n\r\n&lt;button type=\"button\" pButton label=\"Block\" (click)=\"blockDocument()\"&gt;&lt;/button&gt;\r\n\r\n&lt;h3&gt;Panel&lt;/h3&gt;\r\n&lt;button type=\"button\" pButton label=\"Block\" (click)=\"blockedPanel=true\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton label=\"Unblock\" (click)=\"blockedPanel=false\"&gt;&lt;/button&gt;\r\n\r\n&lt;p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\"&gt;\r\n    &lt;i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"&gt;&lt;/i&gt;\r\n&lt;/p-blockUI&gt;\r\n&lt;p-panel #pnl header=\"Godfather I\" [style]=\"&#123;'margin-top':'20px'&#125;\"&gt;\r\n    The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n    His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n    Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n    kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Drag and Drop</span>\r\n        <span>pDraggable and pDroppable directives apply drag-drop behaviors to any element.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Drag Only</h3>\r\n    <div pDraggable=\"pnl\"  dragHandle=\".ui-panel-titlebar\">\r\n        <p-panel header=\"Drag Header\">\r\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n            His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n            Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n            kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n        </p-panel>\r\n    </div>\r\n    \r\n    <h3>Drag and Drop to DataTable</h3>\r\n    <div class=\"ui-grid ui-grid-pad ui-grid-responsive\">\r\n        <div class=\"ui-grid-row\">\r\n            <div class=\"ui-grid-col-6 ui-widget-content\" style=\"border-right:0 none\">\r\n                <ul style=\"margin:0;padding:0\">\r\n                    <li *ngFor=\"let car of availableCars\" class=\"ui-state-default ui-helper-clearfix\" pDraggable=\"cars\"\r\n                        (onDragStart)=\"dragStart($event,car)\" (onDragEnd)=\"dragEnd($event)\">\r\n                        <i class=\"fa fa-arrows fa-2x\" style=\"float:right;margin-top:8px\"></i>\r\n                        <img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"float:left\" draggable=\"false\">\r\n                        <div style=\"margin:8px 0 0 8px;float:left\">{{car.vin}} - {{car.year}}</div>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n            <div class=\"ui-grid-col-6 ui-widget-content\" pDroppable=\"cars\" (onDrop)=\"drop($event)\"\r\n                    [ngClass]=\"{'ui-state-highlight':draggedCar}\">\r\n                <p-dataTable [value]=\"selectedCars\">\r\n                    <p-column field=\"vin\" header=\"Vin\"></p-column>\r\n                    <p-column field=\"year\" header=\"Year\"></p-column>\r\n                    <p-column field=\"brand\" header=\"Brand\"></p-column>\r\n                    <p-column field=\"color\" header=\"Color\"></p-column>\r\n                </p-dataTable>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;DragDropModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>pDraggable and pDroppable are attached to a target element to add drag-drop behavior. The value of a Directive attribute is required \r\n            and it defines the scope to match draggables with droppables. Droppable scope can also be an array to accept multiple droppables.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;div pDraggable=\"dd\"&gt;Draggable Div&lt;/div&gt;\r\n\r\n&lt;div pDroppable=\"dd\"&gt;Droppable Div&lt;/div&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Drag Handle</h3>\r\n            <p>Drag handle is used to restrict dragging unless mousedown occurs on the specified element. Panel below can only be dragged using its header.</p>\r\n\r\n            <pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;div pDraggable=\"pnl\"  dragHandle=\".ui-panel-titlebar\"&gt;\r\n    &lt;p-panel header=\"Drag Header\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-panel&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n            <h3>Draggable</h3>\r\n            <h4>Attributes</h4>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>dragEffect</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Defines the cursor style, valid values are none, copy, move, link, copyMove, copyLink, linkMove and all.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>dragHandle</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Selector to define the drag handle, by default anywhere on the target element is a drag handle to start dragging.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h4>Events</h4>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onDragStart</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke when drag begins.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDrag</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke on dragging.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDragEnd</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke when drag ends.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Droppable</h3>\r\n            <h4>Attributes</h4>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>dropEffect</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Defines the cursor style on drag over, valid values are copy, move, link and move.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h4>Events</h4>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onDragEnter</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke when a draggable enters drop area.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDragOver</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds).</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDrop</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke when a draggable is dropped onto drop area.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDragLeave</td>\r\n                            <td>\r\n                                event: browser event\r\n                            </td>\r\n                            <td>Callback to invoke when a draggable leave drop area.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>Native HTML5 DragDrop.</p>\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/dragdrop\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Drag Only&lt;/h3&gt;\r\n&lt;div pDraggable=\"pnl\"  dragHandle=\".ui-panel-titlebar\"&gt;\r\n    &lt;p-panel header=\"Drag Header\"&gt;\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    &lt;/p-panel&gt;\r\n&lt;/div&gt;\r\n\r\n&lt;h3&gt;Drag and Drop to DataTable&lt;/h3&gt;\r\n&lt;div class=\"ui-grid ui-grid-pad ui-grid-responsive\"&gt;\r\n    &lt;div class=\"ui-grid-row\"&gt;\r\n        &lt;div class=\"ui-grid-col-6 ui-widget-content\" style=\"border-right:0 none\"&gt;\r\n            &lt;ul style=\"margin:0;padding:0\"&gt;\r\n                &lt;li *ngFor=\"let car of availableCars\" class=\"ui-state-default ui-helper-clearfix\" pDraggable=\"cars\"\r\n                    (onDragStart)=\"dragStart($event,car)\" (onDragEnd)=\"dragEnd($event)\"&gt;\r\n                    &lt;i class=\"fa fa-arrows fa-2x\" style=\"float:right;margin-top:8px\"&gt;&lt;/i&gt;\r\n                    &lt;img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"float:left\" draggable=\"false\"&gt;\r\n                    &lt;div style=\"margin:8px 0 0 8px;float:left\"&gt;{{car.vin}} - {{car.year}}&lt;/div&gt;\r\n                &lt;/li&gt;\r\n            &lt;/ul&gt;\r\n        &lt;/div&gt;\r\n        &lt;div class=\"ui-grid-col-6 ui-widget-content\" pDroppable=\"cars\" (onDrop)=\"drop($event)\"\r\n                [ngClass]=\"&#123;'ui-state-highlight':draggedCar&#125;\"&gt;\r\n            &lt;p-dataTable [value]=\"selectedCars\"&gt;\r\n                &lt;p-column field=\"vin\" header=\"Vin\"&gt;&lt;/p-column&gt;\r\n                &lt;p-column field=\"year\" header=\"Year\"&gt;&lt;/p-column&gt;\r\n                &lt;p-column field=\"brand\" header=\"Brand\"&gt;&lt;/p-column&gt;\r\n                &lt;p-column field=\"color\" header=\"Color\"&gt;&lt;/p-column&gt;\r\n            &lt;/p-dataTable&gt;\r\n        &lt;/div&gt;\r\n    &lt;/div&gt;\r\n&lt;/div&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class DragDropDemo &#123;\r\n    \r\n    availableCars: Car[];\r\n    \r\n    selectedCars: Car[];\r\n    \r\n    draggedCar: Car;\r\n    \r\n    constructor(private carService: CarService) &#123; &#125;\r\n    \r\n    ngOnInit() &#123;\r\n        this.selectedCars = [];\r\n        this.carService.getCarsSmall().then(cars => this.availableCars = cars);\r\n    &#125;\r\n    \r\n    dragStart(event,car: Car) &#123;\r\n        this.draggedCar = car;\r\n    &#125;\r\n    \r\n    drop(event) &#123;\r\n        if(this.draggedCar) &#123;\r\n            let draggedCarIndex = this.findIndex(this.draggedCar);\r\n            this.selectedCars = [...this.selectedCars, this.draggedCar];\r\n            this.availableCars = this.availableCars.filter((val,i) => i!=draggedCarIndex);\r\n            this.draggedCar = null;\r\n        &#125;\r\n    &#125;\r\n    \r\n    dragEnd(event) &#123;\r\n        this.draggedCar = null;\r\n    &#125;\r\n    \r\n    findIndex(car: Car) &#123;\r\n        let index = -1;\r\n        for(let i = 0; i < this.availableCars.length; i++) &#123;\r\n            if(car.vin === this.availableCars[i].vin) &#123;\r\n                index = i;\r\n                break;\r\n            &#125;\r\n        &#125;\r\n        return index;\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/blockui/blockuidemo.module.ts":
+/***/ "./src/app/showcase/components/dragdrop/dragdropdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__blockuidemo__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__blockuidemo_routing_module__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_blockui_blockui__ = __webpack_require__("./src/app/components/blockui/blockui.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__ = __webpack_require__("./src/app/components/panel/panel.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dragdropdemo__ = __webpack_require__("./src/app/showcase/components/dragdrop/dragdropdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dragdropdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/dragdrop/dragdropdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_dragdrop_dragdrop__ = __webpack_require__("./src/app/components/dragdrop/dragdrop.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_panel_panel__ = __webpack_require__("./src/app/components/panel/panel.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_datatable_datatable__ = __webpack_require__("./src/app/components/datatable/datatable.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlockUIDemoModule", function() { return BlockUIDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DragDropDemoModule", function() { return DragDropDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -732,66 +872,95 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var BlockUIDemoModule = (function () {
-    function BlockUIDemoModule() {
+var DragDropDemoModule = (function () {
+    function DragDropDemoModule() {
     }
-    return BlockUIDemoModule;
+    return DragDropDemoModule;
 }());
-BlockUIDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+DragDropDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__blockuidemo_routing_module__["a" /* BlockUIDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_blockui_blockui__["a" /* BlockUIModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__["a" /* PanelModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+            __WEBPACK_IMPORTED_MODULE_3__dragdropdemo_routing_module__["a" /* DragDropDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_dragdrop_dragdrop__["a" /* DragDropModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_panel_panel__["a" /* PanelModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_datatable_datatable__["a" /* DataTableModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__blockuidemo__["a" /* BlockUIDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__dragdropdemo__["a" /* DragDropDemo */]
         ]
     })
-], BlockUIDemoModule);
+], DragDropDemoModule);
 
-//# sourceMappingURL=blockuidemo.module.js.map
+//# sourceMappingURL=dragdropdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/blockui/blockuidemo.ts":
+/***/ "./src/app/showcase/components/dragdrop/dragdropdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_carservice__ = __webpack_require__("./src/app/showcase/service/carservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DragDropDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var BlockUIDemo = (function () {
-    function BlockUIDemo() {
-        this.blockedPanel = false;
-        this.blockedDocument = false;
+
+var DragDropDemo = (function () {
+    function DragDropDemo(carService) {
+        this.carService = carService;
     }
-    BlockUIDemo.prototype.blockDocument = function () {
+    DragDropDemo.prototype.ngOnInit = function () {
         var _this = this;
-        this.blockedDocument = true;
-        setTimeout(function () {
-            _this.blockedDocument = false;
-        }, 3000);
+        this.selectedCars = [];
+        this.carService.getCarsSmall().then(function (cars) { return _this.availableCars = cars; });
     };
-    return BlockUIDemo;
+    DragDropDemo.prototype.dragStart = function (event, car) {
+        this.draggedCar = car;
+    };
+    DragDropDemo.prototype.drop = function (event) {
+        if (this.draggedCar) {
+            var draggedCarIndex_1 = this.findIndex(this.draggedCar);
+            this.selectedCars = this.selectedCars.concat([this.draggedCar]);
+            this.availableCars = this.availableCars.filter(function (val, i) { return i != draggedCarIndex_1; });
+            this.draggedCar = null;
+        }
+    };
+    DragDropDemo.prototype.dragEnd = function (event) {
+        this.draggedCar = null;
+    };
+    DragDropDemo.prototype.findIndex = function (car) {
+        var index = -1;
+        for (var i = 0; i < this.availableCars.length; i++) {
+            if (car.vin === this.availableCars[i].vin) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    };
+    return DragDropDemo;
 }());
-BlockUIDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.html")
-    })
-], BlockUIDemo);
+DragDropDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/dragdrop/dragdropdemo.html"),
+        styles: ["\n        .ui-grid li {\n            list-style-type: none;\n            padding: 10px;\n            margin-bottom: 5px;\n        }\n    "]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */]) === "function" && _a || Object])
+], DragDropDemo);
 
-//# sourceMappingURL=blockuidemo.js.map
+var _a;
+//# sourceMappingURL=dragdropdemo.js.map
 
 /***/ })
 

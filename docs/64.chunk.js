@@ -29,10 +29,10 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
 ], CodeHighlighter);
 
 var CodeHighlighterModule = (function () {
@@ -41,8 +41,8 @@ var CodeHighlighterModule = (function () {
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
@@ -53,17 +53,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/inplace/inplace.ts":
+/***/ "./src/app/components/rating/rating.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* unused harmony export InplaceDisplay */
-/* unused harmony export InplaceContent */
-/* unused harmony export Inplace */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InplaceModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export RATING_VALUE_ACCESSOR */
+/* unused harmony export Rating */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RatingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -76,100 +75,108 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var InplaceDisplay = (function () {
-    function InplaceDisplay() {
+var RATING_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return Rating; }),
+    multi: true
+};
+var Rating = (function () {
+    function Rating() {
+        this.stars = 5;
+        this.cancel = true;
+        this.onRate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onCancel = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
     }
-    return InplaceDisplay;
-}());
-InplaceDisplay = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-inplaceDisplay',
-        template: '<ng-content></ng-content>'
-    })
-], InplaceDisplay);
-
-var InplaceContent = (function () {
-    function InplaceContent() {
-    }
-    return InplaceContent;
-}());
-InplaceContent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-inplaceContent',
-        template: '<ng-content></ng-content>'
-    })
-], InplaceContent);
-
-var Inplace = (function () {
-    function Inplace() {
-        this.onActivate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onDeactivate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-    }
-    Inplace.prototype.activate = function (event) {
-        if (!this.disabled) {
-            this.active = true;
-            this.onActivate.emit(event);
+    Rating.prototype.ngOnInit = function () {
+        this.starsArray = [];
+        for (var i = 0; i < this.stars; i++) {
+            this.starsArray[i] = i;
         }
     };
-    Inplace.prototype.deactivate = function (event) {
-        if (!this.disabled) {
-            this.active = false;
-            this.hover = false;
-            this.onDeactivate.emit(event);
+    Rating.prototype.rate = function (event, i) {
+        if (!this.readonly && !this.disabled) {
+            this.value = (i + 1);
+            this.onModelChange(this.value);
+            this.onModelTouched();
+            this.onRate.emit({
+                originalEvent: event,
+                value: (i + 1)
+            });
         }
+        event.preventDefault();
     };
-    return Inplace;
+    Rating.prototype.clear = function (event) {
+        if (!this.readonly && !this.disabled) {
+            this.value = null;
+            this.onModelChange(this.value);
+            this.onModelTouched();
+            this.onCancel.emit(event);
+        }
+        event.preventDefault();
+    };
+    Rating.prototype.writeValue = function (value) {
+        this.value = value;
+    };
+    Rating.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    Rating.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    Rating.prototype.setDisabledState = function (val) {
+        this.disabled = val;
+    };
+    return Rating;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
-], Inplace.prototype, "active", void 0);
+], Rating.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
-], Inplace.prototype, "closable", void 0);
+], Rating.prototype, "readonly", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Number)
+], Rating.prototype, "stars", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
-], Inplace.prototype, "disabled", void 0);
+], Rating.prototype, "cancel", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Inplace.prototype, "style", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], Rating.prototype, "onRate", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Inplace.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Inplace.prototype, "onActivate", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Inplace.prototype, "onDeactivate", void 0);
-Inplace = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-inplace',
-        template: "\n        <div [ngClass]=\"'ui-inplace ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inplace-display\" (click)=\"activate($event)\"\n                [ngClass]=\"{'ui-state-disabled':disabled}\" *ngIf=\"!active\">\n                <ng-content select=\"[pInplaceDisplay]\"></ng-content>\n            </div>\n            <div class=\"ui-inplace-content\" *ngIf=\"active\">\n                <ng-content select=\"[pInplaceContent]\"></ng-content>\n                <button type=\"button\" icon=\"fa-close\" pButton (click)=\"deactivate($event)\" *ngIf=\"closable\"></button>\n            </div>\n        </div>\n    "
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], Rating.prototype, "onCancel", void 0);
+Rating = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-rating',
+        template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\">\n                <span class=\"fa fa-ban\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"fa\" [ngClass]=\"{'fa-star-o': (!value || i >= value), 'fa-star':(i < value)}\"></span>\n            </a>\n        </div>\n    ",
+        providers: [RATING_VALUE_ACCESSOR]
     })
-], Inplace);
+], Rating);
 
-var InplaceModule = (function () {
-    function InplaceModule() {
+var RatingModule = (function () {
+    function RatingModule() {
     }
-    return InplaceModule;
+    return RatingModule;
 }());
-InplaceModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__button_button__["a" /* ButtonModule */]],
-        exports: [Inplace, InplaceDisplay, InplaceContent, __WEBPACK_IMPORTED_MODULE_2__button_button__["a" /* ButtonModule */]],
-        declarations: [Inplace, InplaceDisplay, InplaceContent]
+RatingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [Rating],
+        declarations: [Rating]
     })
-], InplaceModule);
+], RatingModule);
 
 var _a, _b;
-//# sourceMappingURL=inplace.js.map
+//# sourceMappingURL=rating.js.map
 
 /***/ }),
 
@@ -199,8 +206,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TabViewNav = (function () {
     function TabViewNav() {
         this.orientation = 'top';
-        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
         var styleClass = 'ui-state-default ui-corner-' + this.orientation;
@@ -224,23 +231,23 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
 ], TabViewNav.prototype, "tabs", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabViewNav.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], TabViewNav.prototype, "onTabClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], TabViewNav.prototype, "onTabCloseClick", void 0);
 TabViewNav = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: '[p-tabViewNav]',
         host: {
             '[class.ui-tabview-nav]': 'true',
@@ -288,60 +295,60 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "closable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabPanel.prototype, "headerStyle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "headerStyleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "leftIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "rightIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "cache", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], TabPanel.prototype, "templates", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabPanel.prototype, "selected", null);
 TabPanel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabPanel',
         template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
 ], TabPanel);
 
 var TabView = (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -461,49 +468,49 @@ var TabView = (function () {
     return TabView;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabView.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabView.prototype, "controlClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(TabPanel),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
 ], TabView.prototype, "tabPanels", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], TabView.prototype, "onChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
 ], TabView.prototype, "onClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabView.prototype, "lazy", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], TabView.prototype, "activeIndex", null);
 TabView = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabView',
         template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
 ], TabView);
 
 var TabViewModule = (function () {
@@ -512,8 +519,8 @@ var TabViewModule = (function () {
     return TabViewModule;
 }());
 TabViewModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [TabView, TabPanel, TabViewNav]
     })
@@ -524,14 +531,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inplace/inplacedemo-routing.module.ts":
+/***/ "./src/app/showcase/components/rating/ratingdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inplacedemo__ = __webpack_require__("./src/app/showcase/components/inplace/inplacedemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InplaceDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ratingdemo__ = __webpack_require__("./src/app/showcase/components/rating/ratingdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RatingDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -541,50 +548,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var InplaceDemoRoutingModule = (function () {
-    function InplaceDemoRoutingModule() {
+var RatingDemoRoutingModule = (function () {
+    function RatingDemoRoutingModule() {
     }
-    return InplaceDemoRoutingModule;
+    return RatingDemoRoutingModule;
 }());
-InplaceDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+RatingDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__inplacedemo__["a" /* InplaceDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__ratingdemo__["a" /* RatingDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], InplaceDemoRoutingModule);
+], RatingDemoRoutingModule);
 
-//# sourceMappingURL=inplacedemo-routing.module.js.map
+//# sourceMappingURL=ratingdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inplace/inplacedemo.html":
+/***/ "./src/app/showcase/components/rating/ratingdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Inplace</span>\r\n        <span>Inplace provides an easy to do editing and display at the same time where clicking the output displays the actual content.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-inplace closable=\"closable\" [style]=\"{'min-height':'30px'}\">\r\n        <span pInplaceDisplay>\r\n            Click to Edit\r\n        </span>\r\n        <span pInplaceContent>\r\n            <input type=\"text\" value=\"PrimeNG\" pInputText>\r\n        </span>\r\n    </p-inplace>\r\n    \r\n    <h3>Image</h3>\r\n    <p-inplace>\r\n        <span pInplaceDisplay>\r\n            <span class=\"fa fa-picture-o\"></span><span style=\"margin-left:8px\">View Picture</span>\r\n        </span>\r\n        <span pInplaceContent>\r\n            <img src=\"assets/showcase/images/demo/galleria/galleria5.jpg\" alt=\"Nature\">\r\n        </span>\r\n    </p-inplace>\r\n    \r\n    <h3>Data</h3>\r\n    <p-inplace>\r\n        <span pInplaceDisplay>\r\n            <span class=\"fa fa-table\"></span><span style=\"margin-left:8px\">View Data</span>\r\n        </span>\r\n        <span pInplaceContent>\r\n            <p-dataTable [value]=\"cars\">\r\n                <p-column field=\"vin\" header=\"Vin\"></p-column>\r\n                <p-column field=\"year\" header=\"Year\"></p-column>\r\n                <p-column field=\"brand\" header=\"Brand\"></p-column>\r\n                <p-column field=\"color\" header=\"Color\"></p-column>\r\n            </p-dataTable>\r\n        </span>\r\n    </p-inplace>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;InplaceModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Inplace requires two child components having <i>pInplaceDisplay</i> and <i>pInplaceOutput</i> attributes respectively to define.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-inplace&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        Click to Edit\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;input type=\"text\" value=\"PrimeNG\" pInputText&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>active</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether the content is displayed or not.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>closable</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Displays a button to switch back to display mode.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onActivate</td>\r\n                            <td>event.originalEvent: Click event</td>\r\n                            <td>Activates the content.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDeactivate</td>\r\n                            <td>event.originalEvent: Click event</td>\r\n                            <td>Deactivates the content.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-inplace</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inplace-display</td>\r\n                            <td>Display container</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-inplace-content</td>\r\n                            <td>Content container</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n        \r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/inplace\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;p-inplace closable=\"closable\"&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        Click to Edit\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;input type=\"text\" value=\"PrimeNG\" pInputText&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n\r\n&lt;h3&gt;Image&lt;/h3&gt;\r\n&lt;p-inplace&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        &lt;span class=\"fa fa-picture-o\"&gt;&lt;/span&gt;&lt;span style=\"margin-left:8px\"&gt;View Picture&lt;/span&gt;\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;img src=\"assets/showcase/images/demo/galleria/galleria5.jpg\" alt=\"Nature\"&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n\r\n&lt;h3&gt;Data&lt;/h3&gt;\r\n&lt;p-inplace&gt;\r\n    &lt;span pInplaceDisplay&gt;\r\n        &lt;span class=\"fa fa-table\"&gt;&lt;/span&gt;&lt;span style=\"margin-left:8px\"&gt;View Data&lt;/span&gt;\r\n    &lt;/span&gt;\r\n    &lt;span pInplaceContent&gt;\r\n        &lt;p-dataTable [value]=\"cars\"&gt;\r\n            &lt;p-column field=\"vin\" header=\"Vin\"&gt;&lt;/p-column&gt;\r\n            &lt;p-column field=\"year\" header=\"Year\"&gt;&lt;/p-column&gt;\r\n            &lt;p-column field=\"brand\" header=\"Brand\"&gt;&lt;/p-column&gt;\r\n            &lt;p-column field=\"color\" header=\"Color\"&gt;&lt;/p-column&gt;\r\n        &lt;/p-dataTable&gt;\r\n    &lt;/span&gt;\r\n&lt;/p-inplace&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Rating</span>\r\n        <span>Rating components is a star based selection input.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic {{val1}}</h3> \r\n    <p-rating [(ngModel)]=\"val1\"></p-rating>\r\n    <br />\r\n\r\n    <h3>Callback {{val2}}</h3>\r\n    <p-rating [(ngModel)]=\"val2\" (onRate)=\"handleRate($event)\" (onCancel)=\"handleCancel($event)\"></p-rating> <span *ngIf=\"msg\" style=\"margin-left:10px\">{{msg}}</span>\r\n    <br />\r\n\r\n    <h3>No Cancel {{val3}}</h3> \r\n    <p-rating [(ngModel)]=\"val3\" [cancel]=\"false\"></p-rating>\r\n    <br />\r\n\r\n    <h3>ReadOnly</h3> \r\n    <p-rating [ngModel]=\"5\" readonly=\"true\" stars=\"10\" [cancel]=\"false\"></p-rating>\r\n    <br />\r\n\r\n    <h3>Disabled</h3> \r\n    <p-rating [ngModel]=\"val4\" disabled=\"true\" stars=\"10\"></p-rating>\r\n    <br />\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;RatingModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using ngModel.</p>\r\n                    \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-rating [(ngModel)]=\"val\"&gt;&lt;/p-rating&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    val: number;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <p>Defining a default value would be enough to display the initial number of selected stars.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ModelComponent &#123;\r\n\r\n    val: number = 3;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Rating can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-rating formControlName=\"score\"&gt;&lt;/p-rating&gt;\r\n</code>\r\n</pre>\r\n\r\n                    <h3>Properties</h3>\r\n                    <div class=\"doc-tablewrapper\">\r\n                        <table class=\"doc-table\">\r\n                            <thead>\r\n                                <tr>\r\n                                    <th>Name</th>\r\n                                    <th>Type</th>\r\n                                    <th>Default</th>\r\n                                    <th>Description</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>stars</td>\r\n                                    <td>number</td>\r\n                                    <td>5</td>\r\n                                    <td>Number of stars.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>cancel</td>\r\n                                    <td>boolean</td>\r\n                                    <td>true</td>\r\n                                    <td>When specified a cancel icon is displayed to allow removing the value.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>disabled</td>\r\n                                    <td>boolean</td>\r\n                                    <td>false</td>\r\n                                    <td>When present, it specifies that the element should be disabled.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>readonly</td>\r\n                                    <td>boolean</td>\r\n                                    <td>false</td>\r\n                                    <td>When present, changing the value is not possible.</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n\r\n                    <h3>Events</h3>\r\n                    <div class=\"doc-tablewrapper\">\r\n                        <table class=\"doc-table\">\r\n                            <thead>\r\n                                <tr>\r\n                                    <th>Name</th>\r\n                                    <th>Parameters</th>\r\n                                    <th>Description</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>onRate</td>\r\n                                    <td>event.originalEvent: browser event <br>\r\n                                        event.value: selected value\r\n                                    </td>\r\n                                    <td>Callback to invoke on rate change.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>onCancel</td>\r\n                                    <td>event: browser event</td>\r\n                                    <td>Callback to invoke when value is removed.</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n\r\n                    <h3>Styling</h3>\r\n                    <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n                    <div class=\"doc-tablewrapper\">\r\n                        <table class=\"doc-table\">\r\n                            <thead>\r\n                                <tr>\r\n                                    <th>Name</th>\r\n                                    <th>Element</th>\r\n                                </tr>\r\n                            </thead>\r\n                            <tbody>\r\n                                <tr>\r\n                                    <td>ui-rating</td>\r\n                                    <td>Container element</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>ui-rating-star</td>\r\n                                    <td>Star element</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>ui-rating-star-on</td>\r\n                                    <td>Selected star element.</td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td>ui-rating-cancel</td>\r\n                                    <td>Cancel icon.</td>\r\n                                </tr>\r\n                            </tbody>\r\n                        </table>\r\n                    </div>\r\n\r\n                    <h3>Dependencies</h3>\r\n                    <p>None.</p>\r\n                </p-tabPanel>\r\n\r\n                <p-tabPanel header=\"Source\">\r\n                    <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/rating\" class=\"btn-viewsource\" target=\"_blank\">\r\n                        <i class=\"fa fa-github\"></i>\r\n                        <span>View on GitHub</span>\r\n                    </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic {{val1}}&lt;/h3&gt; \r\n&lt;p-rating [(ngModel)]=\"val1\"&gt;&lt;/p-rating&gt;\r\n\r\n&lt;h3&gt;Callback {{val2}}&lt;/h3&gt;\r\n&lt;p-rating [(ngModel)]=\"val2\" (onRate)=\"handleRate($event)\" (onCancel)=\"handleCancel($event)\"&gt;&lt;/p-rating&gt; &lt;span *ngIf=\"msg\" style=\"margin-left:10px\"&gt;{{msg}}&lt;/span&gt;\r\n\r\n&lt;h3&gt;No Cancel {{val3}}&lt;/h3&gt; \r\n&lt;p-rating [(ngModel)]=\"val3\" [cancel]=\"false\"&gt;&lt;/p-rating&gt;\r\n\r\n&lt;h3&gt;ReadOnly&lt;/h3&gt; \r\n&lt;p-rating [ngModel]=\"5\" readonly=\"true\" stars=\"10\" [cancel]=\"false\"&gt;&lt;/p-rating&gt;\r\n\r\n&lt;h3&gt;Disabled&lt;/h3&gt; \r\n&lt;p-rating [ngModel]=\"val4\" disabled=\"true\" stars=\"10\"&gt;&lt;/p-rating&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class RatingDemo &#123;\r\n\r\n    val1: number;\r\n\r\n    val2: number = 5;\r\n\r\n    val3: number;\r\n\r\n    val4: number = 5;\r\n\r\n    msg: string;\r\n\r\n    handleRate(event) &#123;\r\n        this.msg = \"You have rated \" + event.value;\r\n    &#125;\r\n\r\n    handleCancel(event) &#123;\r\n        this.msg = \"Rating Cancelled\";\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n                </p-tabPanel>\r\n            </p-tabView>\r\n        </div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inplace/inplacedemo.module.ts":
+/***/ "./src/app/showcase/components/rating/ratingdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inplacedemo__ = __webpack_require__("./src/app/showcase/components/inplace/inplacedemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inplacedemo_routing_module__ = __webpack_require__("./src/app/showcase/components/inplace/inplacedemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_inplace_inplace__ = __webpack_require__("./src/app/components/inplace/inplace.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_datatable_datatable__ = __webpack_require__("./src/app/components/datatable/datatable.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InplaceDemoModule", function() { return InplaceDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ratingdemo__ = __webpack_require__("./src/app/showcase/components/rating/ratingdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ratingdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/rating/ratingdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_rating_rating__ = __webpack_require__("./src/app/components/rating/rating.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RatingDemoModule", function() { return RatingDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -599,70 +605,63 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-var InplaceDemoModule = (function () {
-    function InplaceDemoModule() {
+var RatingDemoModule = (function () {
+    function RatingDemoModule() {
     }
-    return InplaceDemoModule;
+    return RatingDemoModule;
 }());
-InplaceDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+RatingDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__inplacedemo_routing_module__["a" /* InplaceDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_inplace_inplace__["a" /* InplaceModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_inputtext_inputtext__["a" /* InputTextModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_datatable_datatable__["a" /* DataTableModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4__ratingdemo_routing_module__["a" /* RatingDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_rating_rating__["a" /* RatingModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__inplacedemo__["a" /* InplaceDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__ratingdemo__["a" /* RatingDemo */]
         ]
     })
-], InplaceDemoModule);
+], RatingDemoModule);
 
-//# sourceMappingURL=inplacedemo.module.js.map
+//# sourceMappingURL=ratingdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/inplace/inplacedemo.ts":
+/***/ "./src/app/showcase/components/rating/ratingdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_carservice__ = __webpack_require__("./src/app/showcase/service/carservice.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InplaceDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RatingDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-var InplaceDemo = (function () {
-    function InplaceDemo(carService) {
-        this.carService = carService;
+var RatingDemo = (function () {
+    function RatingDemo() {
+        this.val4 = 5;
     }
-    InplaceDemo.prototype.ngOnInit = function () {
-        var _this = this;
-        this.carService.getCarsSmall().then(function (cars) { return _this.cars = cars; });
+    RatingDemo.prototype.handleRate = function (event) {
+        this.msg = "You have rated " + event.value;
     };
-    return InplaceDemo;
+    RatingDemo.prototype.handleCancel = function (event) {
+        this.msg = "Rating Cancelled";
+    };
+    return RatingDemo;
 }());
-InplaceDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/inplace/inplacedemo.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_carservice__["a" /* CarService */]) === "function" && _a || Object])
-], InplaceDemo);
+RatingDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/rating/ratingdemo.html")
+    })
+], RatingDemo);
 
-var _a;
-//# sourceMappingURL=inplacedemo.js.map
+//# sourceMappingURL=ratingdemo.js.map
 
 /***/ })
 

@@ -1,13 +1,11 @@
 webpackJsonp([90],{
 
-/***/ "./src/app/components/codehighlighter/codehighlighter.ts":
+/***/ "./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* unused harmony export CodeHighlighter */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CodeHighlighterModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UISelectDemoComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,126 +16,66 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-var CodeHighlighter = (function () {
-    function CodeHighlighter(el) {
-        this.el = el;
+var UISelectDemoComponent = (function () {
+    function UISelectDemoComponent() {
     }
-    CodeHighlighter.prototype.ngOnInit = function () {
-        Prism.highlightElement(this.el.nativeElement);
+    UISelectDemoComponent.prototype.ngOnInit = function () {
     };
-    return CodeHighlighter;
+    return UISelectDemoComponent;
 }());
-CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
-        selector: '[pCode]'
+UISelectDemoComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'ui-select-demo',
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
+        template: __webpack_require__("./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.html"),
+        styles: [__webpack_require__("./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
-], CodeHighlighter);
+    __metadata("design:paramtypes", [])
+], UISelectDemoComponent);
 
-var CodeHighlighterModule = (function () {
-    function CodeHighlighterModule() {
-    }
-    return CodeHighlighterModule;
-}());
-CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [CodeHighlighter],
-        declarations: [CodeHighlighter]
-    })
-], CodeHighlighterModule);
-
-var _a;
-//# sourceMappingURL=codehighlighter.js.map
+//# sourceMappingURL=ui-select-demo.component.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/setup/setup-routing.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.css":
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_component__ = __webpack_require__("./src/app/showcase/components/setup/setup.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SetupRoutingModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
 
 
+// module
+exports.push([module.i, ".test-content{\r\n    margin:30px 0 0 30px;\r\n}\r\n.meta-select{\r\n    width: 100px;\r\n}\r\n.component{\r\n    margin-top:50px;\r\n}\r\n.test-content a.back{\r\n    color: #0b7dd8;\r\n    font-size: 16px;\r\n    margin-left: 280px;\r\n    text-decoration: underline;\r\n}", ""]);
 
-var SetupRoutingModule = (function () {
-    function SetupRoutingModule() {
-    }
-    return SetupRoutingModule;
-}());
-SetupRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__setup_component__["a" /* SetupComponent */] }
-            ])
-        ],
-        exports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
-        ]
-    })
-], SetupRoutingModule);
+// exports
 
-//# sourceMappingURL=setup-routing.module.js.map
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/setup/setup.component.html":
+/***/ "./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Get Started</span>\r\n        <span>PrimeNG is a rich set of open source native Angular UI components.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <h3 style=\"margin-top:0px\">Download</h3>\r\n    <p>PrimeNG is available at npm, if you have an existing application run the following command to download it to your project.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\nnpm install primeng --save\r\n</code>\r\n</pre>\r\n\r\n    <h3>Load Configuration</h3>\r\n    <p>PrimeNG is distributed in commonjs format, a module manager of your choice is required and this guide provides samples for SystemJS, WebPack and Angular CLI.</p>\r\n\r\n    <h3>Import</h3>\r\n    <p>UI components are configured as modules, once PrimeNG is downloaded and configured, modules and apis can be imported from 'primeng/primeng' shorthand in your application code.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;AccordionModule&#125; from 'primeng/primeng';     //accordion and accordion tab\r\nimport &#123;MenuItem&#125; from 'primeng/primeng';            //api\r\n</code>\r\n</pre>\r\n\r\n    <p>Importing from primeng/primeng will load all other components as well, to only import a specific component pattern would result in a smaller bundle size.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\n//import &#123;ComponentModule&#125; from 'primeng/components/componentname/componentname';\r\n//import &#123;InterfaceName&#125; from 'primeng/common/api';\r\n\r\nimport &#123;AccordionModule&#125; from 'primeng/components/accordion/accordion';\r\nimport &#123;MenuItem&#125; from 'primeng/components/common/api';\r\n</code>\r\n</pre>\r\n\r\n    <h3>Dependencies</h3>\r\n    <p>Majority of PrimeNG components (95%) are native and there are some exceptions having 3rd party dependencies. In addition, components require font-awesome for icons.</p>\r\n\r\n    <p>The css dependencies are as follows, note that font-awesome should be loaded before PrimeNG css and theme can be changed with your choice.</p>\r\n<pre>\r\n<code class=\"language-html\" pCode ngNonBindable>\r\n&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"YOUR_PATH/font-awesome.min.css\" /&gt;\r\n&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/node_modules/primeng/resources/themes/omega/theme.css\" /&gt;\r\n&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/node_modules/primeng/resources/primeng.min.css\" /&gt;\r\n</code>\r\n</pre>\r\n\r\n    <p>Here is the list of components with 3rd party dependencies.</p>\r\n    \r\n    <div class=\"doc-tablewrapper\">\r\n        <table class=\"doc-table\">\r\n            <thead>\r\n                <tr>\r\n                    <th>Component</th>\r\n                    <th>Dependency</th>\r\n                </tr>\r\n            </thead>\r\n            <tbody>\r\n                <tr>\r\n                    <td>Schedule</td>\r\n                    <td>FullCalendar and Moment.js</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>Editor</td>\r\n                    <td>Quill Editor</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>GMap</td>\r\n                    <td>Google Maps</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>Charts</td>\r\n                    <td>Charts.js 2.1.x</td>\r\n                </tr>\r\n                <tr>\r\n                    <td>Captcha</td>\r\n                    <td>Google Recaptcha</td>\r\n                </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n    \r\n    <h3>Animations with Angular 4+</h3>\r\n    <p>Various components utilize angular animations to improve the user experience, starting with Angular 4 animations have their own module so you need\r\n    to import <i>BrowserAnimationsModule</i> to your application. If you prefer not to use <i>NoopAnimationsModule</i> instead.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\nnpm install @angular/animations --save\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;BrowserModule&#125; from '@angular/platform-browser';\r\nimport &#123;BrowserAnimationsModule&#125; from '@angular/platform-browser/animations';\r\n\r\n@NgModule(&#123;\r\n    imports: [\r\n        BrowserModule,\r\n        BrowserAnimationsModule,\r\n        //...\r\n    ],\r\n    //...\r\n&#125;)\r\nexport class YourAppModule &#123; &#125;\r\n</code>\r\n</pre>\r\n        \r\n    <h3>Angular CLI Integration</h3>\r\n    <p>Angular CLI is the official CLI tool for Angular. We strongly suggest using Angular CLI when starting an Angular project.</p>\r\n\r\n    <h4>Dependencies</h4>\r\n    <p>Add PrimeNG and FontAwesome as a dependency</p>\r\n<pre>\r\n<code class=\"language-js\" pCode ngNonBindable>\r\n\"dependencies\": &#123;\r\n  //...\r\n  \"primeng\": \"^4.1.0\",\r\n  \"font-awesome\": \"^4.7.0\"\r\n&#125;,\r\n</code>\r\n</pre>\r\n    \r\n    <h4>Styles Configuration</h4>\r\n    <p>Configure required styles at the styles section, example below uses the Omega theme.</p>\r\n<pre>\r\n<code class=\"language-js\" pCode ngNonBindable>\r\n\"styles\": [\r\n  \"../node_modules/font-awesome/css/font-awesome.min.css\",\r\n  \"../node_modules/primeng/resources/primeng.min.css\",\r\n  \"../node_modules/primeng/resources/themes/omega/theme.css\",\r\n  //...\r\n],\r\n</code>\r\n</pre>\r\n\r\n    <p>That is all, you may now import PrimeNG components, for a working example visit the <a href=\"https://github.com/primefaces/primeng-quickstart-cli\">PrimeNG CLI QuickStart</a> sample at GitHub.</p>\r\n        \r\n    <h3>Angular Seed Integration</h3>\r\n    <p>Angular2 Seed is an alternative modular starter project, there is an <a href=\"https://github.com/mgechev/angular2-seed/wiki/Add-PrimeNG\">official entry</a> at the project wiki\r\n        describing how to use PrimeNG with seed.</p>\r\n        \r\n    <h3>QuickStart with System.js</h3>\r\n    <p><a href=\"https://angular.io/docs/ts/latest/quickstart.html\">The official quickstart example</a> of Angular uses System.JS and we\r\n    have extended it to add PrimeNG. Visit the <a href=\"https://github.com/primefaces/primeng-quickstart\">PrimeNG-Quickstart</a> at GitHub for an example.</p>\r\n    \r\n    <h3>QuickStart with Webpack</h3>\r\n    <p>There is also a webpack version of the <a href=\"https://angular.io/docs/ts/latest/guide/webpack.html\">The official quickstart example</a> of Angular and we\r\n    have extended it to add PrimeNG. Visit the <a href=\"https://github.com/primefaces/primeng-quickstart-webpack\">PrimeNG-Quickstart-Webpack</a> at GitHub for an example.</p>\r\n        \r\n    <h4>External Articles</h4>\r\n    <ul>\r\n        <li><a href=\"https://yakovfain.com/2016/10/06/primeng-ui-components-for-angular-2/\">PrimeNG - UI Components for Angular 2</a> - Yakov Fain's Blog</li>\r\n        <li><a href=\"https://yakovfain.com/2016/10/28/adding-primeng-ui-components-to-angular-cli-project/\">Adding PrimeNG UI components to Angular CLI projects</a> - Yakov Fain's Blog</li>\r\n        <li><a href=\"https://www.google.com.tr/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=davinci%20primeng\">PRIMENG - WEB COMPONENT FRAMEWORK BASED ON ANGULARJS 2</a> - DaVinci IT Blog</li>\r\n        <li><a href=\"http://blogs.bytecode.com.au/glen/2016/10/27/primeng-with-angular-cli.html\">PrimeNG with CLI</a> - Glen Smith</li>\r\n        <li><a href=\"http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/3304/Hello-World-Angular-2-Data-Sample-Using-JavaScriptServices-Net-Core-and-PrimeNg.aspx\">Hello World Angular 2+ Data Sample Using JavaScriptServices .Net Core and PrimeNg</a></li>\r\n        <li><a href=\"http://lightswitchhelpwebsite.com/Blog/tabid/61/EntryId/3298/An-Angular-2-Tree-With-CRUD-Functionality.aspx\">An Angular 2 Tree With CRUD Functionality</a></li>\r\n    </ul>\r\n</div>\r\n"
+module.exports = "<article>\n  <section class=\"markdown\">\n    <h1>UISelect</h1>\n    <section class=\"markdown\">\n      <p>基础UI组件，下拉面板选择，支持单选和多选，不包含业务逻辑，需扩展，比如<a href=\"#/area-select\">区域选择组件</a></p>\n      <h2 id=\"何时使用\"><span>何时使用</span>\n        <!-- <a class=\"anchor\">#</a> -->\n      </h2>\n      <ul>\n        <li>\n          <p>下拉加载数据展示并选择</p>\n        </li>\n        <li>\n          <p>下拉选择多层级情景</p>\n        </li>\n      </ul>\n    </section>\n    <h2>扩展说明<i class=\"code-box-expand-trigger anticon anticon-appstore\" title=\"展开全部代码\"></i></h2>\n  </section>\n  <section class=\"markdown\">\n    <p>参考<a href=\"#/area-select\">区域选择组件</a>area-select扩展</p>\n  </section>\n  <section class=\"markdown api-container\">\n    <h2 id=\"API\"><span>API</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h2>\n    <h3 id=\"Rate\"><span>ui-select-box</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h3>\n    <table>\n      <thead>\n        <tr>\n          <th>参数</th>\n          <th>说明</th>\n          <th>类型</th>\n          <th>默认值</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>data-handler</td>\n          <td>用于注册数据处理回调函数，请求加载数据</td>\n          <td>Function</td>\n          <td>无</td>\n        </tr>\n        <tr>\n          <td>label-handler</td>\n          <td>用于注册数据处理回调函数，首次初始化回显接口回调，只会在初始化时调用一次</td>\n          <td>Function</td>\n          <td>无</td>\n        </tr>\n        <tr>\n          <td>multiSelect</td>\n          <td>是否支持多选</td>\n          <td>Boolean</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>label</td>\n          <td>显示label标签</td>\n          <td>String</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>level</td>\n          <td>可控制选择的级别</td>\n          <td>String | Number</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>placeholder</td>\n          <td>placeholder提示</td>\n          <td>String</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>width</td>\n          <td>input 宽度</td>\n          <td>String</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>onChange</td>\n          <td>值改变事件回调</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n</article>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/setup/setup.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SetupComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var SetupComponent = (function () {
-    function SetupComponent() {
-    }
-    return SetupComponent;
-}());
-SetupComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/setup/setup.component.html")
-    })
-], SetupComponent);
-
-//# sourceMappingURL=setup.component.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/components/setup/setup.module.ts":
+/***/ "./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setup_component__ = __webpack_require__("./src/app/showcase/components/setup/setup.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__setup_routing_module__ = __webpack_require__("./src/app/showcase/components/setup/setup-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetupModule", function() { return SetupModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_ui_select_demo_ui_select_demo_component__ = __webpack_require__("./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_showcase_share_nz_codebox_nz_codebox_module__ = __webpack_require__("./src/app/showcase/share/nz-codebox/nz-codebox.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_showcase_custom_components_ui_select_demo_ui_select_demo_routing_module__ = __webpack_require__("./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_showcase_share_nz_grid_nz_grid_module__ = __webpack_require__("./src/app/showcase/share/nz-grid/nz-grid.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_showcase_share_nz_tooltip_nz_tooltip_module__ = __webpack_require__("./src/app/showcase/share/nz-tooltip/nz-tooltip.module.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UISelectDemoModule", function() { return UISelectDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -149,25 +87,66 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SetupModule = (function () {
-    function SetupModule() {
+
+
+
+var UISelectDemoModule = (function () {
+    function UISelectDemoModule() {
     }
-    return SetupModule;
+    return UISelectDemoModule;
 }());
-SetupModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */],
-            __WEBPACK_IMPORTED_MODULE_3__setup_routing_module__["a" /* SetupRoutingModule */]
-        ],
+UISelectDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__setup_component__["a" /* SetupComponent */]
+            __WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_ui_select_demo_ui_select_demo_component__["a" /* UISelectDemoComponent */],
+        ],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_5_app_showcase_custom_components_ui_select_demo_ui_select_demo_routing_module__["a" /* UISelectDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_6_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
+            __WEBPACK_IMPORTED_MODULE_7_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
+            __WEBPACK_IMPORTED_MODULE_4_app_showcase_share_nz_codebox_nz_codebox_module__["a" /* NzCodeBoxModule */]
         ]
     })
-], SetupModule);
+], UISelectDemoModule);
 
-//# sourceMappingURL=setup.module.js.map
+//# sourceMappingURL=ui-select-demo.module.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.routing.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_ui_select_demo_ui_select_demo_component__ = __webpack_require__("./src/app/showcase/custom-components/ui-select-demo/ui-select-demo.component.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UISelectDemoRoutingModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var UISelectDemoRoutingModule = (function () {
+    function UISelectDemoRoutingModule() {
+    }
+    return UISelectDemoRoutingModule;
+}());
+UISelectDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_ui_select_demo_ui_select_demo_component__["a" /* UISelectDemoComponent */] }
+            ])],
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]]
+    })
+], UISelectDemoRoutingModule);
+
+//# sourceMappingURL=ui-select-demo.routing.module.js.map
 
 /***/ })
 

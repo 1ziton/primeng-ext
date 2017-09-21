@@ -73,7 +73,7 @@ var UICalendarDemoBasicComponent = (function () {
     return UICalendarDemoBasicComponent;
 }());
 UICalendarDemoBasicComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-calendar-demo-basic',
         template: "\n  <div class=\"ui-g ui-fluid\">\n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Basic</h3>\n      <ui-calendar [(ngModel)]=\"date1\"></ui-calendar> {{date1|date}}\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>\u672C\u5730\u5316</h3>\n      <ui-calendar [(ngModel)]=\"date2\" [locale]=\"zh\" dateFormat=\"dd/mm/yy\"></ui-calendar> {{date2|date}}\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Min-Max</h3>\n      <ui-calendar [(ngModel)]=\"date4\" [minDate]=\"minDate\" [maxDate]=\"maxDate\" [readonlyInput]=\"true\"></ui-calendar> {{date4|date}}\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Disable Days</h3>\n      <ui-calendar [(ngModel)]=\"date5\" tabindex=\"0\" [disabledDates]=\"invalidDates\" [disabledDays]=\"[0,6]\" readonlyInput=\"readonlyInput\"></ui-calendar> {{date5|date}}\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Navigators</h3>\n      <ui-calendar [(ngModel)]=\"date6\" [monthNavigator]=\"true\" [yearNavigator]=\"true\" yearRange=\"2000:2030\"></ui-calendar> {{date6|date}}\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Time Only </h3>\n      <ui-calendar [(ngModel)]=\"date8\" [timeOnly]=\"true\"></ui-calendar>\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Multiple </h3>\n      <ui-calendar [(ngModel)]=\"dates\" selectionMode=\"multiple\" readonlyInput=\"true\"></ui-calendar>\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Range</h3>\n      <ui-calendar [(ngModel)]=\"rangeDates\" selectionMode=\"range\" readonlyInput=\"true\"></ui-calendar>\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Button Bar</h3>\n      <ui-calendar [(ngModel)]=\"date9\" showButtonBar=\"true\"></ui-calendar>\n  </div>\n  \n  <div class=\"ui-g-12 ui-md-4\">\n      <h3>Date Template</h3>\n      <ui-calendar [(ngModel)]=\"date10\">\n          <ng-template pTemplate=\"date\" let-date>\n              <span [ngStyle]=\"{backgroundColor: (date.day < 21 && date.day > 10) ? '#7cc67c' : 'inherit'}\" style=\"border-radius:50%\">{{date.day}}</span>\n          </ng-template>\n      </ui-calendar>\n  </div>\n</div>\n  ",
         styles: []
@@ -117,7 +117,7 @@ var UICalendarDemoInlineComponent = (function () {
     return UICalendarDemoInlineComponent;
 }());
 UICalendarDemoInlineComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-calendar-demo-inline',
         template: "\n  <ui-calendar [(ngModel)]=\"time\" [locale]=\"zh\" [showTime]=\"true\"  [inline]=\"true\" dateFormat=\"yy/mm/dd\"></ui-calendar>\n  ",
         styles: []
@@ -164,7 +164,7 @@ var UICalendarDemoTimeComponent = (function () {
     return UICalendarDemoTimeComponent;
 }());
 UICalendarDemoTimeComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-calendar-demo-time',
         template: "\n  <ui-calendar [(ngModel)]=\"time\" [locale]=\"zh\" [showTime]=\"true\" dateFormat=\"yy/mm/dd\"></ui-calendar>\n  ",
         styles: []
@@ -203,9 +203,9 @@ var UICalendarDemoComponent = (function () {
     return UICalendarDemoComponent;
 }());
 UICalendarDemoComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-calendar-demo',
-        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* ViewEncapsulation */].None,
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         template: __webpack_require__("./src/app/showcase/custom-components/ui-calendar-demo/ui-calendar-demo.html"),
         styles: [__webpack_require__("./src/app/showcase/custom-components/ui-calendar-demo/ui-calendar-demo.css")]
     }),
@@ -283,7 +283,7 @@ var UICalendarDemoModule = (function () {
     return UICalendarDemoModule;
 }());
 UICalendarDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_ui_calendar_demo_ui_calendar_demo_component__["a" /* UICalendarDemoComponent */],
             __WEBPACK_IMPORTED_MODULE_11_app_showcase_custom_components_ui_calendar_demo_ui_calendar_demo_inline_component__["a" /* UICalendarDemoInlineComponent */],
@@ -292,7 +292,7 @@ UICalendarDemoModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_5_app_showcase_custom_components_ui_calendar_demo_ui_calendar_demo_routing_module__["a" /* UICalendarDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_6_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
             __WEBPACK_IMPORTED_MODULE_7_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
@@ -329,7 +329,7 @@ var UICalendarDemoRoutingModule = (function () {
     return UICalendarDemoRoutingModule;
 }());
 UICalendarDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_ui_calendar_demo_ui_calendar_demo_component__["a" /* UICalendarDemoComponent */] }
             ])],

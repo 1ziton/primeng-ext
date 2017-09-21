@@ -29,10 +29,10 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
 ], CodeHighlighter);
 
 var CodeHighlighterModule = (function () {
@@ -41,8 +41,8 @@ var CodeHighlighterModule = (function () {
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
@@ -53,7 +53,7 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/editor/editor.ts":
+/***/ "./src/app/components/listbox/listbox.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61,10 +61,11 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export EDITOR_VALUE_ACCESSOR */
-/* unused harmony export Editor */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditorModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_objectutils__ = __webpack_require__("./src/app/components/utils/objectutils.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export LISTBOX_VALUE_ACCESSOR */
+/* unused harmony export Listbox */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListboxModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -79,145 +80,341 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var EDITOR_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Editor; }),
+
+var LISTBOX_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_5__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return Listbox; }),
     multi: true
 };
-var Editor = (function () {
-    function Editor(el, domHandler) {
+var Listbox = (function () {
+    function Listbox(el, domHandler, objectUtils) {
         this.el = el;
         this.domHandler = domHandler;
-        this.onTextChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onSelectionChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onInit = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.objectUtils = objectUtils;
+        this.checkbox = false;
+        this.filter = false;
+        this.metaKeySelection = true;
+        this.showToggleAll = true;
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onDblClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
     }
-    Editor.prototype.ngAfterViewInit = function () {
+    Listbox.prototype.ngAfterContentInit = function () {
         var _this = this;
-        var editorElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-editor-content');
-        var toolbarElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-editor-toolbar');
-        this.quill = new Quill(editorElement, {
-            modules: {
-                toolbar: toolbarElement
-            },
-            placeholder: this.placeholder,
-            readOnly: this.readonly,
-            theme: 'snow',
-            formats: this.formats
-        });
-        if (this.value) {
-            this.quill.pasteHTML(this.value);
-        }
-        this.quill.on('text-change', function (delta, oldContents, source) {
-            var html = editorElement.children[0].innerHTML;
-            var text = _this.quill.getText();
-            if (html == '<p><br></p>') {
-                html = null;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'item':
+                    _this.itemTemplate = item.template;
+                    break;
+                default:
+                    _this.itemTemplate = item.template;
+                    break;
             }
-            _this.onTextChange.emit({
-                htmlValue: html,
-                textValue: text,
-                delta: delta,
-                source: source
-            });
-            _this.onModelChange(html);
-            if (source === 'user') {
-                _this.onModelTouched();
-            }
-        });
-        this.quill.on('selection-change', function (range, oldRange, source) {
-            _this.onSelectionChange.emit({
-                range: range,
-                oldRange: oldRange,
-                source: source
-            });
-        });
-        this.onInit.emit({
-            editor: this.quill
         });
     };
-    Editor.prototype.writeValue = function (value) {
+    Listbox.prototype.writeValue = function (value) {
         this.value = value;
-        if (this.quill) {
-            if (value)
-                this.quill.pasteHTML(value);
-            else
-                this.quill.setText('');
-        }
     };
-    Editor.prototype.registerOnChange = function (fn) {
+    Listbox.prototype.registerOnChange = function (fn) {
         this.onModelChange = fn;
     };
-    Editor.prototype.registerOnTouched = function (fn) {
+    Listbox.prototype.registerOnTouched = function (fn) {
         this.onModelTouched = fn;
     };
-    Editor.prototype.getQuill = function () {
-        return this.quill;
+    Listbox.prototype.setDisabledState = function (val) {
+        this.disabled = val;
     };
-    return Editor;
+    Listbox.prototype.onOptionClick = function (event, option) {
+        if (this.disabled) {
+            return;
+        }
+        if (!this.checkboxClick) {
+            if (this.multiple)
+                this.onOptionClickMultiple(event, option);
+            else
+                this.onOptionClickSingle(event, option);
+        }
+        else {
+            this.checkboxClick = false;
+        }
+        this.optionTouched = false;
+    };
+    Listbox.prototype.onOptionTouchEnd = function (event, option) {
+        if (this.disabled) {
+            return;
+        }
+        this.optionTouched = true;
+    };
+    Listbox.prototype.onOptionClickSingle = function (event, option) {
+        var selected = this.isSelected(option);
+        var valueChanged = false;
+        var metaSelection = this.optionTouched ? false : this.metaKeySelection;
+        if (metaSelection) {
+            var metaKey = (event.metaKey || event.ctrlKey);
+            if (selected) {
+                if (metaKey) {
+                    this.value = null;
+                    valueChanged = true;
+                }
+            }
+            else {
+                this.value = option.value;
+                valueChanged = true;
+            }
+        }
+        else {
+            this.value = selected ? null : option.value;
+            valueChanged = true;
+        }
+        if (valueChanged) {
+            this.onModelChange(this.value);
+            this.onChange.emit({
+                originalEvent: event,
+                value: this.value
+            });
+        }
+    };
+    Listbox.prototype.onOptionClickMultiple = function (event, option) {
+        var selected = this.isSelected(option);
+        var valueChanged = false;
+        var metaSelection = this.optionTouched ? false : this.metaKeySelection;
+        if (metaSelection) {
+            var metaKey = (event.metaKey || event.ctrlKey);
+            if (selected) {
+                if (metaKey) {
+                    this.removeOption(option);
+                }
+                else {
+                    this.value = [option.value];
+                }
+                valueChanged = true;
+            }
+            else {
+                this.value = (metaKey) ? this.value || [] : [];
+                this.value = this.value.concat([option.value]);
+                valueChanged = true;
+            }
+        }
+        else {
+            if (selected) {
+                this.removeOption(option);
+            }
+            else {
+                this.value = (this.value || []).concat([option.value]);
+            }
+            valueChanged = true;
+        }
+        if (valueChanged) {
+            this.onModelChange(this.value);
+            this.onChange.emit({
+                originalEvent: event,
+                value: this.value
+            });
+        }
+    };
+    Listbox.prototype.removeOption = function (option) {
+        var _this = this;
+        this.value = this.value.filter(function (val) { return !_this.objectUtils.equals(val, option.value, _this.dataKey); });
+    };
+    Listbox.prototype.isSelected = function (option) {
+        var selected = false;
+        if (this.multiple) {
+            if (this.value) {
+                for (var _i = 0, _a = this.value; _i < _a.length; _i++) {
+                    var val = _a[_i];
+                    if (this.objectUtils.equals(val, option.value, this.dataKey)) {
+                        selected = true;
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            selected = this.objectUtils.equals(this.value, option.value, this.dataKey);
+        }
+        return selected;
+    };
+    Object.defineProperty(Listbox.prototype, "allChecked", {
+        get: function () {
+            if (this.filterValue && this.filterValue.trim().length)
+                return this.allFilteredSelected();
+            else
+                return this.value && this.options && (this.value.length == this.options.length);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Listbox.prototype.allFilteredSelected = function () {
+        var allSelected;
+        if (this.value && this.visibleOptions && this.visibleOptions.length) {
+            allSelected = true;
+            for (var _i = 0, _a = this.visibleOptions; _i < _a.length; _i++) {
+                var opt = _a[_i];
+                var selected = void 0;
+                for (var _b = 0, _c = this.value; _b < _c.length; _b++) {
+                    var val = _c[_b];
+                    if (this.objectUtils.equals(val, opt.value, this.dataKey)) {
+                        selected = true;
+                    }
+                }
+                if (!selected) {
+                    allSelected = false;
+                    break;
+                }
+            }
+        }
+        return allSelected;
+    };
+    Listbox.prototype.onFilter = function (event) {
+        this.filterValue = event.target.value.trim().toLowerCase();
+        this.visibleOptions = [];
+        for (var i = 0; i < this.options.length; i++) {
+            var option = this.options[i];
+            if (option.label.toLowerCase().indexOf(this.filterValue.toLowerCase()) > -1) {
+                this.visibleOptions.push(option);
+            }
+        }
+        this.filtered = true;
+    };
+    Listbox.prototype.toggleAll = function (event, checkbox) {
+        if (this.disabled || (this.filterValue && this.filterValue.trim().length && (!this.visibleOptions || this.visibleOptions.length === 0))) {
+            return;
+        }
+        if (checkbox.checked) {
+            this.value = [];
+        }
+        else {
+            var opts = (this.visibleOptions && this.visibleOptions.length) ? this.visibleOptions : this.options;
+            if (opts) {
+                this.value = [];
+                for (var i = 0; i < opts.length; i++) {
+                    this.value.push(opts[i].value);
+                }
+            }
+        }
+        checkbox.checked = !checkbox.checked;
+        this.onModelChange(this.value);
+        this.onChange.emit({ originalEvent: event, value: this.value });
+    };
+    Listbox.prototype.isItemVisible = function (option) {
+        if (this.filterValue && this.filterValue.trim().length) {
+            for (var i = 0; i < this.visibleOptions.length; i++) {
+                if (this.visibleOptions[i].value == option.value) {
+                    return true;
+                }
+            }
+        }
+        else {
+            return true;
+        }
+    };
+    Listbox.prototype.onDoubleClick = function (event, option) {
+        if (this.disabled) {
+            return;
+        }
+        this.onDblClick.emit({
+            originalEvent: event,
+            value: this.value
+        });
+    };
+    Listbox.prototype.onCheckboxClick = function (event, option) {
+        if (this.disabled) {
+            return;
+        }
+        this.checkboxClick = true;
+        var selected = this.isSelected(option);
+        if (selected) {
+            this.removeOption(option);
+        }
+        else {
+            this.value = this.value ? this.value : [];
+            this.value = this.value.concat([option.value]);
+        }
+        this.onModelChange(this.value);
+        this.onChange.emit({
+            originalEvent: event,
+            value: this.value
+        });
+    };
+    return Listbox;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Editor.prototype, "onTextChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Editor.prototype, "onSelectionChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["d" /* Header */]),
-    __metadata("design:type", Object)
-], Editor.prototype, "toolbar", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Editor.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Editor.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Editor.prototype, "placeholder", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Editor.prototype, "readonly", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
-], Editor.prototype, "formats", void 0);
+], Listbox.prototype, "options", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], Editor.prototype, "onInit", void 0);
-Editor = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-editor',
-        template: "\n        <div [ngClass]=\"'ui-widget ui-editor-container ui-corner-all'\" [class]=\"styleClass\">\n            <div class=\"ui-editor-toolbar ui-widget-header ui-corner-top\" *ngIf=\"toolbar\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <div class=\"ui-editor-toolbar ui-widget-header ui-corner-top\" *ngIf=\"!toolbar\">\n                <span class=\"ql-formats\">\n                    <select class=\"ql-header\">\n                      <option value=\"1\">Heading</option>\n                      <option value=\"2\">Subheading</option>\n                      <option selected>Normal</option>\n                    </select>\n                    <select class=\"ql-font\">\n                      <option selected>Sans Serif</option>\n                      <option value=\"serif\">Serif</option>\n                      <option value=\"monospace\">Monospace</option>\n                    </select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-bold\" aria-label=\"Bold\"></button>\n                    <button class=\"ql-italic\" aria-label=\"Italic\"></button>\n                    <button class=\"ql-underline\" aria-label=\"Underline\"></button>\n                </span>\n                <span class=\"ql-formats\">\n                    <select class=\"ql-color\"></select>\n                    <select class=\"ql-background\"></select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-list\" value=\"ordered\" aria-label=\"Ordered List\"></button>\n                    <button class=\"ql-list\" value=\"bullet\" aria-label=\"Unordered List\"></button>\n                    <select class=\"ql-align\">\n                        <option selected></option>\n                        <option value=\"center\"></option>\n                        <option value=\"right\"></option>\n                        <option value=\"justify\"></option>\n                    </select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-link\" aria-label=\"Insert Link\"></button>\n                    <button class=\"ql-image\" aria-label=\"Insert Image\"></button>\n                    <button class=\"ql-code-block\" aria-label=\"Insert Code Block\"></button>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-clean\" aria-label=\"Remove Styles\"></button>\n                </span>\n            </div>\n            <div class=\"ui-editor-content\" [ngStyle]=\"style\"></div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */], EDITOR_VALUE_ACCESSOR]
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Listbox.prototype, "multiple", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], Listbox.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Listbox.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Listbox.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Listbox.prototype, "checkbox", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Listbox.prototype, "filter", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Listbox.prototype, "metaKeySelection", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Listbox.prototype, "dataKey", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Listbox.prototype, "showToggleAll", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], Listbox.prototype, "onChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], Listbox.prototype, "onDblClick", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
+], Listbox.prototype, "templates", void 0);
+Listbox = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-listbox',
+        template: "\n        <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-widget-header ui-corner-all ui-listbox-header ui-helper-clearfix\" *ngIf=\"(checkbox && multiple) || filter\" [ngClass]=\"{'ui-listbox-header-w-checkbox': checkbox}\">\n                <div class=\"ui-chkbox ui-widget\" *ngIf=\"checkbox && multiple && showToggleAll\">\n                    <div class=\"ui-helper-hidden-accessible\">\n                        <input #cb type=\"checkbox\" readonly=\"readonly\" [checked]=\"allChecked\">\n                    </div>\n                    <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':allChecked}\" (click)=\"toggleAll($event,cb)\">\n                        <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':allChecked}\"></span>\n                    </div>\n                </div>\n                <div class=\"ui-listbox-filter-container\" *ngIf=\"filter\">\n                    <input type=\"text\" role=\"textbox\" (input)=\"onFilter($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n            </div>\n            <ul class=\"ui-listbox-list\">\n                <li *ngFor=\"let option of options; let i = index;\" [style.display]=\"isItemVisible(option) ? 'block' : 'none'\"\n                    [ngClass]=\"{'ui-listbox-item ui-corner-all':true,'ui-state-highlight':isSelected(option)}\"\n                    (click)=\"onOptionClick($event,option)\" (dblclick)=\"onDoubleClick($event,option)\" (touchend)=\"onOptionTouchEnd($event,option)\">\n                    <div class=\"ui-chkbox ui-widget\" *ngIf=\"checkbox && multiple\" (click)=\"onCheckboxClick($event,option)\">\n                        <div class=\"ui-helper-hidden-accessible\">\n                            <input type=\"checkbox\" [checked]=\"isSelected(option)\" [disabled]=\"disabled\">\n                        </div>\n                        <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isSelected(option)}\">\n                            <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':isSelected(option)}\"></span>\n                        </div>\n                    </div>\n                    <span *ngIf=\"!itemTemplate\">{{option.label}}</span>\n                    <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" [index]=\"i\"></ng-template>\n                </li>\n            </ul>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */], __WEBPACK_IMPORTED_MODULE_4__utils_objectutils__["a" /* ObjectUtils */], LISTBOX_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object])
-], Editor);
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__utils_objectutils__["a" /* ObjectUtils */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__utils_objectutils__["a" /* ObjectUtils */]) === "function" && _f || Object])
+], Listbox);
 
-var EditorModule = (function () {
-    function EditorModule() {
+var ListboxModule = (function () {
+    function ListboxModule() {
     }
-    return EditorModule;
+    return ListboxModule;
 }());
-EditorModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Editor, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
-        declarations: [Editor]
+ListboxModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        exports: [Listbox, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [Listbox]
     })
-], EditorModule);
+], ListboxModule);
 
-var _a, _b, _c, _d, _e;
-//# sourceMappingURL=editor.js.map
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=listbox.js.map
 
 /***/ }),
 
@@ -247,8 +444,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TabViewNav = (function () {
     function TabViewNav() {
         this.orientation = 'top';
-        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
         var styleClass = 'ui-state-default ui-corner-' + this.orientation;
@@ -272,23 +469,23 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
 ], TabViewNav.prototype, "tabs", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabViewNav.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], TabViewNav.prototype, "onTabClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], TabViewNav.prototype, "onTabCloseClick", void 0);
 TabViewNav = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: '[p-tabViewNav]',
         host: {
             '[class.ui-tabview-nav]': 'true',
@@ -336,60 +533,60 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "closable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabPanel.prototype, "headerStyle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "headerStyleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "leftIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "rightIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "cache", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], TabPanel.prototype, "templates", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabPanel.prototype, "selected", null);
 TabPanel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabPanel',
         template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
 ], TabPanel);
 
 var TabView = (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -509,49 +706,49 @@ var TabView = (function () {
     return TabView;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabView.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabView.prototype, "controlClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(TabPanel),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
 ], TabView.prototype, "tabPanels", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], TabView.prototype, "onChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
 ], TabView.prototype, "onClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabView.prototype, "lazy", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], TabView.prototype, "activeIndex", null);
 TabView = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabView',
         template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
 ], TabView);
 
 var TabViewModule = (function () {
@@ -560,8 +757,8 @@ var TabViewModule = (function () {
     return TabViewModule;
 }());
 TabViewModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [TabView, TabPanel, TabViewNav]
     })
@@ -572,14 +769,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/editor/editordemo-routing.module.ts":
+/***/ "./src/app/showcase/components/listbox/listboxdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__editordemo__ = __webpack_require__("./src/app/showcase/components/editor/editordemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditorDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__listboxdemo__ = __webpack_require__("./src/app/showcase/components/listbox/listboxdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListboxDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -589,36 +786,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var EditorDemoRoutingModule = (function () {
-    function EditorDemoRoutingModule() {
+var ListboxDemoRoutingModule = (function () {
+    function ListboxDemoRoutingModule() {
     }
-    return EditorDemoRoutingModule;
+    return ListboxDemoRoutingModule;
 }());
-EditorDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+ListboxDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__editordemo__["a" /* EditorDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__listboxdemo__["a" /* ListboxDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], EditorDemoRoutingModule);
+], ListboxDemoRoutingModule);
 
-//# sourceMappingURL=editordemo-routing.module.js.map
+//# sourceMappingURL=listboxdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/editor/editordemo.html":
+/***/ "./src/app/showcase/components/listbox/listboxdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Editor</span>\r\n        <span>Editor is rich text editor component based on Quill.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Default</h3>\r\n    <p-editor [(ngModel)]=\"text1\" [style]=\"&#123;'height':'320px'&#125;\"></p-editor>\r\n    <p>Value: {{text1||'empty'}}</p>\r\n    \r\n    <button pButton type=\"button\" label=\"Clear\" icon=\"fa-close\" (click)=\"text1=null\"></button>\r\n    \r\n    <hr style=\"border-top:0px;border-color:#dde3e6\">\r\n    \r\n    <h3>Custom Toolbar</h3>\r\n    <p-editor [(ngModel)]=\"text2\" [style]=\"&#123;'height':'320px'&#125;\">\r\n        <p-header>\r\n            <span class=\"ql-formats\">\r\n                <button class=\"ql-bold\" aria-label=\"Bold\"></button>\r\n                <button class=\"ql-italic\" aria-label=\"Italic\"></button>\r\n                <button class=\"ql-underline\" aria-label=\"Underline\"></button>\r\n            </span>\r\n        </p-header>\r\n    </p-editor>\r\n    <p>Value: {{text2||'empty'}}</p>\r\n    \r\n    <button pButton type=\"button\" label=\"Clear\" icon=\"fa-close\" (click)=\"text2=null\"></button>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;EditorModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined with ngModel.</p>\r\n            \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-editor [(ngModel)]=\"text\" [style]=\"&#123;'height':'320px'&#125;\"&gt;&lt;/p-editor&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class EditorDemo &#123;\r\n    \r\n    text: string;\r\n        \r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Editor can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-editor formControlName=\"description\" [style]=\"&#123;'height':'320px'&#125;\"&gt;&lt;/p-editor&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Toolbar</h3>\r\n            <p>Editor provides a default toolbar with common options, to customize it define your elements inside the header element. Refer to <a href=\"http://quilljs.com/docs/modules/toolbar/\">Quill documentation</a> for available controls.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-editor [(ngModel)]=\"text2\" [style]=\"&#123;'height':'320px'&#125;\"&gt;\r\n    &lt;p-header&gt;\r\n        &lt;span class=\"ql-format-group\"&gt;\r\n            &lt;span title=\"Bold\" class=\"ql-format-button ql-bold\"&gt;&lt;/span&gt;\r\n            &lt;span class=\"ql-format-separator\"&gt;&lt;/span&gt;\r\n            &lt;span title=\"Italic\" class=\"ql-format-button ql-italic\"&gt;&lt;/span&gt;\r\n            &lt;span class=\"ql-format-separator\"&gt;&lt;/span&gt;\r\n            &lt;span title=\"Underline\" class=\"ql-format-button ql-underline\"&gt;&lt;/span&gt;\r\n            &lt;span class=\"ql-format-separator\"&gt;&lt;/span&gt;\r\n            &lt;span title=\"Strikethrough\" class=\"ql-format-button ql-strike\"&gt;&lt;/span&gt;\r\n        &lt;/span&gt;\r\n    &lt;/p-header&gt;\r\n&lt;/p-editor&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>placeholder</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Placeholder text to show when editor is empty.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>readonly</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether to instantiate the editor to read-only mode.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>formats</td>\r\n                            <td>string[]</td>\r\n                            <td>null</td>\r\n                            <td>Whitelist of formats to display, see <a href=\"http://quilljs.com/docs/formats/\">here</a> for available options.</td>\r\n                        </tr>\r\n                        \r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onTextChange</td>\r\n                            <td>event.delta: Representation of the change.<br>\r\n                                event.source: Source of change. Will be either \"user\" or \"api\".<br>\r\n                                event.htmlValue: Current value as html.<br>\r\n                                event.textValue: Current value as text.<br></td>\r\n                            <td>Callback to invoke when text of editor changes.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onSelectionChange</td>\r\n                            <td>event.range: Object with index and length keys indicating where the selection exists.<br>\r\n                                event.oldRange: Object with index and length keys indicating where the previous selection was..<br>\r\n                                event.source: Source of change. Will be either \"user\" or \"api\".</td>\r\n                            <td>Callback to invoke when selected text of editor changes.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onInit</td>\r\n                            <td>event.editor: Quill editor instance.<br>\r\n                                event.oldRange: Object with index and length keys indicating where the previous selection was..<br>\r\n                                event.source: Source of change. Will be either \"user\" or \"api\".</td>\r\n                            <td>Callback to invoke after editor is initialized.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <p>Refer to <a href=\"http://beta.quilljs.com/docs/api/#events\">Quill documentation</a> for more information.</p>\r\n\r\n            <h3>Methods</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>getQuill</td>\r\n                            <td>-</td>\r\n                            <td>Returns the underlying quill instance.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-editor-container</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-editor-toolbar</td>\r\n                            <td>Toolbar of the editor</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-editor-content</td>\r\n                            <td>Editable area</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p><a href=\"http://quilljs.com\">Quill</a> Editor 1.0.</p>\r\n            <p>Resources of quill needs to be added to your application. Example setup with CLI is as follows;</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\nnpm install quill --save\r\n</code>\r\n</pre>\r\n            <p>Add Quill to scripts in angular-cli.json</p>  \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n\"scripts\": [... \"../node_modules/quill/dist/quill.js\"],\r\n</code>\r\n</pre>\r\n            <p>Add Quill css to styles in angular-cli.json</p>  \r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n\"styles\": [ ... \"../node_modules/quill/dist/quill.core.css\", \"../node_modules/quill/dist/quill.snow.css\"],\r\n</code> \r\n</pre>        \r\n\r\n        </p-tabPanel>\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/editor\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Default&lt;/h3&gt;\r\n&lt;p-editor [(ngModel)]=\"text1\" [style]=\"&#123;'height':'320px'&#125;\"&gt;&lt;/p-editor&gt;\r\n&lt;p&gt;Value: &#123;&#123;text1||'empty'&#125;&#125;&lt;/p&gt;\r\n\r\n&lt;button pButton type=\"button\" label=\"Clear\" icon=\"fa-close\" (click)=\"text1=null\"&gt;&lt;/button&gt;\r\n\r\n&lt;hr style=\"border-top:0px;border-color:#dde3e6\"&gt;\r\n\r\n&lt;h3&gt;Custom Toolbar&lt;/h3&gt;\r\n&lt;p-editor [(ngModel)]=\"text2\" [style]=\"&#123;'height':'320px'&#125;\"&gt;\r\n    &lt;p-header&gt;\r\n        &lt;span class=\"ql-formats\"&gt;\r\n            &lt;button class=\"ql-bold\" aria-label=\"Bold\"&gt;&lt;/button&gt;\r\n            &lt;button class=\"ql-italic\" aria-label=\"Italic\"&gt;&lt;/button&gt;\r\n            &lt;button class=\"ql-underline\" aria-label=\"Underline\"&gt;&lt;/button&gt;\r\n        &lt;/span&gt;\r\n    &lt;/p-header&gt;\r\n&lt;/p-editor&gt;\r\n&lt;p&gt;Value: &#123;&#123;text2||'empty'&#125;&#125;&lt;/p&gt;\r\n\r\n&lt;button pButton type=\"button\" label=\"Clear\" icon=\"fa-close\" (click)=\"text2=null\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\n\r\n@Component(&#123;\r\n    templateUrl: './editordemo.html'\r\n&#125;)\r\nexport class EditorDemo &#123;\r\n\r\n    text1: string = '&lt;div&gt;Hello World!&lt;/div&gt;&lt;div&gt;PrimeNG &lt;b&gt;Editor&lt;/b&gt; Rocks&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;';\r\n    \r\n    text2: string;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Listbox</span>\r\n        <span>Listbox is used to select one or more values from a list of items.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCity\"></p-listbox>\r\n\r\n    <p>Selected City: {{selectedCity}}</p>\r\n\r\n    <h3>Advanced (Multiple, Checkbox and Filter)</h3>\r\n    <p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCities\" multiple=\"multiple\" checkbox=\"checkbox\" filter=\"filter\"></p-listbox>\r\n    <p>Selected Cities: <span *ngFor=\"let c of selectedCities\" style=\"margin-right: 10px\">{{c}}</span></p>\r\n\r\n    <h3>Content</h3>\r\n    <p-listbox [options]=\"cars\" [(ngModel)]=\"selectedCar\" [style]=\"{'width':'190px','max-height':'250px'}\">\r\n        <ng-template let-car pTemplate=\"item\">\r\n            <div class=\"ui-helper-clearfix\">\r\n                <img src=\"assets/showcase/images/demo/car/{{car.label}}.png\" style=\"display:inline-block;margin:5px 0 0 5px\" width=\"48\">\r\n                <span style=\"font-size:20px;float:right;margin:15px 10px 0 0\">{{car.value}}</span>\r\n            </div>\r\n        </ng-template>\r\n    </p-listbox>\r\n    <p>Selected Car: {{selectedCar}}</p>\r\n\r\n    <button type=\"button\" (click)=\"selectedCar=null\" pButton icon=\"fa-close\" label=\"Clear Selected Car\"></button>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;ListboxModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way value binding is defined using ngModel and listbox requires a collection of options \r\n                where each option should follow the SelectItem interface that defines label-value properties.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCity\"&gt;&lt;/p-listbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectItem&#125; from 'primeng/primeng';\r\n\r\nexport class MyModel &#123;\r\n\r\n    cities: SelectItem[];\r\n\r\n    selectedCity: string;\r\n\r\n    constructor() &#123;\r\n        this.cities = [];\r\n        this.cities.push(&#123;label:'New York', value:'New York'&#125;);\r\n        this.cities.push(&#123;label:'Rome', value:'Rome'&#125;);\r\n        this.cities.push(&#123;label:'London', value:'London'&#125;);\r\n        this.cities.push(&#123;label:'Istanbul', value:'Istanbul'&#125;);\r\n        this.cities.push(&#123;label:'Paris', value:'Paris'&#125;);\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Selection</h3>\r\n            <p>Listbox allows selection of either single or multiple items whereas checkbox option displays a checkbox to indicate multiple selection. \r\n                In single case, model should be a single object reference whereas in multiple case should be an array. Multiple items can either be selected\r\n                using metaKey or toggled individually depending on the value of metaKeySelection property value which is true by default. On touch enabled\r\n                devices metaKeySelection is turned off automatically.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCities\"&gt;&lt;/p-listbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectItem&#125; from 'primeng/primeng';\r\n\r\nexport class MyModel &#123;\r\n\r\n    cities: SelectItem[];\r\n\r\n    selectedCities: string[];\r\n\r\n    constructor() &#123;\r\n        this.cities = [];\r\n        this.cities.push(&#123;label:'New York', value:'New York'&#125;);\r\n        this.cities.push(&#123;label:'Rome', value:'Rome'&#125;);\r\n        this.cities.push(&#123;label:'London', value:'London'&#125;);\r\n        this.cities.push(&#123;label:'Istanbul', value:'Istanbul'&#125;);\r\n        this.cities.push(&#123;label:'Paris', value:'Paris'&#125;);\r\n    &#125;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Filter</h3>\r\n            <p>Filtering allows searching items in the list using an input field at the header. In order to use filtering, enable filter property.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCities\" filter=\"filter\"&gt;&lt;/p-listbox&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Listbox can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-listbox [options]=\"cities\" formControlName=\"cities\"&gt;&lt;/p-listbox&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Content</h3>\r\n            <p>Label of an option is used as the display text of an item by default, for custom content support define a ng-template where \r\n                the local ng-template variable refers to an option in the options collection.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-listbox [options]=\"cars\" [(ngModel)]=\"selectedCar\" style=\"width:190px\"&gt;\r\n    &lt;ng-template let-car let-i=\"index\" pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-helper-clearfix\"&gt;\r\n            &lt;img src=\"assets/showcase/images/demo/car/{{car.label}}.png\" style=\"display:inline-block;margin:5px 0 0 5px\" width=\"48\"&gt;\r\n            &lt;span style=\"font-size:20px;float:right;margin:15px 10px 0 0\"&gt;&#123;&#123;i&#125;&#125; - &#123;&#123;car.value&#125;&#125;&lt;/span&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-listbox&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SelectItem&#125; from 'primeng/primeng'\r\n\r\nexport class MyModel &#123;\r\n\r\n    cars: SelectItem[];\r\n\r\n    selectedCar: string;\r\n\r\n    constructor() &#123;\r\n        this.cars = [];\r\n        this.cars.push(&#123;label: 'Audi', value: 'Audi'&#125;);\r\n        this.cars.push(&#123;label: 'BMW', value: 'BMW'&#125;);\r\n        this.cars.push(&#123;label: 'Fiat', value: 'Fiat'&#125;);\r\n        this.cars.push(&#123;label: 'Ford', value: 'Ford'&#125;);\r\n        this.cars.push(&#123;label: 'Honda', value: 'Honda'&#125;);\r\n        this.cars.push(&#123;label: 'Jaguar', value: 'Jaguar'&#125;);\r\n        this.cars.push(&#123;label: 'Mercedes', value: 'Mercedes'&#125;);\r\n        this.cars.push(&#123;label: 'Renault', value: 'Renault'&#125;);\r\n        this.cars.push(&#123;label: 'VW', value: 'VW'&#125;);\r\n        this.cars.push(&#123;label: 'Volvo', value: 'Volvo'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>options</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of selectitems to display as the available options.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>multiple</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When specified, allows selecting multiple values.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>checkbox</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When specified, allows selecting items with checkboxes.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>filter</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When specified, displays a filter input at header.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>metaKeySelection</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Defines how multiple items can be selected, when true metaKey needs to be pressed to select or unselect an item and when set to false selection of each item\r\n                            can be toggled individually. On touch enabled devices, metaKeySelection is turned off automatically.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>dataKey</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>A property to uniquely identify a value in options.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>showToggleAll</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether header checkbox is shown in multiple mode.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>event.originalEvent: browser event<br />\r\n                                event.value: single value or an array of values that are selected\r\n                            </td>\r\n                            <td>Callback to invoke when value of listbox changes.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onDblClick</td>\r\n                            <td>event.originalEvent: browser event<br />\r\n                                event.value: Clicked selecte item\r\n                            </td>\r\n                            <td>Callback to invoke when an item is double clicked.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-listbox</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-listbox-list</td>\r\n                            <td>List container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-listbox-item</td>\r\n                            <td>An item in the list.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-listbox-header</td>\r\n                            <td>Header element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-listbox-filter-container</td>\r\n                            <td>Container of filter input in header.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/listbox\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Single&lt;/h3&gt;\r\n&lt;p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCity\"&gt;&lt;/p-listbox&gt;\r\n\r\n&lt;p&gt;Selected City: {{selectedCity}}&lt;/p&gt;\r\n\r\n&lt;h3&gt;Advanced (Multiple, Checkbox and Filter)&lt;/h3&gt;\r\n&lt;p-listbox [options]=\"cities\" [(ngModel)]=\"selectedCities\" multiple=\"multiple\" checkbox=\"checkbox\" filter=\"filter\"&gt;&lt;/p-listbox&gt;\r\n&lt;p&gt;Selected Cities: &lt;span *ngFor=\"let c of selectedCities\" style=\"margin-right: 10px\"&gt;{{c}}&lt;/span&gt;&lt;/p&gt;\r\n\r\n&lt;h3&gt;Content&lt;/h3&gt;\r\n&lt;p-listbox [options]=\"cars\" [(ngModel)]=\"selectedCar\" [style]=\"&#123;'width':'190px','max-height':'250px'&#125;\"&gt;\r\n    &lt;ng-template let-car pTemplate=\"item\"&gt;\r\n        &lt;div class=\"ui-helper-clearfix\"&gt;\r\n            &lt;img src=\"assets/showcase/images/demo/car/{{car.label}}.png\" style=\"display:inline-block;margin:5px 0 0 5px\" width=\"48\"&gt;\r\n            &lt;span style=\"font-size:20px;float:right;margin:15px 10px 0 0\"&gt;{{car.value}}&lt;/span&gt;\r\n        &lt;/div&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-listbox&gt;\r\n&lt;p&gt;Selected Car: {{selectedCar}}&lt;/p&gt;\r\n\r\n&lt;button type=\"button\" (click)=\"selectedCar=null\" pButton icon=\"fa-close\" label=\"Clear Selected Car\"&gt;&lt;/button&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ListboxDemo &#123;\r\n\r\n    cities: SelectItem[];\r\n\r\n    selectedCity: string;\r\n\r\n    selectedCities: string[];\r\n\r\n    cars: SelectItem[];\r\n\r\n    selectedCar: string = 'BMW';\r\n\r\n    constructor() &#123;\r\n        this.cities = [];\r\n        this.cities.push(&#123;label:'New York', value:'New York'&#125;);\r\n        this.cities.push(&#123;label:'Rome', value:'Rome'&#125;);\r\n        this.cities.push(&#123;label:'London', value:'London'&#125;);\r\n        this.cities.push(&#123;label:'Istanbul', value:'Istanbul'&#125;);\r\n        this.cities.push(&#123;label:'Paris', value:'Paris'&#125;);\r\n\r\n        this.cars = [];\r\n        this.cars.push(&#123;label: 'Audi', value: 'Audi'&#125;);\r\n        this.cars.push(&#123;label: 'BMW', value: 'BMW'&#125;);\r\n        this.cars.push(&#123;label: 'Fiat', value: 'Fiat'&#125;);\r\n        this.cars.push(&#123;label: 'Ford', value: 'Ford'&#125;);\r\n        this.cars.push(&#123;label: 'Honda', value: 'Honda'&#125;);\r\n        this.cars.push(&#123;label: 'Jaguar', value: 'Jaguar'&#125;);\r\n        this.cars.push(&#123;label: 'Mercedes', value: 'Mercedes'&#125;);\r\n        this.cars.push(&#123;label: 'Renault', value: 'Renault'&#125;);\r\n        this.cars.push(&#123;label: 'VW', value: 'VW'&#125;);\r\n        this.cars.push(&#123;label: 'Volvo', value: 'Volvo'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/editor/editordemo.module.ts":
+/***/ "./src/app/showcase/components/listbox/listboxdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -626,13 +823,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__editordemo__ = __webpack_require__("./src/app/showcase/components/editor/editordemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__editordemo_routing_module__ = __webpack_require__("./src/app/showcase/components/editor/editordemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_editor_editor__ = __webpack_require__("./src/app/components/editor/editor.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__listboxdemo__ = __webpack_require__("./src/app/showcase/components/listbox/listboxdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__listboxdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/listbox/listboxdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_listbox_listbox__ = __webpack_require__("./src/app/components/listbox/listbox.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EditorDemoModule", function() { return EditorDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListboxDemoModule", function() { return ListboxDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -648,58 +845,79 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var EditorDemoModule = (function () {
-    function EditorDemoModule() {
+var ListboxDemoModule = (function () {
+    function ListboxDemoModule() {
     }
-    return EditorDemoModule;
+    return ListboxDemoModule;
 }());
-EditorDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+ListboxDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__editordemo_routing_module__["a" /* EditorDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_editor_editor__["a" /* EditorModule */],
+            __WEBPACK_IMPORTED_MODULE_4__listboxdemo_routing_module__["a" /* ListboxDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_listbox_listbox__["a" /* ListboxModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_button_button__["a" /* ButtonModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__editordemo__["a" /* EditorDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__listboxdemo__["a" /* ListboxDemo */]
         ]
     })
-], EditorDemoModule);
+], ListboxDemoModule);
 
-//# sourceMappingURL=editordemo.module.js.map
+//# sourceMappingURL=listboxdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/editor/editordemo.ts":
+/***/ "./src/app/showcase/components/listbox/listboxdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditorDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListboxDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var EditorDemo = (function () {
-    function EditorDemo() {
-        this.text1 = '<div>Hello World!</div><div>PrimeNG <b>Editor</b> Rocks</div><div><br></div>';
+var ListboxDemo = (function () {
+    function ListboxDemo() {
+        this.selectedCar = 'BMW';
+        this.cities = [];
+        this.cities.push({ label: 'New York', value: 'New York' });
+        this.cities.push({ label: 'Rome', value: 'Rome' });
+        this.cities.push({ label: 'London', value: 'London' });
+        this.cities.push({ label: 'Istanbul', value: 'Istanbul' });
+        this.cities.push({ label: 'Paris', value: 'Paris' });
+        this.cars = [];
+        this.cars.push({ label: 'Audi', value: 'Audi' });
+        this.cars.push({ label: 'BMW', value: 'BMW' });
+        this.cars.push({ label: 'Fiat', value: 'Fiat' });
+        this.cars.push({ label: 'Ford', value: 'Ford' });
+        this.cars.push({ label: 'Honda', value: 'Honda' });
+        this.cars.push({ label: 'Jaguar', value: 'Jaguar' });
+        this.cars.push({ label: 'Mercedes', value: 'Mercedes' });
+        this.cars.push({ label: 'Renault', value: 'Renault' });
+        this.cars.push({ label: 'VW', value: 'VW' });
+        this.cars.push({ label: 'Volvo', value: 'Volvo' });
     }
-    return EditorDemo;
+    return ListboxDemo;
 }());
-EditorDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/editor/editordemo.html")
-    })
-], EditorDemo);
+ListboxDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/listbox/listboxdemo.html")
+    }),
+    __metadata("design:paramtypes", [])
+], ListboxDemo);
 
-//# sourceMappingURL=editordemo.js.map
+//# sourceMappingURL=listboxdemo.js.map
 
 /***/ })
 

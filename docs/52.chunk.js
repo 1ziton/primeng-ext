@@ -1,5 +1,253 @@
 webpackJsonp([52],{
 
+/***/ "./src/app/components/chips/chips.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export CHIPS_VALUE_ACCESSOR */
+/* unused harmony export Chips */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChipsModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var CHIPS_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_5__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return Chips; }),
+    multi: true
+};
+var Chips = (function () {
+    function Chips(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.onAdd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onRemove = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.allowDuplicate = true;
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
+    }
+    Chips.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'item':
+                    _this.itemTemplate = item.template;
+                    break;
+                default:
+                    _this.itemTemplate = item.template;
+                    break;
+            }
+        });
+    };
+    Chips.prototype.writeValue = function (value) {
+        this.value = value;
+    };
+    Chips.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    Chips.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    Chips.prototype.setDisabledState = function (val) {
+        this.disabled = val;
+    };
+    Chips.prototype.resolveFieldData = function (data, field) {
+        if (data && field) {
+            if (field.indexOf('.') == -1) {
+                return data[field];
+            }
+            else {
+                var fields = field.split('.');
+                var value = data;
+                for (var i = 0, len = fields.length; i < len; ++i) {
+                    value = value[fields[i]];
+                }
+                return value;
+            }
+        }
+        else {
+            return null;
+        }
+    };
+    Chips.prototype.onFocus = function () {
+        this.focus = true;
+    };
+    Chips.prototype.onBlur = function () {
+        this.focus = false;
+        this.onModelTouched();
+    };
+    Chips.prototype.removeItem = function (event, index) {
+        if (this.disabled) {
+            return;
+        }
+        var removedItem = this.value[index];
+        this.value = this.value.filter(function (val, i) { return i != index; });
+        this.onModelChange(this.value);
+        this.onRemove.emit({
+            originalEvent: event,
+            value: removedItem
+        });
+    };
+    Chips.prototype.addItem = function (event, item) {
+        this.value = this.value || [];
+        if (item && item.trim().length && (!this.max || this.max > item.length)) {
+            if (this.allowDuplicate || !this.value.includes(item)) {
+                this.value = this.value.concat([item]);
+                this.onModelChange(this.value);
+                this.onAdd.emit({
+                    originalEvent: event,
+                    value: item
+                });
+            }
+        }
+    };
+    Chips.prototype.onKeydown = function (event, inputEL) {
+        switch (event.which) {
+            //backspace
+            case 8:
+                if (inputEL.value.length === 0 && this.value && this.value.length > 0) {
+                    this.value = this.value.slice();
+                    var removedItem = this.value.pop();
+                    this.onModelChange(this.value);
+                    this.onRemove.emit({
+                        originalEvent: event,
+                        value: removedItem
+                    });
+                }
+                break;
+            //enter
+            case 13:
+                this.addItem(event, inputEL.value);
+                inputEL.value = '';
+                event.preventDefault();
+                break;
+            case 9:
+                if (this.addOnTab && inputEL.value !== '') {
+                    this.addItem(event, inputEL.value);
+                    inputEL.value = '';
+                    event.preventDefault();
+                }
+                break;
+            default:
+                if (this.max && this.value && this.max === this.value.length) {
+                    event.preventDefault();
+                }
+                break;
+        }
+    };
+    Object.defineProperty(Chips.prototype, "maxedOut", {
+        get: function () {
+            return this.max && this.value && this.max === this.value.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Chips;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], Chips.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Chips.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Chips.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], Chips.prototype, "onAdd", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], Chips.prototype, "onRemove", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Chips.prototype, "field", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Chips.prototype, "placeholder", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Number)
+], Chips.prototype, "max", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Number)
+], Chips.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Chips.prototype, "inputId", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Chips.prototype, "allowDuplicate", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], Chips.prototype, "inputStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], Chips.prototype, "inputStyleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Chips.prototype, "addOnTab", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
+], Chips.prototype, "templates", void 0);
+Chips = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-chips',
+        template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"placeholder\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\" \n                        (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */], CHIPS_VALUE_ACCESSOR]
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object])
+], Chips);
+
+var ChipsModule = (function () {
+    function ChipsModule() {
+    }
+    return ChipsModule;
+}());
+ChipsModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_3__inputtext_inputtext__["a" /* InputTextModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        exports: [Chips, __WEBPACK_IMPORTED_MODULE_3__inputtext_inputtext__["a" /* InputTextModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [Chips]
+    })
+], ChipsModule);
+
+var _a, _b, _c, _d, _e;
+//# sourceMappingURL=chips.js.map
+
+/***/ }),
+
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -29,10 +277,10 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
 ], CodeHighlighter);
 
 var CodeHighlighterModule = (function () {
@@ -41,8 +289,8 @@ var CodeHighlighterModule = (function () {
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
@@ -53,17 +301,14 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/slider/slider.ts":
+/***/ "./src/app/components/inputtext/inputtext.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* unused harmony export SLIDER_VALUE_ACCESSOR */
-/* unused harmony export Slider */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SliderModule; });
+/* unused harmony export InputText */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputTextModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -75,329 +320,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
-
-var SLIDER_VALUE_ACCESSOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Slider; }),
-    multi: true
-};
-var Slider = (function () {
-    function Slider(el, domHandler, renderer) {
+var InputText = (function () {
+    function InputText(el) {
         this.el = el;
-        this.domHandler = domHandler;
-        this.renderer = renderer;
-        this.min = 0;
-        this.max = 100;
-        this.orientation = 'horizontal';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onSlideEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.handleValues = [];
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
     }
-    Slider.prototype.onMouseDown = function (event, index) {
-        if (this.disabled) {
-            return;
-        }
-        this.dragging = true;
-        this.updateDomData();
-        this.sliderHandleClick = true;
-        this.handleIndex = index;
-        event.preventDefault();
+    InputText.prototype.ngDoCheck = function () {
+        this.updateFilledState();
     };
-    Slider.prototype.onTouchStart = function (event, index) {
-        var touchobj = event.changedTouches[0];
-        this.startHandleValue = (this.range) ? this.handleValues[index] : this.handleValue;
-        this.dragging = true;
-        this.handleIndex = index;
-        if (this.orientation === 'horizontal') {
-            this.startx = parseInt(touchobj.clientX, 10);
-            this.barWidth = this.el.nativeElement.children[0].offsetWidth;
-        }
-        else {
-            this.starty = parseInt(touchobj.clientY, 10);
-            this.barHeight = this.el.nativeElement.children[0].offsetHeight;
-        }
-        event.preventDefault();
+    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
+    InputText.prototype.onInput = function (e) {
+        this.updateFilledState();
     };
-    Slider.prototype.onTouchMove = function (event, index) {
-        var touchobj = event.changedTouches[0], handleValue = 0;
-        if (this.orientation === 'horizontal') {
-            handleValue = Math.floor(((parseInt(touchobj.clientX, 10) - this.startx) * 100) / (this.barWidth)) + this.startHandleValue;
-        }
-        else {
-            handleValue = Math.floor(((this.starty - parseInt(touchobj.clientY, 10)) * 100) / (this.barHeight)) + this.startHandleValue;
-        }
-        this.setValueFromHandle(event, handleValue);
-        event.preventDefault();
+    InputText.prototype.updateFilledState = function () {
+        this.filled = this.el.nativeElement.value && this.el.nativeElement.value.length;
     };
-    Slider.prototype.onBarClick = function (event) {
-        if (this.disabled) {
-            return;
-        }
-        if (!this.sliderHandleClick) {
-            this.updateDomData();
-            this.handleChange(event);
-        }
-        this.sliderHandleClick = false;
-    };
-    Slider.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        if (this.disabled) {
-            return;
-        }
-        this.dragListener = this.renderer.listen('document', 'mousemove', function (event) {
-            if (_this.dragging) {
-                _this.handleChange(event);
-            }
-        });
-        this.mouseupListener = this.renderer.listen('document', 'mouseup', function (event) {
-            if (_this.dragging) {
-                _this.dragging = false;
-                if (_this.range) {
-                    _this.onSlideEnd.emit({ originalEvent: event, values: _this.values });
-                }
-                else {
-                    _this.onSlideEnd.emit({ originalEvent: event, value: _this.value });
-                }
-            }
-        });
-    };
-    Slider.prototype.handleChange = function (event) {
-        var handleValue = this.calculateHandleValue(event);
-        this.setValueFromHandle(event, handleValue);
-    };
-    Slider.prototype.setValueFromHandle = function (event, handleValue) {
-        var newValue = this.getValueFromHandle(handleValue);
-        if (this.range) {
-            if (this.step) {
-                this.handleStepChange(newValue, this.values[this.handleIndex]);
-            }
-            else {
-                this.handleValues[this.handleIndex] = handleValue;
-                this.updateValue(newValue, event);
-            }
-        }
-        else {
-            if (this.step) {
-                this.handleStepChange(newValue, this.value);
-            }
-            else {
-                this.handleValue = handleValue;
-                this.updateValue(newValue, event);
-            }
-        }
-    };
-    Slider.prototype.handleStepChange = function (newValue, oldValue) {
-        var diff = (newValue - oldValue);
-        if (diff < 0 && (-1 * diff) >= this.step / 2) {
-            newValue = oldValue - this.step;
-            this.updateValue(newValue);
-            this.updateHandleValue();
-        }
-        else if (diff > 0 && diff >= this.step / 2) {
-            newValue = oldValue + this.step;
-            this.updateValue(newValue);
-            this.updateHandleValue();
-        }
-    };
-    Slider.prototype.writeValue = function (value) {
-        if (this.range)
-            this.values = value || [0, 0];
-        else
-            this.value = value || 0;
-        this.updateHandleValue();
-    };
-    Slider.prototype.registerOnChange = function (fn) {
-        this.onModelChange = fn;
-    };
-    Slider.prototype.registerOnTouched = function (fn) {
-        this.onModelTouched = fn;
-    };
-    Slider.prototype.setDisabledState = function (val) {
-        this.disabled = val;
-    };
-    Object.defineProperty(Slider.prototype, "rangeStartLeft", {
-        get: function () {
-            return this.isVertical() ? 'auto' : this.handleValues[0] + '%';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Slider.prototype, "rangeStartBottom", {
-        get: function () {
-            return this.isVertical() ? this.handleValues[0] + '%' : 'auto';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Slider.prototype, "rangeEndLeft", {
-        get: function () {
-            return this.isVertical() ? 'auto' : this.handleValues[1] + '%';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Slider.prototype, "rangeEndBottom", {
-        get: function () {
-            return this.isVertical() ? this.handleValues[1] + '%' : 'auto';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Slider.prototype.isVertical = function () {
-        return this.orientation === 'vertical';
-    };
-    Slider.prototype.updateDomData = function () {
-        var rect = this.el.nativeElement.children[0].getBoundingClientRect();
-        this.initX = rect.left + this.domHandler.getWindowScrollLeft();
-        this.initY = rect.top + this.domHandler.getWindowScrollTop();
-        this.barWidth = this.el.nativeElement.children[0].offsetWidth;
-        this.barHeight = this.el.nativeElement.children[0].offsetHeight;
-    };
-    Slider.prototype.calculateHandleValue = function (event) {
-        if (this.orientation === 'horizontal')
-            return Math.floor(((event.pageX - this.initX) * 100) / (this.barWidth));
-        else
-            return Math.floor((((this.initY + this.barHeight) - event.pageY) * 100) / (this.barHeight));
-    };
-    Slider.prototype.updateHandleValue = function () {
-        if (this.range) {
-            this.handleValues[0] = (this.values[0] < this.min ? 0 : this.values[0] - this.min) * 100 / (this.max - this.min);
-            this.handleValues[1] = (this.values[1] > this.max ? 100 : this.values[1] - this.min) * 100 / (this.max - this.min);
-        }
-        else {
-            if (this.value < this.min)
-                this.handleValue = 0;
-            else if (this.value > this.max)
-                this.handleValue = 100;
-            else
-                this.handleValue = (this.value - this.min) * 100 / (this.max - this.min);
-        }
-    };
-    Slider.prototype.updateValue = function (val, event) {
-        if (this.range) {
-            var value = val;
-            if (this.handleIndex == 0) {
-                if (value < this.min) {
-                    value = this.min;
-                    this.handleValues[0] = 0;
-                }
-                else if (value > this.values[1]) {
-                    value = this.values[1];
-                    this.handleValues[0] = this.handleValues[1];
-                }
-            }
-            else {
-                if (value > this.max) {
-                    value = this.max;
-                    this.handleValues[1] = 100;
-                }
-                else if (value < this.values[0]) {
-                    value = this.values[0];
-                    this.handleValues[1] = this.handleValues[0];
-                }
-            }
-            this.values[this.handleIndex] = Math.floor(value);
-            this.onModelChange(this.values);
-            this.onChange.emit({ event: event, values: this.values });
-        }
-        else {
-            if (val < this.min) {
-                val = this.min;
-                this.handleValue = 0;
-            }
-            else if (val > this.max) {
-                val = this.max;
-                this.handleValue = 100;
-            }
-            this.value = Math.floor(val);
-            this.onModelChange(this.value);
-            this.onChange.emit({ event: event, value: this.value });
-        }
-    };
-    Slider.prototype.getValueFromHandle = function (handleValue) {
-        return (this.max - this.min) * (handleValue / 100) + this.min;
-    };
-    Slider.prototype.ngOnDestroy = function () {
-        if (this.dragListener) {
-            this.dragListener();
-        }
-        if (this.mouseupListener) {
-            this.mouseupListener();
-        }
-    };
-    return Slider;
+    return InputText;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Slider.prototype, "animate", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Slider.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Slider.prototype, "min", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Slider.prototype, "max", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Slider.prototype, "orientation", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], Slider.prototype, "step", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Slider.prototype, "range", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], Slider.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Slider.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Slider.prototype, "onChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Slider.prototype, "onSlideEnd", void 0);
-Slider = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-slider',
-        template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"{'ui-slider ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled,\n            'ui-slider-horizontal':orientation == 'horizontal','ui-slider-vertical':orientation == 'vertical','ui-slider-animate':animate}\"\n            (click)=\"onBarClick($event)\">\n            <span *ngIf=\"range && orientation == 'horizontal'\" class=\"ui-slider-range ui-widget-header ui-corner-all\" [ngStyle]=\"{'left':handleValues[0] + '%',width: (handleValues[1] - handleValues[0] + '%')}\"></span>\n            <span *ngIf=\"range && orientation == 'vertical'\" class=\"ui-slider-range ui-widget-header ui-corner-all\" [ngStyle]=\"{'bottom':handleValues[0] + '%',height: (handleValues[1] - handleValues[0] + '%')}\"></span>\n            <span *ngIf=\"!range && orientation=='vertical'\" class=\"ui-slider-range ui-slider-range-min ui-widget-header ui-corner-all\" [ngStyle]=\"{'height': handleValue + '%'}\"></span>\n            <span *ngIf=\"!range\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" (mousedown)=\"onMouseDown($event)\" (touchstart)=\"onTouchStart($event)\" (touchmove)=\"onTouchMove($event)\" (touchend)=\"dragging=false\"\n                [style.transition]=\"dragging ? 'none': null\" [ngStyle]=\"{'left': orientation == 'horizontal' ? handleValue + '%' : null,'bottom': orientation == 'vertical' ? handleValue + '%' : null}\"></span>\n            <span *ngIf=\"range\" (mousedown)=\"onMouseDown($event,0)\" (touchstart)=\"onTouchStart($event,0)\" (touchmove)=\"onTouchMove($event,0)\" (touchend)=\"dragging=false\" [style.transition]=\"dragging ? 'none': null\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" \n                [ngStyle]=\"{'left': rangeStartLeft, 'bottom': rangeStartBottom}\" [ngClass]=\"{'ui-slider-handle-active':handleIndex==0}\"></span>\n            <span *ngIf=\"range\" (mousedown)=\"onMouseDown($event,1)\" (touchstart)=\"onTouchStart($event,1)\" (touchmove)=\"onTouchMove($event,1)\" (touchend)=\"dragging=false\" [style.transition]=\"dragging ? 'none': null\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" \n                [ngStyle]=\"{'left': rangeEndLeft, 'bottom': rangeEndBottom}\" [ngClass]=\"{'ui-slider-handle-active':handleIndex==1}\"></span>\n        </div>\n    ",
-        providers: [SLIDER_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('input', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], InputText.prototype, "onInput", null);
+InputText = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[pInputText]',
+        host: {
+            '[class.ui-inputtext]': 'true',
+            '[class.ui-corner-all]': 'true',
+            '[class.ui-state-default]': 'true',
+            '[class.ui-widget]': 'true',
+            '[class.ui-state-filled]': 'filled'
+        }
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _e || Object])
-], Slider);
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
+], InputText);
 
-var SliderModule = (function () {
-    function SliderModule() {
+var InputTextModule = (function () {
+    function InputTextModule() {
     }
-    return SliderModule;
+    return InputTextModule;
 }());
-SliderModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Slider],
-        declarations: [Slider]
+InputTextModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [InputText],
+        declarations: [InputText]
     })
-], SliderModule);
+], InputTextModule);
 
-var _a, _b, _c, _d, _e;
-//# sourceMappingURL=slider.js.map
+var _a;
+//# sourceMappingURL=inputtext.js.map
 
 /***/ }),
 
@@ -427,8 +400,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TabViewNav = (function () {
     function TabViewNav() {
         this.orientation = 'top';
-        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
         var styleClass = 'ui-state-default ui-corner-' + this.orientation;
@@ -452,23 +425,23 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
 ], TabViewNav.prototype, "tabs", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabViewNav.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], TabViewNav.prototype, "onTabClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], TabViewNav.prototype, "onTabCloseClick", void 0);
 TabViewNav = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: '[p-tabViewNav]',
         host: {
             '[class.ui-tabview-nav]': 'true',
@@ -516,60 +489,60 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "closable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabPanel.prototype, "headerStyle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "headerStyleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "leftIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "rightIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "cache", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], TabPanel.prototype, "templates", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabPanel.prototype, "selected", null);
 TabPanel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabPanel',
         template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
 ], TabPanel);
 
 var TabView = (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -689,49 +662,49 @@ var TabView = (function () {
     return TabView;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabView.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabView.prototype, "controlClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(TabPanel),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
 ], TabView.prototype, "tabPanels", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], TabView.prototype, "onChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
 ], TabView.prototype, "onClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabView.prototype, "lazy", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], TabView.prototype, "activeIndex", null);
 TabView = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabView',
         template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
 ], TabView);
 
 var TabViewModule = (function () {
@@ -740,8 +713,8 @@ var TabViewModule = (function () {
     return TabViewModule;
 }());
 TabViewModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [TabView, TabPanel, TabViewNav]
     })
@@ -752,14 +725,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/chips/chipsdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sliderdemo__ = __webpack_require__("./src/app/showcase/components/slider/sliderdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SliderDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__chipsdemo__ = __webpack_require__("./src/app/showcase/components/chips/chipsdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChipsDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -769,36 +742,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SliderDemoRoutingModule = (function () {
-    function SliderDemoRoutingModule() {
+var ChipsDemoRoutingModule = (function () {
+    function ChipsDemoRoutingModule() {
     }
-    return SliderDemoRoutingModule;
+    return ChipsDemoRoutingModule;
 }());
-SliderDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+ChipsDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__sliderdemo__["a" /* SliderDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__chipsdemo__["a" /* ChipsDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], SliderDemoRoutingModule);
+], ChipsDemoRoutingModule);
 
-//# sourceMappingURL=sliderdemo-routing.module.js.map
+//# sourceMappingURL=chipsdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo.html":
+/***/ "./src/app/showcase/components/chips/chipsdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Slider</span>\r\n        <span>Slider is a component to provide input using dragging of a handle.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic: {{val1}}</h3>\r\n    <p-slider [(ngModel)]=\"val1\" [style]=\"{'width':'200px'}\"></p-slider>\r\n\r\n    <h3>Input: {{val2}}</h3>\r\n    <input type=\"text\" pInputText [(ngModel)]=\"val2\" style=\"width:190px\" readonly/>\r\n    <p-slider [(ngModel)]=\"val2\" [style]=\"{'width':'200px'}\"></p-slider>\r\n\r\n    <h3>Animate: {{val3}}</h3>\r\n    <p-slider [(ngModel)]=\"val3\" [style]=\"{'width':'200px'}\" [animate]=\"true\"></p-slider>\r\n\r\n    <h3>Step: {{val4}}</h3>\r\n    <p-slider [(ngModel)]=\"val4\" [style]=\"{'width':'200px'}\" [step]=\"20\"></p-slider>\r\n\r\n    <h3>Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h3>\r\n    <p-slider [(ngModel)]=\"rangeValues\" [style]=\"{'width':'200px'}\" [range]=\"true\"></p-slider>\r\n\r\n    <h3>Vertical: {{val5}}</h3>\r\n    <p-slider [(ngModel)]=\"val5\" [style]=\"{'height':'200px'}\" orientation=\"vertical\"></p-slider>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;SliderModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Two-way binding is defined using the standard ngModel directive.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    val: number;\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Slider can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider formControlName=\"age\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Min-Max</h3>\r\n            <p>Boundaries are specified with min and max attributes.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" [min]=\"0\" [max]=\"100\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Step</h3>\r\n            <p>Step factor is 1 by default and can be customized with step option.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" [step]=\"10\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Range</h3>\r\n            <p>Range slider provides two handles to define two values. In this case, value binding should refer to an array.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"rangeValues\" [range]=\"true\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    rangeValues: number[];\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Orientation</h3>\r\n            <p>Sliders supports two orientations, horizontal is the default and other alternative is vertical.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" orientation=\"vertical\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>animate</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When enabled, displays an animation on click of the slider bar.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>min</td>\r\n                            <td>number</td>\r\n                            <td>0</td>\r\n                            <td>Mininum boundary value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>max</td>\r\n                            <td>number</td>\r\n                            <td>100</td>\r\n                            <td>Maximum boundary value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>orientation</td>\r\n                            <td>string</td>\r\n                            <td>horizontal</td>\r\n                            <td>Orientation of the slider, valid values are horizontal and vertical.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>step</td>\r\n                            <td>number</td>\r\n                            <td>1</td>\r\n                            <td>Step factor to increment/decrement the value.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>range</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When speficed, allows two boundary values to be picked.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onChange</td>\r\n                            <td>\r\n                                event.originalEvent: Slide event <br />\r\n                                event.value: New value <br />\r\n                                event.values: Values in range mode <br />\r\n                            </td>\r\n                            <td>Callback to invoke on value change via slide.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onSlideEnd</td>\r\n                            <td>\r\n                                event.originalEvent: Mouseup event<br />\r\n                                event.value: New value \r\n                            </td>\r\n                            <td>Callback to invoke when slide stops.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-slider [(ngModel)]=\"val\" (onChange)=\"handleChange($event)\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nhandleChange(e) &#123;\r\n    //e.value is the new value\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-slider</td>\r\n                            <td>Container element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-slider-handle</td>\r\n                            <td>Handle element</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/slider\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic: {{val1}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val1\" [style]=\"&#123;'width':'200px'&#125;\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Input: {{val2}}&lt;/h3&gt;\r\n&lt;input type=\"text\" pInputText [(ngModel)]=\"val2\" style=\"width:190px\"/&gt;\r\n&lt;p-slider [(ngModel)]=\"val2\" [style]=\"&#123;'width':'200px'&#125;\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Animate: {{val3}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val3\" [style]=\"&#123;'width':'200px'&#125;\" [animate]=\"true\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Step: {{val4}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val4\" [style]=\"&#123;'width':'200px'&#125;\" [step]=\"20\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"rangeValues\" [style]=\"&#123;'width':'200px'&#125;\" [range]=\"true\"&gt;&lt;/p-slider&gt;\r\n\r\n&lt;h3&gt;Vertical: {{val5}}&lt;/h3&gt;\r\n&lt;p-slider [(ngModel)]=\"val5\" [style]=\"&#123;'height':'200px'&#125;\" orientation=\"vertical\"&gt;&lt;/p-slider&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class SliderDemo &#123;\r\n\r\n    val1: number;\r\n\r\n    val2: number = 50;\r\n\r\n    val3: number;\r\n\r\n    val4: number;\r\n\r\n    val5: number;\r\n\r\n    rangeValues: number[] = [20,80];\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>\r\n"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Chips</span>\r\n        <span>Chips is used to enter multiple values on an inputfield.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Basic</h3>\r\n    <p-chips [(ngModel)]=\"values1\"></p-chips>\r\n    \r\n    <h3>Template</h3>\r\n    <p-chips [(ngModel)]=\"values2\">\r\n        <ng-template let-item pTemplate=\"item\">\r\n            {{item}} - (active) <i class=\"fa fa-user\" style=\"margin-right:2em\"></i>\r\n        </ng-template>\r\n    </p-chips>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;ChipsModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Chips requires an array as its model.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-chips [(ngModel)]=\"values\"&gt;&lt;/p-chips&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MyModel &#123;\r\n\r\n    values: string[];\r\n\r\n&#125;\r\n</code>\r\n</pre>\r\n            <h3>Model Driven Forms</h3>\r\n            <p>Chips can be used in a model driven form as well.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-chips formControlName=\"cities\"&gt;&lt;/p-chips&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Content</h3>\r\n            <p>A chip is customized using a ng-template element where the value is passed as the implicit variable.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-chips [(ngModel)]=\"values\"&gt;\r\n    &lt;ng-template let-item pTemplate=\"item\"&gt;\r\n        &#123;&#123;item&#125;&#125; - (active) &lt;i class=\"fa fa-user\"&gt;&lt;/i&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-chips&gt;\r\n</code>\r\n</pre>\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Type</th>\r\n                        <th>Default</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>field</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Name of the property to display on a chip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>max</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Maximum number of entries allowed.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>disabled</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When present, it specifies that the element should be disabled.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>placeholder</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Advisory information to display on input.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>tabindex</td>\r\n                            <td>number</td>\r\n                            <td>null</td>\r\n                            <td>Index of the element in tabbing order.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputId</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Identifier of the focus input to match a label defined for the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>allowDuplicate</td>\r\n                            <td>boolean</td>\r\n                            <td>true</td>\r\n                            <td>Whether to allow duplicate values or not.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputStyle</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>inputStyleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the input field.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>addOnTab</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Whether to add an item on tab key press.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                    <tr>\r\n                        <th>Name</th>\r\n                        <th>Parameters</th>\r\n                        <th>Description</th>\r\n                    </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onAdd</td>\r\n                            <td>originalEvent: Browser event <br >\r\n                                value: Added item value\r\n                            </td>\r\n                            <td>Callback to invoke when a value is added.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onRemove</td>\r\n                            <td>originalEvent: Browser event <br >\r\n                                value: Added item value\r\n                            </td>\r\n                            <td>Callback to invoke when a value is removed.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-chips</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chips-token</td>\r\n                            <td>Chip element container.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chips-token-icon</td>\r\n                            <td>Icon of a chip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chips-token-label</td>\r\n                            <td>Label of a chip.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-chips-input-token</td>\r\n                            <td>Container of input element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/chips\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Basic&lt;/h3&gt;\r\n&lt;p-chips [(ngModel)]=\"values1\" &gt;&lt;/p-chips&gt;\r\n\r\n&lt;h3&gt;ng-template&lt;/h3&gt;\r\n&lt;p-chips [(ngModel)]=\"values2\"&gt;\r\n    &lt;ng-template let-item pTemplate=\"item\"&gt;\r\n        &#123;&#123;item&#125;&#125; - (active) &lt;i class=\"fa fa-user\" style=\"margin-right:2em\"&gt;&lt;/i&gt;\r\n    &lt;/ng-template&gt;\r\n&lt;/p-chips&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class ChipsDemo &#123;\r\n\r\n    values1: string[];\r\n    \r\n    values2: string[];\r\n&#125;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo.module.ts":
+/***/ "./src/app/showcase/components/chips/chipsdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -806,13 +779,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sliderdemo__ = __webpack_require__("./src/app/showcase/components/slider/sliderdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__sliderdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/slider/sliderdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_slider_slider__ = __webpack_require__("./src/app/components/slider/slider.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__chipsdemo__ = __webpack_require__("./src/app/showcase/components/chips/chipsdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__chipsdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/chips/chipsdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_chips_chips__ = __webpack_require__("./src/app/components/chips/chips.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SliderDemoModule", function() { return SliderDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ChipsDemoModule", function() { return ChipsDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -828,38 +801,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SliderDemoModule = (function () {
-    function SliderDemoModule() {
+var ChipsDemoModule = (function () {
+    function ChipsDemoModule() {
     }
-    return SliderDemoModule;
+    return ChipsDemoModule;
 }());
-SliderDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+ChipsDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__sliderdemo_routing_module__["a" /* SliderDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_slider_slider__["a" /* SliderModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_inputtext_inputtext__["a" /* InputTextModule */],
+            __WEBPACK_IMPORTED_MODULE_4__chipsdemo_routing_module__["a" /* ChipsDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_chips_chips__["a" /* ChipsModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_button_button__["a" /* ButtonModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__sliderdemo__["a" /* SliderDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__chipsdemo__["a" /* ChipsDemo */]
         ]
     })
-], SliderDemoModule);
+], ChipsDemoModule);
 
-//# sourceMappingURL=sliderdemo.module.js.map
+//# sourceMappingURL=chipsdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/slider/sliderdemo.ts":
+/***/ "./src/app/showcase/components/chips/chipsdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SliderDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChipsDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -867,20 +840,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var SliderDemo = (function () {
-    function SliderDemo() {
-        this.val2 = 50;
-        this.rangeValues = [20, 80];
+var ChipsDemo = (function () {
+    function ChipsDemo() {
     }
-    return SliderDemo;
+    return ChipsDemo;
 }());
-SliderDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/slider/sliderdemo.html")
+ChipsDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/chips/chipsdemo.html")
     })
-], SliderDemo);
+], ChipsDemo);
 
-//# sourceMappingURL=sliderdemo.js.map
+//# sourceMappingURL=chipsdemo.js.map
 
 /***/ })
 

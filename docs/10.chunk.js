@@ -14,6 +14,188 @@ module.exports = "import { Component, OnInit } from '@angular/core';\nimport { t
 
 /***/ }),
 
+/***/ "./src/app/components/overlaypanel/overlaypanel.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export OverlayPanel */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OverlayPanelModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var OverlayPanel = (function () {
+    function OverlayPanel(el, domHandler, renderer, cd) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+        this.cd = cd;
+        this.dismissable = true;
+        this.onBeforeShow = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onAfterShow = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onBeforeHide = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onAfterHide = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.visible = false;
+    }
+    OverlayPanel.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.dismissable) {
+            this.documentClickListener = this.renderer.listen('document', 'click', function () {
+                if (!_this.selfClick && !_this.targetEvent) {
+                    _this.hide();
+                }
+                _this.selfClick = false;
+                _this.targetEvent = false;
+                _this.cd.markForCheck();
+            });
+        }
+    };
+    OverlayPanel.prototype.ngAfterViewInit = function () {
+        this.container = this.el.nativeElement.children[0];
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.container);
+            else
+                this.domHandler.appendChild(this.container, this.appendTo);
+        }
+    };
+    OverlayPanel.prototype.toggle = function (event, target) {
+        var currentTarget = (target || event.currentTarget || event.target);
+        if (!this.target || this.target == currentTarget) {
+            if (this.visible)
+                this.hide();
+            else
+                this.show(event, target);
+        }
+        else {
+            this.show(event, target);
+        }
+        if (this.dismissable) {
+            this.targetEvent = true;
+        }
+        this.target = currentTarget;
+    };
+    OverlayPanel.prototype.show = function (event, target) {
+        if (this.dismissable) {
+            this.targetEvent = true;
+        }
+        this.onBeforeShow.emit(null);
+        var elementTarget = target || event.currentTarget || event.target;
+        this.container.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
+        if (this.visible) {
+            this.domHandler.absolutePosition(this.container, elementTarget);
+        }
+        else {
+            this.visible = true;
+            this.domHandler.absolutePosition(this.container, elementTarget);
+            this.domHandler.fadeIn(this.container, 250);
+        }
+        this.onAfterShow.emit(null);
+    };
+    OverlayPanel.prototype.hide = function () {
+        if (this.visible) {
+            this.onBeforeHide.emit(null);
+            this.visible = false;
+            this.onAfterHide.emit(null);
+        }
+    };
+    OverlayPanel.prototype.onPanelClick = function () {
+        if (this.dismissable) {
+            this.selfClick = true;
+        }
+    };
+    OverlayPanel.prototype.onCloseClick = function (event) {
+        this.hide();
+        if (this.dismissable) {
+            this.selfClick = true;
+        }
+        event.preventDefault();
+    };
+    OverlayPanel.prototype.ngOnDestroy = function () {
+        if (this.documentClickListener) {
+            this.documentClickListener();
+        }
+        if (this.appendTo) {
+            this.el.nativeElement.appendChild(this.container);
+        }
+        this.target = null;
+    };
+    return OverlayPanel;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], OverlayPanel.prototype, "dismissable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], OverlayPanel.prototype, "showCloseIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], OverlayPanel.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], OverlayPanel.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], OverlayPanel.prototype, "appendTo", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], OverlayPanel.prototype, "onBeforeShow", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], OverlayPanel.prototype, "onAfterShow", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _c || Object)
+], OverlayPanel.prototype, "onBeforeHide", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _d || Object)
+], OverlayPanel.prototype, "onAfterHide", void 0);
+OverlayPanel = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-overlayPanel',
+        template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick()\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]) === "function" && _h || Object])
+], OverlayPanel);
+
+var OverlayPanelModule = (function () {
+    function OverlayPanelModule() {
+    }
+    return OverlayPanelModule;
+}());
+OverlayPanelModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [OverlayPanel],
+        declarations: [OverlayPanel]
+    })
+], OverlayPanelModule);
+
+var _a, _b, _c, _d, _e, _f, _g, _h;
+//# sourceMappingURL=overlaypanel.js.map
+
+/***/ }),
+
 /***/ "./src/app/showcase/custom-components/ui-grid-demo/data.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -76,9 +258,9 @@ var testData = {
     first: true,
     last: true,
     number: 0,
-    numberOfElements: 4,
+    numberOfElements: 6,
     size: 20,
-    totalElements: 4,
+    totalElements: 6,
     totalPages: 1
 };
 //# sourceMappingURL=data.js.map
@@ -162,7 +344,7 @@ var UIGridDemoBasicComponent = (function () {
     return UIGridDemoBasicComponent;
 }());
 UIGridDemoBasicComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-grid-demo-basic',
         template: "\n  <ui-grid\n      [columns]=\"columns\"\n      [data]=\"data\"\n      (load)=\"load($event)\"\n      (cellClick)=\"cellClick($event)\"\n      [selections]=\"selections\"\n      (rowSelect)=\"rowSelect($event)\"\n  ></ui-grid>\n  ",
         styles: []
@@ -350,7 +532,7 @@ var UIGridDemoObjectComponent = (function () {
     return UIGridDemoObjectComponent;
 }());
 UIGridDemoObjectComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-grid-demo-object',
         template: "\n  <ui-grid\n      [columns]=\"columns\"\n      [data]=\"data\"\n      (load)=\"load($event)\"\n      [selections]=\"selections\"\n      [enableExport]=\"enableExport\"\n      [showEditColumn]=\"showEditColumn\"\n      (cellMouseEnter)=\"cellMouseEnter($event,op,op2,op3)\"\n      (cellMouseLeave)=\"cellMouseLeave($event,op,op2,op3)\"\n      (rowSelect)=\"rowSelect($event)\"\n  ></ui-grid>\n  \n<!--\u4F7F\u7528p-dataTabel\u7EC4\u4EF6\u5B9A\u4E49\u5185\u5BB9-->\n<p-overlayPanel #op2 [showCloseIcon]=\"true\" [dismissable]=\"false\">\n<h3>\u4F7F\u7528prime-ng\u7EC4\u4EF6p-dataTable\u81EA\u5B9A\u4E49\u8868\u683C\u5C55\u793A</h3>\n<p-dataTable [value]=\"op2Data\" [style]=\"{'width':'500px'}\">\n    <p-column field=\"vin\" header=\"Vin\" [sortable]=\"true\"></p-column>\n    <p-column field=\"year\" header=\"Year\" [sortable]=\"true\"></p-column>\n    <p-column field=\"brand\" header=\"Brand\" [sortable]=\"true\"></p-column>\n    <p-column field=\"color\" header=\"Color\" [sortable]=\"true\"></p-column>\n</p-dataTable>\n</p-overlayPanel>\n\n<!--\u81EA\u5B9A\u4E49\u6D6E\u52A8\u7A97\u53E3\u7684\u65F6\u5019\u5FC5\u987B\u50CF\u4EE5\u4E0B\u683C\u5F0F-->\n<p-overlayPanel #op [showCloseIcon]=\"true\" [dismissable]=\"false\">\n<div style=\"width: 300px;\">\n    <h3>\u81EA\u5B9A\u4E49\u5F39\u51FA\u5185\u5BB9</h3>\n    <div style=\"word-wrap:break-word;\">\n        {{cellOverEvent}}\n    </div>\n</div>\n</p-overlayPanel>\n<!--\u4F7F\u7528ui-grid\u7EC4\u4EF6\u5B9A\u4E49\u5185\u5BB9-->\n<p-overlayPanel #op3 [showCloseIcon]=\"true\" [dismissable]=\"false\">\n<div style=\"width: 500px;overflow: scroll\">\n    <h3>\u4F7F\u7528ui-grid\u7EC4\u4EF6\u81EA\u5B9A\u4E49\u8868\u683C\u5C55\u793A</h3>\n    <ui-grid [columns]=\"overTableColumns\"\n             [data]=\"overTableData\"\n             [enableExport]=\"enableExport\"\n             [showEditColumn]=\"showEditColumn\"\n             (load)=\"overTableload($event)\"\n    ></ui-grid>\n</div>\n</p-overlayPanel>\n  ",
     }),
@@ -435,9 +617,9 @@ var UIGridDemoComponent = (function () {
     return UIGridDemoComponent;
 }());
 UIGridDemoComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-grid-demo',
-        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* ViewEncapsulation */].None,
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         template: __webpack_require__("./src/app/showcase/custom-components/ui-grid-demo/ui-grid-demo.html"),
         styles: [__webpack_require__("./src/app/showcase/custom-components/ui-grid-demo/ui-grid-demo.css")]
     }),
@@ -469,7 +651,7 @@ module.exports = module.exports.toString();
 /***/ "./src/app/showcase/custom-components/ui-grid-demo/ui-grid-demo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<article>\n  <section class=\"markdown\"><h1>数据表格组件</h1>\n    <section class=\"markdown\"><p>基于<code>p-dataTable</code> 扩展</p>\n      <h2 id=\"何时使用\"><span>何时使用</span>\n        <!-- <a class=\"anchor\">#</a> -->\n      </h2>\n      <ul>\n        <li><p>非编辑或合并表头的情况都推荐使用</p></li>\n        <li><p>编辑列前端记忆功能</p></li>\n        <li><p>前端导出功能</p></li>\n        <li><p>扩展的悬浮框和点击事件</p></li>\n      </ul>\n    </section>\n    <h2>代码演示<i class=\"code-box-expand-trigger anticon anticon-appstore\" title=\"展开全部代码\"></i></h2>\n  </section>\n  <div nz-row [nzGutter]=\"8\" style=\"position: static;\">\n    <div nz-col [nzSpan]=\"24\" style=\"position: static;\">\n      <nz-code-box [nzTitle]=\"'基本'\" id=\"components-ui-grid-demo-basic\" [nzCode]=\"UIGridDemoBasicComponent\">\n        <ui-grid-demo-basic demo></ui-grid-demo-basic>\n        <div intro>\n          <p> <code>textLength</code>字段属性控制超过限制字数，...替代，鼠标浮动展示详细</p>\n          <p><code>thumbnail</code> 字段属性控制是否为图片缩略图，点击预览大图</p>\n          <p><code>link</code> 字段属性控制是否为超链接点击</p>\n        </div>\n      </nz-code-box>\n      <nz-code-box [nzTitle]=\"'表格浮动弹窗示例'\" id=\"components-ui-grid-demo-object\" [nzCode]=\"UIGridDemoObjectComponent\" [customStyle]=\"customStyle\">\n        <ui-grid-demo-object demo></ui-grid-demo-object>\n        <div intro>\n          <p>鼠标悬浮‘代号’、‘名称’、‘全称’ 字段记录单元格查看悬浮框效果</p>\n        </div>\n      </nz-code-box>\n    </div>\n  </div>\n  <section class=\"markdown api-container\">\n    <h2 id=\"API\"><span>API</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h2>\n    <h3 id=\"Rate\"><span>columns</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h3>\n    <p>下边只列举 ui-grid 对column 扩展的属性，其他columns属性参考<code>p-dataTable</code></p>\n    <table>\n      <thead>\n        <tr>\n          <th>参数</th>\n          <th>说明</th>\n          <th>类型</th>\n          <th>默认值</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>textLength</td>\n          <td>字段属性控制超过限制字数，...替代，鼠标浮动展示详细</td>\n          <td>Number | String</td>\n          <td>20</td>\n        </tr>\n        <tr>\n          <td>thumbnail</td>\n          <td>字段属性控制是否为图片缩略图，点击预览大图</td>\n          <td>Boolean</td>\n          <td> <code>false</code> </td>\n        </tr>\n        <tr>\n          <td>link</td>\n          <td>字段属性控制是否为超链接点击</td>\n          <td>Boolean</td>\n          <td> false </td>\n        </tr>\n        <tr>\n          <td>isWarn</td>\n          <td>判断字段是否为0，一般仅用在金额为0时，变成红色，配合rowSelect方法可以使金额为0的行不可选中</td>\n          <td>Boolean</td>\n          <td> false </td>\n        </tr>\n        <tr>\n          <td>defaultTipsHidden</td>\n          <td>当有自定义表格的时候要手动开启这个属性,如果 defaultTipsHidden=true 则默认悬浮框则无效（指textLength控制的默认悬浮框）</td>\n          <td>Boolean</td>\n          <td> false </td>\n        </tr>\n      </tbody>\n    </table>\n    <h3 id=\"Rate\"><span>shipper-select</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h3>\n    <table>\n      <thead>\n        <tr>\n          <th>参数</th>\n          <th>说明</th>\n          <th>类型</th>\n          <th>默认值</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>data</td>\n          <td>表格数据</td>\n          <td>Object</td>\n          <td>''</td>\n        </tr>\n        <tr>\n          <td>title</td>\n          <td>表格标题</td>\n          <td>String</td>\n          <td>''</td>\n        </tr>\n        <tr>\n          <td>enableExport</td>\n          <td>可选参数，是否显示默认导出按钮</td>\n          <td>Boolean</td>\n          <td>true</td>\n        </tr>\n        <tr>\n          <td>showEditColumn</td>\n          <td>可选参数，是否显示默认编辑列按钮</td>\n          <td>Boolean</td>\n          <td>true</td>\n        </tr>\n        <tr>\n          <td>pageRow</td>\n          <td>每页行数</td>\n          <td>String | Number</td>\n          <td> <code>10</code> </td>\n        </tr>\n        <tr>\n          <td>pageRows</td>\n          <td>表格可选页数组</td>\n          <td>Array&lt;Number&gt; </td>\n          <td> <code>[10, 20, 30, 50]</code> </td>\n        </tr>\n        <tr>\n          <td>paginator</td>\n          <td>是否显示分页</td>\n          <td>Boolean</td>\n          <td> <code>true</code> </td>\n        </tr>\n        <tr>\n          <td>selectionMode</td>\n          <td>单选还是多选模式 multiple | single</td>\n          <td>String</td>\n          <td> <code>multiple</code> </td>\n        </tr>\n        <tr>\n          <td>selections</td>\n          <td>选中的记录赋值</td>\n          <td>Array</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>load</td>\n          <td>接口请求方法，调用api都写在此方法中，参数$event带有分页信息</td>\n          <td>Function</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>rowSelect</td>\n          <td>行选中事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellClick</td>\n          <td>单元格点击事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellOver</td>\n          <td>单元格鼠标mouseover事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellMouseEnter</td>\n          <td>单元格鼠标mouseenter事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellMouseLeave</td>\n          <td>单元格鼠标mouseleave事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>exportCSV</td>\n          <td>导出回调方法</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n</article>\n"
+module.exports = "<article>\n  <section class=\"markdown\"><h1>数据表格组件</h1>\n    <section class=\"markdown\">\n      <p>基于<code>p-dataTable</code> 扩展</p>\n      <p>部分功能扩展修改过p-dataTable源码，见：<code>app/custom-components/primeng-ext/datatable</code></p>\n      <h2 id=\"何时使用\"><span>何时使用</span>\n        <!-- <a class=\"anchor\">#</a> -->\n      </h2>\n      <ul>\n        <li><p>非编辑或合并表头的情况都推荐使用</p></li>\n        <li><p>编辑列前端记忆功能</p></li>\n        <li><p>前端导出功能</p></li>\n        <li><p>扩展的悬浮框和点击事件</p></li>\n      </ul>\n    </section>\n    <h2>代码演示<i class=\"code-box-expand-trigger anticon anticon-appstore\" title=\"展开全部代码\"></i></h2>\n  </section>\n  <div nz-row [nzGutter]=\"8\" style=\"position: static;\">\n    <div nz-col [nzSpan]=\"24\" style=\"position: static;\">\n      <nz-code-box [nzTitle]=\"'基本'\" id=\"components-ui-grid-demo-basic\" [nzCode]=\"UIGridDemoBasicComponent\">\n        <ui-grid-demo-basic demo></ui-grid-demo-basic>\n        <div intro>\n          <p> <code>textLength</code>字段属性控制超过限制字数，...替代，鼠标浮动展示详细</p>\n          <p><code>thumbnail</code> 字段属性控制是否为图片缩略图，点击预览大图</p>\n          <p><code>link</code> 字段属性控制是否为超链接点击</p>\n        </div>\n      </nz-code-box>\n      <nz-code-box [nzTitle]=\"'表格浮动弹窗示例'\" id=\"components-ui-grid-demo-object\" [nzCode]=\"UIGridDemoObjectComponent\" [customStyle]=\"customStyle\">\n        <ui-grid-demo-object demo></ui-grid-demo-object>\n        <div intro>\n          <p>鼠标悬浮‘代号’、‘名称’、‘全称’ 字段记录单元格查看悬浮框效果</p>\n        </div>\n      </nz-code-box>\n    </div>\n  </div>\n  <section class=\"markdown api-container\">\n    <h2 id=\"API\"><span>API</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h2>\n    <h3 id=\"Rate\"><span>columns</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h3>\n    <p>下边只列举 ui-grid 对column 扩展的属性，其他columns属性参考<code>p-dataTable</code></p>\n    <table>\n      <thead>\n        <tr>\n          <th>参数</th>\n          <th>说明</th>\n          <th>类型</th>\n          <th>默认值</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>textLength</td>\n          <td>字段属性控制超过限制字数，...替代，鼠标浮动展示详细</td>\n          <td>Number | String</td>\n          <td>20</td>\n        </tr>\n        <tr>\n          <td>thumbnail</td>\n          <td>字段属性控制是否为图片缩略图，点击预览大图</td>\n          <td>Boolean</td>\n          <td> <code>false</code> </td>\n        </tr>\n        <tr>\n          <td>link</td>\n          <td>字段属性控制是否为超链接点击</td>\n          <td>Boolean</td>\n          <td> false </td>\n        </tr>\n        <tr>\n          <td>isWarn</td>\n          <td>判断字段是否为0，一般仅用在金额为0时，变成红色，配合rowSelect方法可以使金额为0的行不可选中</td>\n          <td>Boolean</td>\n          <td> false </td>\n        </tr>\n        <tr>\n          <td>defaultTipsHidden</td>\n          <td>当有自定义表格的时候要手动开启这个属性,如果 defaultTipsHidden=true 则默认悬浮框则无效（指textLength控制的默认悬浮框）</td>\n          <td>Boolean</td>\n          <td> false </td>\n        </tr>\n      </tbody>\n    </table>\n    <h3 id=\"Rate\"><span>ui-grid</span>\n      <!-- <a class=\"anchor\">#</a> -->\n    </h3>\n    <table>\n      <thead>\n        <tr>\n          <th>参数</th>\n          <th>说明</th>\n          <th>类型</th>\n          <th>默认值</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>data</td>\n          <td>表格数据</td>\n          <td>Object</td>\n          <td>''</td>\n        </tr>\n        <tr>\n          <td>title</td>\n          <td>表格标题</td>\n          <td>String</td>\n          <td>''</td>\n        </tr>\n        <tr>\n          <td>enableExport</td>\n          <td>可选参数，是否显示默认导出按钮</td>\n          <td>Boolean</td>\n          <td>true</td>\n        </tr>\n        <tr>\n          <td>showEditColumn</td>\n          <td>可选参数，是否显示默认编辑列按钮</td>\n          <td>Boolean</td>\n          <td>true</td>\n        </tr>\n        <tr>\n          <td>autoHeight</td>\n          <td>是否自适应窗口高度</td>\n          <td>Boolean</td>\n          <td>true</td>\n        </tr> \n        <tr>\n          <td>frozenRight</td>\n          <td>frozen冻结的列靠右</td>\n          <td>Boolean</td>\n          <td>false</td>\n        </tr>\n        <tr>\n          <td>offsetTop</td>\n          <td>自适应高度误差值，autoHeight为true时才有效</td>\n          <td>Number</td>\n          <td>true</td>\n        </tr>\n        <tr>\n          <td>pageRow</td>\n          <td>每页行数</td>\n          <td>String | Number</td>\n          <td> <code>10</code> </td>\n        </tr>\n        <tr>\n          <td>pageRows</td>\n          <td>表格可选页数组</td>\n          <td>Array&lt;Number&gt; </td>\n          <td> <code>[10, 20, 30, 50]</code> </td>\n        </tr>\n        <tr>\n          <td>paginator</td>\n          <td>是否显示分页</td>\n          <td>Boolean</td>\n          <td> <code>true</code> </td>\n        </tr>\n        <tr>\n          <td>selectionMode</td>\n          <td>单选还是多选模式 multiple | single</td>\n          <td>String</td>\n          <td> <code>multiple</code> </td>\n        </tr>\n        <tr>\n          <td>selections</td>\n          <td>选中的记录赋值</td>\n          <td>Array</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>load</td>\n          <td>接口请求方法，调用api都写在此方法中，参数$event带有分页信息</td>\n          <td>Function</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>rowSelect</td>\n          <td>行选中事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellClick</td>\n          <td>单元格点击事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellOver</td>\n          <td>单元格鼠标mouseover事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellMouseEnter</td>\n          <td>单元格鼠标mouseenter事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>cellMouseLeave</td>\n          <td>单元格鼠标mouseleave事件，$event带有选中行记录数据</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n        <tr>\n          <td>exportCSV</td>\n          <td>导出回调方法</td>\n          <td>EventEmitter</td>\n          <td> - </td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n</article>\n"
 
 /***/ }),
 
@@ -517,7 +699,7 @@ var UIGridDemoModule = (function () {
     return UIGridDemoModule;
 }());
 UIGridDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_ui_grid_demo_ui_grid_demo_component__["a" /* UIGridDemoComponent */],
             __WEBPACK_IMPORTED_MODULE_8_app_showcase_custom_components_ui_grid_demo_ui_grid_demo_basic_component__["a" /* UIGridDemoBasicComponent */],
@@ -525,7 +707,7 @@ UIGridDemoModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_5_app_showcase_custom_components_ui_grid_demo_ui_grid_demo_routing_module__["a" /* UIGridDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_6_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
             __WEBPACK_IMPORTED_MODULE_7_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
@@ -564,7 +746,7 @@ var UIGridDemoRoutingModule = (function () {
     return UIGridDemoRoutingModule;
 }());
 UIGridDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_ui_grid_demo_ui_grid_demo_component__["a" /* UIGridDemoComponent */] }
             ])],

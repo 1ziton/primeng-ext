@@ -49,7 +49,7 @@ var UIUploadDemoDemoMultipleFileComponent = (function () {
     return UIUploadDemoDemoMultipleFileComponent;
 }());
 UIUploadDemoDemoMultipleFileComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-upload-demo-multipleFile',
         template: "\n    <ui-upload type=\"file\" [(ngModel)]=\"files\" (fileChange)=\"fileChange($event)\"></ui-upload>\n    <p>{{fileChangeList}}</p>\n  ",
         styles: []
@@ -113,7 +113,7 @@ var UIUploadDemoDemoPictureComponent = (function () {
     return UIUploadDemoDemoPictureComponent;
 }());
 UIUploadDemoDemoPictureComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-upload-demo-picture',
         template: "\n    <div style=\"width: 500px;\">\n      <ui-upload [(ngModel)]=\"files\" [files]=\"testfiles\"></ui-upload>\n    </div>\n  ",
         styles: []
@@ -153,7 +153,7 @@ var UIUploadDemoDemoSingleFileComponent = (function () {
     return UIUploadDemoDemoSingleFileComponent;
 }());
 UIUploadDemoDemoSingleFileComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-upload-demo-singleFile',
         template: "\n    <ui-upload type=\"file\" [(ngModel)]=\"files\" (fileChange)=\"fileChange($event)\" multiple=\"single\"></ui-upload>\n    <p>{{fileChangeList}}</p>\n  ",
         styles: []
@@ -192,9 +192,9 @@ var UIUploadDemoComponent = (function () {
     return UIUploadDemoComponent;
 }());
 UIUploadDemoComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'ui-upload-demo',
-        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* ViewEncapsulation */].None,
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         template: __webpack_require__("./src/app/showcase/custom-components/ui-upload-demo/ui-upload-demo.html"),
         styles: [__webpack_require__("./src/app/showcase/custom-components/ui-upload-demo/ui-upload-demo.css")]
     }),
@@ -272,7 +272,7 @@ var UIUploadDemoModule = (function () {
     return UIUploadDemoModule;
 }());
 UIUploadDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_7_app_showcase_custom_components_ui_upload_demo_ui_upload_demo_component__["a" /* UIUploadDemoComponent */],
             __WEBPACK_IMPORTED_MODULE_8_app_showcase_custom_components_ui_upload_demo_ui_upload_demo_picture_component__["a" /* UIUploadDemoDemoPictureComponent */],
@@ -281,7 +281,7 @@ UIUploadDemoModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_11_app_showcase_custom_components_ui_upload_demo_ui_upload_demo_routing_module__["a" /* UIUploadDemo1RoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_4_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
             __WEBPACK_IMPORTED_MODULE_5_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
@@ -318,7 +318,7 @@ var UIUploadDemo1RoutingModule = (function () {
     return UIUploadDemo1RoutingModule;
 }());
 UIUploadDemo1RoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_ui_upload_demo_ui_upload_demo_component__["a" /* UIUploadDemoComponent */] }
             ])],

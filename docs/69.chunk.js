@@ -29,10 +29,10 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
 ], CodeHighlighter);
 
 var CodeHighlighterModule = (function () {
@@ -41,8 +41,8 @@ var CodeHighlighterModule = (function () {
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
@@ -53,16 +53,16 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/fieldset/fieldset.ts":
+/***/ "./src/app/components/megamenu/megamenu.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
-/* unused harmony export Fieldset */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FieldsetModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+/* unused harmony export MegaMenu */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MegaMenuModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -76,104 +76,114 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var Fieldset = (function () {
-    function Fieldset(el) {
+var MegaMenu = (function () {
+    function MegaMenu(el, domHandler, renderer) {
         this.el = el;
-        this.collapsed = false;
-        this.onBeforeToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onAfterToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+        this.orientation = 'horizontal';
     }
-    Fieldset.prototype.toggle = function (event) {
-        if (this.toggleable) {
-            if (this.animating) {
-                return false;
+    MegaMenu.prototype.onItemMouseEnter = function (event, item, menuitem) {
+        if (menuitem.disabled) {
+            return;
+        }
+        this.activeItem = item;
+        var submenu = item.children[0].nextElementSibling;
+        if (submenu) {
+            submenu.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
+            if (this.orientation === 'horizontal') {
+                submenu.style.top = this.domHandler.getOuterHeight(item.children[0]) + 'px';
+                submenu.style.left = '0px';
             }
-            this.animating = true;
-            this.onBeforeToggle.emit({ originalEvent: event, collapsed: this.collapsed });
-            if (this.collapsed)
-                this.expand(event);
-            else
-                this.collapse(event);
-            this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
+            else if (this.orientation === 'vertical') {
+                submenu.style.top = '0px';
+                submenu.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
+            }
         }
     };
-    Fieldset.prototype.expand = function (event) {
-        this.collapsed = false;
+    MegaMenu.prototype.onItemMouseLeave = function (event, link) {
+        this.activeItem = null;
     };
-    Fieldset.prototype.collapse = function (event) {
-        this.collapsed = true;
+    MegaMenu.prototype.itemClick = function (event, item) {
+        if (item.disabled) {
+            event.preventDefault();
+            return;
+        }
+        if (!item.url) {
+            event.preventDefault();
+        }
+        if (item.command) {
+            item.command({
+                originalEvent: event,
+                item: item
+            });
+        }
+        this.activeItem = null;
     };
-    Fieldset.prototype.getBlockableElement = function () {
-        return this.el.nativeElement.children[0];
+    MegaMenu.prototype.getColumnClass = function (menuitem) {
+        var length = menuitem.items ? menuitem.items.length : 0;
+        var columnClass;
+        switch (length) {
+            case 2:
+                columnClass = 'ui-g-6';
+                break;
+            case 3:
+                columnClass = 'ui-g-4';
+                break;
+            case 4:
+                columnClass = 'ui-g-3';
+                break;
+            case 6:
+                columnClass = 'ui-g-2';
+                break;
+            default:
+                columnClass = 'ui-g-12';
+                break;
+        }
+        return columnClass;
     };
-    Fieldset.prototype.onToggleDone = function (event) {
-        this.animating = false;
-    };
-    return Fieldset;
+    return MegaMenu;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Fieldset.prototype, "legend", void 0);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Array)
+], MegaMenu.prototype, "model", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Fieldset.prototype, "toggleable", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Fieldset.prototype, "collapsed", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Fieldset.prototype, "onBeforeToggle", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], Fieldset.prototype, "onAfterToggle", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
-], Fieldset.prototype, "style", void 0);
+], MegaMenu.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
-], Fieldset.prototype, "styleClass", void 0);
-Fieldset = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-fieldset',
-        template: "\n        <fieldset [ngClass]=\"{'ui-fieldset ui-widget ui-widget-content ui-corner-all': true, 'ui-fieldset-toggleable': toggleable}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <legend class=\"ui-fieldset-legend ui-corner-all ui-state-default ui-unselectable-text\" (click)=\"toggle($event)\">\n                <span *ngIf=\"toggleable\" class=\"ui-fieldset-toggler fa fa-w\" [ngClass]=\"{'fa-minus': !collapsed,'fa-plus':collapsed}\"></span>\n                {{legend}}\n                <ng-content select=\"p-header\"></ng-content>\n            </legend>\n            <div class=\"ui-fieldset-content-wrapper\" [@fieldsetContent]=\"collapsed ? 'hidden' : 'visible'\" \n                        [ngClass]=\"{'ui-fieldset-content-wrapper-overflown': collapsed||animating}\"\n                         (@fieldsetContent.done)=\"onToggleDone($event)\">\n                <div class=\"ui-fieldset-content\">\n                    <ng-content></ng-content>\n                </div>\n            </div>\n        </fieldset>\n    ",
-        animations: [
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["a" /* trigger */])('fieldsetContent', [
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    height: '0px'
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
-                    height: '*'
-                })),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('visible => hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms cubic-bezier(0.86, 0, 0.07, 1)')),
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('hidden => visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
-            ])
-        ]
+], MegaMenu.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], MegaMenu.prototype, "orientation", void 0);
+MegaMenu = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-megaMenu',
+        template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\"\n            [ngClass]=\"{'ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-megamenu-vertical': orientation == 'vertical'}\">\n            <ul class=\"ui-menu-list ui-helper-reset ui-menubar-root-list\">\n                <ng-template ngFor let-category [ngForOf]=\"model\">\n                    <li *ngIf=\"category.separator\" class=\"ui-menu-separator ui-widget-content\">\n                    <li *ngIf=\"!category.separator\" #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':category.items,'ui-menuitem-active':item==activeItem}\"\n                        (mouseenter)=\"onItemMouseEnter($event, item, category)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                        <a class=\"ui-menuitem-link ui-corner-all ui-submenu-link\" [ngClass]=\"{'ui-state-disabled':category.disabled}\">\n                            <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"category.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{category.label}}</span>\n                            <span class=\"ui-submenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-down':orientation=='horizontal','fa-caret-right':orientation=='vertical'}\"></span>\n                        </a>\n                        <div class=\"ui-megamenu-panel ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow\">\n                            <div class=\"ui-g\">\n                                <ng-template ngFor let-column [ngForOf]=\"category.items\">\n                                    <div [class]=\"getColumnClass(category)\">\n                                        <ng-template ngFor let-submenu [ngForOf]=\"column\">\n                                            <ul class=\"ui-menu-list ui-helper-reset\">\n                                                <li class=\"ui-widget-header ui-corner-all\"><h3>{{submenu.label}}</h3></li>\n                                                <ng-template ngFor let-item [ngForOf]=\"submenu.items\">\n                                                    <li *ngIf=\"item.separator\" class=\"ui-menu-separator ui-widget-content\">\n                                                    <li *ngIf=\"!item.separator\" class=\"ui-menuitem ui-widget ui-corner-all\">\n                                                        <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [attr.title]=\"item.title\"\n                                                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                                                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                                                        </a>\n                                                        <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [routerLinkActive]=\"'ui-state-active'\" \n                                                            [routerLinkActiveOptions]=\"item.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link ui-corner-all\" \n                                                             [attr.target]=\"item.target\" [attr.title]=\"item.title\"\n                                                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                                                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                                                        </a>\n                                                    </li>\n                                                </ng-template>\n                                            </ul>\n                                        </ng-template>\n                                    </div>\n                                </ng-template>\n                            </div>\n                        </div>\n                    </li>\n                </ng-template>\n                <li class=\"ui-menuitem ui-menuitem-custom ui-widget ui-corner-all\" *ngIf=\"orientation === 'horizontal'\">\n                    <ng-content></ng-content>\n                </li>\n            </ul>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object])
-], Fieldset);
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _c || Object])
+], MegaMenu);
 
-var FieldsetModule = (function () {
-    function FieldsetModule() {
+var MegaMenuModule = (function () {
+    function MegaMenuModule() {
     }
-    return FieldsetModule;
+    return MegaMenuModule;
 }());
-FieldsetModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */]],
-        exports: [Fieldset, __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
-        declarations: [Fieldset]
+MegaMenuModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
+        exports: [MegaMenu, __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
+        declarations: [MegaMenu]
     })
-], FieldsetModule);
+], MegaMenuModule);
 
 var _a, _b, _c;
-//# sourceMappingURL=fieldset.js.map
+//# sourceMappingURL=megamenu.js.map
 
 /***/ }),
 
@@ -203,8 +213,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var TabViewNav = (function () {
     function TabViewNav() {
         this.orientation = 'top';
-        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
         var styleClass = 'ui-state-default ui-corner-' + this.orientation;
@@ -228,23 +238,23 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Array)
 ], TabViewNav.prototype, "tabs", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabViewNav.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], TabViewNav.prototype, "onTabClick", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
 ], TabViewNav.prototype, "onTabCloseClick", void 0);
 TabViewNav = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: '[p-tabViewNav]',
         host: {
             '[class.ui-tabview-nav]': 'true',
@@ -292,60 +302,60 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "header", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "disabled", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "closable", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabPanel.prototype, "headerStyle", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "headerStyleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "leftIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabPanel.prototype, "rightIcon", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabPanel.prototype, "cache", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _c || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
 ], TabPanel.prototype, "templates", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabPanel.prototype, "selected", null);
 TabPanel = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabPanel',
         template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["y" /* ViewContainerRef */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
 ], TabPanel);
 
 var TabView = (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
-        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -465,49 +475,49 @@ var TabView = (function () {
     return TabView;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "orientation", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
 ], TabView.prototype, "style", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", String)
 ], TabView.prototype, "styleClass", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean)
 ], TabView.prototype, "controlClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(TabPanel),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _e || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
 ], TabView.prototype, "tabPanels", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], TabView.prototype, "onChange", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
 ], TabView.prototype, "onClose", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], TabView.prototype, "lazy", null);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], TabView.prototype, "activeIndex", null);
 TabView = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'p-tabView',
         template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
 ], TabView);
 
 var TabViewModule = (function () {
@@ -516,8 +526,8 @@ var TabViewModule = (function () {
     return TabViewModule;
 }());
 TabViewModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
         declarations: [TabView, TabPanel, TabViewNav]
     })
@@ -528,14 +538,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fieldset/fieldsetdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/megamenu/megamenudemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fieldsetdemo__ = __webpack_require__("./src/app/showcase/components/fieldset/fieldsetdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FieldsetDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__megamenudemo__ = __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MegaMenuDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -545,48 +555,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var FieldsetDemoRoutingModule = (function () {
-    function FieldsetDemoRoutingModule() {
+var MegaMenuDemoRoutingModule = (function () {
+    function MegaMenuDemoRoutingModule() {
     }
-    return FieldsetDemoRoutingModule;
+    return MegaMenuDemoRoutingModule;
 }());
-FieldsetDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+MegaMenuDemoRoutingModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__fieldsetdemo__["a" /* FieldsetDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__megamenudemo__["a" /* MegaMenuDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], FieldsetDemoRoutingModule);
+], MegaMenuDemoRoutingModule);
 
-//# sourceMappingURL=fieldsetdemo-routing.module.js.map
+//# sourceMappingURL=megamenudemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fieldset/fieldsetdemo.html":
+/***/ "./src/app/showcase/components/megamenu/megamenudemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Fieldset</span>\r\n        <span>Fieldset is a grouping component with a content toggle feature.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-fieldset legend=\"Godfather I\">\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, \r\n        but given to ruthless violence whenever anything stands against the good of the family.\r\n    </p-fieldset>\r\n    <br>\r\n    <p-fieldset legend=\"Toggleable\" [toggleable]=\"true\">\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, \r\n        but given to ruthless violence whenever anything stands against the good of the family.\r\n    </p-fieldset>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;FieldsetModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Fieldset is defined with p-fieldset element.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-fieldset legend=\"Header\"&gt;\r\n    Content\r\n&lt;/p-fieldset&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Toggleable</h3>\r\n            <p>Content of the fieldset can be expanded and collapsed using toggleable option, default state is defined with collapsed option.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-fieldset legend=\"Header\" [toggleable]=\"true\"&gt;\r\n    Content\r\n&lt;/p-fieldset&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Legend</h3>\r\n            <p>Legend content can be customized with p-header component.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-fieldset&gt;\r\n    &lt;p-header&gt;Custom Legend Content&lt;/p-header&gt;\r\n    Content\r\n&lt;/p-fieldset&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>legend</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Header text of the fieldset.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>toggleable</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>When specified, content can toggled by clicking the legend.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>collapsed</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Defines the default visibility state of the content.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the fieldset.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the fieldset.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Events</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Parameters</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>onBeforeToggle</td>\r\n                            <td>event.originalEvent: browser event<br>\r\n                                event.collapsed: state as a boolean</td>\r\n                            <td>Callback to invoke before content toggle.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>onAfterToggle</td>\r\n                            <td>event.originalEvent: browser event<br>\r\n                                event.collapsed: state as a boolean</td>\r\n                            <td>Callback to invoke after content toggle.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-fieldset</td>\r\n                            <td>Fieldset element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-fieldset-toggleable</td>\r\n                            <td>Toggleable fieldset element</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-fieldset-legend</td>\r\n                            <td>Legend element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-fieldset-content</td>\r\n                            <td>Content element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/fieldset\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-fieldset legend=\"Godfather I\"&gt;\r\n    The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n    His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n    Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n    kind and benevolent to those who give respect, \r\n    but given to ruthless violence whenever anything stands against the good of the family.\r\n&lt;/p-fieldset&gt;\r\n\r\n&lt;p-fieldset legend=\"Toggleable\" [toggleable]=\"true\"&gt;\r\n    The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n    His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n    Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n    kind and benevolent to those who give respect, \r\n    but given to ruthless violence whenever anything stands against the good of the family.\r\n&lt;/p-fieldset&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">MegaMenu</span>\r\n        <span>MegaMenu displays submenus of root items together.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Default</h3>\r\n    <p-megaMenu [model]=\"items\"></p-megaMenu>\r\n    \r\n    <h3>Vertical</h3>\r\n    <p-megaMenu [model]=\"items\" orientation=\"vertical\"></p-megaMenu>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;MegaMenuModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n<h3>MenuModel API</h3>\r\n<p>MegaMenu uses the common menumodel api to define its items, visit <a [routerLink]=\"['/menumodel']\">MenuModel API</a> for details.</p>\r\n\r\n<h3>Getting Started</h3>\r\n<p>MegaMenu requires nested menuitems as its model where the items of a root menuitem is a two dimensional array to define columns in an overlay submenu.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-megaMenu [model]=\"items\"&gt;&lt;/p-megaMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\n    export class MegaMenuDemo &#123;\r\n\r\n        items: MenuItem[];\r\n\r\n        ngOnInit() &#123;\r\n            this.items = [\r\n                &#123;\r\n                    label: 'TV', icon: 'fa-check',\r\n                    items: [\r\n                        [\r\n                            &#123;\r\n                                label: 'TV 1',\r\n                                items: [&#123;label: 'TV 1.1'&#125;,&#123;label: 'TV 1.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'TV 2',\r\n                                items: [&#123;label: 'TV 2.1'&#125;,&#123;label: 'TV 2.2'&#125;]\r\n                            &#125;\r\n                        ],\r\n                        [\r\n                            &#123;\r\n                                label: 'TV 3',\r\n                                items: [&#123;label: 'TV 3.1'&#125;,&#123;label: 'TV 3.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'TV 4',\r\n                                items: [&#123;label: 'TV 4.1'&#125;,&#123;label: 'TV 4.2'&#125;]\r\n                            &#125;    \r\n                        ]\r\n                    ]\r\n                &#125;,\r\n                &#123;\r\n                    label: 'Sports', icon: 'fa-soccer-ball-o',\r\n                    items: [\r\n                        [\r\n                            &#123;\r\n                                label: 'Sports 1',\r\n                                items: [&#123;label: 'Sports 1.1'&#125;,&#123;label: 'Sports 1.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'Sports 2',\r\n                                items: [&#123;label: 'Sports 2.1'&#125;,&#123;label: 'Sports 2.2'&#125;]\r\n                            &#125;,\r\n\r\n                        ],\r\n                        [\r\n                            &#123;\r\n                                label: 'Sports 3',\r\n                                items: [&#123;label: 'Sports 3.1'&#125;,&#123;label: 'Sports 3.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'Sports 4',\r\n                                items: [&#123;label: 'Sports 4.1'&#125;,&#123;label: 'Sports 4.2'&#125;]\r\n                            &#125;\r\n                        ],\r\n                        [\r\n                            &#123;\r\n                                label: 'Sports 5',\r\n                                items: [&#123;label: 'Sports 5.1'&#125;,&#123;label: 'Sports 5.2'&#125;]\r\n                            &#125;,\r\n                            &#123;\r\n                                label: 'Sports 6',\r\n                                items: [&#123;label: 'Sports 6.1'&#125;,&#123;label: 'Sports 6.2'&#125;]\r\n                            &#125;\r\n                        ]\r\n                    ]\r\n                &#125;\r\n            ];\r\n        &#125;\r\n    &#125;\r\n</code>\r\n</pre>\r\n\r\n<h3>Custom Content</h3>\r\n<p>Custom content can be placed between p-megaMenu tags. Megamenu should be horizontal for custom content.</p>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-megaMenu [model]=\"items\"&gt;\r\n    &lt;input type=\"text\" pInputText placeholder=\"Search\"&gt;\r\n    &lt;button pButton label=\"Logout\" icon=\"fa-sign-out\"&gt;&lt;/button&gt;\r\n&lt;/p-megaMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n<h3>Properties</h3>\r\n<div class=\"doc-tablewrapper\">\r\n    <table class=\"doc-table\">\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n                <th>Type</th>\r\n                <th>Default</th>\r\n                <th>Description</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr>\r\n                <td>model</td>\r\n                <td>array</td>\r\n                <td>null</td>\r\n                <td>An array of menuitems.</td>\r\n            </tr>\r\n            <tr>\r\n                <td>orientation</td>\r\n                <td>string</td>\r\n                <td>horizontal</td>\r\n                <td>Defines the orientation, valid values are horizontal and vertical.</td>\r\n            </tr>\r\n            <tr>\r\n                <td>style</td>\r\n                <td>string</td>\r\n                <td>null</td>\r\n                <td>Inline style of the component.</td>\r\n            </tr>\r\n            <tr>\r\n                <td>styleClass</td>\r\n                <td>string</td>\r\n                <td>null</td>\r\n                <td>Style class of the component.</td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<h3>Styling</h3>\r\n<p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n<div class=\"doc-tablewrapper\">\r\n    <table class=\"doc-table\">\r\n        <thead>\r\n        <tr>\r\n            <th>Name</th>\r\n            <th>Element</th>\r\n        </tr>\r\n        </thead>\r\n        <tbody>\r\n        <tr>\r\n            <td>ui-megamenu</td>\r\n            <td>Container element.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menu-list</td>\r\n            <td>List element.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menuitem</td>\r\n            <td>Menuitem element.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menuitem-text</td>\r\n            <td>Label of a menuitem.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-menuitem-icon</td>\r\n            <td>Icon of a menuitem.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>ui-submenu-icon</td>\r\n            <td>Arrow icon of a submenu.</td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<h3>Dependencies</h3>\r\n<p>None.</p>\r\n</p-tabPanel>\r\n\r\n<p-tabPanel header=\"Source\">\r\n    <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/megamenu\" class=\"btn-viewsource\" target=\"_blank\">\r\n        <i class=\"fa fa-github\"></i>\r\n        <span>View on GitHub</span>\r\n    </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-megaMenu [model]=\"items\"&gt;&lt;/p-megaMenu&gt;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class MegaMenuDemo &#123;\r\n\r\n    items: MenuItem[];\r\n\r\n    ngOnInit() &#123;\r\n        this.items = [\r\n            &#123;\r\n                label: 'TV', icon: 'fa-check',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'TV 1',\r\n                            items: [&#123;label: 'TV 1.1'&#125;,&#123;label: 'TV 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'TV 2',\r\n                            items: [&#123;label: 'TV 2.1'&#125;,&#123;label: 'TV 2.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'TV 3',\r\n                            items: [&#123;label: 'TV 3.1'&#125;,&#123;label: 'TV 3.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'TV 4',\r\n                            items: [&#123;label: 'TV 4.1'&#125;,&#123;label: 'TV 4.2'&#125;]\r\n                        &#125;    \r\n                    ]\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Sports', icon: 'fa-soccer-ball-o',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'Sports 1',\r\n                            items: [&#123;label: 'Sports 1.1'&#125;,&#123;label: 'Sports 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Sports 2',\r\n                            items: [&#123;label: 'Sports 2.1'&#125;,&#123;label: 'Sports 2.2'&#125;]\r\n                        &#125;,\r\n\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Sports 3',\r\n                            items: [&#123;label: 'Sports 3.1'&#125;,&#123;label: 'Sports 3.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Sports 4',\r\n                            items: [&#123;label: 'Sports 4.1'&#125;,&#123;label: 'Sports 4.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Sports 5',\r\n                            items: [&#123;label: 'Sports 5.1'&#125;,&#123;label: 'Sports 5.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Sports 6',\r\n                            items: [&#123;label: 'Sports 6.1'&#125;,&#123;label: 'Sports 6.2'&#125;]\r\n                        &#125;\r\n                    ]\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Entertainment', icon: 'fa-child',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'Entertainment 1',\r\n                            items: [&#123;label: 'Entertainment 1.1'&#125;,&#123;label: 'Entertainment 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Entertainment 2',\r\n                            items: [&#123;label: 'Entertainment 2.1'&#125;,&#123;label: 'Entertainment 2.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Entertainment 3',\r\n                            items: [&#123;label: 'Entertainment 3.1'&#125;,&#123;label: 'Entertainment 3.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Entertainment 4',\r\n                            items: [&#123;label: 'Entertainment 4.1'&#125;,&#123;label: 'Entertainment 4.2'&#125;]\r\n                        &#125;    \r\n                    ]\r\n                ]\r\n            &#125;,\r\n            &#123;\r\n                label: 'Technology', icon: 'fa-gears',\r\n                items: [\r\n                    [\r\n                        &#123;\r\n                            label: 'Technology 1',\r\n                            items: [&#123;label: 'Technology 1.1'&#125;,&#123;label: 'Technology 1.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Technology 2',\r\n                            items: [&#123;label: 'Technology 2.1'&#125;,&#123;label: 'Technology 2.2'&#125;]\r\n                        &#125;,\r\n                        &#123;\r\n                            label: 'Technology 3',\r\n                            items: [&#123;label: 'Technology 3.1'&#125;,&#123;label: 'Technology 3.2'&#125;]\r\n                        &#125;\r\n                    ],\r\n                    [\r\n                        &#123;\r\n                            label: 'Technology 4',\r\n                            items: [&#123;label: 'Technology 4.1'&#125;,&#123;label: 'Technology 4.2'&#125;]\r\n                        &#125;  \r\n                    ]\r\n                ]\r\n            &#125;\r\n        ];\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n</p-tabPanel>\r\n</p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fieldset/fieldsetdemo.module.ts":
+/***/ "./src/app/showcase/components/megamenu/megamenudemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fieldsetdemo__ = __webpack_require__("./src/app/showcase/components/fieldset/fieldsetdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fieldsetdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/fieldset/fieldsetdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_fieldset_fieldset__ = __webpack_require__("./src/app/components/fieldset/fieldset.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__megamenudemo__ = __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__megamenudemo_routing_module__ = __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_megamenu_megamenu__ = __webpack_require__("./src/app/components/megamenu/megamenu.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FieldsetDemoModule", function() { return FieldsetDemoModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MegaMenuDemoModule", function() { return MegaMenuDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -600,36 +610,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var FieldsetDemoModule = (function () {
-    function FieldsetDemoModule() {
+var MegaMenuDemoModule = (function () {
+    function MegaMenuDemoModule() {
     }
-    return FieldsetDemoModule;
+    return MegaMenuDemoModule;
 }());
-FieldsetDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+MegaMenuDemoModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__fieldsetdemo_routing_module__["a" /* FieldsetDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_fieldset_fieldset__["a" /* FieldsetModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+            __WEBPACK_IMPORTED_MODULE_3__megamenudemo_routing_module__["a" /* MegaMenuDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_megamenu_megamenu__["a" /* MegaMenuModule */],
             __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__fieldsetdemo__["a" /* FieldsetDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__megamenudemo__["a" /* MegaMenuDemo */]
         ]
     })
-], FieldsetDemoModule);
+], MegaMenuDemoModule);
 
-//# sourceMappingURL=fieldsetdemo.module.js.map
+//# sourceMappingURL=megamenudemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fieldset/fieldsetdemo.ts":
+/***/ "./src/app/showcase/components/megamenu/megamenudemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FieldsetDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MegaMenuDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -637,18 +647,132 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var FieldsetDemo = (function () {
-    function FieldsetDemo() {
+var MegaMenuDemo = (function () {
+    function MegaMenuDemo() {
     }
-    return FieldsetDemo;
+    MegaMenuDemo.prototype.ngOnInit = function () {
+        this.items = [
+            {
+                label: 'TV', icon: 'fa-check',
+                items: [
+                    [
+                        {
+                            label: 'TV 1',
+                            items: [{ label: 'TV 1.1' }, { label: 'TV 1.2' }]
+                        },
+                        {
+                            label: 'TV 2',
+                            items: [{ label: 'TV 2.1' }, { label: 'TV 2.2' }]
+                        }
+                    ],
+                    [
+                        {
+                            label: 'TV 3',
+                            items: [{ label: 'TV 3.1' }, { label: 'TV 3.2' }]
+                        },
+                        {
+                            label: 'TV 4',
+                            items: [{ label: 'TV 4.1' }, { label: 'TV 4.2' }]
+                        }
+                    ]
+                ]
+            },
+            {
+                label: 'Sports', icon: 'fa-soccer-ball-o',
+                items: [
+                    [
+                        {
+                            label: 'Sports 1',
+                            items: [{ label: 'Sports 1.1' }, { label: 'Sports 1.2' }]
+                        },
+                        {
+                            label: 'Sports 2',
+                            items: [{ label: 'Sports 2.1' }, { label: 'Sports 2.2' }]
+                        },
+                    ],
+                    [
+                        {
+                            label: 'Sports 3',
+                            items: [{ label: 'Sports 3.1' }, { label: 'Sports 3.2' }]
+                        },
+                        {
+                            label: 'Sports 4',
+                            items: [{ label: 'Sports 4.1' }, { label: 'Sports 4.2' }]
+                        }
+                    ],
+                    [
+                        {
+                            label: 'Sports 5',
+                            items: [{ label: 'Sports 5.1' }, { label: 'Sports 5.2' }]
+                        },
+                        {
+                            label: 'Sports 6',
+                            items: [{ label: 'Sports 6.1' }, { label: 'Sports 6.2' }]
+                        }
+                    ]
+                ]
+            },
+            {
+                label: 'Entertainment', icon: 'fa-child',
+                items: [
+                    [
+                        {
+                            label: 'Entertainment 1',
+                            items: [{ label: 'Entertainment 1.1' }, { label: 'Entertainment 1.2' }]
+                        },
+                        {
+                            label: 'Entertainment 2',
+                            items: [{ label: 'Entertainment 2.1' }, { label: 'Entertainment 2.2' }]
+                        }
+                    ],
+                    [
+                        {
+                            label: 'Entertainment 3',
+                            items: [{ label: 'Entertainment 3.1' }, { label: 'Entertainment 3.2' }]
+                        },
+                        {
+                            label: 'Entertainment 4',
+                            items: [{ label: 'Entertainment 4.1' }, { label: 'Entertainment 4.2' }]
+                        }
+                    ]
+                ]
+            },
+            {
+                label: 'Technology', icon: 'fa-gears',
+                items: [
+                    [
+                        {
+                            label: 'Technology 1',
+                            items: [{ label: 'Technology 1.1' }, { label: 'Technology 1.2' }]
+                        },
+                        {
+                            label: 'Technology 2',
+                            items: [{ label: 'Technology 2.1' }, { label: 'Technology 2.2' }]
+                        },
+                        {
+                            label: 'Technology 3',
+                            items: [{ label: 'Technology 3.1' }, { label: 'Technology 3.2' }]
+                        }
+                    ],
+                    [
+                        {
+                            label: 'Technology 4',
+                            items: [{ label: 'Technology 4.1' }, { label: 'Technology 4.2' }]
+                        }
+                    ]
+                ]
+            }
+        ];
+    };
+    return MegaMenuDemo;
 }());
-FieldsetDemo = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/fieldset/fieldsetdemo.html")
+MegaMenuDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/megamenu/megamenudemo.html")
     })
-], FieldsetDemo);
+], MegaMenuDemo);
 
-//# sourceMappingURL=fieldsetdemo.js.map
+//# sourceMappingURL=megamenudemo.js.map
 
 /***/ })
 

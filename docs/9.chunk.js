@@ -48,7 +48,7 @@ var MasterSelectDemoBasicComponent = (function () {
     return MasterSelectDemoBasicComponent;
 }());
 MasterSelectDemoBasicComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'master-select-demo-basic',
         template: "\n    <master-select name=\"masterObj\" width=\"150px\" defaultLabel=\"\u8BF7\u9009\u62E9\u2026\" [(ngModel)]=\"masterObj\"></master-select>\n    <button (click)=\"domasterTest()\">\u6D4B\u8BD5\u53D6\u503C</button>\n    <span>{{showObj}}</span>\n  ",
         styles: []
@@ -84,7 +84,7 @@ var MasterSelectDemoTypeComponent = (function () {
     return MasterSelectDemoTypeComponent;
 }());
 MasterSelectDemoTypeComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'master-select-demo-type',
         template: "\n    <p> type=\"name\"\u4E3A\u5E08\u5085\u540D\u79F0\u67E5\u8BE2</p><br>\n    <master-select name=\"masterName\" width=\"150px\" defaultLabel=\"\u8BF7\u9009\u62E9\u2026\" [(ngModel)]=\"masterName\"  type=\"name\"></master-select>\n    <span>{{masterName}}</span>\n    \n    <p style=\"margin-top: 10px;\"> type=\"mobile\"\u4E3A\u8D26\u53F7\u67E5\u8BE2</p><br>\n    <master-select name=\"masterMobile\" width=\"150px\" defaultLabel=\"\u8BF7\u9009\u62E9\u2026\" [(ngModel)]=\"masterMobile\" type=\"mobile\"></master-select>\n    <span>{{masterMobile}}</span>\n  ",
         styles: []
@@ -120,7 +120,7 @@ var MasterSelectDemoValueFieldComponent = (function () {
     return MasterSelectDemoValueFieldComponent;
 }());
 MasterSelectDemoValueFieldComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'master-select-demo-valueField',
         template: "\n    <p> valueField=\"name\"\u4E3A\u8FD4\u56DE\u5E08\u5085\u540D\u79F0</p><br>\n    <master-select name=\"masterName\" width=\"150px\" defaultLabel=\"\u8BF7\u9009\u62E9\u2026\" valueField=\"name\"  [(ngModel)]=\"masterName\"></master-select>\n    <span>{{masterName}}</span>\n\n    <p style=\"margin-top: 10px;\"> valueField=\"mobile\"\u4E3A\u8FD4\u56DE\u5E08\u5085\u7535\u8BDD</p><br>\n    <master-select name=\"masterMobile\" width=\"150px\" defaultLabel=\"\u8BF7\u9009\u62E9\u2026\" valueField=\"mobile\" [(ngModel)]=\"masterMobile\"></master-select>\n    <span>{{masterMobile}}</span>\n  ",
         styles: []
@@ -159,9 +159,9 @@ var MasterSelectDemoComponent = (function () {
     return MasterSelectDemoComponent;
 }());
 MasterSelectDemoComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'master-select-demo',
-        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_1" /* ViewEncapsulation */].None,
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None,
         template: __webpack_require__("./src/app/showcase/custom-components/master-select-demo/master-select-demo.html"),
         styles: [__webpack_require__("./src/app/showcase/custom-components/master-select-demo/master-select-demo.css")]
     }),
@@ -239,7 +239,7 @@ var MasterSelectDemoModule = (function () {
     return MasterSelectDemoModule;
 }());
 MasterSelectDemoModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_8_app_showcase_custom_components_master_select_demo_master_select_demo_component__["a" /* MasterSelectDemoComponent */],
             __WEBPACK_IMPORTED_MODULE_9_app_showcase_custom_components_master_select_demo_master_select_demo_basic_component__["a" /* MasterSelectDemoBasicComponent */],
@@ -248,7 +248,7 @@ MasterSelectDemoModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_6_app_showcase_custom_components_master_select_demo_master_select_demo_routing_module__["a" /* MasterSelectDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_4_app_showcase_share_nz_grid_nz_grid_module__["a" /* NzGridModule */],
             __WEBPACK_IMPORTED_MODULE_5_app_showcase_share_nz_tooltip_nz_tooltip_module__["a" /* NzToolTipModule */],
@@ -285,7 +285,7 @@ var MasterSelectDemoRoutingModule = (function () {
     return MasterSelectDemoRoutingModule;
 }());
 MasterSelectDemoRoutingModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_master_select_demo_master_select_demo_component__["a" /* MasterSelectDemoComponent */] }
             ])],

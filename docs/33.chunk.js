@@ -1,13 +1,538 @@
 webpackJsonp([33],{
 
-/***/ "./src/app/components/common/messageservice.ts":
+/***/ "./src/app/components/codehighlighter/codehighlighter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export CodeHighlighter */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CodeHighlighterModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CodeHighlighter = (function () {
+    function CodeHighlighter(el) {
+        this.el = el;
+    }
+    CodeHighlighter.prototype.ngOnInit = function () {
+        Prism.highlightElement(this.el.nativeElement);
+    };
+    return CodeHighlighter;
+}());
+CodeHighlighter = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[pCode]'
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object])
+], CodeHighlighter);
+
+var CodeHighlighterModule = (function () {
+    function CodeHighlighterModule() {
+    }
+    return CodeHighlighterModule;
+}());
+CodeHighlighterModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [CodeHighlighter],
+        declarations: [CodeHighlighter]
+    })
+], CodeHighlighterModule);
+
+var _a;
+//# sourceMappingURL=codehighlighter.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/tabview/tabview.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* unused harmony export TabViewNav */
+/* unused harmony export TabPanel */
+/* unused harmony export TabView */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabViewModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TabViewNav = (function () {
+    function TabViewNav() {
+        this.orientation = 'top';
+        this.onTabClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onTabCloseClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    TabViewNav.prototype.getDefaultHeaderClass = function (tab) {
+        var styleClass = 'ui-state-default ui-corner-' + this.orientation;
+        if (tab.headerStyleClass) {
+            styleClass = styleClass + " " + tab.headerStyleClass;
+        }
+        return styleClass;
+    };
+    TabViewNav.prototype.clickTab = function (event, tab) {
+        this.onTabClick.emit({
+            originalEvent: event,
+            tab: tab
+        });
+    };
+    TabViewNav.prototype.clickClose = function (event, tab) {
+        this.onTabCloseClick.emit({
+            originalEvent: event,
+            tab: tab
+        });
+    };
+    return TabViewNav;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Array)
+], TabViewNav.prototype, "tabs", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabViewNav.prototype, "orientation", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], TabViewNav.prototype, "onTabClick", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], TabViewNav.prototype, "onTabCloseClick", void 0);
+TabViewNav = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: '[p-tabViewNav]',
+        host: {
+            '[class.ui-tabview-nav]': 'true',
+            '[class.ui-helper-reset]': 'true',
+            '[class.ui-helper-clearfix]': 'true',
+            '[class.ui-widget-header]': 'true',
+            '[class.ui-corner-all]': 'true'
+        },
+        template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"tab\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\"\n                [attr.aria-expanded]=\"tab.selected\" [attr.aria-selected]=\"tab.selected\">\n                <a href=\"#\">\n                    <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                    <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                    <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close fa fa-close\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
+    })
+], TabViewNav);
+
+var TabPanel = (function () {
+    function TabPanel(viewContainer) {
+        this.viewContainer = viewContainer;
+        this.cache = true;
+    }
+    TabPanel.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'content':
+                    _this.contentTemplate = item.template;
+                    break;
+                default:
+                    _this.contentTemplate = item.template;
+                    break;
+            }
+        });
+    };
+    Object.defineProperty(TabPanel.prototype, "selected", {
+        get: function () {
+            return this._selected;
+        },
+        set: function (val) {
+            this._selected = val;
+            this.loaded = true;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TabPanel.prototype.ngOnDestroy = function () {
+        this.view = null;
+    };
+    return TabPanel;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabPanel.prototype, "header", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], TabPanel.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], TabPanel.prototype, "closable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], TabPanel.prototype, "headerStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabPanel.prototype, "headerStyleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabPanel.prototype, "leftIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabPanel.prototype, "rightIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], TabPanel.prototype, "cache", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["a" /* PrimeTemplate */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _c || Object)
+], TabPanel.prototype, "templates", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], TabPanel.prototype, "selected", null);
+TabPanel = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-tabPanel',
+        template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"]) === "function" && _d || Object])
+], TabPanel);
+
+var TabView = (function () {
+    function TabView(el) {
+        this.el = el;
+        this.orientation = 'top';
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    Object.defineProperty(TabView.prototype, "lazy", {
+        get: function () {
+            return this._lazy;
+        },
+        set: function (val) {
+            this._lazy = val;
+            console.log('Lazy property of TabView is deprecated, use an ngTemplate inside a TabPanel instead for Lazy Loading');
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TabView.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.initTabs();
+        this.tabPanels.changes.subscribe(function (_) {
+            _this.initTabs();
+        });
+    };
+    TabView.prototype.initTabs = function () {
+        this.tabs = this.tabPanels.toArray();
+        var selectedTab = this.findSelectedTab();
+        if (!selectedTab && this.tabs.length) {
+            if (this.activeIndex != null && this.tabs.length > this.activeIndex)
+                this.tabs[this.activeIndex].selected = true;
+            else
+                this.tabs[0].selected = true;
+        }
+    };
+    TabView.prototype.open = function (event, tab) {
+        if (tab.disabled) {
+            if (event) {
+                event.preventDefault();
+            }
+            return;
+        }
+        if (!tab.selected) {
+            var selectedTab = this.findSelectedTab();
+            if (selectedTab) {
+                selectedTab.selected = false;
+            }
+            tab.selected = true;
+            this.onChange.emit({ originalEvent: event, index: this.findTabIndex(tab) });
+        }
+        if (event) {
+            event.preventDefault();
+        }
+    };
+    TabView.prototype.close = function (event, tab) {
+        var _this = this;
+        if (this.controlClose) {
+            this.onClose.emit({
+                originalEvent: event,
+                index: this.findTabIndex(tab),
+                close: function () {
+                    _this.closeTab(tab);
+                }
+            });
+        }
+        else {
+            this.closeTab(tab);
+            this.onClose.emit({
+                originalEvent: event,
+                index: this.findTabIndex(tab)
+            });
+        }
+        event.stopPropagation();
+    };
+    TabView.prototype.closeTab = function (tab) {
+        if (tab.selected) {
+            tab.selected = false;
+            for (var i = 0; i < this.tabs.length; i++) {
+                var tabPanel = this.tabs[i];
+                if (!tabPanel.closed && !tab.disabled) {
+                    tabPanel.selected = true;
+                    break;
+                }
+            }
+        }
+        tab.closed = true;
+    };
+    TabView.prototype.findSelectedTab = function () {
+        for (var i = 0; i < this.tabs.length; i++) {
+            if (this.tabs[i].selected) {
+                return this.tabs[i];
+            }
+        }
+        return null;
+    };
+    TabView.prototype.findTabIndex = function (tab) {
+        var index = -1;
+        for (var i = 0; i < this.tabs.length; i++) {
+            if (this.tabs[i] == tab) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    };
+    TabView.prototype.getBlockableElement = function () {
+        return this.el.nativeElement.children[0];
+    };
+    Object.defineProperty(TabView.prototype, "activeIndex", {
+        get: function () {
+            return this._activeIndex;
+        },
+        set: function (val) {
+            this._activeIndex = val;
+            if (this.tabs && this.tabs.length && this._activeIndex != null && this.tabs.length > this._activeIndex) {
+                this.findSelectedTab().selected = false;
+                this.tabs[this._activeIndex].selected = true;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return TabView;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabView.prototype, "orientation", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], TabView.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], TabView.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], TabView.prototype, "controlClose", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChildren"])(TabPanel),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["QueryList"]) === "function" && _e || Object)
+], TabView.prototype, "tabPanels", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
+], TabView.prototype, "onChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _g || Object)
+], TabView.prototype, "onClose", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], TabView.prototype, "lazy", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], TabView.prototype, "activeIndex", null);
+TabView = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-tabView',
+        template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
+    }),
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _h || Object])
+], TabView);
+
+var TabViewModule = (function () {
+    function TabViewModule() {
+    }
+    return TabViewModule;
+}());
+TabViewModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        exports: [TabView, TabPanel, TabViewNav, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [TabView, TabPanel, TabViewNav]
+    })
+], TabViewModule);
+
+var _a, _b, _c, _d, _e, _f, _g, _h;
+//# sourceMappingURL=tabview.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/terminal/terminal.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__terminalservice__ = __webpack_require__("./src/app/components/terminal/terminalservice.ts");
+/* unused harmony export Terminal */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TerminalModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var Terminal = (function () {
+    function Terminal(el, domHandler, terminalService) {
+        var _this = this;
+        this.el = el;
+        this.domHandler = domHandler;
+        this.terminalService = terminalService;
+        this.commands = [];
+        this.subscription = terminalService.responseHandler.subscribe(function (response) {
+            _this.commands[_this.commands.length - 1].response = response;
+            _this.commandProcessed = true;
+        });
+    }
+    Terminal.prototype.ngAfterViewInit = function () {
+        this.container = this.domHandler.find(this.el.nativeElement, '.ui-terminal')[0];
+    };
+    Terminal.prototype.ngAfterViewChecked = function () {
+        if (this.commandProcessed) {
+            this.container.scrollTop = this.container.scrollHeight;
+            this.commandProcessed = false;
+        }
+    };
+    Object.defineProperty(Terminal.prototype, "response", {
+        set: function (value) {
+            if (value) {
+                this.commands[this.commands.length - 1].response = value;
+                this.commandProcessed = true;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Terminal.prototype.handleCommand = function (event) {
+        if (event.keyCode == 13) {
+            this.commands.push({ text: this.command });
+            this.terminalService.sendCommand(this.command);
+            this.command = '';
+        }
+    };
+    Terminal.prototype.focus = function (element) {
+        element.focus();
+    };
+    Terminal.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    return Terminal;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Terminal.prototype, "welcomeMessage", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Terminal.prototype, "prompt", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], Terminal.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Terminal.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], Terminal.prototype, "response", null);
+Terminal = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-terminal',
+        template: "\n        <div [ngClass]=\"'ui-terminal ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"focus(in)\">\n            <div *ngIf=\"welcomeMessage\">{{welcomeMessage}}</div>\n            <div class=\"ui-terminal-content\">\n                <div *ngFor=\"let command of commands\">\n                    <span>{{prompt}}</span>\n                    <span class=\"ui-terminal-command\">{{command.text}}</span>\n                    <div>{{command.response}}</div>\n                </div>\n            </div>\n            <div>\n                <span class=\"ui-terminal-content-prompt\">{{prompt}}</span>\n                <input #in type=\"text\" [(ngModel)]=\"command\" class=\"ui-terminal-input\" autocomplete=\"off\" (keydown)=\"handleCommand($event)\" autofocus>\n            </div>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__terminalservice__["a" /* TerminalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__terminalservice__["a" /* TerminalService */]) === "function" && _c || Object])
+], Terminal);
+
+var TerminalModule = (function () {
+    function TerminalModule() {
+    }
+    return TerminalModule;
+}());
+TerminalModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */]],
+        exports: [Terminal],
+        declarations: [Terminal]
+    })
+], TerminalModule);
+
+var _a, _b, _c;
+//# sourceMappingURL=terminal.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/terminal/terminalservice.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("./node_modules/rxjs/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessageService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TerminalService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -16,483 +541,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
-var MessageService = (function () {
-    function MessageService() {
-        this.messageSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
-        this.messageObserver = this.messageSource.asObservable();
+var TerminalService = (function () {
+    function TerminalService() {
+        this.commandSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this.responseSource = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this.commandHandler = this.commandSource.asObservable();
+        this.responseHandler = this.responseSource.asObservable();
     }
-    MessageService.prototype.add = function (message) {
-        if (message) {
-            this.messageSource.next(message);
+    TerminalService.prototype.sendCommand = function (command) {
+        if (command) {
+            this.commandSource.next(command);
         }
     };
-    MessageService.prototype.addAll = function (messages) {
-        if (messages && messages.length) {
-            this.messageSource.next(messages);
+    TerminalService.prototype.sendResponse = function (response) {
+        if (response) {
+            this.responseSource.next(response);
         }
     };
-    return MessageService;
+    return TerminalService;
 }());
-MessageService = __decorate([
+TerminalService = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
-], MessageService);
+], TerminalService);
 
-//# sourceMappingURL=messageservice.js.map
-
-/***/ }),
-
-/***/ "./src/app/components/growl/growl.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* unused harmony export Growl */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GrowlModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-
-
-var Growl = (function () {
-    function Growl(el, domHandler, differs, messageService) {
-        var _this = this;
-        this.el = el;
-        this.domHandler = domHandler;
-        this.differs = differs;
-        this.messageService = messageService;
-        this.life = 3000;
-        this.immutable = true;
-        this.onClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        this.onClose = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        this.zIndex = __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.differ = differs.find([]).create(null);
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
-            });
-        }
-    }
-    Growl.prototype.ngAfterViewInit = function () {
-        this.container = this.containerViewChild.nativeElement;
-        if (!this.sticky) {
-            this.initTimeout();
-        }
-    };
-    Object.defineProperty(Growl.prototype, "value", {
-        get: function () {
-            return this._value;
-        },
-        set: function (val) {
-            this._value = val;
-            if (this.container && this.immutable) {
-                this.handleValueChange();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Growl.prototype.ngDoCheck = function () {
-        if (!this.immutable && this.container) {
-            var changes = this.differ.diff(this.value);
-            if (changes) {
-                this.handleValueChange();
-            }
-        }
-    };
-    Growl.prototype.handleValueChange = function () {
-        if (this.preventRerender) {
-            this.preventRerender = false;
-            return;
-        }
-        this.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-        this.domHandler.fadeIn(this.container, 250);
-        if (!this.sticky) {
-            this.initTimeout();
-        }
-    };
-    Growl.prototype.initTimeout = function () {
-        var _this = this;
-        if (this.timeout) {
-            clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(function () {
-            _this.removeAll();
-        }, this.life);
-    };
-    Growl.prototype.remove = function (index, msgel) {
-        var _this = this;
-        this.closeIconClick = true;
-        this.domHandler.fadeOut(msgel, 250);
-        setTimeout(function () {
-            _this.preventRerender = true;
-            _this.onClose.emit({ message: _this.value[index] });
-            if (_this.immutable) {
-                _this._value = _this.value.filter(function (val, i) { return i != index; });
-                _this.valueChange.emit(_this._value);
-            }
-            else {
-                _this._value.splice(index, 1);
-            }
-        }, 250);
-    };
-    Growl.prototype.removeAll = function () {
-        var _this = this;
-        if (this.value && this.value.length) {
-            this.domHandler.fadeOut(this.container, 250);
-            setTimeout(function () {
-                _this.value.forEach(function (msg, index) { return _this.onClose.emit({ message: _this.value[index] }); });
-                if (_this.immutable) {
-                    _this.value = [];
-                    _this.valueChange.emit(_this.value);
-                }
-                else {
-                    _this.value.splice(0, _this.value.length);
-                }
-            }, 250);
-        }
-    };
-    Growl.prototype.onMessageClick = function (i) {
-        if (this.closeIconClick)
-            this.closeIconClick = false;
-        else
-            this.onClick.emit({ message: this.value[i] });
-    };
-    Growl.prototype.ngOnDestroy = function () {
-        if (!this.sticky) {
-            clearTimeout(this.timeout);
-        }
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return Growl;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Boolean)
-], Growl.prototype, "sticky", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Number)
-], Growl.prototype, "life", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Object)
-], Growl.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", String)
-], Growl.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Boolean)
-], Growl.prototype, "immutable", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
-], Growl.prototype, "onClick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
-], Growl.prototype, "onClose", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _c || Object)
-], Growl.prototype, "valueChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('container'),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _d || Object)
-], Growl.prototype, "containerViewChild", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Growl.prototype, "value", null);
-Growl = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'p-growl',
-        template: "\n        <div #container [ngClass]=\"'ui-growl ui-widget'\" [style.zIndex]=\"zIndex\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div #msgel *ngFor=\"let msg of value;let i = index\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn',\n                    'ui-growl-message-error':msg.severity == 'error','ui-growl-message-success':msg.severity == 'success'}\" (click)=\"onMessageClick(i)\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(i,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-exclamation-circle':msg.severity == 'warn',\n                                'fa-close':msg.severity == 'error','fa-check':msg.severity == 'success'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p [innerHTML]=\"msg.detail\"></p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __param(3, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()),
-    __metadata("design:paramtypes", [typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["IterableDiffers"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["IterableDiffers"]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_messageservice__["a" /* MessageService */]) === "function" && _h || Object])
-], Growl);
-
-var GrowlModule = (function () {
-    function GrowlModule() {
-    }
-    return GrowlModule;
-}());
-GrowlModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
-        exports: [Growl],
-        declarations: [Growl]
-    })
-], GrowlModule);
-
-var _a, _b, _c, _d, _e, _f, _g, _h;
-//# sourceMappingURL=growl.js.map
+//# sourceMappingURL=terminalservice.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/page/login/security-login.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"content1\">\n    <div class=\"content1_in\">\n        <div class=\"top_cun\">\n            <div class=\"j_currtun\">\n                <h1 class=\"logo\">\n                    <a href=\"javascript:void(0)\"></a>\n                </h1>\n            </div>\n        </div>\n\n        <div class=\"bottom_cun\">\n            <div class=\"right_cun\">\n                <span class=\"cun_titl\">用户登录</span>\n                <span [hidden]=\"!errorFlag\" class=\"error-text\">{{errorInfo}}</span>\n                <span class=\"cun_user\">\n\t\t\t\t\t\t\t<label><i class=\"iconfont yonhu\" title=\"账户\"></i></label>\n                            <label><i class=\"zhanghao\">账号</i></label>\n\t\t\t\t\t\t\t<input id=\"user_name\" [(ngModel)]=\"loginUser.mobile\" class=\"User_name\" type=\"text\"\n                                   maxlength=\"11\" placeholder=\"输入手机号\" onkeyup=\"value=this.value.replace(/\\D+/g,'')\"\n                                   (focus)=\"inputFocus($event)\"/>\n\t\t\t\t\t\t\t<span id=\"clear_name\" class=\"xi guan_bi\"></span>\n                </span>\n                <span class=\"cun_user\">\n\t\t\t\t\t\t\t<label><i class=\"iconfont mima\" title=\"mima\"></i></label>\n\t\t\t\t\t\t\t<label><i class=\"zhanghao\">密码</i></label>\n\t\t\t\t\t\t\t<input class=\"User_name\" [(ngModel)]=\"loginUser.password\" type=\"password\" maxlength=\"16\"\n                                   placeholder=\"请输入登录密码\" (focus)=\"inputFocus($event)\" (keyup.enter)=\"doLogin()\"/>\n\t\t\t\t\t\t\t<span id=\"show_password\" class=\"xi cha_kan\"></span>\n                </span>\n                <span class=\"cun_user forget\">\n\t\t\t\t\t\t\t<span class=\"left\"><label><input type=\"checkbox\" name=\"check\"\n                                                             checked=\"checked\">14天内自动登录</label></span>\n                </span>\n                <span class=\"cun_user Signin\">\n\t\t\t\t\t\t\t<!--<a  href=\"javascript:void(0)\" class=\"cun_Signin\" (click)=\"doLogin()\">{{loginText}}</a>-->\n                    <button  (click)=\"doLogin()\" class=\"{{login ?'cun_Signin_no':'cun_Signin_yes'}}\" [disabled]=\"login\">{{loginText}}</button>\n                </span>\n            </div>\n        </div>\n    </div>\n</div>\n<p-growl [value]=\"msgs\" sticky=\"sticky\"></p-growl>\n"
-
-/***/ }),
-
-/***/ "./src/app/showcase/security/page/login/security-login.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "@charset \"UTF-8\";\n/*登录*/\n.content1 {\n  width: 100%;\n  height: 100%;\n  background-size: 100% 100%;\n  position: static;\n  top: 0;\n  left: 0; }\n  .content1 > .content1_in {\n    position: absolute;\n    width: 1000px;\n    height: 560px;\n    top: 50%;\n    left: 50%;\n    margin-left: -500px;\n    margin-top: -295px; }\n    .content1 > .content1_in > .top_cun {\n      width: 100%;\n      height: 120px;\n      text-align: center; }\n\n.content1_in .top_cun > .j_currtun {\n  display: inline-block;\n  width: 220px;\n  height: 80px; }\n  .content1_in .top_cun > .j_currtun .logo {\n    width: 100%;\n    height: 56px; }\n    .content1_in .top_cun > .j_currtun .logo a {\n      display: block;\n      width: 100%;\n      height: 100%; }\n  .content1_in .top_cun > .j_currtun > p {\n    font-size: 22px;\n    color: #858585;\n    letter-spacing: 5px;\n    margin-top: 10px; }\n\n.content1_in .bottom_cun {\n  float: left;\n  width: 100%;\n  height: 380px; }\n  .content1_in .bottom_cun .right_cun {\n    margin: 0 auto;\n    width: 400px;\n    height: 360px;\n    box-shadow: 0 0 10px #ccc;\n    border-radius: 5px;\n    background: #F2F2F5;\n    padding: 50px;\n    box-sizing: border-box; }\n    .content1_in .bottom_cun .right_cun .cun_titl {\n      font-size: 20px;\n      color: #444444; }\n\n.bottom_cun .right_cun .cun_user {\n  float: left;\n  width: 300px;\n  height: 41px;\n  border-bottom: 1px solid #ccc;\n  margin-top: 24px;\n  position: relative; }\n\n.bottom_cun .right_cun .cun_user > label {\n  float: left;\n  width: 40px;\n  height: 40px; }\n\n.bottom_cun .right_cun .cun_user .zhanghao {\n  height: 40px;\n  line-height: 40px; }\n\n.bottom_cun .right_cun .cun_user > label > i {\n  display: block;\n  width: 100%;\n  height: 100%; }\n\n.bottom_cun .right_cun .cun_user > input {\n  font-size: 12px;\n  float: left;\n  width: 215px;\n  height: 40px;\n  line-height: 40px;\n  padding: 2px 26px 2px 2px;\n  box-sizing: border-box;\n  border: none;\n  outline: none;\n  background-color: #F2F2F5; }\n\n.bottom_cun .right_cun .cun_user .xi {\n  width: 20px;\n  height: 20px;\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  cursor: pointer; }\n\n.bottom_cun .right_cun .cun_user .guan_bi {\n  visibility: hidden; }\n\n.bottom_cun .right_cun .cun_user .cha_kan {\n  visibility: hidden; }\n\n.bottom_cun .right_cun .cun_user.forget {\n  margin: 15px 0;\n  height: auto;\n  border: none; }\n\n.bottom_cun .right_cun .cun_user.forget .left {\n  float: left;\n  line-height: 14px; }\n\n.bottom_cun .right_cun .cun_user.forget .left input {\n  float: left;\n  width: 15px;\n  height: 15px;\n  border: 1px solid #ccc;\n  margin-right: 3px;\n  cursor: pointer; }\n\n.bottom_cun .right_cun .cun_user.forget .right {\n  float: right; }\n\n.bottom_cun .right_cun .cun_user.forget .right > a:link,\n.bottom_cun .right_cun .cun_user.forget .right > a:visited {\n  color: blue; }\n\n.bottom_cun .right_cun .cun_user.forget .right > a:hover,\n.bottom_cun .right_cun .cun_user.forget .right > a:active {\n  color: red; }\n\n.bottom_cun .right_cun .cun_user.Signin {\n  border: none;\n  margin-top: 0px; }\n\n.bottom_cun .right_cun .cun_user > .cun_Signin_yes {\n  display: block;\n  width: 100%;\n  height: 100%;\n  line-height: 36px;\n  text-align: center;\n  color: #fff;\n  background: #373B4F;\n  font-size: 18px;\n  margin-top: 20px;\n  border: none;\n  cursor: pointer; }\n\n.bottom_cun .right_cun .cun_user > .cun_Signin_no {\n  display: block;\n  width: 100%;\n  height: 100%;\n  line-height: 36px;\n  text-align: center;\n  color: #fff;\n  background: #7a94c7;\n  font-size: 18px;\n  margin-top: 20px;\n  border: none;\n  cursor: not-allowed; }\n\n.error-text {\n  color: red;\n  margin-left: 10px; }\n\n.footer {\n  width: 100%;\n  text-align: center;\n  position: absolute;\n  bottom: 30px;\n  color: #7C7C7C;\n  font-size: 14px; }\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "./src/app/showcase/security/page/login/security-login.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_config__ = __webpack_require__("./src/app/showcase/custom-components/config.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityLoginComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var SecurityLoginComponent = (function () {
-    function SecurityLoginComponent(http, api, router) {
-        this.http = http;
-        this.api = api;
-        this.router = router;
-        this.loginUser = { source: "boss", mobile: '', password: '' };
-        this.errorFlag = false;
-        this.errorInfo = '';
-        this.logining = false;
-        this.login = false;
-        this.isLoggedIn = false;
-        this.loginText = "登录";
-        this.msgs = [];
-        this.copyrightYear = new Date().getFullYear();
-        this.phoneReg = /^(((13[0-9]{1})|(12[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-    }
-    SecurityLoginComponent.prototype.ngOnInit = function () {
-    };
-    SecurityLoginComponent.prototype.inputFocus = function ($event) {
-        this.errorFlag = false;
-    };
-    SecurityLoginComponent.prototype.doLogin = function () {
-        var _this = this;
-        this.loginText = "登录中...";
-        this.login = true;
-        this.errorFlag = false;
-        if (!this.valid()) {
-            setTimeout(function () {
-                _this.login = false;
-                _this.loginText = "登录";
-            }, 100);
-            return;
-        }
-        ;
-        if (this.logining) {
-            return;
-        }
-        ; //正在登录中
-        this.logining = true;
-        this.http.post(__WEBPACK_IMPORTED_MODULE_3_app_showcase_custom_components_config__["a" /* BASEURL */] + "/login", this.loginUser).map(function (res) {
-            return res.json();
-        }).subscribe(function (json) {
-            if (json && json.jwt) {
-                _this.show();
-                localStorage.setItem("jwt", json.jwt);
-                setTimeout(function () {
-                    _this.getUserInfo();
-                    _this.login = false;
-                    _this.loginText = "登录";
-                    // this.router.navigate(['/modules'])
-                }, 300);
-            }
-            else {
-                _this.error();
-            }
-            _this.logining = false;
-        }, function (error) {
-            _this.login = false;
-            _this.loginText = "登录";
-            _this.errorFlag = true;
-            if (error && error['_body']) {
-                try {
-                    var body = JSON.parse(error._body);
-                    if (body['code'] === -1) {
-                        _this.errorInfo = body['error'];
-                    }
-                    else {
-                        _this.errorInfo = '登录失败，请检查账号和密码';
-                    }
-                }
-                catch (e) {
-                    _this.errorInfo = '服务器出错';
-                }
-            }
-            else {
-                _this.errorInfo = '登录失败，请检查账号和密码';
-            }
-            _this.logining = false;
-        });
-    };
-    /**
-     * 登录验证
-     * @returns {boolean}
-     */
-    SecurityLoginComponent.prototype.valid = function () {
-        if (!this.loginUser.mobile) {
-            this.errorFlag = true;
-            this.errorInfo = '用户名不能为空';
-            return false;
-        }
-        else if (!this.phoneReg.test(this.loginUser.mobile)) {
-            this.errorFlag = true;
-            this.errorInfo = '请输入正确的手机号码';
-            return;
-        }
-        else if (!this.loginUser.password) {
-            this.errorFlag = true;
-            this.errorInfo = '密码不能为空';
-            return false;
-        }
-        return true;
-    };
-    /**
-     * 获取用户信息
-     */
-    SecurityLoginComponent.prototype.getUserInfo = function () {
-        var _this = this;
-        this.checkUserLogin().then(function (isLogin) {
-            if (isLogin) {
-                _this.router.navigateByUrl("/");
-            }
-            else {
-                localStorage.removeItem("jwt");
-            }
-        }).catch(function (err) {
-            _this.errorFlag = true;
-            _this.errorInfo = '获取用户信息失败';
-        });
-    };
-    /**
-    * 获取用户信息
-    * @returns {boolean}
-    */
-    SecurityLoginComponent.prototype.checkUserLogin = function () {
-        var _this = this;
-        try {
-            return new Promise(function (resolve, reject) {
-                _this.api.call("SecurityController.currentUser").ok(function (json) {
-                    if (json.result) {
-                        localStorage.setItem('currentUser', JSON.stringify(json.result.attributes));
-                        // localStorage.setItem('permissions', JSON.stringify(json.result.permissions));
-                        _this.isLoggedIn = true;
-                        resolve(_this.isLoggedIn);
-                    }
-                    else {
-                        _this.isLoggedIn = false;
-                        resolve(_this.isLoggedIn);
-                    }
-                }).fail(function (err) {
-                    localStorage.clear();
-                    _this.isLoggedIn = false;
-                    _this.router.navigate(['/security/login']);
-                    reject(err);
-                });
-            });
-        }
-        catch (e) {
-            localStorage.clear();
-            this.isLoggedIn = false;
-        }
-    };
-    SecurityLoginComponent.prototype.show = function (msg) {
-        msg = msg ? msg : '登录成功！';
-        this.msgs = [];
-        this.msgs.push({ severity: 'success', summary: '提示', detail: msg });
-    };
-    SecurityLoginComponent.prototype.error = function (msg) {
-        msg = msg ? msg : '登录失败！';
-        this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: '提示', detail: msg });
-    };
-    SecurityLoginComponent.prototype.warning = function (msg) {
-        msg = msg ? msg : '登录失败！';
-        this.msgs = [];
-        this.msgs.push({ severity: 'warn', summary: '提示', detail: msg });
-    };
-    return SecurityLoginComponent;
-}());
-SecurityLoginComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: __webpack_require__("./src/app/showcase/security/page/login/security-login.component.html"),
-        styles: [__webpack_require__("./src/app/showcase/security/page/login/security-login.component.scss")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4_app_custom_components_services_api__["a" /* API */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_app_custom_components_services_api__["a" /* API */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _c || Object])
-], SecurityLoginComponent);
-
-var _a, _b, _c;
-//# sourceMappingURL=security-login.component.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/security/security-routing.module.ts":
+/***/ "./src/app/showcase/components/terminal/terminaldemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__security_component__ = __webpack_require__("./src/app/showcase/security/security.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_showcase_security_page_login_security_login_component__ = __webpack_require__("./src/app/showcase/security/page/login/security-login.component.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__terminaldemo__ = __webpack_require__("./src/app/showcase/components/terminal/terminaldemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TerminalDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -502,88 +585,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-var routes = [
-    {
-        path: '',
-        component: __WEBPACK_IMPORTED_MODULE_2__security_component__["a" /* SecurityComponent */],
-        children: [
-            {
-                path: '',
-                redirectTo: 'login',
-                pathMatch: 'full'
-            },
-            {
-                path: 'login',
-                component: __WEBPACK_IMPORTED_MODULE_3_app_showcase_security_page_login_security_login_component__["a" /* SecurityLoginComponent */]
-            }
-        ]
+var TerminalDemoRoutingModule = (function () {
+    function TerminalDemoRoutingModule() {
     }
-];
-var SecurityRoutingModule = (function () {
-    function SecurityRoutingModule() {
-    }
-    return SecurityRoutingModule;
+    return TerminalDemoRoutingModule;
 }());
-SecurityRoutingModule = __decorate([
+TerminalDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild(routes)
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__terminaldemo__["a" /* TerminalDemo */] }
+            ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
-        ],
-        declarations: [],
-        providers: [],
+        ]
     })
-], SecurityRoutingModule);
+], TerminalDemoRoutingModule);
 
-//# sourceMappingURL=security-routing.module.js.map
+//# sourceMappingURL=terminaldemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/security.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./src/app/showcase/components/terminal/terminaldemo.html":
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityComponent; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-
-var SecurityComponent = (function () {
-    function SecurityComponent() {
-    }
-    return SecurityComponent;
-}());
-SecurityComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: "<router-outlet></router-outlet>"
-    })
-], SecurityComponent);
-
-//# sourceMappingURL=security.component.js.map
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Terminal</span>\r\n        <span>Terminal is a text based user interface. Enter \"date\" to display the current date.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-terminal welcomeMessage=\"Welcome to PrimeNG\" prompt=\"primeng $\"></p-terminal>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;TerminalModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Commands are processed using observables via the TerminalService. Import this service into your component and subscribe\r\n            to commandHandler to process commands by sending replies with sendResponse function.</p>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;TerminalService&#125; from 'primeng/components/terminal/terminalservice';\r\n\r\n@Component(&#123;\r\n    template: '&lt;p-terminal welcomeMessage=\"Welcome to PrimeNG\" prompt=\"primeng $\"&gt;&lt;/p-terminal&gt;',\r\n    providers: [TerminalService]\r\n&#125;)\r\nexport class TerminalDemo &#123;\r\n    \r\n    constructor(private terminalService: TerminalService) &#123;\r\n        this.terminalService.commandHandler.subscribe(command => &#123;\r\n            let response = (command === 'date') ? new Date().toDateString() : 'Unknown command: ' + command;\r\n            this.terminalService.sendResponse(response);\r\n        &#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>welcomeMessage</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Initial text to display on terminal.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>prompt</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Prompt text for each command.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n            \r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-terminal</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-terminal-content</td>\r\n                            <td>Content of terminal.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-terminal-content-prompt</td>\r\n                            <td>Prompt text.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-terminal-input</td>\r\n                            <td>Input element to enter commands.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n<p-tabPanel header=\"Source\">\r\n    <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/terminal\" class=\"btn-viewsource\" target=\"_blank\">\r\n        <i class=\"fa fa-github\"></i>\r\n        <span>View on GitHub</span>\r\n    </a>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-terminal welcomeMessage=\"Welcome to PrimeNG\" prompt=\"primeng $\"&gt;&lt;/p-terminal&gt;\r\n</code>\r\n</pre>\r\n    \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;Component&#125; from '@angular/core';\r\nimport &#123;TerminalService&#125; from 'primeng/components/terminal/terminalservice';\r\nimport &#123;Subscription&#125; from 'rxjs/Subscription';\r\n\r\n@Component(&#123;\r\n    templateUrl: './terminaldemo.html',\r\n    providers: [TerminalService]\r\n&#125;)\r\nexport class TerminalDemo &#123;\r\n\r\n    subscription: Subscription;\r\n    \r\n    constructor(private terminalService: TerminalService) &#123;\r\n        this.terminalService.commandHandler.subscribe(command => &#123;\r\n            let response = (command === 'date') ? new Date().toDateString() : 'Unknown command: ' + command;\r\n            this.terminalService.sendResponse(response);\r\n        &#125;);\r\n    &#125;\r\n    \r\n    ngOnDestroy() &#123;\r\n        if(this.subscription) &#123;\r\n            this.subscription.unsubscribe();\r\n        &#125;\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n</p-tabPanel>\r\n\r\n\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/security/security.module.ts":
+/***/ "./src/app/showcase/components/terminal/terminaldemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__security_component__ = __webpack_require__("./src/app/showcase/security/security.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__security_routing_module__ = __webpack_require__("./src/app/showcase/security/security-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_showcase_security_page_login_security_login_component__ = __webpack_require__("./src/app/showcase/security/page/login/security-login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SecurityModule", function() { return SecurityModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__terminaldemo__ = __webpack_require__("./src/app/showcase/components/terminal/terminaldemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__terminaldemo_routing_module__ = __webpack_require__("./src/app/showcase/components/terminal/terminaldemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_terminal_terminal__ = __webpack_require__("./src/app/components/terminal/terminal.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TerminalDemoModule", function() { return TerminalDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -597,33 +640,74 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-
-var SecurityModule = (function () {
-    function SecurityModule() {
+var TerminalDemoModule = (function () {
+    function TerminalDemoModule() {
     }
-    return SecurityModule;
+    return TerminalDemoModule;
 }());
-SecurityModule = __decorate([
+TerminalDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_5__security_routing_module__["a" /* SecurityRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_common__["CommonModule"],
-            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_6_app_components_growl_growl__["a" /* GrowlModule */]
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+            __WEBPACK_IMPORTED_MODULE_3__terminaldemo_routing_module__["a" /* TerminalDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_terminal_terminal__["a" /* TerminalModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_4__security_component__["a" /* SecurityComponent */],
-            __WEBPACK_IMPORTED_MODULE_7_app_showcase_security_page_login_security_login_component__["a" /* SecurityLoginComponent */]
-        ],
-        providers: [
-            __WEBPACK_IMPORTED_MODULE_8_app_custom_components_services_api__["a" /* API */]
-        ],
+            __WEBPACK_IMPORTED_MODULE_2__terminaldemo__["a" /* TerminalDemo */]
+        ]
     })
-], SecurityModule);
+], TerminalDemoModule);
 
-//# sourceMappingURL=security.module.js.map
+//# sourceMappingURL=terminaldemo.module.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/terminal/terminaldemo.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_terminal_terminalservice__ = __webpack_require__("./src/app/components/terminal/terminalservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TerminalDemo; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TerminalDemo = (function () {
+    function TerminalDemo(terminalService) {
+        var _this = this;
+        this.terminalService = terminalService;
+        this.subscription = this.terminalService.commandHandler.subscribe(function (command) {
+            var response = (command === 'date') ? new Date().toDateString() : 'Unknown command: ' + command;
+            _this.terminalService.sendResponse(response);
+        });
+    }
+    TerminalDemo.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    return TerminalDemo;
+}());
+TerminalDemo = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: __webpack_require__("./src/app/showcase/components/terminal/terminaldemo.html"),
+        providers: [__WEBPACK_IMPORTED_MODULE_1__components_terminal_terminalservice__["a" /* TerminalService */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__components_terminal_terminalservice__["a" /* TerminalService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__components_terminal_terminalservice__["a" /* TerminalService */]) === "function" && _a || Object])
+], TerminalDemo);
+
+var _a;
+//# sourceMappingURL=terminaldemo.js.map
 
 /***/ })
 

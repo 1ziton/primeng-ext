@@ -152,15 +152,15 @@ var map = {
 	],
 	"./components/autocomplete/autocompletedemo.module": [
 		"./src/app/showcase/components/autocomplete/autocompletedemo.module.ts",
-		55
+		54
 	],
 	"./components/blockui/blockuidemo.module": [
 		"./src/app/showcase/components/blockui/blockuidemo.module.ts",
-		54
+		53
 	],
 	"./components/breadcrumb/breadcrumbdemo.module": [
 		"./src/app/showcase/components/breadcrumb/breadcrumbdemo.module.ts",
-		53
+		52
 	],
 	"./components/button/buttondemo.module": [
 		"./src/app/showcase/components/button/buttondemo.module.ts",
@@ -188,7 +188,7 @@ var map = {
 	],
 	"./components/chips/chipsdemo.module": [
 		"./src/app/showcase/components/chips/chipsdemo.module.ts",
-		52
+		51
 	],
 	"./components/codehighlighter/codehighlighterdemo.module": [
 		"./src/app/showcase/components/codehighlighter/codehighlighterdemo.module.ts",
@@ -204,11 +204,11 @@ var map = {
 	],
 	"./components/contextmenu/contextmenudemo.module": [
 		"./src/app/showcase/components/contextmenu/contextmenudemo.module.ts",
-		51
+		50
 	],
 	"./components/datagrid/datagriddemo.module": [
 		"./src/app/showcase/components/datagrid/datagriddemo.module.ts",
-		42
+		41
 	],
 	"./components/datalist/datalistdemo.module": [
 		"./src/app/showcase/components/datalist/datalistdemo.module.ts",
@@ -232,7 +232,7 @@ var map = {
 	],
 	"./components/dragdrop/dragdropdemo.module": [
 		"./src/app/showcase/components/dragdrop/dragdropdemo.module.ts",
-		41
+		40
 	],
 	"./components/dropdown/dropdowndemo.module": [
 		"./src/app/showcase/components/dropdown/dropdowndemo.module.ts",
@@ -264,11 +264,11 @@ var map = {
 	],
 	"./components/growl/growldemo.module": [
 		"./src/app/showcase/components/growl/growldemo.module.ts",
-		45
+		44
 	],
 	"./components/inplace/inplacedemo.module": [
 		"./src/app/showcase/components/inplace/inplacedemo.module.ts",
-		40
+		39
 	],
 	"./components/inputgroup/inputgroupdemo.module": [
 		"./src/app/showcase/components/inputgroup/inputgroupdemo.module.ts",
@@ -276,7 +276,7 @@ var map = {
 	],
 	"./components/inputmask/inputmaskdemo.module": [
 		"./src/app/showcase/components/inputmask/inputmaskdemo.module.ts",
-		39
+		38
 	],
 	"./components/inputswitch/inputswitchdemo.module": [
 		"./src/app/showcase/components/inputswitch/inputswitchdemo.module.ts",
@@ -304,7 +304,7 @@ var map = {
 	],
 	"./components/menu/menudemo.module": [
 		"./src/app/showcase/components/menu/menudemo.module.ts",
-		50
+		49
 	],
 	"./components/menubar/menubardemo.module": [
 		"./src/app/showcase/components/menubar/menubardemo.module.ts",
@@ -316,7 +316,7 @@ var map = {
 	],
 	"./components/messages/messagesdemo.module": [
 		"./src/app/showcase/components/messages/messagesdemo.module.ts",
-		43
+		42
 	],
 	"./components/multiselect/multiselectdemo.module": [
 		"./src/app/showcase/components/multiselect/multiselectdemo.module.ts",
@@ -344,7 +344,7 @@ var map = {
 	],
 	"./components/panelmenu/panelmenudemo.module": [
 		"./src/app/showcase/components/panelmenu/panelmenudemo.module.ts",
-		49
+		48
 	],
 	"./components/password/passworddemo.module": [
 		"./src/app/showcase/components/password/passworddemo.module.ts",
@@ -372,7 +372,7 @@ var map = {
 	],
 	"./components/rtl/rtldemo.module": [
 		"./src/app/showcase/components/rtl/rtldemo.module.ts",
-		56
+		55
 	],
 	"./components/schedule/scheduledemo.module": [
 		"./src/app/showcase/components/schedule/scheduledemo.module.ts",
@@ -388,15 +388,15 @@ var map = {
 	],
 	"./components/slidemenu/slidemenudemo.module": [
 		"./src/app/showcase/components/slidemenu/slidemenudemo.module.ts",
-		48
+		47
 	],
 	"./components/slider/sliderdemo.module": [
 		"./src/app/showcase/components/slider/sliderdemo.module.ts",
-		38
+		37
 	],
 	"./components/spinner/spinnerdemo.module": [
 		"./src/app/showcase/components/spinner/spinnerdemo.module.ts",
-		37
+		36
 	],
 	"./components/splitbutton/splitbuttondemo.module": [
 		"./src/app/showcase/components/splitbutton/splitbuttondemo.module.ts",
@@ -412,15 +412,15 @@ var map = {
 	],
 	"./components/tabmenu/tabmenudemo.module": [
 		"./src/app/showcase/components/tabmenu/tabmenudemo.module.ts",
-		47
+		46
 	],
 	"./components/tabview/tabviewdemo.module": [
 		"./src/app/showcase/components/tabview/tabviewdemo.module.ts",
-		44
+		43
 	],
 	"./components/terminal/terminaldemo.module": [
 		"./src/app/showcase/components/terminal/terminaldemo.module.ts",
-		34
+		33
 	],
 	"./components/theming/theming.module": [
 		"./src/app/showcase/components/theming/theming.module.ts",
@@ -428,7 +428,7 @@ var map = {
 	],
 	"./components/tieredmenu/tieredmenudemo.module": [
 		"./src/app/showcase/components/tieredmenu/tieredmenudemo.module.ts",
-		46
+		45
 	],
 	"./components/togglebutton/togglebuttondemo.module": [
 		"./src/app/showcase/components/togglebutton/togglebuttondemo.module.ts",
@@ -436,11 +436,11 @@ var map = {
 	],
 	"./components/toolbar/toolbardemo.module": [
 		"./src/app/showcase/components/toolbar/toolbardemo.module.ts",
-		35
+		34
 	],
 	"./components/tooltip/tooltipdemo.module": [
 		"./src/app/showcase/components/tooltip/tooltipdemo.module.ts",
-		36
+		35
 	],
 	"./components/tree/treedemo.module": [
 		"./src/app/showcase/components/tree/treedemo.module.ts",
@@ -520,11 +520,11 @@ var map = {
 	],
 	"./custom-components/viewer-demo/viewer-demo.module": [
 		"./src/app/showcase/custom-components/viewer-demo/viewer-demo.module.ts",
-		32
+		56
 	],
 	"./security/security.module": [
 		"./src/app/showcase/security/security.module.ts",
-		33
+		32
 	]
 };
 function webpackAsyncContext(req) {
@@ -9990,6 +9990,7 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__city_dropdown_city_dropdown_component__ = __webpack_require__("./src/app/custom-components/city-dropdown/city-dropdown.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29_app_custom_components_good_select_good_select_component__ = __webpack_require__("./src/app/custom-components/good-select/good-select.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30_app_custom_components_exception_select_exception_select_component__ = __webpack_require__("./src/app/custom-components/exception-select/exception-select.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_app_custom_components_viewer_viewer_directive__ = __webpack_require__("./src/app/custom-components/viewer/viewer.directive.ts");
 /* unused harmony reexport AutoCompleteModule */
 /* unused harmony reexport FileUploadModule */
 /* unused harmony reexport UICalendarModule */
@@ -10004,15 +10005,15 @@ var _a, _b;
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_29_app_custom_components_good_select_good_select_component__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_21_app_custom_components_grid_grid__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31_app_custom_components_tree_tree__ = __webpack_require__("./src/app/custom-components/tree/tree.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_app_custom_components_tree_tree__ = __webpack_require__("./src/app/custom-components/tree/tree.ts");
 /* unused harmony reexport UITree */
 /* unused harmony reexport UISelectBoxModule */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_24_app_custom_components_master_select_master_select_component__["a"]; });
 /* unused harmony reexport MetaSelectComponent */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32_app_custom_components_repair_goods_select_repair_goods_select_component__ = __webpack_require__("./src/app/custom-components/repair-goods-select/repair-goods-select.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_app_custom_components_repair_goods_select_repair_goods_select_component__ = __webpack_require__("./src/app/custom-components/repair-goods-select/repair-goods-select.component.ts");
 /* unused harmony reexport RepairGoodsComponent */
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_30_app_custom_components_exception_select_exception_select_component__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34_app_custom_components_services_api__ = __webpack_require__("./src/app/custom-components/services/api.ts");
 /* unused harmony reexport API */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomComponentsModule; });
 // ---------------------------------------------------------
@@ -10043,6 +10044,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 // Modules
+
 
 
 
@@ -10121,6 +10123,7 @@ CustomComponentsModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_24_app_custom_components_master_select_master_select_component__["a" /* MasterSelectModule */],
             __WEBPACK_IMPORTED_MODULE_30_app_custom_components_exception_select_exception_select_component__["a" /* ExceptionSelectModule */],
             __WEBPACK_IMPORTED_MODULE_23_app_custom_components_select_box_select_box__["a" /* UISelectBoxModule */],
+            __WEBPACK_IMPORTED_MODULE_31_app_custom_components_viewer_viewer_directive__["a" /* ViewerDirectiveModule */],
             __WEBPACK_IMPORTED_MODULE_22_app_custom_components_upload_upload__["a" /* UIUploadModule */]
         ],
         declarations: [
@@ -13468,7 +13471,7 @@ module.exports = module.exports.toString();
 /***/ "./src/app/custom-components/upload/upload.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p-fileUpload *ngIf=\"type!=='file'\" #upload name=\"file\" [url]=\"url\" multiple=\"{{multiple}}\" uploadLabel=\"上传\" chooseLabel=\"选择\"\n    cancelLabel=\"取消\" maxFileSize=\"16000000\" [auto]=\"true\" invalidFileSizeMessageSummary=\"{0}: 文件过大,\" invalidFileSizeMessageDetail=\"大小不能超过 {0}.\"\n    (onBeforeSend)=\"onBeforeSend($event)\" (onSelect)=\"onSelect($event)\" (onUpload)=\"onUpload($event)\" [disabled]=\"files.length >= fileMaxNum\">\n    <ng-template let-file pTemplate=\"toolbar\">\n        <div style=\"float: right;\" *ngIf=\"files.length\">已上传<strong> {{files.length}} </strong>个文件</div>\n    </ng-template>\n    <ng-template pTemplate=\"file\" let-file>\n        <div class=\"ui-fileupload-row\" class=\"pic-file-template\">\n            <div class=\"item\">\n                <img *ngIf=\"isImage(file)\" [src]=\"file.objectURL\" title=\"{{file.name}}\" [width]=\"previewWidth\" [height]=\"previewWidth\" />\n                <span style=\"\" icon=\"fa-close\" (click)=\"upload.remove(file)\" title=\"点击移除\">x</span>\n            </div>\n        </div>\n    </ng-template>\n    <ng-template pTemplate=\"content\">\n        <p *ngIf=\"files.length\">已上传：</p>\n        <ul class=\"uploaded-content\" *ngIf=\"files.length\">\n            <li *ngFor=\"let file of files\" class=\"item\">\n                <a rel=\"fancybox\" href=\"{{file.url}}\">\n                    <img *ngIf=\"isPicture(file)\" src=\"{{file.url + '@w_' + previewWidth+',h_'+previewWidth}}\" title=\"{{file.name}}\" [width]=\"previewWidth\"\n                         [height]=\"previewWidth\"/>\n                </a>\n                <span icon=\"fa-close\" (click)=\"deleteFile(file)\" title=\"点击移除\">x</span>\n            </li>\n        </ul>\n    </ng-template>\n</p-fileUpload>\n<div *ngIf=\"type==='file'\" style=\"display: inline-block\">\n    <p-fileUpload [uploadType]=\"type\" #upload name=\"file\" [url]=\"url\" multiple=\"{{multiple}}\" uploadLabel=\"上传\" chooseLabel=\"选择\"\n        cancelLabel=\"取消\" maxFileSize=\"16000000\" [auto]=\"true\" invalidFileSizeMessageSummary=\"{0}: 文件过大,\" invalidFileSizeMessageDetail=\"大小不能超过 {0}.\"\n        (onBeforeSend)=\"onBeforeSend($event)\" (onSelect)=\"onSelect($event)\" (onUpload)=\"onUpload($event)\" [disabled]=\"files.length >= fileMaxNum\">\n    </p-fileUpload>\n</div>"
+module.exports = "<p-fileUpload *ngIf=\"type!=='file'\" #upload name=\"file\" [url]=\"url\" multiple=\"{{multiple}}\" uploadLabel=\"上传\" chooseLabel=\"选择\"\n    cancelLabel=\"取消\" maxFileSize=\"16000000\" [auto]=\"true\" invalidFileSizeMessageSummary=\"{0}: 文件过大,\" invalidFileSizeMessageDetail=\"大小不能超过 {0}.\"\n    (onBeforeSend)=\"onBeforeSend($event)\" (onSelect)=\"onSelect($event)\" (onUpload)=\"onUpload($event)\" [disabled]=\"files.length >= fileMaxNum\">\n    <ng-template let-file pTemplate=\"toolbar\">\n        <div style=\"float: right;\" *ngIf=\"files.length\">已上传<strong> {{files.length}} </strong>个文件</div>\n    </ng-template>\n    <ng-template pTemplate=\"file\" let-file>\n        <div class=\"ui-fileupload-row\" class=\"pic-file-template\">\n            <div class=\"item\">\n                <img *ngIf=\"isImage(file)\" [src]=\"file.objectURL\" title=\"{{file.name}}\" [width]=\"previewWidth\" [height]=\"previewWidth\" />\n                <span style=\"\" icon=\"fa-close\" (click)=\"upload.remove(file)\" title=\"点击移除\">x</span>\n            </div>\n        </div>\n    </ng-template>\n    <ng-template pTemplate=\"content\">\n        <p *ngIf=\"files.length\">已上传：</p>\n        <ul class=\"uploaded-content\" *ngIf=\"files.length\" viewer>\n            <li *ngFor=\"let file of files\" class=\"item\" #content>\n                <a rel=\"fancybox\" href=\"javascript:void(0)\">\n                    <img *ngIf=\"isPicture(file)\" name=\"{{file.url}}\" src=\"{{file.url + '@w_' + previewWidth+',h_'+previewWidth}}\" title=\"{{file.name}}\" [width]=\"previewWidth\"\n                         [height]=\"previewWidth\"/>\n                </a>\n                <span icon=\"fa-close\" (click)=\"deleteFile(file)\" title=\"点击移除\">x</span>\n            </li>\n        </ul>\n    </ng-template>\n</p-fileUpload>\n<div *ngIf=\"type==='file'\" style=\"display: inline-block\">\n    <p-fileUpload [uploadType]=\"type\" #upload name=\"file\" [url]=\"url\" multiple=\"{{multiple}}\" uploadLabel=\"上传\" chooseLabel=\"选择\"\n        cancelLabel=\"取消\" maxFileSize=\"16000000\" [auto]=\"true\" invalidFileSizeMessageSummary=\"{0}: 文件过大,\" invalidFileSizeMessageDetail=\"大小不能超过 {0}.\"\n        (onBeforeSend)=\"onBeforeSend($event)\" (onSelect)=\"onSelect($event)\" (onUpload)=\"onUpload($event)\" [disabled]=\"files.length >= fileMaxNum\">\n    </p-fileUpload>\n</div>"
 
 /***/ }),
 
@@ -13481,6 +13484,7 @@ module.exports = "<p-fileUpload *ngIf=\"type!=='file'\" #upload name=\"file\" [u
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_app_showcase_custom_components_config__ = __webpack_require__("./src/app/showcase/custom-components/config.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_custom_components_primeng_ext_fileupload__ = __webpack_require__("./src/app/custom-components/_primeng-ext/fileupload.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_custom_components_viewer_viewer_directive__ = __webpack_require__("./src/app/custom-components/viewer/viewer.directive.ts");
 /* unused harmony export CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR */
 /* unused harmony export UIUpload */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIUploadModule; });
@@ -13494,6 +13498,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /*tslint:disable*/
+
 
 
 
@@ -13541,8 +13546,7 @@ var UIUpload = (function () {
         }
     };
     UIUpload.prototype.ngAfterViewInit = function () {
-        //console.log('ngAfterViewInit');
-        this.initFancybox();
+        // this.initFancybox();
     };
     UIUpload.prototype.onBeforeSend = function (event) {
         var xhr = event.xhr;
@@ -13667,19 +13671,6 @@ var UIUpload = (function () {
         this.file = file;
         op.toggle(event);
     };
-    UIUpload.prototype.initFancybox = function () {
-        $(function () {
-            $("a[rel=fancybox]").fancybox({
-                'titlePosition': 'over',
-                'cyclic': true,
-                'scrolling': 'yes',
-                'titleFormat': function (title, currentArray, currentIndex, currentOpts) {
-                    return '<span id="fancybox-title-over">' + (currentIndex + 1) +
-                        ' / ' + currentArray.length + (title.length ? '   ' + title : '') + '</span>';
-                }
-            });
-        });
-    };
     return UIUpload;
 }());
 __decorate([
@@ -13726,13 +13717,105 @@ UIUploadModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_3__angular_common__["CommonModule"],
             __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4_app_custom_components_primeng_ext_fileupload__["a" /* FileUploadModule */]
+            __WEBPACK_IMPORTED_MODULE_4_app_custom_components_primeng_ext_fileupload__["a" /* FileUploadModule */],
+            __WEBPACK_IMPORTED_MODULE_5_app_custom_components_viewer_viewer_directive__["a" /* ViewerDirectiveModule */]
         ]
     })
 ], UIUploadModule);
 
 var _a;
 //# sourceMappingURL=upload.js.map
+
+/***/ }),
+
+/***/ "./src/app/custom-components/viewer/viewer.directive.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export ViewerDirective */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewerDirectiveModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * Created by giscafer on 2017/09/21.
+ * 基于viewer.js封装
+ */
+
+
+var ViewerDirective = (function () {
+    function ViewerDirective(_elementRef, _render) {
+        this._elementRef = _elementRef;
+        this._render = _render;
+        this.originalAttr = "name";
+        this.nativeElement = this._elementRef.nativeElement;
+    }
+    ViewerDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        var nativeEl = this.nativeElement;
+        if (this.content) {
+            nativeEl = this.content.nativeElement;
+        }
+        setTimeout(function () {
+            var imgs = nativeEl.getElementsByTagName('img');
+            if (imgs.length) {
+                imgs[0].onload = function () {
+                    _this.viewer = new Viewer(_this.nativeElement, {
+                        url: _this.originalAttr,
+                    });
+                };
+            }
+        });
+    };
+    ViewerDirective.prototype.ngOnDestroy = function () {
+        if (this.viewer) {
+            this.viewer.destroy();
+        }
+    };
+    return ViewerDirective;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], ViewerDirective.prototype, "originalAttr", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"])('content'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object)
+], ViewerDirective.prototype, "content", void 0);
+ViewerDirective = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[viewer]'
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _c || Object])
+], ViewerDirective);
+
+var ViewerDirectiveModule = (function () {
+    function ViewerDirectiveModule() {
+    }
+    return ViewerDirectiveModule;
+}());
+ViewerDirectiveModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        declarations: [
+            ViewerDirective
+        ],
+        exports: [ViewerDirective],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]
+        ]
+    })
+], ViewerDirectiveModule);
+
+var _a, _b, _c;
+//# sourceMappingURL=viewer.directive.js.map
 
 /***/ }),
 

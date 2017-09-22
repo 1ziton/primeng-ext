@@ -1,16 +1,14 @@
 webpackJsonp([53],{
 
-/***/ "./src/app/components/breadcrumb/breadcrumb.ts":
+/***/ "./src/app/components/blockui/blockui.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_menuitem__ = __webpack_require__("./src/app/components/common/menuitem.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_menuitem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_menuitem__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* unused harmony export Breadcrumb */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BreadcrumbModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export BlockUI */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,70 +21,89 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-var Breadcrumb = (function () {
-    function Breadcrumb() {
+var BlockUI = (function () {
+    function BlockUI(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
     }
-    Breadcrumb.prototype.itemClick = function (event, item) {
-        if (item.disabled) {
-            event.preventDefault();
-            return;
-        }
-        if (!item.url) {
-            event.preventDefault();
-        }
-        if (item.command) {
-            item.command({
-                originalEvent: event,
-                item: item
-            });
+    Object.defineProperty(BlockUI.prototype, "blocked", {
+        get: function () {
+            return this._blocked;
+        },
+        set: function (val) {
+            this._blocked = val;
+            if (this.mask.nativeElement) {
+                if (this._blocked)
+                    this.block();
+                else
+                    this.unblock();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BlockUI.prototype.ngAfterViewInit = function () {
+        if (this.target && !this.target.getBlockableElement) {
+            throw 'Target of BlockUI must implement BlockableUI interface';
         }
     };
-    Breadcrumb.prototype.onHomeClick = function (event) {
-        if (this.home) {
-            this.itemClick(event, this.home);
+    BlockUI.prototype.block = function () {
+        if (this.target) {
+            this.target.getBlockableElement().appendChild(this.mask.nativeElement);
+            var style = this.target.style || {};
+            style.position = 'relative';
+            this.target.style = style;
         }
+        else {
+            document.body.appendChild(this.mask.nativeElement);
+        }
+        this.mask.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex);
     };
-    return Breadcrumb;
+    BlockUI.prototype.unblock = function () {
+        this.el.nativeElement.appendChild(this.mask.nativeElement);
+    };
+    BlockUI.prototype.ngOnDestroy = function () {
+        this.unblock();
+    };
+    return BlockUI;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", Array)
-], Breadcrumb.prototype, "model", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
     __metadata("design:type", Object)
-], Breadcrumb.prototype, "style", void 0);
+], BlockUI.prototype, "target", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('mask'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object)
+], BlockUI.prototype, "mask", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", String)
-], Breadcrumb.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__common_menuitem__["MenuItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_menuitem__["MenuItem"]) === "function" && _a || Object)
-], Breadcrumb.prototype, "home", void 0);
-Breadcrumb = __decorate([
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], BlockUI.prototype, "blocked", null);
+BlockUI = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'p-breadcrumb',
-        template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-breadcrumb ui-widget ui-widget-header ui-helper-clearfix ui-corner-all'\">\n            <ul>\n                <li class=\"ui-breadcrumb-home fa fa-home\" *ngIf=\"!home\"></li>\n                <li class=\"ui-breadcrumb-home\" *ngIf=\"home\">\n                    <a *ngIf=\"!home.routerLink\" [href]=\"home.url||'#'\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, home)\" \n                        [ngClass]=\"{'ui-state-disabled':home.disabled}\" [attr.target]=\"home.target\" [attr.title]=\"home.title\">\n                        <span class=\"fa fa-home\"></span>\n                    </a>\n                    <a *ngIf=\"home.routerLink\" [routerLink]=\"home.routerLink\" [routerLinkActive]=\"'ui-state-active'\" [routerLinkActiveOptions]=\"home.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, home)\" \n                        [ngClass]=\"{'ui-state-disabled':home.disabled}\" [attr.target]=\"home.target\" [attr.title]=\"home.title\">\n                        <span class=\"fa fa-home\"></span>\n                    </a>\n                </li>\n                <li class=\"ui-breadcrumb-chevron fa fa-chevron-right\" *ngIf=\"model\"></li>\n                <ng-template ngFor let-item let-end=\"last\" [ngForOf]=\"model\">\n                    <li role=\"menuitem\">\n                        <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, item)\" \n                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" [attr.target]=\"item.target\" [attr.title]=\"item.title\">\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                        <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [routerLinkActive]=\"'ui-state-active'\" [routerLinkActiveOptions]=\"item.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, item)\" \n                            [ngClass]=\"{'ui-state-disabled':item.disabled}\" [attr.target]=\"item.target\" [attr.title]=\"item.title\">\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                    <li class=\"ui-breadcrumb-chevron fa fa-chevron-right\" *ngIf=\"!end\"></li>\n                </ng-template>\n            </ul>\n        </div>\n    "
-    })
-], Breadcrumb);
+        selector: 'p-blockUI',
+        template: "\n        <div #mask class=\"ui-blockui ui-widget-overlay\" [ngClass]=\"{'ui-blockui-document':!target}\" [ngStyle]=\"{display: blocked ? 'block' : 'none'}\">\n            <ng-content></ng-content>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _c || Object])
+], BlockUI);
 
-var BreadcrumbModule = (function () {
-    function BreadcrumbModule() {
+var BlockUIModule = (function () {
+    function BlockUIModule() {
     }
-    return BreadcrumbModule;
+    return BlockUIModule;
 }());
-BreadcrumbModule = __decorate([
+BlockUIModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
-        exports: [Breadcrumb, __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */]],
-        declarations: [Breadcrumb]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [BlockUI],
+        declarations: [BlockUI]
     })
-], BreadcrumbModule);
+], BlockUIModule);
 
-var _a;
-//# sourceMappingURL=breadcrumb.js.map
+var _a, _b, _c;
+//# sourceMappingURL=blockui.js.map
 
 /***/ }),
 
@@ -143,10 +160,148 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/app/components/common/menuitem.ts":
-/***/ (function(module, exports) {
+/***/ "./src/app/components/panel/panel.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-//# sourceMappingURL=menuitem.js.map
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
+/* unused harmony export Panel */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PanelModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var Panel = (function () {
+    function Panel(el) {
+        this.el = el;
+        this.collapsed = false;
+        this.expandIcon = 'fa-plus';
+        this.collapseIcon = 'fa-minus';
+        this.collapsedChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onBeforeToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onAfterToggle = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    Panel.prototype.toggle = function (event) {
+        if (this.animating) {
+            return false;
+        }
+        this.animating = true;
+        this.onBeforeToggle.emit({ originalEvent: event, collapsed: this.collapsed });
+        if (this.toggleable) {
+            if (this.collapsed)
+                this.expand(event);
+            else
+                this.collapse(event);
+        }
+        event.preventDefault();
+    };
+    Panel.prototype.expand = function (event) {
+        this.collapsed = false;
+        this.collapsedChange.emit(this.collapsed);
+    };
+    Panel.prototype.collapse = function (event) {
+        this.collapsed = true;
+        this.collapsedChange.emit(this.collapsed);
+    };
+    Panel.prototype.getBlockableElement = function () {
+        return this.el.nativeElement.children[0];
+    };
+    Panel.prototype.onToggleDone = function (event) {
+        this.animating = false;
+        this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
+    };
+    return Panel;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Panel.prototype, "toggleable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Panel.prototype, "header", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean)
+], Panel.prototype, "collapsed", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], Panel.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Panel.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Panel.prototype, "expandIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], Panel.prototype, "collapseIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], Panel.prototype, "collapsedChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _b || Object)
+], Panel.prototype, "onBeforeToggle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _c || Object)
+], Panel.prototype, "onAfterToggle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"])(__WEBPACK_IMPORTED_MODULE_2__common_shared__["c" /* Footer */]),
+    __metadata("design:type", Object)
+], Panel.prototype, "footerFacet", void 0);
+Panel = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'p-panel',
+        template: "\n        <div [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"toggle($event)\">\n                    <span [class]=\"collapsed ? 'fa fa-fw ' + expandIcon : 'fa fa-fw ' + collapseIcon\"></span>\n                </a>\n            </div>\n            <div class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? 'hidden' : 'visible'\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
+        animations: [
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["a" /* trigger */])('panelContent', [
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["c" /* style */])({
+                    height: '0'
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["c" /* style */])({
+                    height: '*'
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["d" /* transition */])('visible <=> hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__angular_animations__["e" /* animate */])('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+            ])
+        ]
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _d || Object])
+], Panel);
+
+var PanelModule = (function () {
+    function PanelModule() {
+    }
+    return PanelModule;
+}());
+PanelModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"]],
+        exports: [Panel, __WEBPACK_IMPORTED_MODULE_2__common_shared__["b" /* SharedModule */]],
+        declarations: [Panel]
+    })
+], PanelModule);
+
+var _a, _b, _c, _d;
+//# sourceMappingURL=panel.js.map
 
 /***/ }),
 
@@ -501,14 +656,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/breadcrumb/breadcrumbdemo-routing.module.ts":
+/***/ "./src/app/showcase/components/blockui/blockuidemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__breadcrumbdemo__ = __webpack_require__("./src/app/showcase/components/breadcrumb/breadcrumbdemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BreadcrumbDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__blockuidemo__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -518,48 +673,50 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var BreadcrumbDemoRoutingModule = (function () {
-    function BreadcrumbDemoRoutingModule() {
+var BlockUIDemoRoutingModule = (function () {
+    function BlockUIDemoRoutingModule() {
     }
-    return BreadcrumbDemoRoutingModule;
+    return BlockUIDemoRoutingModule;
 }());
-BreadcrumbDemoRoutingModule = __decorate([
+BlockUIDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__breadcrumbdemo__["a" /* BreadcrumbDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__blockuidemo__["a" /* BlockUIDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], BreadcrumbDemoRoutingModule);
+], BlockUIDemoRoutingModule);
 
-//# sourceMappingURL=breadcrumbdemo-routing.module.js.map
+//# sourceMappingURL=blockuidemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/breadcrumb/breadcrumbdemo.html":
+/***/ "./src/app/showcase/components/blockui/blockuidemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">Breadcrumb</span>\r\n        <span>Breadcrumb provides contextual information about page hierarchy.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <p-breadcrumb [model]=\"items\"></p-breadcrumb>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;BreadcrumbModule,MenuItem&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>MenuModel API</h3>\r\n            <p>Breadcrumb uses the common menumodel api to define its items, visit <a [routerLink]=\"['/menumodel']\">MenuModel API</a> for details.</p>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>Breadcrumb requires a collection of menuitems connected to its model property.</p>\r\n            \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BreadcrumbDemo implements OnInit &#123;\r\n\r\n    private items: MenuItem[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.items = [];\r\n        this.items.push(&#123;label:'Categories'&#125;);\r\n        this.items.push(&#123;label:'Sports'&#125;);\r\n        this.items.push(&#123;label:'Football'&#125;);\r\n        this.items.push(&#123;label:'Countries'&#125;);\r\n        this.items.push(&#123;label:'Spain'&#125;);\r\n        this.items.push(&#123;label:'F.C. Barcelona'&#125;);\r\n        this.items.push(&#123;label:'Squad'&#125;);\r\n        this.items.push(&#123;label:'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-breadcrumb [model]=\"items\"&gt;&lt;/p-breadcrumb&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>model</td>\r\n                            <td>array</td>\r\n                            <td>null</td>\r\n                            <td>An array of menuitems.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>home</td>\r\n                            <td>MenuItem</td>\r\n                            <td>null</td>\r\n                            <td>MenuItem configuration for the home icon.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>style</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Inline style of the component.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>styleClass</td>\r\n                            <td>string</td>\r\n                            <td>null</td>\r\n                            <td>Style class of the component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-breadcrumb</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-menuitem</td>\r\n                            <td>Menuitem element.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-menuitem-text</td>\r\n                            <td>Label of a menuitem.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>ui-breadcrumb-chevron</td>\r\n                            <td>Chevron element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/breadcrumb\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BreadcrumbDemo implements OnInit &#123;\r\n\r\n    items: MenuItem[];\r\n    \r\n    ngOnInit() &#123;\r\n        this.items = [];\r\n        this.items.push(&#123;label:'Categories'&#125;);\r\n        this.items.push(&#123;label:'Sports'&#125;);\r\n        this.items.push(&#123;label:'Football'&#125;);\r\n        this.items.push(&#123;label:'Countries'&#125;);\r\n        this.items.push(&#123;label:'Spain'&#125;);\r\n        this.items.push(&#123;label:'F.C. Barcelona'&#125;);\r\n        this.items.push(&#123;label:'Squad'&#125;);\r\n        this.items.push(&#123;label:'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi'&#125;);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-breadcrumb [model]=\"items\"&gt;&lt;/p-breadcrumb&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
+module.exports = "<div class=\"content-section introduction\">\r\n    <div>\r\n        <span class=\"feature-title\">BlockUI</span>\r\n        <span>BlockUI can either block other components or the whole page.</span>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"content-section implementation\">\r\n    <h3 class=\"first\">Document</h3>\r\n    <p-blockUI [blocked]=\"blockedDocument\"></p-blockUI>\r\n    \r\n    <button type=\"button\" pButton label=\"Block\" (click)=\"blockDocument()\"></button>\r\n    \r\n    <h3>Panel</h3>\r\n    <button type=\"button\" pButton label=\"Block\" (click)=\"blockedPanel=true\"></button>\r\n    <button type=\"button\" pButton label=\"Unblock\" (click)=\"blockedPanel=false\"></button>\r\n    \r\n    <p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\">\r\n        <i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"></i>\r\n    </p-blockUI>\r\n    <p-panel #pnl header=\"Godfather I\" [style]=\"{'margin-top':'20px'}\">\r\n        The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n        kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n    </p-panel>\r\n</div>\r\n\r\n<div class=\"content-section documentation\">\r\n    <p-tabView effect=\"fade\">\r\n        <p-tabPanel header=\"Documentation\">\r\n            <h3>Import</h3>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nimport &#123;BlockUIModule&#125; from 'primeng/primeng';\r\n</code>\r\n</pre>\r\n\r\n            <h3>Getting Started</h3>\r\n            <p>BlockUI is controlled using the blocked property and component to block is defined as target. If target is not provided, document\r\n            itself is selected as the block target.</p>\r\n            \r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BlockUIDemo &#123;\r\n\r\n    blocked: boolean;\r\n    \r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [blocked]=\"blocked\"&gt;&lt;/p-blockUI&gt;\r\n</code>\r\n</pre>\r\n\r\n            <p>To block a certain component, define a local ng-template variable and bind it to the target option. The target component must implement the \r\n            BlockableUI interface, otherwise an exception is thrown.</p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [blocked]=\"blockedDocument\" [target]=\"pnl\"&gt;&lt;/p-blockUI&gt;\r\n\r\n&lt;p-panel #pnl header=\"Panel Header\"&gt;\r\n    Content of Panel\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n\r\n            <h3>Custom Content</h3>\r\n            <p>Blocker mask is customized by simply adding the content inside the component<p>\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\"&gt;\r\n    &lt;i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"&gt;&lt;/i&gt;\r\n&lt;/p-blockUI&gt;\r\n\r\n&lt;p-panel #pnl header=\"Panel Header\"&gt;\r\n    Content of Panel\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n\r\n\r\n            <h3>Properties</h3>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Type</th>\r\n                            <th>Default</th>\r\n                            <th>Description</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>blocked</td>\r\n                            <td>boolean</td>\r\n                            <td>false</td>\r\n                            <td>Controls the blocked state.</td>\r\n                        </tr>\r\n                        <tr>\r\n                            <td>target</td>\r\n                            <td>any</td>\r\n                            <td>document</td>\r\n                            <td>Name of the local ng-template variable referring to another component.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Styling</h3>\r\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\r\n            <div class=\"doc-tablewrapper\">\r\n                <table class=\"doc-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th>Name</th>\r\n                            <th>Element</th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr>\r\n                            <td>ui-blockui</td>\r\n                            <td>Container element.</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <h3>Dependencies</h3>\r\n            <p>None.</p>\r\n        </p-tabPanel>\r\n\r\n        <p-tabPanel header=\"Source\">\r\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/blockui\" class=\"btn-viewsource\" target=\"_blank\">\r\n                <i class=\"fa fa-github\"></i>\r\n                <span>View on GitHub</span>\r\n            </a>\r\n<pre>\r\n<code class=\"language-typescript\" pCode ngNonBindable>\r\nexport class BlockUIDemo &#123;\r\n\r\n    blockedPanel: boolean = false;\r\n    \r\n    blockedDocument: boolean = false;\r\n        \r\n    blockDocument() &#123;\r\n        this.blockedDocument = true;\r\n        setTimeout(() => &#123;\r\n            this.blockedDocument = false;\r\n        &#125;, 3000);\r\n    &#125;\r\n&#125;\r\n</code>\r\n</pre>\r\n\r\n<pre>\r\n<code class=\"language-markup\" pCode ngNonBindable>\r\n&lt;h3 class=\"first\"&gt;Document&lt;/h3&gt;\r\n&lt;p-blockUI [blocked]=\"blockedDocument\"&gt;&lt;/p-blockUI&gt;\r\n\r\n&lt;button type=\"button\" pButton label=\"Block\" (click)=\"blockDocument()\"&gt;&lt;/button&gt;\r\n\r\n&lt;h3&gt;Panel&lt;/h3&gt;\r\n&lt;button type=\"button\" pButton label=\"Block\" (click)=\"blockedPanel=true\"&gt;&lt;/button&gt;\r\n&lt;button type=\"button\" pButton label=\"Unblock\" (click)=\"blockedPanel=false\"&gt;&lt;/button&gt;\r\n\r\n&lt;p-blockUI [target]=\"pnl\" [blocked]=\"blockedPanel\"&gt;\r\n    &lt;i class=\"fa fa-lock fa-5x\" style=\"position:absolute;top:25%;left:50%\"&gt;&lt;/i&gt;\r\n&lt;/p-blockUI&gt;\r\n&lt;p-panel #pnl header=\"Godfather I\" [style]=\"&#123;'margin-top':'20px'&#125;\"&gt;\r\n    The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. \r\n    His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. \r\n    Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, \r\n    kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\r\n&lt;/p-panel&gt;\r\n</code>\r\n</pre>\r\n        </p-tabPanel>\r\n    </p-tabView>\r\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/breadcrumb/breadcrumbdemo.module.ts":
+/***/ "./src/app/showcase/components/blockui/blockuidemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__breadcrumbdemo__ = __webpack_require__("./src/app/showcase/components/breadcrumb/breadcrumbdemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__breadcrumbdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/breadcrumb/breadcrumbdemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_breadcrumb_breadcrumb__ = __webpack_require__("./src/app/components/breadcrumb/breadcrumb.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BreadcrumbDemoModule", function() { return BreadcrumbDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__blockuidemo__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__blockuidemo_routing_module__ = __webpack_require__("./src/app/showcase/components/blockui/blockuidemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_blockui_blockui__ = __webpack_require__("./src/app/components/blockui/blockui.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__ = __webpack_require__("./src/app/components/panel/panel.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlockUIDemoModule", function() { return BlockUIDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -573,36 +730,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var BreadcrumbDemoModule = (function () {
-    function BreadcrumbDemoModule() {
+
+
+var BlockUIDemoModule = (function () {
+    function BlockUIDemoModule() {
     }
-    return BreadcrumbDemoModule;
+    return BlockUIDemoModule;
 }());
-BreadcrumbDemoModule = __decorate([
+BlockUIDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
-            __WEBPACK_IMPORTED_MODULE_3__breadcrumbdemo_routing_module__["a" /* BreadcrumbDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_breadcrumb_breadcrumb__["a" /* BreadcrumbModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__blockuidemo_routing_module__["a" /* BlockUIDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_4__components_blockui_blockui__["a" /* BlockUIModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_panel_panel__["a" /* PanelModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__breadcrumbdemo__["a" /* BreadcrumbDemo */]
+            __WEBPACK_IMPORTED_MODULE_2__blockuidemo__["a" /* BlockUIDemo */]
         ]
     })
-], BreadcrumbDemoModule);
+], BlockUIDemoModule);
 
-//# sourceMappingURL=breadcrumbdemo.module.js.map
+//# sourceMappingURL=blockuidemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/breadcrumb/breadcrumbdemo.ts":
+/***/ "./src/app/showcase/components/blockui/blockuidemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BreadcrumbDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlockUIDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -610,29 +771,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-var BreadcrumbDemo = (function () {
-    function BreadcrumbDemo() {
+var BlockUIDemo = (function () {
+    function BlockUIDemo() {
+        this.blockedPanel = false;
+        this.blockedDocument = false;
     }
-    BreadcrumbDemo.prototype.ngOnInit = function () {
-        this.items = [];
-        this.items.push({ label: 'Categories' });
-        this.items.push({ label: 'Sports' });
-        this.items.push({ label: 'Football' });
-        this.items.push({ label: 'Countries' });
-        this.items.push({ label: 'Spain' });
-        this.items.push({ label: 'F.C. Barcelona' });
-        this.items.push({ label: 'Squad' });
-        this.items.push({ label: 'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi' });
+    BlockUIDemo.prototype.blockDocument = function () {
+        var _this = this;
+        this.blockedDocument = true;
+        setTimeout(function () {
+            _this.blockedDocument = false;
+        }, 3000);
     };
-    return BreadcrumbDemo;
+    return BlockUIDemo;
 }());
-BreadcrumbDemo = __decorate([
+BlockUIDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        template: __webpack_require__("./src/app/showcase/components/breadcrumb/breadcrumbdemo.html")
+        template: __webpack_require__("./src/app/showcase/components/blockui/blockuidemo.html")
     })
-], BreadcrumbDemo);
+], BlockUIDemo);
 
-//# sourceMappingURL=breadcrumbdemo.js.map
+//# sourceMappingURL=blockuidemo.js.map
 
 /***/ })
 
